@@ -1,2 +1,2 @@
-<con:noParamsWithHeader xmlns:con="http://consumer.ws.extension.mule.org/">
+<con:noParamsWithHeader xmlns:con="http://service.ws.extension.mule.org/">
 </con:noParamsWithHeader>

@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.consumer;
+package org.mule.extension.ws.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;

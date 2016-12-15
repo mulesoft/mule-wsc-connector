@@ -106,7 +106,6 @@ public class WscTestUtils {
     return result.getWriter().toString();
   }
 
-
   @Step("Prepares a test attachment")
   public static SoapAttachment getTestAttachment() {
     SoapAttachment attachment = mock(SoapAttachment.class);
