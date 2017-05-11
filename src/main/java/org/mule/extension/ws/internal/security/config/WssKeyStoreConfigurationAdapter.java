@@ -16,7 +16,7 @@ import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration
 /**
  * Default {@link WssStoreConfiguration} implementation for Key Stores, used for encryption, decryption and signing.
  *
- * @since 4.0
+ * @since 1.0
  */
 @Alias("wss-key-store-configuration")
 public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {

@@ -41,7 +41,7 @@ import javax.inject.Inject;
  * The consume operation expects an XML body and a set of headers and attachments if required.
  * <p>
  *
- * @since 4.0
+ * @since 1.0
  */
 public class ConsumeOperation {
 

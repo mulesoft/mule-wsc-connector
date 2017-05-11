@@ -19,7 +19,7 @@ import org.mule.runtime.extension.api.soap.security.UsernameTokenSecurityStrateg
  * Provides the capability to authenticate using Username and Password with a SOAP service by adding the UsernameToken
  * element in the SOAP request.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class WssUsernameTokenSecurityStrategy implements SecurityStrategyAdapter {
 

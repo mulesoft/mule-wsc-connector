@@ -17,7 +17,7 @@ import org.mule.services.soap.api.client.metadata.SoapOperationMetadata;
 /**
  * {@link InputTypeResolver} implementation to resolve metadata for an input message of a particular operation.
  *
- * @since 4.0
+ * @since 1.0
  */
 abstract class AbstractSoapOperationMetadataResolver extends BaseWscResolver {
 

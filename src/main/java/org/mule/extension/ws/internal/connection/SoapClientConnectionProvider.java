@@ -35,7 +35,7 @@ import org.apache.log4j.Logger;
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class SoapClientConnectionProvider implements PoolingConnectionProvider<SoapClient> {
 

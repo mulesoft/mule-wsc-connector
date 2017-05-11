@@ -16,7 +16,7 @@ import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration
 /**
  * Default {@link WssStoreConfiguration} implementation for Trust Stores, used for signature verification.
  *
- * @since 4.0
+ * @since 1.0
  */
 @Alias("wss-trust-store-configuration")
 public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration {

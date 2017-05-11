@@ -15,7 +15,7 @@ import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
 /**
  * {@link InputTypeResolver} implementation to resolve metadata for the message attachments of a particular operation.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class SoapAttachmentsTypeResolver extends AbstractSoapOperationMetadataResolver implements InputTypeResolver<String> {
 

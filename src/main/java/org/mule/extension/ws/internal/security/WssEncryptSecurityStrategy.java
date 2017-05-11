@@ -15,7 +15,7 @@ import org.mule.runtime.extension.api.soap.security.config.WssKeyStoreConfigurat
 /**
  * Verifies the signature of a SOAP response, using certificates of the trust-store in the provided TLS context.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class WssEncryptSecurityStrategy implements SecurityStrategyAdapter {
 

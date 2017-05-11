@@ -14,7 +14,7 @@ import org.mule.services.soap.internal.exception.error.SoapExceptionEnricher;
  * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a
  * Soap Fault is returned by the server we wrap that exception in a custom WSC {@link SoapFaultException}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class WscExceptionEnricher extends ExceptionHandler {
 
