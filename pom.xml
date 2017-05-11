@@ -4,23 +4,28 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>mule-extensions</artifactId>
         <groupId>org.mule.extensions</groupId>
+        <artifactId>mule-core-modules-parent</artifactId>
         <version>4.0.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.mule.modules</groupId>
-    <artifactId>mule-module-wsc</artifactId>
+    <groupId>org.mule.connectors</groupId>
+    <artifactId>mule-wsc-connector</artifactId>
     <packaging>mule-extension</packaging>
+    <version>1.0.0-SNAPSHOT</version>
 
-    <name>Mule Web Service Consumer</name>
+    <name>Mule Web Service Consumer Connector</name>
     <description>A Mule extension that provides functionality for consuming SOAP web services</description>
 
     <properties>
+        <commonsLangVersion>2.4</commonsLangVersion>
         <cxfVersion>2.7.18</cxfVersion>
+        <formatterConfigPath>formatter.xml</formatterConfigPath>
+        <guavaVersion>18.0</guavaVersion>
+        <muleVersion>4.0.0-SNAPSHOT</muleVersion>
+
         <xmlUnitVersion>1.6</xmlUnitVersion>
-        <formatterConfigPath>../../formatter.xml</formatterConfigPath>
     </properties>
 
     <dependencies>
@@ -53,12 +58,13 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-soap-api</artifactId>
-            <version>${project.version}</version>
+            <version>${muleVersion}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+            <version>${guavaVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -80,6 +86,7 @@
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
+            <version>${commonsLangVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
@@ -89,22 +96,7 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
-            <version>${parent.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <!--TODO: MULE-10837-->
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-module-service</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-scheduler</artifactId>
-            <version>${project.version}</version>
-            <classifier>mule-service</classifier>
+            <version>${muleVersion}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -112,7 +104,44 @@
         <dependency>
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
+            <version>${xmlUnitVersion}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <downloadUrl>http://www.mulesoft.org/display/MULE/Download</downloadUrl>
+        <repository>
+            <id>mule-releases</id>
+            <name>Mule Release Repository</name>
+            <url>https://repository-master.mulesoft.org/nexus/content/repositories/releases</url>
+        </repository>
+        <snapshotRepository>
+            <id>mule-snapshots</id>
+            <name>Mule Snapshot Repository</name>
+            <url>https://repository-master.mulesoft.org/nexus/content/repositories/snapshots</url>
+            <uniqueVersion>false</uniqueVersion>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>mule</id>
+            <name>Mule Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </repository>
+        <repository>
+            <id>spring-snapshot</id>
+            <name>Spring Snapshot Repository</name>
+            <url>http://repo.spring.io/snapshot/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>mule-plugin</id>
+            <name>Mule Repository</name>
+            <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
+        </pluginRepository>
+    </pluginRepositories>
 </project>
