@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 /**
  * A simple POJO that represents a SOAP Fault that occurs during invocation processing.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class SoapFault {
 

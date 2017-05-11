@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * {@link ErrorTypeProvider} implementation for the {@link ConsumeOperation}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class ConsumeErrorTypeProvider implements ErrorTypeProvider {
 

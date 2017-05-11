@@ -21,11 +21,11 @@
     <properties>
         <commonsLangVersion>2.4</commonsLangVersion>
         <cxfVersion>2.7.18</cxfVersion>
-        <formatterConfigPath>formatter.xml</formatterConfigPath>
         <guavaVersion>18.0</guavaVersion>
         <muleVersion>4.0.0-SNAPSHOT</muleVersion>
-
         <xmlUnitVersion>1.6</xmlUnitVersion>
+
+        <formatterConfigPath>formatter.xml</formatterConfigPath>
     </properties>
 
     <dependencies>

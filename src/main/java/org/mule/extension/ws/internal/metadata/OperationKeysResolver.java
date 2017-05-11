@@ -22,7 +22,7 @@ import java.util.Set;
  * {@link TypeKeysResolver} implementation for the {@link ConsumeOperation}, retrieves a metadata key for each operation available
  * to be performed for the given {@link SoapClient}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class OperationKeysResolver extends BaseWscResolver implements TypeKeysResolver {
 

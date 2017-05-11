@@ -15,7 +15,7 @@ import org.mule.runtime.extension.api.soap.security.config.WssKeyStoreConfigurat
 /**
  * Signs the SOAP request that is being sent, using the private key of the key-store in the provided TLS context.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class WssSignSecurityStrategy implements SecurityStrategyAdapter {
 

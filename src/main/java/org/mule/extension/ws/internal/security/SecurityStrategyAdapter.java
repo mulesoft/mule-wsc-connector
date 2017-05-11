@@ -12,7 +12,7 @@ import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
 /**
  * Adapter interface for classes that wraps a security class for the SOAP Protocol.
  * 
- * @since 4.0
+ * @since 1.0
  */
 @Alias("security-strategy")
 public interface SecurityStrategyAdapter {

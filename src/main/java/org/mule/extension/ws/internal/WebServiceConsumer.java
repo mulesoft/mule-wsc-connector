@@ -29,7 +29,7 @@ import org.mule.services.soap.api.exception.error.SoapErrors;
 /**
  * Web Service Consumer extension used to consume SOAP web services.
  *
- * @since 4.0
+ * @since 1.0
  */
 @ErrorTypes(SoapErrors.class)
 @Operations(ConsumeOperation.class)

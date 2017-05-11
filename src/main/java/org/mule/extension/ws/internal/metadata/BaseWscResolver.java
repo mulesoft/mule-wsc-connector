@@ -18,7 +18,7 @@ import org.mule.services.soap.api.client.metadata.SoapMetadataResolver;
 /**
  * Base class for all metadata resolvers of the {@link ConsumeOperation}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public abstract class BaseWscResolver implements NamedTypeResolver {
 

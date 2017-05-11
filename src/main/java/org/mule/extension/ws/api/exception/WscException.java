@@ -9,7 +9,7 @@ package org.mule.extension.ws.api.exception;
 /**
  * Base {@link RuntimeException} type for the Web Service Consumer.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class WscException extends RuntimeException {
 

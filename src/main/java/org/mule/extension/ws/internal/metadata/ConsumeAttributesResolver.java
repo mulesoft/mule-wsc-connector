@@ -21,7 +21,7 @@ import org.mule.services.soap.internal.metadata.SoapOutputTypeBuilder;
  * Builds an object type with a generic dictionary where all the protocol headers are located and a more specific
  * soap headers element with the specific outbound SOAP headers returned by the operation.
  *
- * @since 4.0
+ * @since 1.0
  */
 public final class ConsumeAttributesResolver extends BaseWscResolver implements AttributesTypeResolver<String> {
 

@@ -13,7 +13,7 @@ import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
  * Contract for objects that enables the use of a custom transport executing operations of other plugins by
  * using the {@link ExtensionsClient} to send soap the messages.
  *
- * @since 4.0
+ * @since 1.0
  */
 public interface CustomTransportConfiguration {
 

@@ -18,7 +18,7 @@ import org.mule.services.soap.internal.metadata.SoapOutputTypeBuilder;
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class ConsumeOutputResolver extends BaseWscResolver implements OutputTypeResolver<String> {
 

@@ -23,7 +23,7 @@ import java.util.Map;
 /**
  * Component that specifies how to create a proper SOAP request using the {@link WebServiceConsumer}.
  *
- * @since 4.0
+ * @since 1.0
  */
 public class SoapMessageBuilder {
 
