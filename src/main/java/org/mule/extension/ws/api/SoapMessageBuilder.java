@@ -18,6 +18,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
 
+import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -35,7 +36,7 @@ public class SoapMessageBuilder {
   @Content(primary = true)
   @TypeResolver(SoapBodyTypeResolver.class)
   @Summary("The XML body to include in the SOAP message, with all the required parameters.")
-  private String body;
+  private InputStream body;
 
   /**
    * The XML headers to include in the SOAP message.
@@ -45,7 +46,7 @@ public class SoapMessageBuilder {
   @Content
   @TypeResolver(SoapHeadersTypeResolver.class)
   @Summary("The XML headers to include in the SOAP message.")
-  private String headers;
+  private InputStream headers;
 
   /**
    * The attachments to include in the SOAP request.
@@ -58,11 +59,11 @@ public class SoapMessageBuilder {
   @Summary("The attachments to include in the SOAP request.")
   private Map<String, SoapAttachment> attachments;
 
-  public String getBody() {
+  public InputStream getBody() {
     return body;
   }
 
-  public String getHeaders() {
+  public InputStream getHeaders() {
     return headers;
   }
 

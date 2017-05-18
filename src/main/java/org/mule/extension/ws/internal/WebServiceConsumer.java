@@ -6,16 +6,9 @@
  */
 package org.mule.extension.ws.internal;
 
-import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.api.message.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
-import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
-import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssSignSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssTimestampSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssUsernameTokenSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssVerifySignatureSecurityStrategy;
+import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.SubTypeMapping;
@@ -35,9 +28,6 @@ import org.mule.services.soap.api.exception.error.SoapErrors;
 @Operations(ConsumeOperation.class)
 @ConnectionProviders(SoapClientConnectionProvider.class)
 @SubTypeMapping(baseType = CustomTransportConfiguration.class, subTypes = CustomHttpTransportConfiguration.class)
-@SubTypeMapping(baseType = SecurityStrategyAdapter.class,
-    subTypes = {WssDecryptSecurityStrategy.class, WssEncryptSecurityStrategy.class, WssSignSecurityStrategy.class,
-        WssUsernameTokenSecurityStrategy.class, WssTimestampSecurityStrategy.class, WssVerifySignatureSecurityStrategy.class})
 @Extension(name = "Web Service Consumer")
 @Xml(prefix = "wsc")
 public class WebServiceConsumer {
