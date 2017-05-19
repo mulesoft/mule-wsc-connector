@@ -7,7 +7,7 @@
 package org.mule.extension.ws.internal;
 
 
-import static org.apache.commons.lang.StringUtils.isBlank;
+import static org.mule.runtime.api.metadata.MediaType.XML;
 import org.mule.extension.ws.api.SoapMessageBuilder;
 import org.mule.extension.ws.internal.metadata.ConsumeAttributesResolver;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
@@ -30,6 +30,7 @@ import org.mule.services.soap.api.message.SoapRequest;
 import org.mule.services.soap.api.message.SoapRequestBuilder;
 import org.mule.services.soap.api.message.SoapResponse;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -72,19 +73,17 @@ public class ConsumeOperation {
     requestBuilder.withAttachments(message.getAttachments());
     requestBuilder.withOperation(operation);
 
-    if (!isBlank(message.getHeaders())) {
-      requestBuilder.withSoapHeaders((Map<String, String>) evaluateHeaders(message.getHeaders()));
+    InputStream headers = message.getHeaders();
+    if (headers != null) {
+      requestBuilder.withSoapHeaders((Map<String, String>) evaluateHeaders(headers));
     }
-
-    if (!isBlank(message.getBody())) {
-      requestBuilder.withContent(message.getBody());
-    }
+    requestBuilder.withContent(message.getBody());
     return requestBuilder;
   }
 
-  private Object evaluateHeaders(String headers) {
-    BindingContext context =
-        BindingContext.builder().addBinding("payload", new TypedValue<>(headers, DataType.XML_STRING)).build();
+  private Object evaluateHeaders(InputStream headers) {
+    DataType xmlStream = DataType.builder().type(InputStream.class).mediaType(XML).build();
+    BindingContext context = BindingContext.builder().addBinding("payload", new TypedValue<>(headers, xmlStream)).build();
     return expressionExecutor.evaluate("%dw 2.0 \n"
         + "%output application/java \n"
         + "---\n"

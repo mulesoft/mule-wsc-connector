@@ -7,15 +7,16 @@
 package org.mule.extension.ws.internal.connection;
 
 import static java.lang.Thread.currentThread;
+import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
-import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.connection.PoolingConnectionProvider;
-import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.service.http.api.HttpService;
 import org.mule.services.soap.api.SoapService;
@@ -26,7 +27,6 @@ import org.mule.services.soap.api.client.SoapClientConfigurationBuilder;
 import org.mule.services.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
 
 import java.net.URL;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -75,13 +75,9 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
   @Optional
   private String address;
 
-  /**
-   * The security strategies configured to protect the SOAP messages.
-   */
-  @Parameter
-  @Optional
-  @NullSafe
-  private List<SecurityStrategyAdapter> securityStrategies;
+  @ParameterGroup(name = "Web Service Security", showInDsl = true)
+  @Placement(tab = "Security")
+  private WebServiceSecurity wsSecurity;
 
   @Parameter
   @Optional
@@ -138,7 +134,7 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
         .withAddress(address)
         .withVersion(soapVersion);
 
-    securityStrategies.stream().map(SecurityStrategyAdapter::getSecurityStrategy).forEach(configuration::withSecurity);
+    wsSecurity.strategiesList().forEach(configuration::withSecurity);
 
     if (mtomEnabled) {
       configuration.enableMtom();
