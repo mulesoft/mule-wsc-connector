@@ -17,7 +17,7 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.services.soap.api.exception.error.SoapErrors;
+import org.mule.runtime.soap.api.exception.error.SoapErrors;
 
 /**
  * Web Service Consumer extension used to consume SOAP web services.

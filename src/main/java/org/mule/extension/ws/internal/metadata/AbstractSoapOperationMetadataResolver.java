@@ -12,7 +12,7 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
-import org.mule.services.soap.api.client.metadata.SoapOperationMetadata;
+import org.mule.runtime.soap.api.client.metadata.SoapOperationMetadata;
 
 /**
  * {@link InputTypeResolver} implementation to resolve metadata for an input message of a particular operation.
