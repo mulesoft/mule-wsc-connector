@@ -7,8 +7,8 @@
 package org.mule.extension.ws.internal;
 
 import org.mule.runtime.extension.api.runtime.exception.ExceptionHandler;
-import org.mule.services.soap.api.exception.SoapFaultException;
-import org.mule.services.soap.internal.exception.error.SoapExceptionEnricher;
+import org.mule.runtime.soap.api.exception.SoapFaultException;
+import org.mule.runtime.soap.internal.exception.error.SoapExceptionEnricher;
 
 /**
  * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a

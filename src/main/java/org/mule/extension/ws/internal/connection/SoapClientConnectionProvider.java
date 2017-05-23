@@ -18,13 +18,13 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
-import org.mule.service.http.api.HttpService;
-import org.mule.services.soap.api.SoapService;
-import org.mule.services.soap.api.SoapVersion;
-import org.mule.services.soap.api.client.SoapClient;
-import org.mule.services.soap.api.client.SoapClientConfiguration;
-import org.mule.services.soap.api.client.SoapClientConfigurationBuilder;
-import org.mule.services.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
+import org.mule.runtime.http.api.HttpService;
+import org.mule.runtime.soap.api.SoapService;
+import org.mule.runtime.soap.api.SoapVersion;
+import org.mule.runtime.soap.api.client.SoapClient;
+import org.mule.runtime.soap.api.client.SoapClientConfiguration;
+import org.mule.runtime.soap.api.client.SoapClientConfigurationBuilder;
+import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
 
 import java.net.URL;
 

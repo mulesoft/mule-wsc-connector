@@ -12,8 +12,8 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.NamedTypeResolver;
-import org.mule.services.soap.api.client.SoapClient;
-import org.mule.services.soap.api.client.metadata.SoapMetadataResolver;
+import org.mule.runtime.soap.api.client.SoapClient;
+import org.mule.runtime.soap.api.client.metadata.SoapMetadataResolver;
 
 /**
  * Base class for all metadata resolvers of the {@link ConsumeOperation}.

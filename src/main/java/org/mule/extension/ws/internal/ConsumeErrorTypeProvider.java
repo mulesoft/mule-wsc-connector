@@ -6,13 +6,14 @@
  */
 package org.mule.extension.ws.internal;
 
-import static org.mule.services.soap.api.exception.error.SoapErrors.BAD_REQUEST;
-import static org.mule.services.soap.api.exception.error.SoapErrors.BAD_RESPONSE;
-import static org.mule.services.soap.api.exception.error.SoapErrors.CANNOT_DISPATCH;
-import static org.mule.services.soap.api.exception.error.SoapErrors.ENCODING;
-import static org.mule.services.soap.api.exception.error.SoapErrors.INVALID_WSDL;
-import static org.mule.services.soap.api.exception.error.SoapErrors.SOAP_FAULT;
-import static org.mule.services.soap.api.exception.error.SoapErrors.TIMEOUT;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.BAD_REQUEST;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.BAD_RESPONSE;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.CANNOT_DISPATCH;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.ENCODING;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.INVALID_WSDL;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.SOAP_FAULT;
+import static org.mule.runtime.soap.api.exception.error.SoapErrors.TIMEOUT;
+
 import org.mule.runtime.extension.api.annotation.error.ErrorTypeProvider;
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 

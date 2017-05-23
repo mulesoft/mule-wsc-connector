@@ -14,7 +14,7 @@ import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataKey;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
-import org.mule.services.soap.api.client.SoapClient;
+import org.mule.runtime.soap.api.client.SoapClient;
 
 import java.util.Set;
 
