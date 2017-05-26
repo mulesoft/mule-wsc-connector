@@ -85,7 +85,7 @@ public class ConsumeOperation {
     DataType xmlStream = DataType.builder().type(InputStream.class).mediaType(XML).build();
     BindingContext context = BindingContext.builder().addBinding("payload", new TypedValue<>(headers, xmlStream)).build();
     return expressionExecutor.evaluate("%dw 2.0 \n"
-        + "%output application/java \n"
+        + "output application/java \n"
         + "---\n"
         + "payload.headers mapObject (value, key) -> {\n"
         + "    '$key' : write((key): value, \"application/xml\")\n"
