@@ -4,9 +4,8 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.api;
+package org.mule.extension.ws.internal;
 
-import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.metadata.SoapAttachmentsTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapBodyTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapHeadersTypeResolver;

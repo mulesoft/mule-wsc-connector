@@ -9,7 +9,6 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import org.mule.extension.ws.api.SoapMessageBuilder;
 import org.mule.extension.ws.internal.metadata.ConsumeAttributesResolver;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
@@ -18,9 +17,6 @@ import org.mule.runtime.api.el.MuleExpressionLanguage;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.core.api.TransformationService;
-import org.mule.runtime.core.api.transformer.MessageTransformerException;
-import org.mule.runtime.core.api.transformer.TransformerException;
-import org.mule.runtime.core.exception.MessagingException;
 import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
@@ -30,6 +26,7 @@ import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
 import org.mule.runtime.soap.api.client.SoapClient;
+import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
 import org.mule.runtime.soap.api.message.SoapAttributes;
 import org.mule.runtime.soap.api.message.SoapRequest;
@@ -73,18 +70,20 @@ public class ConsumeOperation {
   @OutputResolver(output = ConsumeOutputResolver.class, attributes = ConsumeAttributesResolver.class)
   public Result<?, SoapAttributes> consume(@Connection SoapClient connection,
                                            @MetadataKeyId(OperationKeysResolver.class) String operation,
-                                           @ParameterGroup(name = "Message", showInDsl = true) SoapMessageBuilder message)
-      throws SoapFaultException, MessageTransformerException, MessagingException, TransformerException {
-    SoapRequestBuilder requestBuilder = getSoapRequest(operation, message);
+                                           @ParameterGroup(name = "Message", showInDsl = true) SoapMessageBuilder message,
+                                           @ParameterGroup(
+                                               name = "Transport Configuration") TransportConfiguration transportConfig)
+      throws SoapFaultException {
+    SoapRequestBuilder requestBuilder = getSoapRequest(operation, message, transportConfig.getTransportHeaders());
     SoapResponse response = connection.consume(requestBuilder.build());
     return response.getAsResult();
   }
 
-  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message)
-      throws MessageTransformerException, MessagingException, TransformerException {
+  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
     requestBuilder.withAttachments(toSoapAttachments(message.getAttachments()));
     requestBuilder.withOperation(operation);
+    requestBuilder.withTransportHeaders(transportHeaders);
 
     InputStream headers = message.getHeaders();
     if (headers != null) {
@@ -94,22 +93,21 @@ public class ConsumeOperation {
     return requestBuilder;
   }
 
-  private Map<String, SoapAttachment> toSoapAttachments(Map<String, TypedValue<?>> attachments)
-      throws MessageTransformerException, MessagingException, TransformerException {
+  private Map<String, SoapAttachment> toSoapAttachments(Map<String, TypedValue<?>> attachments) {
     Map<String, SoapAttachment> soapAttachmentMap = new HashMap<>();
-
-    for (Map.Entry<String, TypedValue<?>> attachment : attachments.entrySet()) {
-      SoapAttachment soapAttachment =
-          new SoapAttachment(toInputStream(attachment.getValue()), attachment.getValue().getDataType().getMediaType());
-      soapAttachmentMap.put(attachment.getKey(), soapAttachment);
-    }
-
+    attachments.forEach((name, attachment) -> {
+      try {
+        InputStream stream = toInputStream(attachment);
+        SoapAttachment soapAttachment = new SoapAttachment(stream, attachment.getDataType().getMediaType());
+        soapAttachmentMap.put(name, soapAttachment);
+      } catch (Exception e) {
+        throw new BadRequestException("Error while adding attachments to the soap request", e);
+      }
+    });
     return soapAttachmentMap;
   }
 
-  private InputStream toInputStream(TypedValue typedValue)
-      throws MessageTransformerException, MessagingException, TransformerException {
-
+  private InputStream toInputStream(TypedValue typedValue) throws Exception {
     Object value = typedValue.getValue();
     if (value instanceof InputStream) {
       return (InputStream) value;
