@@ -32,7 +32,6 @@ public class SoapMessageBuilder {
    * The XML body to include in the SOAP message, with all the required parameters, or {@code null} if no params are required.
    */
   @Parameter
-  @Optional
   @Content(primary = true)
   @TypeResolver(SoapBodyTypeResolver.class)
   @Summary("The XML body to include in the SOAP message, with all the required parameters.")
