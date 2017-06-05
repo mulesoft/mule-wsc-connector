@@ -27,11 +27,6 @@ public class SimpleHttpConfigTestCase extends AbstractSoapServiceTestCase {
     assertSoapResponse(ECHO, out);
   }
 
-  @Test
-  public void soapFaultWithCustomTransport() {
-
-  }
-
   @Override
   protected String getConfigurationFile() {
     return "config/transport/simple-http-custom-transport.xml";

@@ -16,19 +16,13 @@ import static org.mule.extension.ws.WscTestUtils.assertSimilarXml;
 import static org.mule.extension.ws.WscTestUtils.getRequestResource;
 import static org.mule.extension.ws.WscTestUtils.getResponseResource;
 import static org.mule.extension.ws.WscTestUtils.getTestAttachment;
+import static org.mule.runtime.api.metadata.MediaType.parse;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.api.message.MultiPartPayload;
 import org.mule.runtime.api.metadata.DataType;
-import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.core.message.PartAttributes;
 import org.mule.tck.junit4.rule.SystemProperty;
-
-import org.apache.commons.io.IOUtils;
-import org.junit.Rule;
-import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Step;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,10 +30,15 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.io.IOUtils;
+import org.junit.Rule;
+import org.junit.Test;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Step;
+
 public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
 
-  private static final DataType HTML_DATA_TYPE =
-      DataType.builder().type(InputStream.class).mediaType(MediaType.parse("text/html")).build();
+  private static final DataType HTML_DATA_TYPE = DataType.builder().type(InputStream.class).mediaType(parse("text/html")).build();
   @Rule
   public SystemProperty mtom;
 
@@ -56,9 +55,11 @@ public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
   @Description("Uploads an attachment to the server")
   public void uploadAttachment() throws Exception {
     String payload = getRequestResource(UPLOAD_ATTACHMENT);
-    Message message =
-        flowRunner(UPLOAD_ATTACHMENT).withPayload(payload).withVariable("inAttachment", getTestAttachment())
-            .withVariable("attachmentContent", ATTACHMENT_CONTENT, HTML_DATA_TYPE).run().getMessage();
+    Message message = flowRunner(UPLOAD_ATTACHMENT)
+        .withPayload(payload)
+        .withVariable("inAttachment", getTestAttachment())
+        .withVariable("attachmentContent", ATTACHMENT_CONTENT, HTML_DATA_TYPE)
+        .run().getMessage();
     assertSimilarXml((String) message.getPayload().getValue(), getResponseResource(UPLOAD_ATTACHMENT));
   }
 

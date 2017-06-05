@@ -15,8 +15,6 @@ import org.mule.runtime.extension.api.annotation.SubTypeMapping;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
-import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.soap.api.exception.error.SoapErrors;
 
 /**
@@ -32,15 +30,4 @@ import org.mule.runtime.soap.api.exception.error.SoapErrors;
 @Xml(prefix = "wsc")
 public class WebServiceConsumer {
 
-  /**
-   * Default character encoding to be used in all the messages. If not specified, the default charset in the mule configuration
-   * will be used
-   */
-  @Parameter
-  @DefaultEncoding
-  private String encoding;
-
-  public String getEncoding() {
-    return encoding;
-  }
 }

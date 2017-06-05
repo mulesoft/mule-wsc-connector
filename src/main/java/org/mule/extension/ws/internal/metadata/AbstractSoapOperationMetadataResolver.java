@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import org.mule.extension.ws.api.SoapMessageBuilder;
+import org.mule.extension.ws.internal.SoapMessageBuilder;
 import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;

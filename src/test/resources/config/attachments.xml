@@ -10,15 +10,6 @@
         </wsc:connection>
     </wsc:config>
 
-    <wsc:config name="con2">
-        <wsc:connection wsdlLocation="http://www.webservicex.com/globalweather.asmx?WSDL" service="GlobalWeather" port="GlobalWeatherSoap"/>
-    </wsc:config>
-
-    <flow name="flowFalopa">
-        <wsc:consume config-ref="con2" operation="GetCitiesByCountry"/>
-        <object-to-string-transformer/>
-    </flow>
-
     <flow name="downloadAttachment">
         <wsc:consume config-ref="attachmentsConfig" operation="downloadAttachment">
             <wsc:message>
