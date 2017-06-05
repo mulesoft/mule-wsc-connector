@@ -54,11 +54,12 @@ import javax.inject.Inject;
 public class ConsumeOperation {
 
   private static final DataType XML_STREAM = DataType.builder().type(InputStream.class).mediaType(XML).build();
+
   @Inject
   private MuleExpressionLanguage expressionExecutor;
 
   @Inject
-  TransformationService transformationService;
+  private TransformationService transformationService;
 
   /**
    * Consumes an operation from a SOAP Web Service.
@@ -89,8 +90,7 @@ public class ConsumeOperation {
     if (headers != null) {
       requestBuilder.withSoapHeaders((Map<String, String>) evaluateHeaders(headers));
     }
-    requestBuilder.withContent(message.getBody().getValue());
-    requestBuilder.ofContentType(message.getBody().getDataType().getMediaType());
+    requestBuilder.withContent(message.getBody());
     return requestBuilder;
   }
 
