@@ -10,13 +10,13 @@ import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.metadata.SoapAttachmentsTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapBodyTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapHeadersTypeResolver;
+import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.metadata.TypeResolver;
 import org.mule.runtime.extension.api.annotation.param.Content;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.SoapAttachment;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -36,7 +36,7 @@ public class SoapMessageBuilder {
   @Content(primary = true)
   @TypeResolver(SoapBodyTypeResolver.class)
   @Summary("The XML body to include in the SOAP message, with all the required parameters.")
-  private InputStream body;
+  private TypedValue<InputStream> body;
 
   /**
    * The XML headers to include in the SOAP message.
@@ -46,7 +46,7 @@ public class SoapMessageBuilder {
   @Content
   @TypeResolver(SoapHeadersTypeResolver.class)
   @Summary("The XML headers to include in the SOAP message.")
-  private InputStream headers;
+  private TypedValue<InputStream> headers;
 
   /**
    * The attachments to include in the SOAP request.
@@ -57,17 +57,17 @@ public class SoapMessageBuilder {
   @Content
   @TypeResolver(SoapAttachmentsTypeResolver.class)
   @Summary("The attachments to include in the SOAP request.")
-  private Map<String, SoapAttachment> attachments;
+  private Map<String, TypedValue<?>> attachments;
 
-  public InputStream getBody() {
+  public TypedValue<InputStream> getBody() {
     return body;
   }
 
   public InputStream getHeaders() {
-    return headers;
+    return headers != null ? headers.getValue() : null;
   }
 
-  public Map<String, SoapAttachment> getAttachments() {
+  public Map<String, TypedValue<?>> getAttachments() {
     return attachments;
   }
 }
