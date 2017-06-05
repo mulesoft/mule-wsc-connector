@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.api;
 
+import static org.mule.runtime.core.util.collection.Collectors.toImmutableList;
 import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
 import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
 import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
@@ -13,7 +14,6 @@ import org.mule.extension.ws.internal.security.WssSignSecurityStrategy;
 import org.mule.extension.ws.internal.security.WssTimestampSecurityStrategy;
 import org.mule.extension.ws.internal.security.WssUsernameTokenSecurityStrategy;
 import org.mule.extension.ws.internal.security.WssVerifySignatureSecurityStrategy;
-import org.mule.runtime.core.util.collection.ImmutableListCollector;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
@@ -81,6 +81,6 @@ public class WebServiceSecurity {
                      encryptSecurityStrategy)
         .filter(Objects::nonNull)
         .map(SecurityStrategyAdapter::getSecurityStrategy)
-        .collect(new ImmutableListCollector<>());
+        .collect(toImmutableList());
   }
 }
