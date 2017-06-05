@@ -10,13 +10,13 @@ import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.metadata.SoapAttachmentsTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapBodyTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapHeadersTypeResolver;
+import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.metadata.TypeResolver;
 import org.mule.runtime.extension.api.annotation.param.Content;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.SoapAttachment;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -56,7 +56,7 @@ public class SoapMessageBuilder {
   @Content
   @TypeResolver(SoapAttachmentsTypeResolver.class)
   @Summary("The attachments to include in the SOAP request.")
-  private Map<String, SoapAttachment> attachments;
+  private Map<String, TypedValue<?>> attachments;
 
   public InputStream getBody() {
     return body;
@@ -66,7 +66,7 @@ public class SoapMessageBuilder {
     return headers;
   }
 
-  public Map<String, SoapAttachment> getAttachments() {
+  public Map<String, TypedValue<?>> getAttachments() {
     return attachments;
   }
 }

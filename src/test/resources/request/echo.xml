@@ -1,0 +1,3 @@
+<con:echo xmlns:con="http://service.ws.extension.mule.org/">
+    <text>test</text>
+</con:echo>
