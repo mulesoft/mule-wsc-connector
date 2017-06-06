@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.api;
 
-import static org.mule.runtime.core.util.collection.Collectors.toImmutableList;
+import static org.mule.runtime.core.api.util.collection.Collectors.toImmutableList;
 import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
 import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
 import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
