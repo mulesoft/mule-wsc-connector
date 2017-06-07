@@ -131,6 +131,13 @@
         </dependency>
         <dependency>
             <groupId>org.mule.services</groupId>
+            <artifactId>mule-service-scheduler</artifactId>
+            <version>${muleSchedulerServiceVersion}</version>
+            <classifier>mule-service</classifier>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.services</groupId>
             <artifactId>mule-service-soap</artifactId>
             <version>${muleSoapServiceVersion}</version>
             <scope>test</scope>
