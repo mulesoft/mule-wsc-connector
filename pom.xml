@@ -27,7 +27,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
-        <httpConnectorVersion>1.0.0-SNAPSHOT</httpConnectorVersion>
+        <httpConnectorVersion>0.8.0-SNAPSHOT</httpConnectorVersion>
     </properties>
 
     <dependencies>
