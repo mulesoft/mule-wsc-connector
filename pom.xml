@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-core-modules-parent</artifactId>
-        <version>4.0.0-BETA-SNAPSHOT</version>
+        <version>1.0.0-BETA-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,6 @@
         <cxfVersion>2.7.18</cxfVersion>
         <guavaVersion>18.0</guavaVersion>
         <jettyVersion>9.0.7.v20131107</jettyVersion>
-        <muleVersion>4.0.0-BETA-SNAPSHOT</muleVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
 
         <formatterConfigPath>formatter.xml</formatterConfigPath>
@@ -60,7 +59,7 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-soap-api</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -98,7 +97,7 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -119,7 +118,7 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-module-service</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -146,7 +145,7 @@
         <dependency>
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>test</scope>
         </dependency>
 
