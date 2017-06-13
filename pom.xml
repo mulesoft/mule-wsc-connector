@@ -15,7 +15,7 @@
     <packaging>mule-extension</packaging>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>Mule Web Service Consumer Connector</name>
+    <name>Web Service Consumer Connector</name>
     <description>A Mule extension that provides functionality for consuming SOAP web services</description>
 
     <properties>
