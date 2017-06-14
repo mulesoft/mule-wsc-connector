@@ -6,13 +6,14 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import static java.lang.Thread.currentThread;
+import org.apache.log4j.Logger;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.connection.PoolingConnectionProvider;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -28,11 +29,11 @@ import org.mule.runtime.soap.api.client.SoapClientConfiguration;
 import org.mule.runtime.soap.api.client.SoapClientConfigurationBuilder;
 import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
 
+import javax.inject.Inject;
 import java.net.URL;
 
-import javax.inject.Inject;
-
-import org.apache.log4j.Logger;
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -57,7 +58,7 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
    */
   @Placement(order = 1)
   @Parameter
-  @Example("http://web-service.com/location?wsdl")
+  @Example("http://www.somehost.com/location?wsdl")
   private String wsdlLocation;
 
   /**
@@ -83,7 +84,6 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
   private String address;
 
   @ParameterGroup(name = "Web Service Security", showInDsl = true)
-  @Placement(tab = "Security")
   private WebServiceSecurity wsSecurity;
 
   /**
@@ -117,6 +117,7 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
   @Placement(tab = "Transport")
   @Parameter
   @Optional
+  @Expression(NOT_SUPPORTED)
   private CustomTransportConfiguration customTransportConfiguration;
 
   /**

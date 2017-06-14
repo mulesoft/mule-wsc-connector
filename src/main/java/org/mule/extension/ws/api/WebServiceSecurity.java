@@ -6,22 +6,18 @@
  */
 package org.mule.extension.ws.api;
 
-import static org.mule.runtime.core.api.util.collection.Collectors.toImmutableList;
-import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
-import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssSignSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssTimestampSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssUsernameTokenSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssVerifySignatureSecurityStrategy;
+import org.mule.extension.ws.internal.security.*;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
+
+import static org.mule.runtime.core.api.util.collection.Collectors.toImmutableList;
 
 /**
  * This class serves as {@link ParameterGroup} for configuring Web Service Security.
@@ -30,10 +26,13 @@ import java.util.stream.Stream;
  */
 public class WebServiceSecurity {
 
+  private static final String SECURITY_TAB = "Security";
+
   /**
    * a sign WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssSignSecurityStrategy signSecurityStrategy;
 
@@ -41,6 +40,7 @@ public class WebServiceSecurity {
    * a verify signature WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssVerifySignatureSecurityStrategy verifySignatureSecurityStrategy;
 
@@ -48,6 +48,7 @@ public class WebServiceSecurity {
    * a usernameToken WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssUsernameTokenSecurityStrategy usernameTokenSecurityStrategy;
 
@@ -55,6 +56,7 @@ public class WebServiceSecurity {
    * a timestamp WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssTimestampSecurityStrategy timestampSecurityStrategy;
 
@@ -62,6 +64,7 @@ public class WebServiceSecurity {
    * a decrypt WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssDecryptSecurityStrategy decryptSecurityStrategy;
 
@@ -69,6 +72,7 @@ public class WebServiceSecurity {
    * an encrypt WSS configuration
    */
   @Parameter
+  @Placement(tab = SECURITY_TAB)
   @Optional
   private WssEncryptSecurityStrategy encryptSecurityStrategy;
 
