@@ -19,7 +19,7 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commonsLangVersion>2.4</commonsLangVersion>
+        <commonsLangVersion>3.6</commonsLangVersion>
         <cxfVersion>2.7.18</cxfVersion>
         <guavaVersion>18.0</guavaVersion>
         <jettyVersion>9.0.7.v20131107</jettyVersion>
@@ -86,8 +86,8 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
             <version>${commonsLangVersion}</version>
         </dependency>
         <dependency>
