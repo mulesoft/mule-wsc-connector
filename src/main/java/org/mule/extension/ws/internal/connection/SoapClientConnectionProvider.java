@@ -9,10 +9,13 @@ package org.mule.extension.ws.internal.connection;
 import org.apache.log4j.Logger;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
+import org.mule.runtime.api.connection.CachedConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
-import org.mule.runtime.api.connection.PoolingConnectionProvider;
+import org.mule.runtime.api.exception.MuleException;
+import org.mule.runtime.api.lifecycle.InitialisationException;
+import org.mule.runtime.api.lifecycle.Lifecycle;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -22,6 +25,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.http.api.HttpService;
+import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpClientConfiguration;
 import org.mule.runtime.soap.api.SoapService;
 import org.mule.runtime.soap.api.SoapVersion;
 import org.mule.runtime.soap.api.client.SoapClient;
@@ -40,7 +45,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements PoolingConnectionProvider<SoapClient> {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
 
   private final Logger LOGGER = Logger.getLogger(SoapClientConnectionProvider.class);
 
@@ -52,6 +57,8 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
 
   @Inject
   private ExtensionsClient extensionsClient;
+
+  private HttpClient client;
 
   /**
    * The WSDL file URL remote or local.
@@ -167,7 +174,7 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
     if (customTransportConfiguration != null) {
       configuration.withDispatcher(customTransportConfiguration.buildDispatcher(extensionsClient));
     } else {
-      configuration.withDispatcher(new DefaultHttpMessageDispatcher(httpService));
+      configuration.withDispatcher(new DefaultHttpMessageDispatcher(client));
     }
 
     return configuration.build();
@@ -176,5 +183,27 @@ public class SoapClientConnectionProvider implements PoolingConnectionProvider<S
   private String getWsdlLocation(String wsdlLocation) {
     URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
     return resource != null ? resource.getPath() : wsdlLocation;
+  }
+
+  @Override
+  public void dispose() {
+    // Do nothing
+  }
+
+  @Override
+  public void initialise() throws InitialisationException {
+    client = httpService.getClientFactory().create(new HttpClientConfiguration.Builder()
+        .setName("wsc-dispatcher")
+        .build());
+  }
+
+  @Override
+  public void stop() throws MuleException {
+    client.stop();
+  }
+
+  @Override
+  public void start() throws MuleException {
+    client.start();
   }
 }

@@ -6,45 +6,33 @@
  */
 package org.mule.extension.ws.runtime;
 
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.assertSoapResponse;
-import static org.mule.extension.ws.WscTestUtils.getRequestResource;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import org.junit.Test;
+import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.api.message.Message;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Stories;
+
+import java.net.URL;
+
 import static java.lang.Thread.currentThread;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.StringContains.containsString;
-
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
-import org.mule.runtime.api.connection.ConnectionException;
-import org.mule.runtime.api.message.Message;
-
-import java.net.URL;
-
-import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.WscTestUtils.*;
 
 @Features(WSC_EXTENSION)
 @Stories("Connection")
 public class WscConnectionTestCase extends AbstractSoapServiceTestCase {
 
-  private static final String SAME_INSTANCE_FLOW = "operationShareInstance";
   private static final String LOCAL_WSDL_FLOW = "withLocalWsdlConnection";
   private static final String RPC_CONNECTION = "rpcConnection";
 
   @Override
   protected String getConfigurationFile() {
     return "config/connection.xml";
-  }
-
-  @Test
-  @Description("Consumes 2 operations sharing the same connection instance")
-  public void sameConnection() throws Exception {
-    Message msg = flowRunner(SAME_INSTANCE_FLOW).withVariable("req", getRequestResource(ECHO)).run().getMessage();
-    String out = (String) msg.getPayload().getValue();
-    assertSoapResponse(ECHO, out);
   }
 
   @Test
