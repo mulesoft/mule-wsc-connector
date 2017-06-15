@@ -9,10 +9,13 @@ package org.mule.extension.ws.internal.connection;
 import org.apache.log4j.Logger;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
-import org.mule.runtime.api.connection.*;
-import org.mule.runtime.api.lifecycle.Disposable;
-import org.mule.runtime.api.lifecycle.Initialisable;
+import org.mule.runtime.api.connection.CachedConnectionProvider;
+import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.api.connection.ConnectionProvider;
+import org.mule.runtime.api.connection.ConnectionValidationResult;
+import org.mule.runtime.api.exception.MuleException;
 import org.mule.runtime.api.lifecycle.InitialisationException;
+import org.mule.runtime.api.lifecycle.Lifecycle;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -42,7 +45,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Initialisable, Disposable {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
 
   private final Logger LOGGER = Logger.getLogger(SoapClientConnectionProvider.class);
 
@@ -184,7 +187,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
 
   @Override
   public void dispose() {
-    client.stop();
+    // Do nothing
   }
 
   @Override
@@ -192,6 +195,15 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
     client = httpService.getClientFactory().create(new HttpClientConfiguration.Builder()
         .setName("wsc-dispatcher")
         .build());
+  }
+
+  @Override
+  public void stop() throws MuleException {
+    client.stop();
+  }
+
+  @Override
+  public void start() throws MuleException {
     client.start();
   }
 }
