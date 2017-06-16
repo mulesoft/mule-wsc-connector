@@ -21,10 +21,10 @@ import org.mule.runtime.soap.api.message.dispatcher.HttpConfigBasedMessageDispat
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {
 
   @Parameter
-  private String configRef;
+  private String requesterConfig;
 
   @Override
   public MessageDispatcher buildDispatcher(ExtensionsClient client) {
-    return new HttpConfigBasedMessageDispatcher(configRef, client);
+    return new HttpConfigBasedMessageDispatcher(requesterConfig, client);
   }
 }
