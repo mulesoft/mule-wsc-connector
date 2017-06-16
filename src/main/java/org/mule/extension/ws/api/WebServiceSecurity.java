@@ -6,7 +6,14 @@
  */
 package org.mule.extension.ws.api;
 
-import org.mule.extension.ws.internal.security.*;
+import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
+import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
+import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
+import org.mule.extension.ws.internal.security.WssSignSecurityStrategy;
+import org.mule.extension.ws.internal.security.WssTimestampSecurityStrategy;
+import org.mule.extension.ws.internal.security.WssUsernameTokenSecurityStrategy;
+import org.mule.extension.ws.internal.security.WssVerifySignatureSecurityStrategy;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
@@ -17,6 +24,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.collection.Collectors.toImmutableList;
 
 /**
@@ -32,6 +40,7 @@ public class WebServiceSecurity {
    * a sign WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssSignSecurityStrategy signSecurityStrategy;
@@ -40,6 +49,7 @@ public class WebServiceSecurity {
    * a verify signature WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssVerifySignatureSecurityStrategy verifySignatureSecurityStrategy;
@@ -48,6 +58,7 @@ public class WebServiceSecurity {
    * a usernameToken WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssUsernameTokenSecurityStrategy usernameTokenSecurityStrategy;
@@ -56,6 +67,7 @@ public class WebServiceSecurity {
    * a timestamp WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssTimestampSecurityStrategy timestampSecurityStrategy;
@@ -64,6 +76,7 @@ public class WebServiceSecurity {
    * a decrypt WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssDecryptSecurityStrategy decryptSecurityStrategy;
@@ -72,6 +85,7 @@ public class WebServiceSecurity {
    * an encrypt WSS configuration
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
   private WssEncryptSecurityStrategy encryptSecurityStrategy;
