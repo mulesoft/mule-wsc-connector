@@ -10,7 +10,7 @@
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
             <wsc:custom-transport-configuration>
-                <wsc:http-transport-configuration configRef="simple-requester"/>
+                <wsc:http-transport-configuration requesterConfig="simple-requester"/>
             </wsc:custom-transport-configuration>
         </wsc:connection>
     </wsc:config>
