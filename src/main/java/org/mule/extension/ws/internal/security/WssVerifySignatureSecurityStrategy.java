@@ -8,11 +8,14 @@ package org.mule.extension.ws.internal.security;
 
 
 import org.mule.extension.ws.internal.security.config.WssTrustStoreConfigurationAdapter;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
 import org.mule.runtime.extension.api.soap.security.VerifySignatureSecurityStrategy;
 import org.mule.runtime.extension.api.soap.security.config.WssTrustStoreConfiguration;
+
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 
 /**
@@ -27,6 +30,7 @@ public class WssVerifySignatureSecurityStrategy implements SecurityStrategyAdapt
    */
   @Parameter
   @Optional
+  @Expression(NOT_SUPPORTED)
   private WssTrustStoreConfigurationAdapter trustStoreConfiguration;
 
   @Override

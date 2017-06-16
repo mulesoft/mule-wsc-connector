@@ -7,10 +7,13 @@
 package org.mule.extension.ws.internal.security;
 
 import org.mule.extension.ws.internal.security.config.WssKeyStoreConfigurationAdapter;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.soap.security.DecryptSecurityStrategy;
 import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
 import org.mule.runtime.extension.api.soap.security.config.WssKeyStoreConfiguration;
+
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * Decrypts an encrypted SOAP response, using the private key of the key-store in the provided TLS context.
@@ -23,6 +26,7 @@ public class WssDecryptSecurityStrategy implements SecurityStrategyAdapter {
    * The keystore to use when decrypting the message.
    */
   @Parameter
+  @Expression(NOT_SUPPORTED)
   private WssKeyStoreConfigurationAdapter keyStoreConfiguration;
 
   @Override
