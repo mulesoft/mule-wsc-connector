@@ -23,10 +23,10 @@
         <guavaVersion>18.0</guavaVersion>
         <cxfVersion>3.0.13</cxfVersion>
         <jettyVersion>9.0.7.v20131107</jettyVersion>
-        <muleVersion>4.0.0-SNAPSHOT</muleVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
-        <httpConnectorVersion>1.0.0-SNAPSHOT</httpConnectorVersion>
+        
+        <muleHttpConnectorVersion>1.0.0-SNAPSHOT</muleHttpConnectorVersion>
     </properties>
 
     <dependencies>
@@ -34,13 +34,13 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-soap-api</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
 
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-module-service</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -72,7 +72,7 @@
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-http-connector</artifactId>
-            <version>${httpConnectorVersion}</version>
+            <version>${muleHttpConnectorVersion}</version>
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
@@ -100,7 +100,7 @@
         <dependency>
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
-            <version>${muleVersion}</version>
+            <version>${mule.version}</version>
             <scope>test</scope>
         </dependency>
 
