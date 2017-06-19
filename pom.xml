@@ -20,12 +20,11 @@
 
     <properties>
         <commonsLangVersion>3.6</commonsLangVersion>
-        <cxfVersion>2.7.18</cxfVersion>
         <guavaVersion>18.0</guavaVersion>
+        <cxfVersion>3.0.13</cxfVersion>
         <jettyVersion>9.0.7.v20131107</jettyVersion>
         <muleVersion>4.0.0-SNAPSHOT</muleVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
-
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <httpConnectorVersion>1.0.0-SNAPSHOT</httpConnectorVersion>
     </properties>
@@ -34,7 +33,7 @@
         <!-- Runtime Dependencies-->
         <dependency>
             <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-core</artifactId>
+            <artifactId>cxf-core</artifactId>
             <version>${cxfVersion}</version>
             <exclusions>
                 <!-- We use the one bundled with the JDK -->
@@ -177,12 +176,6 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-ws-security</artifactId>
-            <version>${cxfVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-api</artifactId>
             <version>${cxfVersion}</version>
             <scope>test</scope>
         </dependency>
