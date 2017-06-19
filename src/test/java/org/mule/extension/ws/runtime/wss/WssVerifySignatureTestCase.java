@@ -16,8 +16,8 @@ import java.util.Properties;
 
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-import org.apache.ws.security.components.crypto.Merlin;
 
+import org.apache.wss4j.common.crypto.Merlin;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
 
