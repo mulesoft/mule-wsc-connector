@@ -6,7 +6,9 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import org.apache.log4j.Logger;
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -21,6 +23,7 @@ import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
@@ -33,12 +36,9 @@ import org.mule.runtime.soap.api.client.SoapClient;
 import org.mule.runtime.soap.api.client.SoapClientConfiguration;
 import org.mule.runtime.soap.api.client.SoapClientConfigurationBuilder;
 import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
-
+import org.apache.log4j.Logger;
 import javax.inject.Inject;
 import java.net.URL;
-
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -125,6 +125,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Parameter
   @Optional
   @Expression(NOT_SUPPORTED)
+  @DisplayName("Transport Configuration")
   private CustomTransportConfiguration customTransportConfiguration;
 
   /**
