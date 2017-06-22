@@ -21,7 +21,7 @@ import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.api.message.MultiPartPayload;
 import org.mule.runtime.api.metadata.DataType;
-import org.mule.runtime.core.message.PartAttributes;
+import org.mule.runtime.core.api.message.PartAttributes;
 import org.mule.tck.junit4.rule.SystemProperty;
 
 import java.io.IOException;
