@@ -20,7 +20,7 @@ import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.core.exception.MessagingException;
+import org.mule.runtime.core.api.exception.MessagingException;
 
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.eclipse.jetty.security.ConstraintMapping;

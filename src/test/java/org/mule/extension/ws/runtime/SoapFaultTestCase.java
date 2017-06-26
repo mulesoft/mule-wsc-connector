@@ -19,7 +19,7 @@ import static org.junit.Assert.assertThat;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.exception.MessagingException;
+import org.mule.runtime.core.api.exception.MessagingException;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
 import org.mule.tck.junit4.matcher.ErrorTypeMatcher;
