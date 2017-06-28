@@ -11,7 +11,7 @@
     http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <wsc:config name="sign">
-        <wsc:connection wsdlLocation="http://localhost:${servicePort}/sign?wsdl" service="TestService" port="TestPort">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>

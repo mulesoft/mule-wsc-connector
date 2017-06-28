@@ -6,9 +6,9 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.assertSoapResponse;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
+
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 
@@ -22,9 +22,9 @@ public class SimpleHttpConfigTestCase extends AbstractSoapServiceTestCase {
 
   @Test
   public void simpleConfigNoAuthentication() throws Exception {
-    Message message = runFlowWithRequest("simpleRequesterConfig", ECHO);
+    Message message = runFlowWithRequest("simpleRequesterConfig", testValues.getEchoResquest());
     String out = (String) message.getPayload().getValue();
-    assertSoapResponse(ECHO, out);
+    assertSimilarXml(testValues.getEchoResponse(), out);
   }
 
   @Override

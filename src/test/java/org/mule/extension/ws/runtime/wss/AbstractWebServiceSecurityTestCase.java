@@ -7,17 +7,14 @@
 package org.mule.extension.ws.runtime.wss;
 
 import static java.lang.String.format;
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.assertSoapResponse;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
+
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
-
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 
 public abstract class AbstractWebServiceSecurityTestCase extends AbstractSoapServiceTestCase {
-
-  private final String WSS_CONFIG_FILE_MASK = "config/wss/%s.xml";
 
   private final String security;
 
@@ -27,18 +24,14 @@ public abstract class AbstractWebServiceSecurityTestCase extends AbstractSoapSer
 
   @Override
   protected String getConfigurationFile() {
-    return format(WSS_CONFIG_FILE_MASK, security);
-  }
-
-  protected String getTestName() {
-    return security;
+    return format("config/wss/%s.xml", security);
   }
 
   @Test
   @Description("Consumes a simple operation of a secured web service and expects a valid response")
   public void expectedSecuredRequest() throws Exception {
-    Message message = runFlowWithRequest(security + "Flow", ECHO);
+    Message message = runFlowWithRequest(security + "Flow", testValues.getEchoResquest());
     String out = (String) message.getPayload().getValue();
-    assertSoapResponse(ECHO, out);
+    assertSimilarXml(testValues.getEchoResponse(), out);
   }
 }

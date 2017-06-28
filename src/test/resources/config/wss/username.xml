@@ -10,7 +10,7 @@
     http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <wsc:config name="username">
-        <wsc:connection wsdlLocation="http://localhost:${servicePort}/username?wsdl" service="TestService" port="TestPort">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort">
             <wsc:web-service-security>
                 <wsc:username-token-security-strategy username="admin" password="textPassword" addCreated="true" addNonce="true"/>
             </wsc:web-service-security>

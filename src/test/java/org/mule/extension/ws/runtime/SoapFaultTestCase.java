@@ -6,16 +6,14 @@
  */
 package org.mule.extension.ws.runtime;
 
-import static org.mule.extension.ws.WscTestUtils.FAIL;
-import static org.mule.extension.ws.WscTestUtils.getRequestResource;
-import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
-import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
+import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
@@ -23,7 +21,6 @@ import org.mule.runtime.core.api.exception.MessagingException;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
 import org.mule.tck.junit4.matcher.ErrorTypeMatcher;
-
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -48,7 +45,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that throws a SOAP Fault and expects a Soap Fault Exception")
   public void failOperation() throws Exception {
-    MessagingException me = flowRunner(FAIL_FLOW).withPayload(getRequestResource(FAIL)).runExpectingException();
+    MessagingException me = flowRunner(FAIL_FLOW).withPayload(testValues.getFailRequest()).runExpectingException();
     Error error = me.getEvent().getError().get();
 
     assertThat(error.getErrorType(), is(errorType("WSC", SOAP_FAULT)));

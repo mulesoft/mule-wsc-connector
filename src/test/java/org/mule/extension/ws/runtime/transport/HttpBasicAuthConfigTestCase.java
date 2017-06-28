@@ -6,99 +6,68 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
-import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
-import static org.eclipse.jetty.util.security.Constraint.__BASIC_AUTH;
-import static org.eclipse.jetty.util.security.Credential.getCredential;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.assertSoapResponse;
-import static org.mule.extension.ws.WscTestUtils.getRequestResource;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
+
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.core.api.exception.MessagingException;
-
-import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
-import org.eclipse.jetty.security.ConstraintMapping;
-import org.eclipse.jetty.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.security.HashLoginService;
-import org.eclipse.jetty.security.SecurityHandler;
-import org.eclipse.jetty.security.authentication.BasicAuthenticator;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-import org.eclipse.jetty.util.security.Constraint;
+import org.mule.service.soap.server.BasicAuthHttpServer;
+import org.mule.service.soap.server.HttpServer;
+import org.mule.tck.junit4.rule.SystemProperty;
+import org.mule.tck.util.TestConnectivityUtils;
+import org.junit.Rule;
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
-
 import java.util.Optional;
 
 @Features(WSC_EXTENSION)
 @Stories({"Operation Execution", "Custom Transport", "Http"})
 public class HttpBasicAuthConfigTestCase extends AbstractSoapServiceTestCase {
 
+  @Rule
+  public SystemProperty rule = TestConnectivityUtils.disableAutomaticTestConnectivity();
+
   @Test
-  public void httpBasicAuthConfiguration() throws Exception {
-    Message message = runFlowWithRequest("basicAuthRequester", ECHO);
+  public void requestWithHttpBasicAuthConfiguration() throws Exception {
+    Message message = runFlowWithRequest("basicAuthRequester", testValues.getEchoResquest());
     String out = (String) message.getPayload().getValue();
-    assertSoapResponse(ECHO, out);
+    assertSimilarXml(testValues.getEchoResponse(), out);
   }
 
   @Test
-  public void unauthorizedConfiguration() throws Exception {
-    MessagingException exc = flowRunner("unauthorizedRequester").withPayload(getRequestResource(ECHO)).runExpectingException();
-    Optional<Error> error = exc.getEvent().getError();
+  public void requestWithUnauthorizedConfiguration() throws Exception {
+    assertUnauthorizedError(flowRunner("unauthorizedRequest").withPayload(testValues.getEchoResquest()).runExpectingException());
+  }
+
+  @Test
+  public void authorizedRemoteProtectedWsdl() throws Exception {
+    Message message = runFlowWithRequest("authorizedRemoteProtectedWsdl", testValues.getEchoResquest());
+    String out = (String) message.getPayload().getValue();
+    assertSimilarXml(testValues.getEchoResponse(), out);
+  }
+
+  @Test
+  public void unauthorizedRemoteProtectedWsdl() throws Exception {
+    assertUnauthorizedError(flowRunner("unauthorizedRemoteProtectedWsdl").runExpectingException());
+  }
+
+  private void assertUnauthorizedError(MessagingException e) {
+    Optional<Error> error = e.getEvent().getError();
     assertThat(error.isPresent(), is(true));
     assertThat(error.get().getErrorType(), errorType("HTTP", "UNAUTHORIZED"));
     assertThat(error.get().getDescription(), containsString("failed: unauthorized (401)"));
   }
 
   @Override
-  protected void createWebService() throws Exception {
-    try {
-      httpServer = new Server(servicePort.getNumber());
-      CXFNonSpringServlet cxf = new CXFNonSpringServlet();
-      ServletHolder servlet = new ServletHolder(cxf);
-      servlet.setName("server");
-      servlet.setForcedPath("/");
-      ServletContextHandler context = new ServletContextHandler(SESSIONS);
-      context.setSecurityHandler(getBasicAuth());
-      context.setContextPath("/");
-      context.addServlet(servlet, "/*");
-      httpServer.setHandler(context);
-      httpServer.start();
-      initService(cxf);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  // User = juani - Password = changeIt - Realm = private
-  private SecurityHandler getBasicAuth() {
-    HashLoginService l = new HashLoginService();
-    l.putUser("juani", getCredential("changeIt"), new String[] {"user"});
-    l.setName("private");
-
-    Constraint constraint = new Constraint();
-    constraint.setName(__BASIC_AUTH);
-    constraint.setRoles(new String[] {"user"});
-    constraint.setAuthenticate(true);
-
-    ConstraintMapping cm = new ConstraintMapping();
-    cm.setConstraint(constraint);
-    cm.setPathSpec("/*");
-
-    ConstraintSecurityHandler csh = new ConstraintSecurityHandler();
-    csh.setAuthenticator(new BasicAuthenticator());
-    csh.setRealmName("testRealm");
-    csh.addConstraintMapping(cm);
-    csh.setLoginService(l);
-    return csh;
+  protected HttpServer getServer() throws Exception {
+    return new BasicAuthHttpServer(port.getNumber(), buildInInterceptor(), buildOutInterceptor(), getServiceClass());
   }
 
   @Override

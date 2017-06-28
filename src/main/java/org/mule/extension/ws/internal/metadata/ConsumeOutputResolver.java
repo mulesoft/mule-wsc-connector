@@ -12,8 +12,8 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
+import org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder;
 import org.mule.runtime.soap.api.client.metadata.SoapOperationMetadata;
-import org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder;
 
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
@@ -21,8 +21,6 @@ import org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder;
  * @since 1.0
  */
 public class ConsumeOutputResolver extends BaseWscResolver implements OutputTypeResolver<String> {
-
-  private final SoapOutputTypeBuilder outputTypeBuilder = new SoapOutputTypeBuilder();
 
   @Override
   public String getResolverName() {
@@ -36,6 +34,6 @@ public class ConsumeOutputResolver extends BaseWscResolver implements OutputType
   public MetadataType getOutputType(MetadataContext context, String operationName)
       throws MetadataResolvingException, ConnectionException {
     SoapOperationMetadata metadata = getMetadataResolver(context).getOutputMetadata(operationName);
-    return outputTypeBuilder.build(metadata, context.getTypeBuilder());
+    return SoapOutputTypeBuilder.buildOutputType(metadata.getBodyType(), metadata.getAttachmentsType(), context.getTypeBuilder());
   }
 }

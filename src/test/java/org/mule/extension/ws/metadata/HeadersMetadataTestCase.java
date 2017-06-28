@@ -10,11 +10,11 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.WscTestUtils.ECHO_ACCOUNT;
-import static org.mule.extension.ws.WscTestUtils.ECHO_HEADERS;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.BODY_FIELD;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
+
 import org.mule.metadata.api.annotation.TypeIdAnnotation;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
@@ -22,17 +22,13 @@ import org.mule.metadata.api.model.ObjectFieldType;
 import org.mule.metadata.api.model.ObjectType;
 import org.mule.metadata.api.model.StringType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
-import org.mule.runtime.api.meta.model.parameter.ParameterModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-
-import java.util.Collection;
-import java.util.List;
-
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
+import java.util.Collection;
 
 @Features(WSC_EXTENSION)
 @Stories("Metadata")
@@ -71,7 +67,6 @@ public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
                is("{urn:com.workday/bsvc}Workday_Common_Header"));
 
   }
-
 
   private MetadataType getHeaders(String flow, String key) {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result = getMetadata(flow, key);

@@ -6,22 +6,21 @@
  */
 package org.mule.extension.ws.runtime;
 
-import org.junit.Test;
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
-import org.mule.runtime.api.connection.ConnectionException;
-import org.mule.runtime.api.message.Message;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
-
-import java.net.URL;
-
 import static java.lang.Thread.currentThread;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.WscTestUtils.*;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
+
+import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.api.message.Message;
+import org.junit.Test;
+import ru.yandex.qatools.allure.annotations.Description;
+import ru.yandex.qatools.allure.annotations.Features;
+import ru.yandex.qatools.allure.annotations.Stories;
+import java.net.URL;
 
 @Features(WSC_EXTENSION)
 @Stories("Connection")
@@ -48,9 +47,9 @@ public class WscConnectionTestCase extends AbstractSoapServiceTestCase {
   @Description("Consumes an operation using a connection that uses a local .wsdl file")
   public void localWsdlConnection() throws Exception {
     Message msg = flowRunner(LOCAL_WSDL_FLOW)
-        .withVariable("req", getRequestResource(ECHO))
+        .withVariable("req", testValues.getEchoResquest())
         .run().getMessage();
     String out = (String) msg.getPayload().getValue();
-    assertSoapResponse(ECHO, out);
+    assertSimilarXml(testValues.getEchoResponse(), out);
   }
 }
