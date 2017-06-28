@@ -24,7 +24,6 @@ import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
 import org.mule.tck.junit4.rule.SystemProperty;
-import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
@@ -75,17 +74,7 @@ public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
     assertThat(parts, hasSize(2));
     Message bodyPart = parts.get(0);
     Message attachmentPart = parts.get(1);
-
     assertDownloadedAttachment(attachmentPart);
-    assertDownloadedAttachmentBody(bodyPart, attachmentPart);
-  }
-
-  @Step("Checks that the response body is correct and references the correct attachment")
-  private void assertDownloadedAttachmentBody(Message bodyPart, Message attachmentPart) throws Exception {
-    // We need to format the expected response with the content id of the attachment.
-    //    String name = ((PartAttributes) attachmentPart.getAttributes().getValue()).getName();
-    String result = IOUtils.toString((InputStream) bodyPart.getPayload().getValue());
-    assertSimilarXml(testValues.getDownloadAttachmentResponse(), result);
   }
 
   @Step("Checks that the content of the downloaded attachment is correct")
