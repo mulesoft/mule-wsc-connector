@@ -6,21 +6,21 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.mule.extension.ws.WscTestUtils.DOWNLOAD_ATTACHMENT;
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.ECHO_ACCOUNT;
-import static org.mule.extension.ws.WscTestUtils.ECHO_HEADERS;
-import static org.mule.extension.ws.WscTestUtils.HEADER_INOUT;
-import static org.mule.extension.ws.WscTestUtils.HEADER_OUT;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.BODY_FIELD;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
+import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.BODY_FIELD;
+import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
+import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
+import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
 
 import org.mule.metadata.api.model.ArrayType;
 import org.mule.metadata.api.model.MetadataType;
@@ -31,15 +31,13 @@ import org.mule.metadata.api.model.StringType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Optional;
-
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
 
 @Features(WSC_EXTENSION)
 @Stories("Metadata")

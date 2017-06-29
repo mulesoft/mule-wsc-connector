@@ -8,6 +8,7 @@ package org.mule.extension.ws.api.message;
 
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
+import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 
 /**
  * Contract for objects that enables the use of a custom transport executing operations of other plugins by
@@ -24,4 +25,12 @@ public interface CustomTransportConfiguration {
    * @return a new {@link MessageDispatcher}.
    */
   MessageDispatcher buildDispatcher(ExtensionsClient client);
+
+  /**
+   * Builds a new {@link TransportResourceLocator} using the {@link ExtensionsClient}.
+   *
+   * @param client the extensions client.
+   * @return a new {@link TransportResourceLocator} instance.
+   */
+  TransportResourceLocator resourceLocator(ExtensionsClient client);
 }

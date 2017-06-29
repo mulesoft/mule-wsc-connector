@@ -6,7 +6,7 @@
           http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
           http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
-    <wsc:config name="wsc-config">
+    <wsc:config name="authorized-local-wsdl">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
             <wsc:custom-transport-configuration>
@@ -15,8 +15,26 @@
         </wsc:connection>
     </wsc:config>
 
-    <wsc:config name="wsc-fail-config">
+    <wsc:config name="unauthorized-local-wsdl">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="authorized-remote-wsdl">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="unauthorized-remote-wsdl">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
@@ -41,7 +59,7 @@
     </http:request-config>
 
     <flow name="basicAuthRequester">
-        <wsc:consume config-ref="wsc-config" operation="echo">
+        <wsc:consume config-ref="authorized-local-wsdl" operation="echo">
             <wsc:message>
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>
@@ -49,8 +67,26 @@
         <object-to-string-transformer/>
     </flow>
 
-    <flow name="unauthorizedRequester">
-        <wsc:consume config-ref="wsc-fail-config" operation="echo">
+    <flow name="unauthorizedRequest">
+        <wsc:consume config-ref="unauthorized-local-wsdl" operation="echo">
+            <wsc:message>
+                <wsc:body>#[payload]</wsc:body>
+            </wsc:message>
+        </wsc:consume>
+        <object-to-string-transformer/>
+    </flow>
+
+    <flow name="authorizedRemoteProtectedWsdl">
+        <wsc:consume config-ref="authorized-remote-wsdl" operation="echo">
+            <wsc:message>
+                <wsc:body>#[payload]</wsc:body>
+            </wsc:message>
+        </wsc:consume>
+        <object-to-string-transformer/>
+    </flow>
+
+    <flow name="unauthorizedRemoteProtectedWsdl">
+        <wsc:consume config-ref="unauthorized-remote-wsdl" operation="echo">
             <wsc:message>
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>

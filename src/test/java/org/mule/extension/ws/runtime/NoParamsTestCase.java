@@ -6,13 +6,11 @@
  */
 package org.mule.extension.ws.runtime;
 
-import static org.mule.extension.ws.WscTestUtils.NO_PARAMS;
-import static org.mule.extension.ws.WscTestUtils.assertSoapResponse;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
-
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
@@ -32,9 +30,9 @@ public class NoParamsTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that expects no parameters and returns a simple type")
   public void noParamsOperation() throws Exception {
-    Message message = runFlowWithRequest(NO_PARAMS_FLOW, NO_PARAMS);
+    Message message = runFlowWithRequest(NO_PARAMS_FLOW, testValues.getNoParamsRequest());
     String payload = (String) message.getPayload().getValue();
-    assertSoapResponse(NO_PARAMS, payload);
+    assertSimilarXml(testValues.getNoParamsResponse(), payload);
   }
 
   @Test
@@ -42,6 +40,6 @@ public class NoParamsTestCase extends AbstractSoapServiceTestCase {
   public void noParamsOperationNoPayload() throws Exception {
     Message message = flowRunner(NO_PARAMS_FLOW).run().getMessage();
     String payload = (String) message.getPayload().getValue();
-    assertSoapResponse(NO_PARAMS, payload);
+    assertSimilarXml(testValues.getNoParamsResponse(), payload);
   }
 }

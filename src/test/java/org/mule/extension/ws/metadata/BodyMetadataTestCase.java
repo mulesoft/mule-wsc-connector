@@ -10,11 +10,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.WscTestUtils.ECHO;
-import static org.mule.extension.ws.WscTestUtils.ECHO_ACCOUNT;
-import static org.mule.extension.ws.WscTestUtils.NO_PARAMS;
-import static org.mule.runtime.soap.internal.metadata.SoapOutputTypeBuilder.BODY_FIELD;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.BODY_FIELD;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO;
+import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.service.soap.SoapTestXmlValues.NO_PARAMS;
+
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectFieldType;
 import org.mule.metadata.api.model.ObjectType;
@@ -22,14 +23,12 @@ import org.mule.metadata.api.model.StringType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-
-import java.util.Collection;
-import java.util.Iterator;
-
 import org.junit.Test;
 import ru.yandex.qatools.allure.annotations.Description;
 import ru.yandex.qatools.allure.annotations.Features;
 import ru.yandex.qatools.allure.annotations.Stories;
+import java.util.Collection;
+import java.util.Iterator;
 
 @Features(WSC_EXTENSION)
 @Stories("Metadata")

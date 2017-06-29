@@ -8,40 +8,34 @@ package org.mule.extension.ws;
 
 import static java.lang.Thread.currentThread;
 import static java.util.Arrays.asList;
-import static org.mule.extension.ws.WscTestUtils.HEADER_IN;
-import static org.mule.extension.ws.WscTestUtils.HEADER_INOUT;
-import static org.mule.extension.ws.WscTestUtils.getRequestResource;
 import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
 import static org.mule.runtime.soap.api.SoapVersion.SOAP12;
+import static org.mule.service.soap.SoapTestXmlValues.HEADER_IN;
+import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
+
 import org.mule.extension.ws.service.Soap11Service;
 import org.mule.extension.ws.service.Soap12Service;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.soap.api.SoapVersion;
+import org.mule.service.soap.SoapTestXmlValues;
+import org.mule.service.soap.server.HttpServer;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.test.runner.RunnerDelegateTo;
-
-import org.apache.cxf.Bus;
-import org.apache.cxf.BusFactory;
 import org.apache.cxf.interceptor.Interceptor;
-import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.custommonkey.xmlunit.XMLUnit;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
 import org.junit.Rule;
 import org.junit.runners.Parameterized;
-
 import java.util.Collection;
-
-import javax.xml.ws.Endpoint;
 
 @RunnerDelegateTo(Parameterized.class)
 public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctionalTestCase {
 
+  public final SoapTestXmlValues testValues = new SoapTestXmlValues("http://service.ws.extension.mule.org/");
+
   @Rule
-  public DynamicPort servicePort = new DynamicPort("servicePort");
+  public DynamicPort port = new DynamicPort("servicePort");
 
   @Rule
   public SystemProperty humanWsdlPath;
@@ -50,15 +44,15 @@ public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctional
   public SoapVersion soapVersion;
 
   @Parameterized.Parameter(1)
-  public String serviceClass;
+  public Object serviceClass;
 
-  protected Server httpServer;
+  protected HttpServer httpServer;
 
   @Parameterized.Parameters(name = "{0}")
   public static Collection<Object[]> data() {
     return asList(new Object[][] {
-        {SOAP11, Soap11Service.class.getName()},
-        {SOAP12, Soap12Service.class.getName()}
+        {SOAP11, new Soap11Service()},
+        {SOAP12, new Soap12Service()}
     });
   }
 
@@ -70,59 +64,30 @@ public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctional
   @Override
   protected void doSetUpBeforeMuleContextCreation() throws Exception {
     super.doSetUpBeforeMuleContextCreation();
-
     System.setProperty("humanWsdl", currentThread().getContextClassLoader().getResource("wsdl/human.wsdl").getPath());
     System.setProperty("soapVersion", soapVersion.toString());
-    System.setProperty("serviceClass", getServiceClass());
+    System.setProperty("serviceClass", getServiceClass().getClass().getName());
     XMLUnit.setIgnoreWhitespace(true);
-
-    createWebService();
+    httpServer = getServer();
   }
 
-  protected Message runFlowWithRequest(String flowName, String requestXmlResourceName) throws Exception {
+  protected HttpServer getServer() throws Exception {
+    return new HttpServer(port.getNumber(), buildInInterceptor(), buildOutInterceptor(), getServiceClass());
+  }
+
+  protected Message runFlowWithRequest(String flowName, String request) throws Exception {
     return flowRunner(flowName)
-        .withPayload(getRequestResource(requestXmlResourceName))
-        .withVariable(HEADER_IN, getRequestResource(HEADER_IN))
-        .withVariable(HEADER_INOUT, getRequestResource(HEADER_INOUT))
+        .withPayload(request)
+        .withVariable(HEADER_IN, testValues.getHeaderIn())
+        .withVariable(HEADER_INOUT, testValues.getHeaderInOutRequest())
         .run()
         .getMessage();
   }
 
   protected abstract String getConfigurationFile();
 
-  protected String getServiceClass() {
+  protected Object getServiceClass() {
     return serviceClass;
-  }
-
-  protected void createWebService() throws Exception {
-    try {
-      httpServer = new Server(servicePort.getNumber());
-      ServletHandler servletHandler = new ServletHandler();
-      httpServer.setHandler(servletHandler);
-      CXFNonSpringServlet cxf = new CXFNonSpringServlet();
-      ServletHolder servlet = new ServletHolder(cxf);
-      servlet.setName("server");
-      servlet.setForcedPath("/");
-      servletHandler.addServletWithMapping(servlet, "/*");
-      httpServer.start();
-      initService(cxf);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  protected void initService(CXFNonSpringServlet cxf) throws Exception {
-    Bus bus = cxf.getBus();
-    Interceptor inInterceptor = buildInInterceptor();
-    if (inInterceptor != null) {
-      bus.getInInterceptors().add(inInterceptor);
-    }
-    Interceptor outInterceptor = buildOutInterceptor();
-    if (outInterceptor != null) {
-      bus.getOutInterceptors().add(outInterceptor);
-    }
-    BusFactory.setDefaultBus(bus);
-    Endpoint.publish("/" + getTestName(), createServiceInstance());
   }
 
   protected Interceptor buildInInterceptor() {
@@ -133,23 +98,8 @@ public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctional
     return null;
   }
 
-  private Object createServiceInstance() throws Exception {
-    Class<?> serviceClass = this.getClass().getClassLoader().loadClass(getServiceClass());
-    return serviceClass.newInstance();
-  }
-
   @Override
   protected void doTearDownAfterMuleContextDispose() throws Exception {
-    if (httpServer != null) {
-      httpServer.stop();
-      httpServer.destroy();
-    }
-
-    super.doTearDownAfterMuleContextDispose();
+    httpServer.stop();
   }
-
-  protected String getTestName() {
-    return "server";
-  }
-
 }

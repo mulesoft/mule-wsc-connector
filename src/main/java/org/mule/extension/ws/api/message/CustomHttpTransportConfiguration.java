@@ -11,6 +11,8 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
 import org.mule.runtime.soap.api.message.dispatcher.HttpConfigBasedMessageDispatcher;
+import org.mule.runtime.soap.api.transport.HttpResourceLocator;
+import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 
 /**
  * {@link CustomTransportConfiguration} implementation that builds a {@link HttpConfigBasedMessageDispatcher}.
@@ -26,5 +28,10 @@ public class CustomHttpTransportConfiguration implements CustomTransportConfigur
   @Override
   public MessageDispatcher buildDispatcher(ExtensionsClient client) {
     return new HttpConfigBasedMessageDispatcher(requesterConfig, client);
+  }
+
+  @Override
+  public TransportResourceLocator resourceLocator(ExtensionsClient client) {
+    return new HttpResourceLocator(requesterConfig, client);
   }
 }
