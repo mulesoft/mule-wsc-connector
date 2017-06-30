@@ -10,6 +10,7 @@ import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Password;
+import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration;
 
@@ -23,6 +24,7 @@ public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration 
 
   @Parameter
   @Summary("The location of the TrustStore file")
+  @Path
   private String trustStorePath;
 
   @Parameter

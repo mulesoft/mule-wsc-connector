@@ -25,6 +25,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
+import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
@@ -68,6 +69,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Placement(order = 1)
   @Parameter
   @Example("http://www.somehost.com/location?wsdl")
+  @Path(acceptedFileExtensions = "wsdl", acceptsUrls = true)
   private String wsdlLocation;
 
   /**
