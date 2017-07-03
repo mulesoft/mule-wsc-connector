@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.internal.security.config;
 
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -39,7 +41,7 @@ public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
 
   @Parameter
   @Summary("The location of the KeyStore file")
-  @Path
+  @Path(type = FILE)
   private String keyStorePath;
 
   @Parameter
