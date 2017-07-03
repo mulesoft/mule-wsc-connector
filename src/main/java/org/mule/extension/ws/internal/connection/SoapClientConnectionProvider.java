@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal.connection;
 
 import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
@@ -25,6 +26,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
+import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
@@ -68,6 +70,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Placement(order = 1)
   @Parameter
   @Example("http://www.somehost.com/location?wsdl")
+  @Path(type = FILE, acceptedFileExtensions = "wsdl", acceptsUrls = true)
   private String wsdlLocation;
 
   /**
