@@ -16,7 +16,7 @@ import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.TypedValue;
-import org.mule.runtime.core.api.TransformationService;
+import org.mule.runtime.api.transformation.TransformationService;
 import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
@@ -62,8 +62,8 @@ public class ConsumeOperation {
    * Consumes an operation from a SOAP Web Service.
    *
    * @param connection the connection resolved to execute the operation.
-   * @param operation  the name of the web service operation that aims to invoke.
-   * @param message    the constructed SOAP message to perform the request.
+   * @param operation the name of the web service operation that aims to invoke.
+   * @param message the constructed SOAP message to perform the request.
    */
   @OnException(WscExceptionEnricher.class)
   @Throws(ConsumeErrorTypeProvider.class)
