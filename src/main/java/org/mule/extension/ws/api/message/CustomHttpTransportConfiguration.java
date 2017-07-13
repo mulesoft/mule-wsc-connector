@@ -7,6 +7,7 @@
 package org.mule.extension.ws.api.message;
 
 import org.mule.runtime.extension.api.annotation.Alias;
+import org.mule.runtime.extension.api.annotation.ConfigReference;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
@@ -22,6 +23,7 @@ import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 @Alias("http-transport-configuration")
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {
 
+  @ConfigReference(namespace = "http", name = "requester-config")
   @Parameter
   private String requesterConfig;
 
