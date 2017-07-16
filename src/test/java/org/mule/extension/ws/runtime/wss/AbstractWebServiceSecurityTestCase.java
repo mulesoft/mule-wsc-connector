@@ -12,7 +12,7 @@ import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Description;
+import io.qameta.allure.Description;
 
 public abstract class AbstractWebServiceSecurityTestCase extends AbstractSoapServiceTestCase {
 

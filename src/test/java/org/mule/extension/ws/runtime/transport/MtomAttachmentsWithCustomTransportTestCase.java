@@ -7,13 +7,15 @@
 package org.mule.extension.ws.runtime.transport;
 
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+
+import io.qameta.allure.Stories;
 import org.mule.extension.ws.runtime.MtomAttachmentsTestCase;
 
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 
-@Features(WSC_EXTENSION)
-@Stories({"Attachments", "MTOM"})
+@Feature(WSC_EXTENSION)
+@Stories({@Story("Attachments"), @Story("MTOM")})
 public class MtomAttachmentsWithCustomTransportTestCase extends MtomAttachmentsTestCase {
 
   @Override

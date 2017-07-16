@@ -25,7 +25,7 @@ import org.mule.runtime.core.internal.metadata.MuleMetadataService;
 import java.util.List;
 
 import org.junit.Before;
-import ru.yandex.qatools.allure.annotations.Step;
+import io.qameta.allure.Step;
 
 public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCase {
 

@@ -12,14 +12,14 @@ import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
 import org.mule.runtime.api.message.Message;
 import org.apache.commons.io.IOUtils;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Features(WSC_EXTENSION)
-@Stories("Attachments")
+@Feature(WSC_EXTENSION)
+@Story("Attachments")
 public class SoapWithAttachmentsTestCase extends AttachmentsTestCase {
 
   public SoapWithAttachmentsTestCase() {

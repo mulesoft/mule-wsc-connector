@@ -11,18 +11,19 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
 
+import io.qameta.allure.Stories;
 import org.mule.extension.ws.service.Mtom11Service;
 import org.mule.extension.ws.service.Mtom12Service;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.core.api.util.IOUtils;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Features(WSC_EXTENSION)
-@Stories({"Attachments", "MTOM"})
+@Feature(WSC_EXTENSION)
+@Stories({@Story("Attachments"), @Story("MTOM")})
 public class MtomAttachmentsTestCase extends AttachmentsTestCase {
 
   public MtomAttachmentsTestCase() {

@@ -25,13 +25,13 @@ import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
 import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import java.util.Collection;
 
-@Features(WSC_EXTENSION)
-@Stories("Metadata")
+@Feature(WSC_EXTENSION)
+@Story("Metadata")
 public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
 
   @Test
