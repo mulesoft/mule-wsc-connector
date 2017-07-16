@@ -9,15 +9,16 @@ package org.mule.extension.ws.runtime.transport;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
+import io.qameta.allure.Stories;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 
 import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 
-@Features(WSC_EXTENSION)
-@Stories({"Operation Execution", "Custom Transport", "Http"})
+@Feature(WSC_EXTENSION)
+@Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
 public class SimpleHttpConfigTestCase extends AbstractSoapServiceTestCase {
 
   @Test

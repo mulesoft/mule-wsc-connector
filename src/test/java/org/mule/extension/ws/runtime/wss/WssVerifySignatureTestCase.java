@@ -18,11 +18,11 @@ import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 
 import org.apache.wss4j.common.crypto.Merlin;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 
-@Features(WSC_EXTENSION)
-@Stories("WSS")
+@Feature(WSC_EXTENSION)
+@Story("WSS")
 public class WssVerifySignatureTestCase extends AbstractWebServiceSecurityTestCase {
 
   private final static String VERIFY_SIGNATURE = "verify";

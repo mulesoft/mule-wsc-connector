@@ -18,13 +18,13 @@ import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.soap.api.message.SoapAttributes;
 import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Description;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import java.util.Map;
 
-@Features(WSC_EXTENSION)
-@Stories("Operation Execution")
+@Feature(WSC_EXTENSION)
+@Story("Operation Execution")
 public class EchoTestCase extends AbstractSoapServiceTestCase {
 
   private static final String ECHO_FLOW = "echoOperation";

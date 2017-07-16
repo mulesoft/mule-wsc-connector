@@ -15,11 +15,11 @@ import java.util.Properties;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 
-@Features(WSC_EXTENSION)
-@Stories("WSS")
+@Feature(WSC_EXTENSION)
+@Story("WSS")
 public class WssSignTestCase extends AbstractWebServiceSecurityTestCase {
 
   private final static String SIGN = "sign";

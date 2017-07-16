@@ -13,6 +13,7 @@ import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
 
+import io.qameta.allure.Stories;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.message.Message;
@@ -23,12 +24,12 @@ import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.tck.util.TestConnectivityUtils;
 import org.junit.Rule;
 import org.junit.Test;
-import ru.yandex.qatools.allure.annotations.Features;
-import ru.yandex.qatools.allure.annotations.Stories;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import java.util.Optional;
 
-@Features(WSC_EXTENSION)
-@Stories({"Operation Execution", "Custom Transport", "Http"})
+@Feature(WSC_EXTENSION)
+@Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
 public class HttpBasicAuthConfigTestCase extends AbstractSoapServiceTestCase {
 
   @Rule
