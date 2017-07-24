@@ -10,13 +10,13 @@
 
 
     <wsc:config name="rpcWsdl">
-        <wsc:connection service="SoapResponder" port="SoapResponderPortType" wsdlLocation="#[wsdl]" soapVersion="${soapVersion}"/>
+        <wsc:connection service="SoapResponder" port="SoapResponderPortType" wsdlLocation="#[vars.wsdl]" soapVersion="${soapVersion}"/>
     </wsc:config>
 
     <flow name="withLocalWsdlConnection">
         <wsc:consume config-ref="local" operation="echo">
             <wsc:message>
-                <wsc:body>#[req]</wsc:body>
+                <wsc:body>#[vars.req]</wsc:body>
             </wsc:message>
         </wsc:consume>
         <object-to-string-transformer/>

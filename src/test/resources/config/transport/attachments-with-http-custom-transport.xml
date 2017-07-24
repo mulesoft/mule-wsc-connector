@@ -33,7 +33,7 @@
             <wsc:message>
                 <wsc:body>#[payload]</wsc:body>
                 <wsc:attachments>
-                    #[{ attachment: attachmentContent}]
+                    #[{ attachment: vars.attachmentContent}]
                 </wsc:attachments>
             </wsc:message>
         </wsc:consume>
