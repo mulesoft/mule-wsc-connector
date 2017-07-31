@@ -81,15 +81,15 @@ public class ConsumeOperation {
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
-    requestBuilder.withAttachments(toSoapAttachments(message.getAttachments()));
-    requestBuilder.withOperation(operation);
-    requestBuilder.withTransportHeaders(transportHeaders);
+    requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
+    requestBuilder.operation(operation);
+    requestBuilder.transportHeaders(transportHeaders);
 
     InputStream headers = message.getHeaders();
     if (headers != null) {
-      requestBuilder.withSoapHeaders((Map<String, String>) evaluateHeaders(headers));
+      requestBuilder.soapHeaders((Map<String, String>) evaluateHeaders(headers));
     }
-    requestBuilder.withContent(message.getBody());
+    requestBuilder.content(message.getBody());
     return requestBuilder;
   }
 
