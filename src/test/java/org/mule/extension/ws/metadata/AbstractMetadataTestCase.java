@@ -20,7 +20,6 @@ import org.mule.runtime.api.meta.model.parameter.ParameterModel;
 import org.mule.runtime.api.metadata.MetadataService;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-import org.mule.runtime.core.internal.metadata.MuleMetadataService;
 
 import java.util.List;
 
@@ -40,7 +39,7 @@ public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCa
 
   @Before
   public void init() throws Exception {
-    service = muleContext.getRegistry().lookupObject(MuleMetadataService.class);
+    service = muleContext.getRegistry().lookupObject(MetadataService.class);
   }
 
   @Override
