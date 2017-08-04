@@ -6,29 +6,16 @@
  */
 package org.mule.extension.ws.runtime;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
-import org.mule.runtime.api.message.Message;
-import org.apache.commons.io.IOUtils;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.io.InputStream;
 
 @Feature(WSC_EXTENSION)
 @Story("Attachments")
 public class SoapWithAttachmentsTestCase extends AttachmentsTestCase {
 
   public SoapWithAttachmentsTestCase() {
-    super(false);
-  }
-
-  @Override
-  protected void assertDownloadedAttachment(Message attachmentPart) throws XMLStreamException, IOException {
-    String expectedAttachmentContent = resourceAsString(ATTACHMENT_NAME);
-    assertThat(IOUtils.toString((InputStream) attachmentPart.getPayload().getValue()), is(expectedAttachmentContent));
+    super(false, "attachment");
   }
 }

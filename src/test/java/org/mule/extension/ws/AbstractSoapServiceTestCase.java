@@ -41,10 +41,10 @@ public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctional
   public SystemProperty humanWsdlPath;
 
   @Parameterized.Parameter
-  public SoapVersion soapVersion;
+  public SoapVersion soapVersion = SOAP11;
 
   @Parameterized.Parameter(1)
-  public Object serviceClass;
+  public Object serviceClass = new Soap11Service();
 
   protected HttpServer httpServer;
 
@@ -80,6 +80,7 @@ public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctional
         .withPayload(request)
         .withVariable(HEADER_IN, testValues.getHeaderIn())
         .withVariable(HEADER_INOUT, testValues.getHeaderInOutRequest())
+        .keepStreamsOpen()
         .run()
         .getMessage();
   }

@@ -31,9 +31,11 @@ public class ConsumeOutputResolver extends BaseWscResolver implements OutputType
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, String operationName)
-      throws MetadataResolvingException, ConnectionException {
-    SoapOperationMetadata metadata = getMetadataResolver(context).getOutputMetadata(operationName);
-    return SoapOutputTypeBuilder.buildOutputType(metadata.getBodyType(), metadata.getAttachmentsType(), context.getTypeBuilder());
+  public MetadataType getOutputType(MetadataContext context, String ope) throws MetadataResolvingException, ConnectionException {
+    SoapOperationMetadata metadata = getMetadataResolver(context).getOutputMetadata(ope);
+    return SoapOutputTypeBuilder.buildOutputType(metadata.getBodyType(),
+                                                 metadata.getHeadersType(),
+                                                 metadata.getAttachmentsType(),
+                                                 context.getTypeBuilder());
   }
 }

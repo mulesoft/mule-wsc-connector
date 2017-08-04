@@ -16,6 +16,8 @@
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>
         </wsc:consume>
+        <set-payload value="#[payload.attachments['${attachmentName}']]"/>
+        <object-to-string-transformer/>
     </flow>
 
     <flow name="uploadAttachment">
@@ -27,6 +29,7 @@
                 </wsc:attachments>
             </wsc:message>
         </wsc:consume>
+        <set-payload value="#[payload.body]"/>
         <object-to-string-transformer/>
     </flow>
 </mule>
