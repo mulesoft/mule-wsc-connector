@@ -6,10 +6,7 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
-
+import org.apache.log4j.Logger;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -28,6 +25,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
 import org.mule.runtime.http.api.HttpService;
@@ -40,9 +38,13 @@ import org.mule.runtime.soap.api.client.SoapClientConfiguration;
 import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
 import org.mule.runtime.soap.api.transport.NullTransportResourceLocator;
 import org.mule.runtime.soap.api.transport.TransportResourceLocator;
-import org.apache.log4j.Logger;
+
 import javax.inject.Inject;
 import java.net.URL;
+
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -73,27 +75,10 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Path(type = FILE, acceptedFileExtensions = "wsdl", acceptsUrls = true)
   private String wsdlLocation;
 
-  /**
-   * The service name.
-   */
-  @Placement(order = 2)
-  @Parameter
-  private String service;
 
-  /**
-   * The port name.
-   */
-  @Placement(order = 3)
-  @Parameter
-  private String port;
-
-  /**
-   * The address of the web service.
-   */
-  @Parameter
-  @Optional
-  @Placement(order = 4)
-  private String address;
+  @ParameterGroup(name = "Connection")
+  @OfValues(WsdlValueProvider.class)
+  private WsdlConnectionInfo info;
 
   @ParameterGroup(name = "Web Service Security", showInDsl = true)
   private WebServiceSecurity wsSecurity;
@@ -174,10 +159,10 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
     }
 
     return SoapClientConfiguration.builder()
-        .withService(service)
-        .withPort(port)
+        .withService(info.getService())
+        .withPort(info.getPort())
         .withWsdlLocation(getWsdlLocation(wsdlLocation))
-        .withAddress(address)
+        .withAddress(info.getAddress())
         .withEncoding(encoding)
         .enableMtom(mtomEnabled)
         .withSecurities(wsSecurity.strategiesList())
