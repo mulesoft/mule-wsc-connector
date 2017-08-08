@@ -11,16 +11,17 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
+import static org.mule.service.soap.SoapTestUtils.payloadBodyAsString;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.soap.api.message.SoapAttributes;
-import org.junit.Test;
+import org.mule.runtime.extension.api.soap.SoapOutputPayload;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.Test;
 import java.util.Map;
 
 @Feature(WSC_EXTENSION)
@@ -40,8 +41,7 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   @Description("Consumes an operation that expects a simple type and returns a simple type")
   public void echoOperation() throws Exception {
     Message message = runFlowWithRequest(ECHO_FLOW, testValues.getEchoResquest());
-    String out = (String) message.getPayload().getValue();
-    assertSimilarXml(testValues.getEchoResponse(), out);
+    assertSimilarXml(testValues.getEchoResponse(), payloadBodyAsString(message));
   }
 
   @Test
@@ -49,18 +49,17 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   public void echoWithHeadersOperation() throws Exception {
     Message message = runFlowWithRequest(ECHO_HEADERS_FLOW, testValues.getEchoWithHeadersRequest());
 
-    String out = (String) message.getPayload().getValue();
-    assertSimilarXml(testValues.getEchoWithHeadersResponse(), out);
+    assertSimilarXml(testValues.getEchoWithHeadersResponse(), payloadBodyAsString(message));
 
-    SoapAttributes attributes = (SoapAttributes) message.getAttributes().getValue();
-    assertThat(attributes.getSoapHeaders().entrySet(), hasSize(2));
+    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    assertThat(payload.getHeaders().entrySet(), hasSize(2));
 
-    String inoutHeader = attributes.getSoapHeaders().entrySet().stream()
+    String inoutHeader = payload.getHeaders().entrySet().stream()
         .filter(h -> h.getKey().equals(HEADER_INOUT))
         .map(Map.Entry::getValue).findFirst().get();
     assertSimilarXml(testValues.getHeaderInOutResponse(), inoutHeader);
 
-    String outHeader = attributes.getSoapHeaders().entrySet().stream()
+    String outHeader = payload.getHeaders().entrySet().stream()
         .filter(h -> h.getKey().equals(HEADER_OUT))
         .map(Map.Entry::getValue).findFirst().get();
     assertSimilarXml(testValues.getHeaderOut(), outHeader);
@@ -70,9 +69,8 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   @Description("Consumes an operation that expects 2 parameters (a simple one and a complex one) and returns a complex type")
   public void echoAccountOperation() throws Exception {
     Message message = runFlowWithRequest(ECHO_ACCOUNT_FLOW, testValues.getEchoAccountRequest());
-    String out = (String) message.getPayload().getValue();
-    assertSimilarXml(testValues.getEchoAccountResponse(), out);
-    SoapAttributes attributes = (SoapAttributes) message.getAttributes().getValue();
-    assertThat(attributes.getSoapHeaders().isEmpty(), is(true));
+    assertSimilarXml(testValues.getEchoAccountResponse(), payloadBodyAsString(message));
+    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    assertThat(payload.getHeaders().isEmpty(), is(true));
   }
 }

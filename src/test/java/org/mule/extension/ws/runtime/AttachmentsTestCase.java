@@ -8,8 +8,8 @@ package org.mule.extension.ws.runtime;
 
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.io.IOUtils.toInputStream;
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mule.runtime.api.metadata.MediaType.parse;
@@ -19,20 +19,18 @@ import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.api.message.MultiPartPayload;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
 import org.mule.tck.junit4.rule.SystemProperty;
-import org.junit.Rule;
-import org.junit.Test;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
+import org.junit.Rule;
+import org.junit.Test;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-import java.util.List;
 
 public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
 
@@ -44,8 +42,12 @@ public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
   @Rule
   public SystemProperty mtom;
 
-  AttachmentsTestCase(Boolean isMtom) {
+  @Rule
+  public SystemProperty attachmentName;
+
+  AttachmentsTestCase(Boolean isMtom, String name) {
     mtom = new SystemProperty("mtomEnabled", isMtom.toString());
+    attachmentName = new SystemProperty("attachmentName", name);
   }
 
   @Override
@@ -68,17 +70,13 @@ public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
   @Description("Downloads an attachment from the server")
   public void downloadAttachment() throws Exception {
     Message message = flowRunner(DOWNLOAD_ATTACHMENT).withPayload(testValues.getDownloadAttachmentRequest()).run().getMessage();
-    MultiPartPayload multipart = (MultiPartPayload) message.getPayload().getValue();
-
-    List<Message> parts = multipart.getParts();
-    assertThat(parts, hasSize(2));
-    Message bodyPart = parts.get(0);
-    Message attachmentPart = parts.get(1);
-    assertDownloadedAttachment(attachmentPart);
+    assertDownloadedAttachment((String) message.getPayload().getValue());
   }
 
   @Step("Checks that the content of the downloaded attachment is correct")
-  protected abstract void assertDownloadedAttachment(Message attachmentPart) throws XMLStreamException, IOException;
+  private void assertDownloadedAttachment(String attachment) throws XMLStreamException, IOException {
+    assertThat(attachment, is(resourceAsString(ATTACHMENT_NAME)));
+  }
 
   @Step("Prepares a test attachment")
   public SoapAttachment getTestAttachment() {

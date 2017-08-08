@@ -16,7 +16,6 @@
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>
         </wsc:consume>
-        <object-to-string-transformer/>
     </flow>
 
     <flow name="echoAccountOperation">
@@ -25,7 +24,6 @@
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>
         </wsc:consume>
-        <object-to-string-transformer/>
     </flow>
 
     <flow name="echoWithHeadersOperation">
@@ -54,6 +52,5 @@
                 </wsc:headers>
             </wsc:message>
         </wsc:consume>
-        <object-to-string-transformer/>
     </flow>
 </mule>

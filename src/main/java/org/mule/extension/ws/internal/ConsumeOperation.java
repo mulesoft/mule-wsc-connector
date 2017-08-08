@@ -9,7 +9,7 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import org.mule.extension.ws.internal.metadata.ConsumeAttributesResolver;
+
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
 import org.mule.runtime.api.el.BindingContext;
@@ -24,20 +24,20 @@ import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.runtime.operation.Result;
+import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
 import org.mule.runtime.soap.api.client.SoapClient;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
-import org.mule.runtime.soap.api.message.SoapAttributes;
+import org.mule.runtime.extension.api.soap.SoapAttributes;
+import org.mule.runtime.extension.api.soap.SoapOutputPayload;
 import org.mule.runtime.soap.api.message.SoapRequest;
 import org.mule.runtime.soap.api.message.SoapRequestBuilder;
 import org.mule.runtime.soap.api.message.SoapResponse;
-
+import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.inject.Inject;
 
 /**
  * The only {@link WebServiceConsumer} operation. the {@link ConsumeOperation} consumes an operation of the connected web service
@@ -62,21 +62,23 @@ public class ConsumeOperation {
    * Consumes an operation from a SOAP Web Service.
    *
    * @param connection the connection resolved to execute the operation.
-   * @param operation the name of the web service operation that aims to invoke.
-   * @param message the constructed SOAP message to perform the request.
+   * @param operation  the name of the web service operation that aims to invoke.
+   * @param message    the constructed SOAP message to perform the request.
    */
   @OnException(WscExceptionEnricher.class)
   @Throws(ConsumeErrorTypeProvider.class)
-  @OutputResolver(output = ConsumeOutputResolver.class, attributes = ConsumeAttributesResolver.class)
-  public Result<?, SoapAttributes> consume(@Connection SoapClient connection,
-                                           @MetadataKeyId(OperationKeysResolver.class) String operation,
-                                           @ParameterGroup(name = "Message", showInDsl = true) SoapMessageBuilder message,
-                                           @ParameterGroup(
-                                               name = "Transport Configuration") TransportConfiguration transportConfig)
+  @OutputResolver(output = ConsumeOutputResolver.class)
+  public Result<SoapOutputPayload, SoapAttributes> consume(@Connection SoapClient connection,
+                                                           @MetadataKeyId(OperationKeysResolver.class) String operation,
+                                                           @ParameterGroup(name = "Message",
+                                                               showInDsl = true) SoapMessageBuilder message,
+                                                           @ParameterGroup(
+                                                               name = "Transport Configuration") TransportConfiguration transportConfig,
+                                                           StreamingHelper streamingHelper)
       throws SoapFaultException {
     SoapRequestBuilder requestBuilder = getSoapRequest(operation, message, transportConfig.getTransportHeaders());
     SoapResponse response = connection.consume(requestBuilder.build());
-    return response.getAsResult();
+    return response.getAsResult(streamingHelper);
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
