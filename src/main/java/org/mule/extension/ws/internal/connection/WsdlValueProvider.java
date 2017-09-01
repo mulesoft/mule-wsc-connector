@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static java.lang.Thread.currentThread;
 import static java.util.stream.Collectors.toSet;
 import static org.mule.runtime.extension.api.values.ValueBuilder.newValue;
 
@@ -38,7 +39,9 @@ public class WsdlValueProvider implements ValueProvider {
 
   @Override
   public Set<Value> resolve() throws ValueResolvingException {
-    WsdlModel wsdlModel = WsdlParser.Companion.parse(wsdlLocation);
+    URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
+    String wsdl = resource != null ? resource.getPath() : wsdlLocation;
+    WsdlModel wsdlModel = WsdlParser.Companion.parse(wsdl);
     List<ServiceModel> services = wsdlModel.getServices();
     return serviceValues(services);
   }
