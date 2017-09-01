@@ -25,8 +25,8 @@
         <jettyVersion>9.0.7.v20131107</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
-        
         <muleHttpConnectorVersion>1.0.0-SNAPSHOT</muleHttpConnectorVersion>
+        <wsdlParserVersion>0.0.1</wsdlParserVersion>
     </properties>
 
     <dependencies>
@@ -171,6 +171,17 @@
             <version>${muleSoapServiceVersion}</version>
             <type>test-jar</type>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.wsdl</groupId>
+            <artifactId>mule-wsdl-parser</artifactId>
+            <version>${wsdlParserVersion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mule.runtime</groupId>
+                    <artifactId>mule-metadata-model-xml</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
