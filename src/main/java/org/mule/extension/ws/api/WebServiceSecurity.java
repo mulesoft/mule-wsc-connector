@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.core.api.util.collection.Collectors.toImmutableList;
+import static org.mule.runtime.api.util.collection.Collectors.toImmutableList;
 
 /**
  * This class serves as {@link ParameterGroup} for configuring Web Service Security.
