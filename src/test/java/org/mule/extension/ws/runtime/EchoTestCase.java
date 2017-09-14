@@ -18,11 +18,13 @@ import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.extension.api.soap.SoapOutputPayload;
+
+import java.util.Map;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.Test;
-import java.util.Map;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
@@ -31,6 +33,7 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   private static final String ECHO_FLOW = "echoOperation";
   private static final String ECHO_HEADERS_FLOW = "echoWithHeadersOperation";
   private static final String ECHO_ACCOUNT_FLOW = "echoAccountOperation";
+  private static final String ECHO_ACCOUNT_DYNAMIC_FLOW = "echoAccountOperation";
 
   @Override
   protected String getConfigurationFile() {
@@ -69,6 +72,16 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   @Description("Consumes an operation that expects 2 parameters (a simple one and a complex one) and returns a complex type")
   public void echoAccountOperation() throws Exception {
     Message message = runFlowWithRequest(ECHO_ACCOUNT_FLOW, testValues.getEchoAccountRequest());
+    assertSimilarXml(testValues.getEchoAccountResponse(), payloadBodyAsString(message));
+    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    assertThat(payload.getHeaders().isEmpty(), is(true));
+  }
+
+  @Test
+  @Description("Consumes an operation that uses a dynamic config with a dynamic wsdlLocation")
+  public void withDynamicConfiguration() throws Exception {
+    Message message = flowRunner(ECHO_ACCOUNT_DYNAMIC_FLOW).withVariable("wsdlLocation", httpServer.getDefaultAddress())
+        .withPayload(testValues.getEchoAccountRequest()).keepStreamsOpen().run().getMessage();
     assertSimilarXml(testValues.getEchoAccountResponse(), payloadBodyAsString(message));
     SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
     assertThat(payload.getHeaders().isEmpty(), is(true));
