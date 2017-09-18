@@ -11,6 +11,7 @@ import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mule.runtime.api.component.location.Location.builder;
 import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
+
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectType;
@@ -23,7 +24,8 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.List;
 
-import org.junit.Before;
+import javax.inject.Inject;
+
 import io.qameta.allure.Step;
 
 public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCase {
@@ -35,11 +37,12 @@ public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCa
   protected static final String NO_PARAMS_FLOW = "getNoParams";
   protected static final String ECHO_HEADERS_FLOW = "getEchoHeadersMetadata";
 
+  @Inject
   protected MetadataService service;
 
-  @Before
-  public void init() throws Exception {
-    service = muleContext.getRegistry().lookupObject(MetadataService.class);
+  @Override
+  protected boolean doTestClassInjection() {
+    return true;
   }
 
   @Override
