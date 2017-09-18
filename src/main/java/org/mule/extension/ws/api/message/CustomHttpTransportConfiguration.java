@@ -36,4 +36,8 @@ public class CustomHttpTransportConfiguration implements CustomTransportConfigur
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
     return new HttpResourceLocator(requesterConfig, client);
   }
+
+  public String getRequesterConfig() {
+    return requesterConfig;
+  }
 }
