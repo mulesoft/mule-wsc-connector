@@ -57,6 +57,14 @@
         </wsc:consume>
     </flow>
 
+    <flow name="oneWayMetadata">
+        <wsc:consume config-ref="config" operation="oneWay">
+            <wsc:message>
+                <wsc:body>#[payload]</wsc:body>
+            </wsc:message>
+        </wsc:consume>
+    </flow>
+
     <flow name="downloadAttachment">
         <wsc:consume config-ref="config" operation="downloadAttachment">
             <wsc:message>

@@ -48,7 +48,7 @@
                 #[
                 %dw 2.0
                 output application/xml
-                ns con http://service.ws.extension.mule.org/
+                ns con http://service.soap.service.mule.org/
                 ---
                 con#echoWithHeaders: {
                    text: "test"
@@ -58,7 +58,7 @@
                 #[
                 %dw 2.0
                 output application/xml
-                ns con http://service.ws.extension.mule.org/
+                ns con http://service.soap.service.mule.org/
                    ---
                 "headers": {
                     con#headerIn: "Header In Value",

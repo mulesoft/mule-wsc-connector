@@ -9,8 +9,9 @@ package org.mule.extension.ws.runtime;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
 
-import org.mule.extension.ws.service.Mtom11Service;
-import org.mule.extension.ws.service.Mtom12Service;
+import org.mule.service.soap.service.Mtom11Service;
+import org.mule.service.soap.service.Mtom12Service;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
