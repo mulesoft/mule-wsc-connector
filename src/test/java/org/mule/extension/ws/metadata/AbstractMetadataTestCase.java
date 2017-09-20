@@ -41,11 +41,6 @@ public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCa
   protected MetadataService service;
 
   @Override
-  protected boolean doTestClassInjection() {
-    return true;
-  }
-
-  @Override
   protected String getConfigurationFile() {
     return "config/metadata.xml";
   }

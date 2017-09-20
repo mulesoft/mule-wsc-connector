@@ -37,11 +37,6 @@ public class WscValueProviderTestCase extends AbstractSoapServiceTestCase {
   @Rule
   public SystemProperty systemProperty = TestConnectivityUtils.disableAutomaticTestConnectivity();
 
-  @Override
-  protected boolean doTestClassInjection() {
-    return true;
-  }
-
   @Before
   public void init() throws Exception {
     System.setProperty("humanWsdl", currentThread().getContextClassLoader().getResource("wsdl/human.wsdl").getPath());
