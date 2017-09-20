@@ -7,9 +7,12 @@
 
 package org.mule.extension.ws.value;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import static java.lang.Thread.currentThread;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.startsWith;
+import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
+
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.component.location.Location;
 import org.mule.runtime.api.value.Value;
@@ -18,16 +21,17 @@ import org.mule.runtime.api.value.ValueResult;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.tck.util.TestConnectivityUtils;
 
+import org.junit.Before;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.Set;
 
-import static java.lang.Thread.currentThread;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.startsWith;
-import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
+import javax.inject.Inject;
 
 public class WscValueProviderTestCase extends AbstractSoapServiceTestCase {
 
+  @Inject
   protected ValueProviderService service;
 
   @Rule
@@ -36,7 +40,6 @@ public class WscValueProviderTestCase extends AbstractSoapServiceTestCase {
   @Before
   public void init() throws Exception {
     System.setProperty("humanWsdl", currentThread().getContextClassLoader().getResource("wsdl/human.wsdl").getPath());
-    service = muleContext.getRegistry().lookupObject(ValueProviderService.class);
   }
 
   @Override
