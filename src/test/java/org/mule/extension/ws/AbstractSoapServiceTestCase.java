@@ -13,26 +13,28 @@ import static org.mule.runtime.soap.api.SoapVersion.SOAP12;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_IN;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
 
-import org.mule.extension.ws.service.Soap11Service;
-import org.mule.extension.ws.service.Soap12Service;
 import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.soap.api.SoapVersion;
 import org.mule.service.soap.SoapTestXmlValues;
 import org.mule.service.soap.server.HttpServer;
+import org.mule.service.soap.service.Soap11Service;
+import org.mule.service.soap.service.Soap12Service;
 import org.mule.tck.junit4.rule.DynamicPort;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.test.runner.RunnerDelegateTo;
+
+import java.util.Collection;
+
 import org.apache.cxf.interceptor.Interceptor;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Rule;
 import org.junit.runners.Parameterized;
-import java.util.Collection;
 
 @RunnerDelegateTo(Parameterized.class)
 public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctionalTestCase {
 
-  public final SoapTestXmlValues testValues = new SoapTestXmlValues("http://service.ws.extension.mule.org/");
+  public final SoapTestXmlValues testValues = new SoapTestXmlValues("http://service.soap.service.mule.org/");
 
   @Rule
   public DynamicPort port = new DynamicPort("servicePort");

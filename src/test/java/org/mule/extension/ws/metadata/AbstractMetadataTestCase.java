@@ -28,8 +28,6 @@ import io.qameta.allure.Step;
 
 public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCase {
 
-  protected static final String MESSAGE_PARAM = "message";
-
   protected static final String ECHO_ACCOUNT_FLOW = "getEchoAccountMetadata";
   protected static final String ECHO_FLOW = "getEchoMetadata";
   protected static final String NO_PARAMS_FLOW = "getNoParams";

@@ -16,25 +16,38 @@ import static org.mule.service.soap.SoapTestXmlValues.ECHO;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
 import static org.mule.service.soap.SoapTestXmlValues.FAIL;
+import static org.mule.service.soap.SoapTestXmlValues.LARGE;
 import static org.mule.service.soap.SoapTestXmlValues.NO_PARAMS;
 import static org.mule.service.soap.SoapTestXmlValues.NO_PARAMS_HEADERS;
+import static org.mule.service.soap.SoapTestXmlValues.ONE_WAY;
 import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
 
 import org.mule.runtime.api.metadata.MetadataKey;
 import org.mule.runtime.api.metadata.MetadataKeysContainer;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-import org.junit.Test;
+
+import java.util.Set;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import java.util.Set;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
 public class KeysMetadataTestCase extends AbstractMetadataTestCase {
 
   private static final String[] OPERATIONS =
-      {ECHO, ECHO_ACCOUNT, ECHO_HEADERS, FAIL, NO_PARAMS_HEADERS, NO_PARAMS, UPLOAD_ATTACHMENT, DOWNLOAD_ATTACHMENT};
+      {ECHO,
+          ECHO_ACCOUNT,
+          ECHO_HEADERS,
+          FAIL,
+          NO_PARAMS_HEADERS,
+          NO_PARAMS,
+          UPLOAD_ATTACHMENT,
+          DOWNLOAD_ATTACHMENT,
+          LARGE,
+          ONE_WAY};
 
   @Test
   @Description("Checks the MetadataKeys for the WSC")
