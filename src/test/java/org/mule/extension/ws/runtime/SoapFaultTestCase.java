@@ -63,7 +63,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that does not exist and throws a SOAP Fault because of it and asserts the thrown exception")
   public void noExistentOperation() throws Exception {
-    String badRequest = "<con:noOperation xmlns:con=\"http://service.ws.extension.mule.org/\"/>";
+    String badRequest = "<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>";
     MessagingException me = flowRunner(FAIL_FLOW).withPayload(badRequest).runExpectingException();
 
     Error error = me.getEvent().getError().get();
@@ -77,9 +77,9 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
 
     String errorMessage;
     if (soapVersion.equals(SOAP11)) {
-      errorMessage = "{http://service.ws.extension.mule.org/}noOperation was not recognized";
+      errorMessage = "{http://service.soap.service.mule.org/}noOperation was not recognized";
     } else {
-      errorMessage = "Unexpected wrapper element {http://service.ws.extension.mule.org/}noOperation";
+      errorMessage = "Unexpected wrapper element {http://service.soap.service.mule.org/}noOperation";
     }
     assertThat(sf.getMessage(), containsString(errorMessage));
   }

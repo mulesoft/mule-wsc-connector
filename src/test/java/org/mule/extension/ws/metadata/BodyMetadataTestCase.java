@@ -23,12 +23,14 @@ import org.mule.metadata.api.model.StringType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-import org.junit.Test;
+
+import java.util.Collection;
+import java.util.Iterator;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import java.util.Collection;
-import java.util.Iterator;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

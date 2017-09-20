@@ -1,6 +1,6 @@
-<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.ws.extension.mule.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://service.ws.extension.mule.org/" name="TestService">
+<definitions xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsp="http://www.w3.org/ns/ws-policy" xmlns:wsp1_2="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://service.soap.service.mule.org/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://service.soap.service.mule.org/" name="TestService">
 <types>
-    <xs:schema xmlns:tns="http://service.ws.extension.mule.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.ws.extension.mule.org/">
+    <xs:schema xmlns:tns="http://service.soap.service.mule.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://service.soap.service.mule.org/">
         <xs:element name="EchoException" nillable="true" type="tns:echoFault"/>
         <xs:element name="echo" type="tns:echo"/>
         <xs:element name="echoAccount" type="tns:echoAccount"/>
@@ -136,29 +136,29 @@
 <portType name="TestService">
 <operation name="echo">
     <input wsam:Action="echoOperation" message="tns:echo"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/echoResponse" message="tns:echoResponse"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/echoResponse" message="tns:echoResponse"/>
 </operation>
 <operation name="fail">
     <input wsam:Action="fail" message="tns:fail"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/failResponse" message="tns:failResponse"/>
-    <fault message="tns:EchoException" name="EchoException" wsam:Action="http://service.ws.extension.mule.org/TestService/fail/Fault/EchoException"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/failResponse" message="tns:failResponse"/>
+    <fault message="tns:EchoException" name="EchoException" wsam:Action="http://service.soap.service.mule.org/TestService/fail/Fault/EchoException"/>
 </operation>
 <operation name="echoWithHeaders" parameterOrder="parameters headerIn headerOut headerInOut">
     <input wsam:Action="echoWithHeaders" message="tns:echoWithHeaders"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/echoWithHeadersResponse" message="tns:echoWithHeadersResponse"/>
-    <fault message="tns:EchoException" name="EchoException" wsam:Action="http://service.ws.extension.mule.org/TestService/echoWithHeaders/Fault/EchoException"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/echoWithHeadersResponse" message="tns:echoWithHeadersResponse"/>
+    <fault message="tns:EchoException" name="EchoException" wsam:Action="http://service.soap.service.mule.org/TestService/echoWithHeaders/Fault/EchoException"/>
 </operation>
 <operation name="noParams">
     <input wsam:Action="noParams" message="tns:noParams"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/noParamsResponse" message="tns:noParamsResponse"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/noParamsResponse" message="tns:noParamsResponse"/>
 </operation>
 <operation name="noParamsWithHeader" parameterOrder="parameters headerIn">
     <input wsam:Action="noParams" message="tns:noParamsWithHeader"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/noParamsWithHeaderResponse" message="tns:noParamsWithHeaderResponse"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/noParamsWithHeaderResponse" message="tns:noParamsWithHeaderResponse"/>
 </operation>
 <operation name="echoAccount">
     <input wsam:Action="echoAccount" message="tns:echoAccount"/>
-    <output wsam:Action="http://service.ws.extension.mule.org/TestService/echoAccountResponse" message="tns:echoAccountResponse"/>
+    <output wsam:Action="http://service.soap.service.mule.org/TestService/echoAccountResponse" message="tns:echoAccountResponse"/>
 </operation>
 </portType>
 <binding name="TestPortBinding" type="tns:TestService">
