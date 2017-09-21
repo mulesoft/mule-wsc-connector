@@ -6,7 +6,9 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import org.apache.log4j.Logger;
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -39,12 +41,11 @@ import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher
 import org.mule.runtime.soap.api.transport.NullTransportResourceLocator;
 import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 
-import javax.inject.Inject;
 import java.net.URL;
 
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+import javax.inject.Inject;
+
+import org.apache.log4j.Logger;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -54,6 +55,9 @@ import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
 
   private final Logger LOGGER = Logger.getLogger(SoapClientConnectionProvider.class);
+
+  @DefaultEncoding
+  private String muleEncoding;
 
   @Inject
   private SoapService soapService;
@@ -105,7 +109,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    */
   @Parameter
   @Placement(order = 7)
-  @DefaultEncoding
+  @Optional
   private String encoding;
 
   /**
@@ -163,7 +167,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
         .withPort(info.getPort())
         .withWsdlLocation(getWsdlLocation(wsdlLocation))
         .withAddress(info.getAddress())
-        .withEncoding(encoding)
+        .withEncoding(encoding == null ? muleEncoding : encoding)
         .enableMtom(mtomEnabled)
         .withSecurities(wsSecurity.strategiesList())
         .withDispatcher(dispatcher)
