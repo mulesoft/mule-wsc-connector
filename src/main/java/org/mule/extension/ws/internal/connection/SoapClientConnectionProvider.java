@@ -45,7 +45,8 @@ import java.net.URL;
 
 import javax.inject.Inject;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -54,7 +55,7 @@ import org.apache.log4j.Logger;
  */
 public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
 
-  private final Logger LOGGER = Logger.getLogger(SoapClientConnectionProvider.class);
+  private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
 
   @DefaultEncoding
   private String muleEncoding;
