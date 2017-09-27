@@ -6,7 +6,9 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import org.apache.log4j.Logger;
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.message.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -22,8 +24,6 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
-import org.mule.runtime.extension.api.annotation.param.display.Example;
-import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
@@ -39,12 +39,12 @@ import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher
 import org.mule.runtime.soap.api.transport.NullTransportResourceLocator;
 import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 
-import javax.inject.Inject;
 import java.net.URL;
 
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
@@ -53,7 +53,7 @@ import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
  */
 public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
 
-  private final Logger LOGGER = Logger.getLogger(SoapClientConnectionProvider.class);
+  private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
 
   @Inject
   private SoapService soapService;
@@ -65,16 +65,6 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   private ExtensionsClient extensionsClient;
 
   private HttpClient client;
-
-  /**
-   * The WSDL file URL remote or local.
-   */
-  @Placement(order = 1)
-  @Parameter
-  @Example("http://www.somehost.com/location?wsdl")
-  @Path(type = FILE, acceptedFileExtensions = "wsdl", acceptsUrls = true)
-  private String wsdlLocation;
-
 
   @ParameterGroup(name = "Connection")
   @OfValues(WsdlValueProvider.class)
@@ -161,7 +151,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
     return SoapClientConfiguration.builder()
         .withService(info.getService())
         .withPort(info.getPort())
-        .withWsdlLocation(getWsdlLocation(wsdlLocation))
+        .withWsdlLocation(getWsdlLocation(info.getWsdlLocation()))
         .withAddress(info.getAddress())
         .withEncoding(encoding)
         .enableMtom(mtomEnabled)

@@ -7,8 +7,12 @@
 
 package org.mule.extension.ws.internal.connection;
 
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.Example;
+import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.ValuePart;
 
@@ -18,6 +22,15 @@ import org.mule.runtime.extension.api.annotation.values.ValuePart;
  * @since 1.0
  */
 public class WsdlConnectionInfo {
+
+  /**
+   * The WSDL file URL remote or local.
+   */
+  @Placement(order = 1)
+  @Parameter
+  @Example("http://www.somehost.com/location?wsdl")
+  @Path(type = FILE, acceptedFileExtensions = "wsdl", acceptsUrls = true)
+  private String wsdlLocation;
 
   /**
    * The service name.
@@ -54,5 +67,9 @@ public class WsdlConnectionInfo {
 
   public String getAddress() {
     return address;
+  }
+
+  public String getWsdlLocation() {
+    return wsdlLocation;
   }
 }
