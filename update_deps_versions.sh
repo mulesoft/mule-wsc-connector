@@ -31,8 +31,12 @@ updateParentVersion() {
 
 VERSION_TO_CONNECTORS=$1
 VERSION_TO_DEPS=$2
+VERSION_TO_WSDL_PARSER=0.0.1-rc
 
 propertiesDeps=("muleHttpConnectorVersion")
 updatePropertiesVersion "$VERSION_TO_CONNECTORS" pom.xml propertiesDeps[@]
+
+propertiesDeps=("wsdlParserVersion")
+updatePropertiesVersion "$VERSION_TO_WSDL_PARSER" pom.xml propertiesDeps[@]
 
 updateParentVersion "$VERSION_TO_DEPS" pom.xml
