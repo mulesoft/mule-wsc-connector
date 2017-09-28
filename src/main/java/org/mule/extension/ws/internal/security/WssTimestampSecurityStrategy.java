@@ -29,7 +29,7 @@ public class WssTimestampSecurityStrategy implements SecurityStrategyAdapter {
    * Values lower than 1 second will end up in 1 second timestamp.
    */
   @Parameter
-  @Summary("The expiry time in the time unit specified. This final value must be greater or equal to 1 second (or similar in other unit)")
+  @Summary("The expiration time in the time unit specified. This value converted to seconds must be greater or equal to 1 second")
   @Optional(defaultValue = "60")
   private long timeToLive;
 
