@@ -8,11 +8,8 @@ package org.mule.extension.ws.internal.security;
 
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
 import org.mule.runtime.extension.api.soap.security.TimestampSecurityStrategy;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Bundles the outgoing SOAP message that it's being built with a timestamp that carries the creation.
@@ -25,21 +22,11 @@ public class WssTimestampSecurityStrategy implements SecurityStrategyAdapter {
    * The time difference between creation and expiry time in seconds. After this time the message is invalid.
    */
   @Parameter
-  @Optional(defaultValue = "60")
+  @Optional(defaultValue = "1")
   private long timeToLive;
-
-  /**
-   * A {@link TimeUnit} which qualifies the {@link #timeToLive} parameter.
-   * <p>
-   * Defaults to {@code SECONDS}
-   */
-  @Parameter
-  @Optional(defaultValue = "SECONDS")
-  @Summary("Time unit to be used in the timeToLive parameter")
-  private TimeUnit timeToLiveUnit;
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
-    return new TimestampSecurityStrategy(timeToLiveUnit.toSeconds(timeToLive));
+    return new TimestampSecurityStrategy(timeToLive);
   }
 }
