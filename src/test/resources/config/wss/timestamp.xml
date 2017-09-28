@@ -17,6 +17,14 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="less-than-a-second-config">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort">
+            <wsc:web-service-security>
+                <wsc:timestamp-security-strategy timeToLive="10" timeToLiveUnit="MILLISECONDS"/>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <flow name="timestampFlow">
         <wsc:consume config-ref="timestamp" operation="echo">
             <wsc:message>
@@ -26,5 +34,16 @@
         <set-payload value="#[payload.body]"/>
         <object-to-string-transformer/>
     </flow>
+
+    <flow name="less-than-a-second-flow">
+        <wsc:consume config-ref="less-than-a-second-config" operation="echo">
+            <wsc:message>
+                <wsc:body>#[payload]</wsc:body>
+            </wsc:message>
+        </wsc:consume>
+        <set-payload value="#[payload.body]"/>
+        <object-to-string-transformer/>
+    </flow>
+
 </mule>
 
