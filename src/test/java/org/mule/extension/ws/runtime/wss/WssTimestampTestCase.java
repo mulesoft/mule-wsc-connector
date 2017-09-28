@@ -7,16 +7,20 @@
 package org.mule.extension.ws.runtime.wss;
 
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
+
+import org.mule.runtime.api.message.Message;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
-
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("WSS")
@@ -40,5 +44,13 @@ public class WssTimestampTestCase extends AbstractWebServiceSecurityTestCase {
     final Map<String, Object> props = new HashMap<>();
     props.put("action", "Timestamp");
     return new WSS4JOutInterceptor(props);
+  }
+
+  @Test
+  @Description("Consumes a simple operation ")
+  public void expectedSecuredRequest() throws Exception {
+    Message message = runFlowWithRequest("less-than-a-second-flow", testValues.getEchoResquest());
+    String out = (String) message.getPayload().getValue();
+    assertSimilarXml(testValues.getEchoResponse(), out);
   }
 }
