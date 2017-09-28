@@ -27,6 +27,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.runtime.extension.api.connectivity.NoConnectivityTest;
 import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
 import org.mule.runtime.http.api.HttpService;
 import org.mule.runtime.http.api.client.HttpClient;
@@ -51,7 +52,7 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle, NoConnectivityTest {
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
 
