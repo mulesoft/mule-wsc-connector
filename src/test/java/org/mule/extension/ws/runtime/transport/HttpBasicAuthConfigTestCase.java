@@ -12,21 +12,22 @@ import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
-
-import io.qameta.allure.Stories;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
 import org.mule.runtime.api.message.Message;
-import org.mule.runtime.core.api.exception.MessagingException;
+import org.mule.runtime.core.api.exception.EventProcessingException;
 import org.mule.service.soap.server.BasicAuthHttpServer;
 import org.mule.service.soap.server.HttpServer;
 import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.tck.util.TestConnectivityUtils;
+
+import java.util.Optional;
+
+import io.qameta.allure.Feature;
+import io.qameta.allure.Stories;
+import io.qameta.allure.Story;
 import org.junit.Rule;
 import org.junit.Test;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import java.util.Optional;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
@@ -59,7 +60,7 @@ public class HttpBasicAuthConfigTestCase extends AbstractSoapServiceTestCase {
     assertUnauthorizedError(flowRunner("unauthorizedRemoteProtectedWsdl").runExpectingException());
   }
 
-  private void assertUnauthorizedError(MessagingException e) {
+  private void assertUnauthorizedError(EventProcessingException e) {
     Optional<Error> error = e.getEvent().getError();
     assertThat(error.isPresent(), is(true));
     assertThat(error.get().getErrorType(), errorType("HTTP", "UNAUTHORIZED"));
