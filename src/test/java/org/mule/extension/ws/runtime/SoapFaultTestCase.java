@@ -14,19 +14,19 @@ import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
 import static org.mule.tck.junit4.matcher.ErrorTypeMatcher.errorType;
-
-import io.qameta.allure.Stories;
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.message.Error;
-import org.mule.runtime.core.api.exception.MessagingException;
+import org.mule.runtime.core.api.exception.EventProcessingException;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
 import org.mule.tck.junit4.matcher.ErrorTypeMatcher;
-import org.hamcrest.Matchers;
-import org.junit.Test;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
+import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
+import org.hamcrest.Matchers;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Soap Fault")})
@@ -46,7 +46,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that throws a SOAP Fault and expects a Soap Fault Exception")
   public void failOperation() throws Exception {
-    MessagingException me = flowRunner(FAIL_FLOW).withPayload(testValues.getFailRequest()).runExpectingException();
+    EventProcessingException me = flowRunner(FAIL_FLOW).withPayload(testValues.getFailRequest()).runExpectingException();
     Error error = me.getEvent().getError().get();
 
     assertThat(error.getErrorType(), is(errorType("WSC", SOAP_FAULT)));
@@ -64,7 +64,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Description("Consumes an operation that does not exist and throws a SOAP Fault because of it and asserts the thrown exception")
   public void noExistentOperation() throws Exception {
     String badRequest = "<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>";
-    MessagingException me = flowRunner(FAIL_FLOW).withPayload(badRequest).runExpectingException();
+    EventProcessingException me = flowRunner(FAIL_FLOW).withPayload(badRequest).runExpectingException();
 
     Error error = me.getEvent().getError().get();
 
@@ -87,7 +87,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation with a body that is not a valid XML")
   public void echoBodyIsNotValidXml() throws Exception {
-    MessagingException me = flowRunner(FAIL_FLOW).withPayload("not a valid XML file").runExpectingException();
+    EventProcessingException me = flowRunner(FAIL_FLOW).withPayload("not a valid XML file").runExpectingException();
     Error error = me.getEvent().getError().get();
 
     assertThat(error.getErrorType(), is(errorType("WSC", BAD_REQUEST)));

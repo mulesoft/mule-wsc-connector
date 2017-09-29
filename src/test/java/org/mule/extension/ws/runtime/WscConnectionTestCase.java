@@ -11,16 +11,18 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.runtime.api.exception.ExceptionHelper.getRootException;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.message.Message;
-import org.junit.Test;
+
+import java.net.URL;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import java.net.URL;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Connection")
@@ -38,7 +40,8 @@ public class WscConnectionTestCase extends AbstractSoapServiceTestCase {
   @Description("Tries to instantiate a connection with an RPC WSDL and fails.")
   public void rpcWsdlFails() throws Exception {
     URL wsdl = currentThread().getContextClassLoader().getResource("wsdl/rpc.wsdl");
-    Throwable e = flowRunner(RPC_CONNECTION).withVariable("wsdl", wsdl.getPath()).runExpectingException().getRootCause();
+    Exception processingException = flowRunner(RPC_CONNECTION).withVariable("wsdl", wsdl.getPath()).runExpectingException();
+    Throwable e = getRootException(processingException);
     assertThat(e.getMessage(), containsString("RPC WSDLs are not supported"));
     assertThat(e, instanceOf(ConnectionException.class));
   }
