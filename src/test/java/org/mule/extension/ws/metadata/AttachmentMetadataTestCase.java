@@ -11,11 +11,10 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
-import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.BODY_FIELD;
+import static org.mule.runtime.extension.api.soap.MetadataConstants.ATTACHMENTS_FIELD;
+import static org.mule.runtime.extension.api.soap.MetadataConstants.BODY_FIELD;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO;
 import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
-
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
 import org.mule.metadata.api.model.ObjectFieldType;
@@ -24,12 +23,14 @@ import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.meta.model.parameter.ParameterModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-import org.junit.Test;
+
+import java.util.Collection;
+import java.util.List;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-import java.util.Collection;
-import java.util.List;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

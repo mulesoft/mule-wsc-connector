@@ -13,15 +13,14 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isIn;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
-import static org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
+import static org.mule.runtime.extension.api.soap.MetadataConstants.ATTACHMENTS_FIELD;
+import static org.mule.runtime.extension.api.soap.MetadataConstants.HEADERS_FIELD;
 import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
-
 import org.mule.metadata.api.model.ArrayType;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectFieldType;
@@ -30,14 +29,16 @@ import org.mule.metadata.api.model.StringType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
