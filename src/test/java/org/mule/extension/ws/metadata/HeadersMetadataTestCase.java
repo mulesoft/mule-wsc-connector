@@ -11,7 +11,7 @@ import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.api.soap.MetadataConstants.HEADERS_FIELD;
+import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
 import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
 import org.mule.metadata.api.annotation.TypeIdAnnotation;
