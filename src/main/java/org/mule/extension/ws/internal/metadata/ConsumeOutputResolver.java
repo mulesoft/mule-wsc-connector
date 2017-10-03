@@ -12,7 +12,7 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
-import org.mule.runtime.extension.internal.soap.metadata.SoapOutputTypeBuilder;
+import org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder;
 import org.mule.runtime.soap.api.client.metadata.SoapOperationMetadata;
 
 /**
