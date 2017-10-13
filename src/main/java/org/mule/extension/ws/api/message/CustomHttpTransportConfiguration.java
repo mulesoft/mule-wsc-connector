@@ -23,7 +23,7 @@ import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 @Alias("http-transport-configuration")
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {
 
-  @ConfigReference(namespace = "http", name = "requestConfig")
+  @ConfigReference(namespace = "HTTP", name = "REQUEST_CONFIG")
   @Parameter
   private String requesterConfig;
 
