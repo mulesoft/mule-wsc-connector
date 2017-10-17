@@ -13,21 +13,19 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.soap.api.SoapVersion.SOAP11;
 
 import org.mule.extension.ws.AbstractSoapServiceTestCase;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
 
-import org.hamcrest.TypeSafeMatcher;
-import org.junit.Rule;
-import org.junit.Test;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
+import org.hamcrest.TypeSafeMatcher;
+import org.junit.Rule;
+import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Soap Fault")})
@@ -76,11 +74,7 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
     String badRequest = "<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>";
 
     expected.expectErrorType("WSC", SOAP_FAULT);
-    if (soapVersion.equals(SOAP11)) {
-      expected.expectMessage(containsString("{http://service.soap.service.mule.org/}noOperation was not recognized"));
-    } else {
-      expected.expectMessage(containsString("Unexpected wrapper element {http://service.soap.service.mule.org/}noOperation"));
-    }
+    expected.expectMessage(containsString("Unexpected wrapper element {http://service.soap.service.mule.org/}noOperation"));
     expected.expectCause(allOf(instanceOf(SoapFaultException.class),
                                new TypeSafeMatcher<SoapFaultException>(SoapFaultException.class) {
 
