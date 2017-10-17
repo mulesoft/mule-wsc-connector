@@ -5,21 +5,11 @@
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <wsc:config name="delta">
-        <wsc:connection address="http://mu.mulesoft-training.com/essentials/delta"
-                        service="TestService"
-                        port="TestPort"
-                        wsdlLocation="http://mu.mulesoft-training.com/essentials/delta?wsdl"
-                        soapVersion="SOAP11">
-        </wsc:connection>
+        <wsc:connection wsdlLocation="http://mu.mulesoft-training.com/essentials/delta?wsdl"/>
     </wsc:config>
 
     <wsc:config name="human">
-        <wsc:connection service="Human_ResourcesService"
-                        port="Human_Resources"
-                        address="http://dummy-metadata-address.com"
-                        wsdlLocation="${humanWsdl}"
-                        soapVersion="SOAP11">
-        </wsc:connection>
+        <wsc:connection wsdlLocation="${humanWsdl}"/>
     </wsc:config>
 
 </mule>
