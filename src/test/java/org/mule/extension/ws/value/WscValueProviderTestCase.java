@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.startsWith;
 import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SERVICE_KEY;
 import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.component.location.Location;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.api.value.ValueProviderService;
@@ -33,7 +33,7 @@ import org.junit.Rule;
 import org.junit.Test;
 
 @RunnerDelegateTo()
-public class WscValueProviderTestCase extends AbstractSoapServiceTestCase {
+public class WscValueProviderTestCase extends AbstractWscTestCase {
 
   @Inject
   @Named(VALUE_PROVIDER_SERVICE_KEY)

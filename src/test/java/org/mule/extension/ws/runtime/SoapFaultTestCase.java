@@ -14,7 +14,7 @@ import static org.hamcrest.Matchers.isOneOf;
 import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.runtime.soap.api.exception.BadRequestException;
 import org.mule.runtime.soap.api.exception.SoapFaultException;
@@ -26,11 +26,10 @@ import io.qameta.allure.Story;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
-import shapeless.the;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Soap Fault")})
-public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
+public class SoapFaultTestCase extends AbstractWscTestCase {
 
   private static final String FAIL_FLOW = "failOperation";
   private static final String NO_OP_FLOW = "noOperation";

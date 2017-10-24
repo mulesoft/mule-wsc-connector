@@ -13,7 +13,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.runtime.api.exception.ExceptionHelper.getRootException;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.message.Message;
 
@@ -26,7 +26,7 @@ import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Connection")
-public class WscConnectionTestCase extends AbstractSoapServiceTestCase {
+public class WscConnectionTestCase extends AbstractWscTestCase {
 
   private static final String LOCAL_WSDL_FLOW = "withLocalWsdlConnection";
   private static final String RPC_CONNECTION = "rpcConnection";

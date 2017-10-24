@@ -12,28 +12,35 @@ import static org.junit.Assert.assertThat;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import static org.mule.service.soap.SoapTestUtils.payloadBodyAsString;
+import static org.mule.service.soap.SoapTestXmlValues.HEADER_IN;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
+import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
+import org.mule.runtime.core.internal.streaming.bytes.ManagedCursorStreamProvider;
 import org.mule.runtime.extension.api.soap.SoapOutputPayload;
+import org.mule.service.soap.SoapTestUtils;
 
+import java.io.InputStream;
 import java.util.Map;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
-public class EchoTestCase extends AbstractSoapServiceTestCase {
+public class EchoTestCase extends AbstractWscTestCase {
 
   private static final String ECHO_FLOW = "echoOperation";
   private static final String ECHO_HEADERS_FLOW = "echoWithHeadersOperation";
   private static final String ECHO_ACCOUNT_FLOW = "echoAccountOperation";
   private static final String ECHO_ACCOUNT_DYNAMIC_FLOW = "echoAccountOperation";
+  private static final String JSON_RESPONSE = "jsonResponse";
 
   @Override
   protected String getConfigurationFile() {
@@ -50,7 +57,12 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that expects an input and a set of headers and returns a simple type and a set of headers")
   public void echoWithHeadersOperation() throws Exception {
-    Message message = runFlowWithRequest(ECHO_HEADERS_FLOW, testValues.getEchoWithHeadersRequest());
+    Message message = flowRunner(ECHO_HEADERS_FLOW)
+        .withVariable(HEADER_IN, testValues.getHeaderIn())
+        .withVariable(HEADER_INOUT, testValues.getHeaderInOutRequest())
+        .keepStreamsOpen()
+        .run()
+        .getMessage();
 
     assertSimilarXml(testValues.getEchoWithHeadersResponse(), payloadBodyAsString(message));
 
@@ -59,13 +71,45 @@ public class EchoTestCase extends AbstractSoapServiceTestCase {
 
     String inoutHeader = payload.getHeaders().entrySet().stream()
         .filter(h -> h.getKey().equals(HEADER_INOUT))
-        .map(Map.Entry::getValue).findFirst().get();
+        .map(h -> h.getValue().getValue()).findFirst().get();
     assertSimilarXml(testValues.getHeaderInOutResponse(), inoutHeader);
 
     String outHeader = payload.getHeaders().entrySet().stream()
         .filter(h -> h.getKey().equals(HEADER_OUT))
-        .map(Map.Entry::getValue).findFirst().get();
+        .map(h -> h.getValue().getValue()).findFirst().get();
     assertSimilarXml(testValues.getHeaderOut(), outHeader);
+  }
+
+  @Test
+  @Description("Consumes an operation and transforms the whole payload into a json")
+  public void responseToJson() throws Exception {
+    Object payload = flowRunner(JSON_RESPONSE)
+        .withVariable(HEADER_IN, testValues.getHeaderIn())
+        .withVariable(HEADER_INOUT, testValues.getHeaderInOutRequest())
+        .keepStreamsOpen()
+        .run()
+        .getMessage()
+        .getPayload()
+        .getValue();
+    String payloadString = IOUtils.toString(((CursorStreamProvider) payload).openCursor());
+    assertThat(payloadString, is("{\n"
+        + "  \"body\": {\n"
+        + "    \"echoWithHeadersResponse\": {\n"
+        + "      \"text\": \"test response\"\n"
+        + "    }\n"
+        + "  },\n"
+        + "  \"attachments\": {\n"
+        + "    \n"
+        + "  },\n"
+        + "  \"headers\": {\n"
+        + "    \"headerOut\": {\n"
+        + "      \"headerOut\": \"Header In Value OUT\"\n"
+        + "    },\n"
+        + "    \"headerInOut\": {\n"
+        + "      \"headerInOut\": \"Header In Out Value INOUT\"\n"
+        + "    }\n"
+        + "  }\n"
+        + "}"));
   }
 
   @Test
