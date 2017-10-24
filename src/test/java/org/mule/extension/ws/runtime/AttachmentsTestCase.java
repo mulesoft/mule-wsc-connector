@@ -17,7 +17,7 @@ import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
 import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.MediaType;
@@ -32,7 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
 
-public abstract class AttachmentsTestCase extends AbstractSoapServiceTestCase {
+public abstract class AttachmentsTestCase extends AbstractWscTestCase {
 
   private static final DataType HTML_DATA_TYPE = DataType.builder().type(InputStream.class).mediaType(parse("text/html")).build();
 

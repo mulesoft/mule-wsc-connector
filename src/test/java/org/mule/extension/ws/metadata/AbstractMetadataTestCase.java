@@ -12,7 +12,7 @@ import static org.junit.Assert.assertThat;
 import static org.mule.runtime.api.component.location.Location.builder;
 import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectType;
 import org.mule.runtime.api.component.location.Location;
@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 import io.qameta.allure.Step;
 
-public abstract class AbstractMetadataTestCase extends AbstractSoapServiceTestCase {
+public abstract class AbstractMetadataTestCase extends AbstractWscTestCase {
 
   protected static final String ECHO_ACCOUNT_FLOW = "getEchoAccountMetadata";
   protected static final String ECHO_FLOW = "getEchoMetadata";

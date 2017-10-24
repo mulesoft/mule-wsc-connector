@@ -9,12 +9,12 @@ package org.mule.extension.ws.runtime.wss;
 import static java.lang.String.format;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
 import org.junit.Test;
 import io.qameta.allure.Description;
 
-public abstract class AbstractWebServiceSecurityTestCase extends AbstractSoapServiceTestCase {
+public abstract class AbstractWebServiceSecurityTestCase extends AbstractWscTestCase {
 
   private final String security;
 

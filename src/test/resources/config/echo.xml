@@ -68,4 +68,33 @@
             </wsc:message>
         </wsc:consume>
     </flow>
+
+    <flow name="jsonResponse">
+        <wsc:consume config-ref="config" operation="echoWithHeaders">
+            <wsc:message>
+                <wsc:body>
+                    #[
+                    %dw 2.0
+                    output application/xml
+                    ns con http://service.soap.service.mule.org/
+                    ---
+                    con#echoWithHeaders: {
+                    text: "test"
+                    }]
+                </wsc:body>
+                <wsc:headers>
+                    #[
+                    %dw 2.0
+                    output application/xml
+                    ns con http://service.soap.service.mule.org/
+                    ---
+                    "headers": {
+                    con#headerIn: "Header In Value",
+                    con#headerInOut: "Header In Out Value"
+                    }]
+                </wsc:headers>
+            </wsc:message>
+        </wsc:consume>
+        <set-payload value="#[output application/json --- payload]"/>
+    </flow>
 </mule>

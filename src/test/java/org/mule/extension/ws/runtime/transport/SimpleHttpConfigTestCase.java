@@ -10,7 +10,7 @@ import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
 import io.qameta.allure.Stories;
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
 
 import org.junit.Test;
@@ -19,7 +19,7 @@ import io.qameta.allure.Story;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
-public class SimpleHttpConfigTestCase extends AbstractSoapServiceTestCase {
+public class SimpleHttpConfigTestCase extends AbstractWscTestCase {
 
   @Test
   public void simpleConfigNoAuthentication() throws Exception {

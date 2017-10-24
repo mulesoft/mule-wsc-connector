@@ -9,7 +9,7 @@ package org.mule.extension.ws.runtime;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
 import org.junit.Test;
 import io.qameta.allure.Description;
@@ -18,7 +18,7 @@ import io.qameta.allure.Story;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
-public class NoParamsTestCase extends AbstractSoapServiceTestCase {
+public class NoParamsTestCase extends AbstractWscTestCase {
 
   private static final String NO_PARAMS_FLOW = "noParamsOperation";
 

@@ -32,7 +32,7 @@ import org.junit.Rule;
 import org.junit.runners.Parameterized;
 
 @RunnerDelegateTo(Parameterized.class)
-public abstract class AbstractSoapServiceTestCase extends MuleArtifactFunctionalTestCase {
+public abstract class AbstractWscTestCase extends MuleArtifactFunctionalTestCase {
 
   public final SoapTestXmlValues testValues = new SoapTestXmlValues("http://service.soap.service.mule.org/");
 

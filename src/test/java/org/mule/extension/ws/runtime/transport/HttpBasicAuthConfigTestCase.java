@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
 
-import org.mule.extension.ws.AbstractSoapServiceTestCase;
+import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.runtime.api.message.Message;
 import org.mule.service.soap.server.BasicAuthHttpServer;
@@ -27,7 +27,7 @@ import io.qameta.allure.Story;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
-public class HttpBasicAuthConfigTestCase extends AbstractSoapServiceTestCase {
+public class HttpBasicAuthConfigTestCase extends AbstractWscTestCase {
 
   @Rule
   public ExpectedError expected = ExpectedError.none();
