@@ -15,7 +15,14 @@
                 <wsc:body>#[payload]</wsc:body>
             </wsc:message>
         </wsc:consume>
-        <object-to-string-transformer/>
+    </flow>
+
+    <flow name="noOperation">
+        <wsc:consume config-ref="config" operation="noOperation">
+            <wsc:message>
+                <wsc:body>#[payload]</wsc:body>
+            </wsc:message>
+        </wsc:consume>
     </flow>
 
 </mule>

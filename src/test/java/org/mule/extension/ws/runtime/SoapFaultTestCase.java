@@ -26,12 +26,14 @@ import io.qameta.allure.Story;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Rule;
 import org.junit.Test;
+import shapeless.the;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Soap Fault")})
 public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
 
   private static final String FAIL_FLOW = "failOperation";
+  private static final String NO_OP_FLOW = "noOperation";
 
   // TODO MULE-12038
   private static final String SOAP_FAULT = "SOAP_FAULT";
@@ -71,26 +73,9 @@ public class SoapFaultTestCase extends AbstractSoapServiceTestCase {
   @Test
   @Description("Consumes an operation that does not exist and throws a SOAP Fault because of it and asserts the thrown exception")
   public void noExistentOperation() throws Exception {
-    String badRequest = "<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>";
-
-    expected.expectErrorType("WSC", SOAP_FAULT);
-    expected.expectMessage(containsString("Unexpected wrapper element {http://service.soap.service.mule.org/}noOperation"));
-    expected.expectCause(allOf(instanceOf(SoapFaultException.class),
-                               new TypeSafeMatcher<SoapFaultException>(SoapFaultException.class) {
-
-                                 @Override
-                                 protected boolean matchesSafely(SoapFaultException sf) {
-                                   // Sender is for SOAP12. Client is for SOAP11
-                                   assertThat(sf.getFaultCode().getLocalPart(), isOneOf("Client", "Sender"));
-
-                                   return true;
-                                 }
-
-                                 @Override
-                                 public void describeTo(org.hamcrest.Description description) {}
-                               }));
-
-    flowRunner(FAIL_FLOW).withPayload(badRequest).run();
+    expected.expectErrorType("WSC", BAD_REQUEST);
+    expected.expectMessage(containsString("The provided [noOperation] does not exist in the WSDL file"));
+    flowRunner(NO_OP_FLOW).withPayload("<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>").run();
   }
 
   @Test
