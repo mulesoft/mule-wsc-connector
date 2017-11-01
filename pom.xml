@@ -26,7 +26,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <muleHttpConnectorVersion>1.0.0-SNAPSHOT</muleHttpConnectorVersion>
-        <wsdlParserVersion>0.0.1-SNAPSHOT</wsdlParserVersion>
+        <wsdlParserVersion>1.0.0-SNAPSHOT</wsdlParserVersion>
     </properties>
 
     <dependencies>
