@@ -6,8 +6,8 @@
  */
 package org.mule.extension.ws.internal.security.config;
 
+import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
 import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
-
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -16,7 +16,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration;
 
-/**
+/**                               `
  * Default {@link WssStoreConfiguration} implementation for Key Stores, used for encryption, decryption and signing.
  *
  * @since 1.0
@@ -41,7 +41,7 @@ public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
 
   @Parameter
   @Summary("The location of the KeyStore file")
-  @Path(type = FILE)
+  @Path(type = FILE, location = EMBEDDED)
   private String keyStorePath;
 
   @Parameter
