@@ -21,8 +21,8 @@
     <properties>
         <commonsLangVersion>3.6</commonsLangVersion>
         <guavaVersion>18.0</guavaVersion>
-        <cxfVersion>3.0.13</cxfVersion>
-        <jettyVersion>9.0.7.v20131107</jettyVersion>
+        <cxfVersion>3.2.1</cxfVersion>
+        <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <muleHttpConnectorVersion>1.1.0-SNAPSHOT</muleHttpConnectorVersion>
@@ -151,18 +151,6 @@
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-util</artifactId>
             <version>${jettyVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.neethi</groupId>
-            <artifactId>neethi</artifactId>
-            <version>3.0.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mortbay.jetty</groupId>
-            <artifactId>jetty</artifactId>
-            <version>6.1.26</version>
             <scope>test</scope>
         </dependency>
         <dependency>
