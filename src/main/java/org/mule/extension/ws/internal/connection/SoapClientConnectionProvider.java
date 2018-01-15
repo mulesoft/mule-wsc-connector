@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClient>, Lifecycle, NoConnectivityTest {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClientWrapper>, Lifecycle, NoConnectivityTest {
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
 
@@ -113,15 +113,15 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    * {@inheritDoc}
    */
   @Override
-  public SoapClient connect() throws ConnectionException {
-    return soapService.getClientFactory().create(getConfiguration());
+  public SoapClientWrapper connect() throws ConnectionException {
+    return new SoapClientWrapper(soapService.getClientFactory().create(getConfiguration()), customTransportConfiguration);
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void disconnect(SoapClient client) {
+  public void disconnect(SoapClientWrapper client) {
     try {
       client.stop();
     } catch (Exception e) {
@@ -133,7 +133,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    * {@inheritDoc}
    */
   @Override
-  public ConnectionValidationResult validate(SoapClient client) {
+  public ConnectionValidationResult validate(SoapClientWrapper client) {
     // TODO MULE-12036
     return ConnectionValidationResult.success();
   }
@@ -186,5 +186,9 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Override
   public void start() throws MuleException {
     client.start();
+  }
+
+  public CustomTransportConfiguration getCustomTransportConfiguration() {
+    return customTransportConfiguration;
   }
 }
