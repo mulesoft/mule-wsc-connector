@@ -22,7 +22,11 @@ import org.mule.runtime.api.message.Message;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.extension.api.soap.SoapAttachment;
+import org.mule.tck.junit4.FlakinessDetectorTestRunner;
+import org.mule.tck.junit4.FlakyTest;
 import org.mule.tck.junit4.rule.SystemProperty;
+import org.mule.test.runner.RunnerDelegateTo;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.junit.Rule;
@@ -68,6 +72,7 @@ public abstract class AttachmentsTestCase extends AbstractWscTestCase {
 
   @Test
   @Description("Downloads an attachment from the server")
+  @FlakyTest(times = 100)
   public void downloadAttachment() throws Exception {
     Message message = flowRunner(DOWNLOAD_ATTACHMENT).withPayload(testValues.getDownloadAttachmentRequest()).run().getMessage();
     assertDownloadedAttachment((String) message.getPayload().getValue());

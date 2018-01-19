@@ -43,10 +43,10 @@ public abstract class AbstractWscTestCase extends MuleArtifactFunctionalTestCase
   public SystemProperty humanWsdlPath;
 
   @Parameterized.Parameter
-  public SoapVersion soapVersion = SOAP11;
+  public SoapVersion soapVersion = SOAP12;
 
   @Parameterized.Parameter(1)
-  public Object serviceClass = new Soap11Service();
+  public Object serviceClass = new Soap12Service();
 
   protected HttpServer httpServer;
 
