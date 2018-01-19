@@ -6,13 +6,13 @@
  */
 package org.mule.extension.ws.api;
 
-import org.mule.extension.ws.internal.security.SecurityStrategyAdapter;
-import org.mule.extension.ws.internal.security.WssDecryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssEncryptSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssSignSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssTimestampSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssUsernameTokenSecurityStrategy;
-import org.mule.extension.ws.internal.security.WssVerifySignatureSecurityStrategy;
+import org.mule.extension.ws.api.security.SecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssDecryptSecurityStrategy;
+import org.mule.extension.ws.api.security.WssEncryptSecurityStrategy;
+import org.mule.extension.ws.api.security.WssSignSecurityStrategy;
+import org.mule.extension.ws.api.security.WssTimestampSecurityStrategy;
+import org.mule.extension.ws.api.security.WssUsernameTokenSecurityStrategy;
+import org.mule.extension.ws.api.security.WssVerifySignatureSecurityStrategy;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
