@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.internal.security.config;
+package org.mule.extension.ws.api.security.config;
 
 import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
 import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
@@ -16,18 +16,23 @@ import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration;
 
-/**
- * Default {@link WssStoreConfiguration} implementation for Trust Stores, used for signature verification.
+/**                               `
+ * Default {@link WssStoreConfiguration} implementation for Key Stores, used for encryption, decryption and signing.
  *
  * @since 1.0
  */
-@Alias("wss-trust-store-configuration")
-public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration {
+@Alias("wss-key-store-configuration")
+public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
 
   @Parameter
-  @Summary("The location of the TrustStore file")
-  @Path(type = FILE, location = EMBEDDED)
-  private String trustStorePath;
+  @Summary("The alias of the private key to use")
+  private String alias;
+
+  @Parameter
+  @Summary("The password used to access the private key.")
+  @Optional
+  @Password
+  private String keyPassword;
 
   @Parameter
   @Summary("The password to access the store.")
@@ -35,16 +40,35 @@ public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration 
   private String password;
 
   @Parameter
+  @Summary("The location of the KeyStore file")
+  @Path(type = FILE, location = EMBEDDED)
+  private String keyStorePath;
+
+  @Parameter
   @Optional(defaultValue = "jks")
   @Summary("The type of store (jks, pkcs12, jceks, or any other)")
   private String type;
+
+  /**
+   * @return The password used to access the private key.
+   */
+  public String getKeyPassword() {
+    return keyPassword;
+  }
+
+  /**
+   * @return The alias of the private key to use.
+   */
+  public String getAlias() {
+    return alias;
+  }
 
   /**
    * {@inheritDoc}
    */
   @Override
   public String getStorePath() {
-    return trustStorePath;
+    return keyStorePath;
   }
 
   /**
