@@ -169,7 +169,16 @@
                     <groupId>org.mule.runtime</groupId>
                     <artifactId>mule-metadata-model-xml</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-wsdl</artifactId>
+            <version>${cxfVersion}</version>
         </dependency>
     </dependencies>
 
