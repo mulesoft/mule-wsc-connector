@@ -96,6 +96,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    */
   @Parameter
   @Placement(order = 7)
+  @Expression(NOT_SUPPORTED)
   @DefaultEncoding
   private String encoding;
 
