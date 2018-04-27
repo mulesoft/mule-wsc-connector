@@ -5,8 +5,9 @@
  * LICENSE.txt file.
  */
 
-package org.mule.extension.ws.internal.connection;
+package org.mule.extension.ws.internal.value;
 
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.values.ValueBuilder;
@@ -16,6 +17,7 @@ import org.mule.wsdl.parser.WsdlParser;
 import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
+import org.mule.wsdl.parser.model.WsdlStyle;
 
 import java.net.URL;
 import java.util.HashSet;
@@ -25,6 +27,7 @@ import java.util.Set;
 import static java.lang.Thread.currentThread;
 import static java.util.stream.Collectors.toSet;
 import static org.mule.runtime.extension.api.values.ValueBuilder.newValue;
+import static org.mule.wsdl.parser.model.WsdlStyle.RPC;
 
 /**
  * {@link ValueProvider} implementation which provides the possible and supported values for the {@link WsdlConnectionInfo}
@@ -34,6 +37,8 @@ import static org.mule.runtime.extension.api.values.ValueBuilder.newValue;
  */
 public class WsdlValueProvider implements ValueProvider {
 
+  private static final String RPC_ERROR_MESSAGE = "RPC style WSDLs are not supported by the Web service Consumer";
+  private static final String INVALID_VALUE = "INVALID_WSDL_VALUE";
   @Parameter
   private String wsdlLocation;
 
@@ -42,6 +47,11 @@ public class WsdlValueProvider implements ValueProvider {
     URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
     String wsdl = resource != null ? resource.getPath() : wsdlLocation;
     WsdlModel wsdlModel = WsdlParser.Companion.parse(wsdl);
+
+    if (wsdlModel.isWsdlStyle(RPC)) {
+      throw new ValueResolvingException(RPC_ERROR_MESSAGE, INVALID_VALUE);
+    }
+
     List<ServiceModel> services = wsdlModel.getServices();
     return serviceValues(services);
   }

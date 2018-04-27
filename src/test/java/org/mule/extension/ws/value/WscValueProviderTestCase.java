@@ -8,6 +8,7 @@
 package org.mule.extension.ws.value;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
@@ -26,10 +27,17 @@ import javax.inject.Named;
 
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 @RunnerDelegateTo()
 public class WscValueProviderTestCase extends AbstractWscTestCase {
+
+  public static final String CONNECTION = "Connection";
+
+  @Rule
+  public ExpectedException expectedException = ExpectedException.none();
 
   @Inject
   @Named(VALUE_PROVIDER_SERVICE_KEY)
@@ -52,7 +60,7 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
 
   @Test
   public void weatherWsdl() {
-    ValueResult result = service.getValues(Location.builder().globalName("weather").addConnectionPart().build(), "Connection");
+    ValueResult result = service.getValues(Location.builder().globalName("weather").addConnectionPart().build(), CONNECTION);
     Set<Value> values = result.getValues();
     assertThat(result.isSuccess(), is(true));
     assertThat(values, hasItems(valueWithId("GlobalWeather").withPartName("service")
@@ -63,10 +71,17 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
   @Test
   public void humanWsdl() {
     ValueResult result =
-        service.getValues(Location.builder().globalName("human").addConnectionPart().build(), "Connection");
+        service.getValues(Location.builder().globalName("human").addConnectionPart().build(), CONNECTION);
     Set<Value> values = result.getValues();
     assertThat(result.isSuccess(), is(true));
     assertThat(values, hasItems(valueWithId("Human_ResourcesService").withPartName("service")
         .withChilds(valueWithId("Human_Resources").withPartName("port"))));
+  }
+
+  @Test
+  public void rpcWsdlFails() {
+    ValueResult values = service.getValues(Location.builder().globalName("rpc").addConnectionPart().build(), CONNECTION);
+    assertThat(values.getFailure().isPresent(), is(true));
+    assertThat(values.getFailure().get().getReason(), containsString("RPC style WSDLs are not supported"));
   }
 }
