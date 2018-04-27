@@ -12,4 +12,8 @@
         <wsc:connection wsdlLocation="wsdl/human.wsdl"/>
     </wsc:config>
 
+    <wsc:config name="rpc">
+        <wsc:connection wsdlLocation="wsdl/rpc.wsdl"/>
+    </wsc:config>
+
 </mule>
