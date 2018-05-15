@@ -167,7 +167,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
 
   private String getWsdlLocation(String wsdlLocation) {
     URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
-    return resource != null ? resource.getPath() : wsdlLocation;
+    return resource != null ? resource.toString() : wsdlLocation;
   }
 
   @Override
