@@ -20,7 +20,7 @@
 
     <properties>
         <commonsLangVersion>3.6</commonsLangVersion>
-        <guavaVersion>23.5-jre</guavaVersion>
+        <guavaVersion>25.1-jre</guavaVersion>
         <cxfVersion>3.2.1</cxfVersion>
         <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
