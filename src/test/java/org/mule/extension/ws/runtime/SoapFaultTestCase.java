@@ -73,7 +73,7 @@ public class SoapFaultTestCase extends AbstractWscTestCase {
   @Description("Consumes an operation that does not exist and throws a SOAP Fault because of it and asserts the thrown exception")
   public void noExistentOperation() throws Exception {
     expected.expectErrorType("WSC", BAD_REQUEST);
-    expected.expectMessage(containsString("The provided [noOperation] does not exist in the WSDL file"));
+    expected.expectMessage(containsString("[noOperation] does not exist in the WSDL file"));
     flowRunner(NO_OP_FLOW).withPayload("<con:noOperation xmlns:con=\"http://service.soap.service.mule.org/\"/>").run();
   }
 
