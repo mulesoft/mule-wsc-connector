@@ -6,23 +6,23 @@
  */
 package org.mule.extension.ws.api.security.config;
 
-import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Password;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration;
 
-/**                               `
- * Default {@link WssStoreConfiguration} implementation for Key Stores, used for encryption, decryption and signing.
+import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+
+/**
+ * Implementation for Key Stores, used for encryption, decryption and signing.
  *
  * @since 1.0
  */
 @Alias("wss-key-store-configuration")
-public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
+public class WssKeyStoreConfigurationAdapter {
 
   @Parameter
   @Summary("The alias of the private key to use")
@@ -66,7 +66,6 @@ public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getStorePath() {
     return keyStorePath;
   }
@@ -74,7 +73,6 @@ public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getPassword() {
     return password;
   }
@@ -82,7 +80,6 @@ public class WssKeyStoreConfigurationAdapter implements WssStoreConfiguration {
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getType() {
     return type;
   }

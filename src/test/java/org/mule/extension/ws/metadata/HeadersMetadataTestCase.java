@@ -6,14 +6,10 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
 import org.mule.metadata.api.annotation.TypeIdAnnotation;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
@@ -26,10 +22,14 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.Collection;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
@@ -71,6 +71,6 @@ public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
 
   private MetadataType getHeaders(String flow, String key) {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result = getMetadata(flow, key);
-    return getParameterType(result.get().getModel().getAllParameterModels(), HEADERS_FIELD);
+    return getParameterType(result.get().getModel().getAllParameterModels(), HEADERS);
   }
 }

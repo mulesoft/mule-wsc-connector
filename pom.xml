@@ -19,44 +19,76 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commonsLangVersion>3.7</commonsLangVersion>
-        <guavaVersion>25.1-jre</guavaVersion>
-        <cxfVersion>3.2.1</cxfVersion>
+        <commons.lang.version>3.7</commons.lang.version>
+        <guava.version>25.1-jre</guava.version>
+        <cxf.version>3.2.1</cxf.version>
+        <mule.http.connector.version>1.2.0-SNAPSHOT</mule.http.connector.version>
+        <soap.engine.version>1.0.0-SNAPSHOT</soap.engine.version>
+        <wsdl.parser.version>1.1.7-SNAPSHOT</wsdl.parser.version>
+
+        <formatterConfigPath>formatter.xml</formatterConfigPath>
+
+        <!-- tests props -->
         <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
-        <formatterConfigPath>formatter.xml</formatterConfigPath>
-        <muleHttpConnectorVersion>1.2.0-SNAPSHOT</muleHttpConnectorVersion>
-        <wsdlParserVersion>1.1.0-SNAPSHOT</wsdlParserVersion>
     </properties>
 
     <dependencies>
-        <!-- Mule Dependencies-->
-        <dependency>
-            <groupId>org.mule.runtime</groupId>
-            <artifactId>mule-service-soap-api</artifactId>
-            <version>${mule.version}</version>
-            <scope>provided</scope>
-        </dependency>
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
             <version>${mule.version}</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-soap-engine</artifactId>
+            <version>${soap.engine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.connectors</groupId>
+            <artifactId>mule-http-connector</artifactId>
+            <version>${mule.http.connector.version}</version>
+            <classifier>mule-plugin</classifier>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.services</groupId>
+            <artifactId>mule-service-http</artifactId>
+            <version>${muleHttpServiceVersion}</version>
+            <classifier>mule-service</classifier>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.wsdl</groupId>
+            <artifactId>mule-wsdl-parser</artifactId>
+            <version>${wsdl.parser.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mule.runtime</groupId>
+                    <artifactId>mule-metadata-model-xml</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.cxf</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
         <!-- Common Dependencies -->
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>${guavaVersion}</version>
+            <version>${guava.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${commonsLangVersion}</version>
+            <version>${commons.lang.version}</version>
         </dependency>
 
-        <!-- Test Dependencies -->
+        <!-- Test Server Dependencies -->
+
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-module-service</artifactId>
@@ -67,13 +99,6 @@
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <version>${xmlUnitVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-http-connector</artifactId>
-            <version>${muleHttpConnectorVersion}</version>
-            <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -108,25 +133,25 @@
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <version>${cxfVersion}</version>
+            <version>${cxf.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http</artifactId>
-            <version>${cxfVersion}</version>
+            <version>${cxf.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${cxfVersion}</version>
+            <version>${cxf.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-ws-security</artifactId>
-            <version>${cxfVersion}</version>
+            <version>${cxf.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>net.sf.ehcache</groupId>
@@ -159,32 +184,18 @@
             <version>${jettyVersion}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-soap</artifactId>
-            <version>${muleSoapServiceVersion}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.wsdl</groupId>
-            <artifactId>mule-wsdl-parser</artifactId>
-            <version>${wsdlParserVersion}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.mule.runtime</groupId>
-                    <artifactId>mule-metadata-model-xml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.cxf</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.mule.services</groupId>-->
+            <!--<artifactId>mule-service-soap</artifactId>-->
+            <!--<version>${muleSoapServiceVersion}</version>-->
+            <!--<type>test-jar</type>-->
+            <!--<scope>test</scope>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-wsdl</artifactId>
-            <version>${cxfVersion}</version>
+            <version>${cxf.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

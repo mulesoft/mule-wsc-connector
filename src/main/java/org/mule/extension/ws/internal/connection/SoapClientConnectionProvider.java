@@ -6,18 +6,15 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-
+import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
-import org.mule.extension.ws.api.message.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.value.WsdlValueProvider;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
-import org.mule.runtime.api.exception.MuleException;
-import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.api.lifecycle.Lifecycle;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
@@ -29,36 +26,32 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.connectivity.NoConnectivityTest;
-import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
 import org.mule.runtime.http.api.HttpService;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.runtime.http.api.client.HttpClientConfiguration;
-import org.mule.runtime.soap.api.SoapService;
-import org.mule.runtime.soap.api.SoapVersion;
-import org.mule.runtime.soap.api.client.SoapClient;
-import org.mule.runtime.soap.api.client.SoapClientConfiguration;
-import org.mule.runtime.soap.api.message.dispatcher.DefaultHttpMessageDispatcher;
-import org.mule.runtime.soap.api.transport.NullTransportResourceLocator;
-import org.mule.runtime.soap.api.transport.TransportResourceLocator;
-
-import java.net.URL;
-
-import javax.inject.Inject;
-
+import org.mule.soap.api.SoapWebServiceConfiguration;
+import org.mule.soap.api.client.SoapClient;
+import org.mule.soap.api.client.SoapClientFactory;
+import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.inject.Inject;
+import java.net.URL;
+
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements CachedConnectionProvider<SoapClientWrapper>, Lifecycle, NoConnectivityTest {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<WscSoapClient>, Lifecycle, NoConnectivityTest {
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
-
-  @Inject
-  private SoapService soapService;
+  private final SoapClientFactory SOAP_CLIENT_FACTORY = SoapClientFactory.getDefault();
 
   @Inject
   private HttpService httpService;
@@ -81,7 +74,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   @Parameter
   @Placement(order = 5)
   @Optional(defaultValue = "SOAP11")
-  private SoapVersion soapVersion;
+  private SoapVersionAdapter soapVersion;
 
   /**
    * If should use the MTOM protocol to manage the attachments or not.
@@ -115,17 +108,26 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    * {@inheritDoc}
    */
   @Override
-  public SoapClientWrapper connect() throws ConnectionException {
-    return new SoapClientWrapper(soapService.getClientFactory().create(getConfiguration()), customTransportConfiguration);
+  public WscSoapClient connect() throws ConnectionException {
+    try {
+      if (customTransportConfiguration == null) {
+        customTransportConfiguration = new DefaultHttpTransportConfiguration(client);
+      }
+      return new WscSoapClient(info.getWsdlLocation(),
+                               SOAP_CLIENT_FACTORY.create(getConfiguration()),
+                               customTransportConfiguration);
+    } catch (Exception e) {
+      throw new ConnectionException(e.getMessage(), e);
+    }
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public void disconnect(SoapClientWrapper client) {
+  public void disconnect(WscSoapClient client) {
     try {
-      client.stop();
+      client.destroy();
     } catch (Exception e) {
       LOGGER.error("Error disconnecting soap client [" + client.toString() + "]: " + e.getMessage(), e);
     }
@@ -135,23 +137,20 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
    * {@inheritDoc}
    */
   @Override
-  public ConnectionValidationResult validate(SoapClientWrapper client) {
+  public ConnectionValidationResult validate(WscSoapClient client) {
     // TODO MULE-12036
     return ConnectionValidationResult.success();
   }
 
-  private SoapClientConfiguration getConfiguration() {
-    MessageDispatcher dispatcher;
+  private SoapWebServiceConfiguration getConfiguration() {
     TransportResourceLocator locator;
     if (customTransportConfiguration != null) {
-      dispatcher = customTransportConfiguration.buildDispatcher(extensionsClient);
       locator = customTransportConfiguration.resourceLocator(extensionsClient);
     } else {
-      dispatcher = new DefaultHttpMessageDispatcher(client);
       locator = new NullTransportResourceLocator();
     }
 
-    return SoapClientConfiguration.builder()
+    return SoapWebServiceConfiguration.builder()
         .withService(info.getService())
         .withPort(info.getPort())
         .withWsdlLocation(getWsdlLocation(info.getWsdlLocation()))
@@ -159,9 +158,8 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
         .withEncoding(encoding)
         .enableMtom(mtomEnabled)
         .withSecurities(wsSecurity.strategiesList())
-        .withDispatcher(dispatcher)
         .withResourceLocator(locator)
-        .withVersion(soapVersion)
+        .withVersion(soapVersion.getVersion())
         .build();
   }
 
@@ -176,21 +174,17 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<So
   }
 
   @Override
-  public void initialise() throws InitialisationException {
+  public void initialise() {
     client = httpService.getClientFactory().create(new HttpClientConfiguration.Builder().setName("wsc-dispatcher").build());
   }
 
   @Override
-  public void stop() throws MuleException {
+  public void stop() {
     client.stop();
   }
 
   @Override
-  public void start() throws MuleException {
+  public void start() {
     client.start();
-  }
-
-  public CustomTransportConfiguration getCustomTransportConfiguration() {
-    return customTransportConfiguration;
   }
 }

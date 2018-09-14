@@ -6,14 +6,6 @@
  */
 package org.mule.extension.ws.runtime.wss;
 
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-
-import org.mule.runtime.api.message.Message;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -21,6 +13,13 @@ import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor;
 import org.apache.cxf.ws.security.wss4j.WSS4JOutInterceptor;
 import org.junit.Test;
+import org.mule.runtime.api.message.Message;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
 
 @Feature(WSC_EXTENSION)
 @Story("WSS")

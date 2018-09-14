@@ -6,22 +6,11 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
-import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.HEADERS_FIELD;
-import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
-import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
-import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
-import org.mule.metadata.api.model.ArrayType;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
+import org.mule.metadata.api.model.BinaryType;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectFieldType;
 import org.mule.metadata.api.model.ObjectType;
@@ -35,10 +24,21 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isIn;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
@@ -54,7 +54,7 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     ObjectFieldType body = operationFields.iterator().next();
     Collection<ObjectFieldType> bodyFields = toObjectType(body.getValue()).getFields();
     ObjectFieldType echo = bodyFields.iterator().next();
-    assertThat(echo.getKey().getName().toString(), containsString("{http://service.soap.service.mule.org/}echoResponse"));
+    assertThat(echo.getKey().getName().toString(), containsString("{http://service.ws.extension.mule.org/}echoResponse"));
     ObjectType echoType = toObjectType(echo.getValue());
     Collection<ObjectFieldType> echoFields = echoType.getFields();
     assertThat(echoFields, hasSize(1));
@@ -101,7 +101,7 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     MetadataType type = result.get().getModel().getOutput().getType();
     List<ObjectFieldType> operationFields = new ArrayList<>(toObjectType(type).getFields());
     ObjectFieldType headersField = operationFields.stream()
-        .filter(f -> f.getKey().getName().getLocalPart().contains(HEADERS_FIELD)).findAny().get();
+        .filter(f -> f.getKey().getName().getLocalPart().contains(HEADERS)).findAny().get();
     Collection<ObjectFieldType> headers = toObjectType(headersField.getValue()).getFields();
     assertThat(headers, hasSize(2));
     headers.forEach(e -> {
@@ -120,7 +120,9 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     assertThat(attributesFields, hasSize(1));
     Iterator<ObjectFieldType> iterator = attributesFields.iterator();
     ObjectFieldType attachments = iterator.next();
-    assertThat(attachments.getKey().getName().getLocalPart(), is(ATTACHMENTS_FIELD));
-    assertThat(attachments.getValue(), is(instanceOf(ArrayType.class)));
+    assertThat(attachments.getKey().getName().getLocalPart(), is(ATTACHMENTS));
+    ObjectType attachmentsType = toObjectType(attachments.getValue());
+    assertThat(attachmentsType.getFields(), hasSize(1));
+    assertThat(attachmentsType.getFields().iterator().next().getValue(), is(instanceOf(BinaryType.class)));
   }
 }

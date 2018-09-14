@@ -7,11 +7,11 @@
 package org.mule.extension.ws.service;
 
 import org.apache.wss4j.common.ext.WSPasswordCallback;
-import java.io.IOException;
 
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
+import java.io.IOException;
 
 
 public class ServerPasswordCallback implements CallbackHandler {

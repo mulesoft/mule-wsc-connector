@@ -17,6 +17,21 @@
         </wsc:consume>
     </flow>
 
+    <flow name="failAndCheckErrorMessage">
+        <try>
+            <wsc:consume config-ref="config" operation="fail">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <error-handler>
+                <on-error-continue enableNotifications="true" type="ANY">
+                    <set-payload value="#[error.errorMessage.payload.detail]"/>
+                </on-error-continue>
+            </error-handler>
+        </try>
+    </flow>
+
     <flow name="noOperation">
         <wsc:consume config-ref="config" operation="noOperation">
             <wsc:message>

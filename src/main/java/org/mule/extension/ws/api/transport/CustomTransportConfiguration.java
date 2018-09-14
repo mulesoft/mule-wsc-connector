@@ -4,11 +4,11 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.api.message;
+package org.mule.extension.ws.api.transport;
 
 import org.mule.runtime.extension.api.client.ExtensionsClient;
-import org.mule.runtime.extension.api.soap.message.MessageDispatcher;
-import org.mule.runtime.soap.api.transport.TransportResourceLocator;
+import org.mule.soap.api.transport.TransportDispatcher;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 /**
  * Contract for objects that enables the use of a custom transport executing operations of other plugins by
@@ -19,12 +19,12 @@ import org.mule.runtime.soap.api.transport.TransportResourceLocator;
 public interface CustomTransportConfiguration {
 
   /**
-   * Builds a new {@link MessageDispatcher} using the {@link ExtensionsClient}.
+   * Builds a new {@link TransportDispatcher} using the {@link ExtensionsClient}.
    *
    * @param client the extensions client.
-   * @return a new {@link MessageDispatcher}.
+   * @return a new {@link TransportDispatcher}.
    */
-  MessageDispatcher buildDispatcher(ExtensionsClient client);
+  TransportDispatcher buildDispatcher(ExtensionsClient client);
 
   /**
    * Builds a new {@link TransportResourceLocator} using the {@link ExtensionsClient}.

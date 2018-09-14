@@ -6,23 +6,23 @@
  */
 package org.mule.extension.ws.api.security.config;
 
-import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Password;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.security.config.WssStoreConfiguration;
+
+import static org.mule.runtime.api.meta.model.display.PathModel.Location.EMBEDDED;
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 /**
- * Default {@link WssStoreConfiguration} implementation for Trust Stores, used for signature verification.
+ * Implementation for Trust Stores, used for signature verification.
  *
  * @since 1.0
  */
 @Alias("wss-trust-store-configuration")
-public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration {
+public class WssTrustStoreConfigurationAdapter {
 
   @Parameter
   @Summary("The location of the TrustStore file")
@@ -42,7 +42,6 @@ public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration 
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getStorePath() {
     return trustStorePath;
   }
@@ -50,7 +49,6 @@ public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration 
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getPassword() {
     return password;
   }
@@ -58,7 +56,6 @@ public class WssTrustStoreConfigurationAdapter implements WssStoreConfiguration 
   /**
    * {@inheritDoc}
    */
-  @Override
   public String getType() {
     return type;
   }

@@ -11,9 +11,8 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Password;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.security.PasswordType;
-import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
-import org.mule.runtime.extension.api.soap.security.UsernameTokenSecurityStrategy;
+import org.mule.soap.api.security.SecurityStrategy;
+import org.mule.soap.api.security.WssUsernameTokenSecurityStrategy;
 
 /**
  * Provides the capability to authenticate using Username and Password with a SOAP service by adding the UsernameToken
@@ -21,7 +20,7 @@ import org.mule.runtime.extension.api.soap.security.UsernameTokenSecurityStrateg
  *
  * @since 1.0
  */
-public class WssUsernameTokenSecurityStrategy implements SecurityStrategyAdapter {
+public class WssUsernameTokenSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
    * The username required to authenticate with the service.
@@ -37,12 +36,12 @@ public class WssUsernameTokenSecurityStrategy implements SecurityStrategyAdapter
   private String password;
 
   /**
-   * A {@link PasswordType} which qualifies the {@link #password} parameter.
+   * A {@link PasswordTypeAdapter} which qualifies the {@link #password} parameter.
    */
   @Parameter
   @Optional(defaultValue = "TEXT")
   @Summary("The type of the password that is provided. One of Digest or Text")
-  private PasswordType passwordType;
+  private PasswordTypeAdapter passwordType;
 
   /**
    * Specifies a if a cryptographically random nonce should be added to the message.
@@ -60,6 +59,6 @@ public class WssUsernameTokenSecurityStrategy implements SecurityStrategyAdapter
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
-    return new UsernameTokenSecurityStrategy(username, password, passwordType, addNonce, addCreated);
+    return new WssUsernameTokenSecurityStrategy(username, password, passwordType.getType(), addNonce, addCreated);
   }
 }

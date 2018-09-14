@@ -6,15 +6,10 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.ATTACHMENTS_FIELD;
-import static org.mule.runtime.extension.api.soap.metadata.SoapOutputTypeBuilder.BODY_FIELD;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO;
-import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
 import org.mule.metadata.api.model.ObjectFieldType;
@@ -27,10 +22,15 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 import java.util.Collection;
 import java.util.List;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.BODY;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
@@ -42,9 +42,9 @@ public class AttachmentMetadataTestCase extends AbstractMetadataTestCase {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result = getMetadata(UPLOAD_ATTACHMENT, UPLOAD_ATTACHMENT);
     List<ParameterModel> parameters = result.get().getModel().getAllParameterModels();
 
-    MetadataType body = getParameterType(parameters, BODY_FIELD);
+    MetadataType body = getParameterType(parameters, BODY);
     assertThat(body, is(instanceOf(NullType.class)));
-    ObjectType attachments = toObjectType(getParameterType(parameters, ATTACHMENTS_FIELD));
+    ObjectType attachments = toObjectType(getParameterType(parameters, ATTACHMENTS));
     Collection<ObjectFieldType> attachmentFields = attachments.getFields();
     assertThat(attachmentFields, hasSize(1));
     assertThat(attachmentFields.iterator().next().getKey().getName().getLocalPart(), is("attachment"));
@@ -54,7 +54,7 @@ public class AttachmentMetadataTestCase extends AbstractMetadataTestCase {
   @Description("Checks the Input Metadata of an operation without attachments")
   public void getEchoMetadata() {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result = getMetadata(ECHO_FLOW, ECHO);
-    MetadataType attachments = getParameterType(result.get().getModel().getAllParameterModels(), ATTACHMENTS_FIELD);
+    MetadataType attachments = getParameterType(result.get().getModel().getAllParameterModels(), ATTACHMENTS);
     assertThat(attachments, is(instanceOf(NullType.class)));
   }
 }

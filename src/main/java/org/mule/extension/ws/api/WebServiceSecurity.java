@@ -7,18 +7,18 @@
 package org.mule.extension.ws.api;
 
 import org.mule.extension.ws.api.security.SecurityStrategyAdapter;
-import org.mule.extension.ws.api.security.WssDecryptSecurityStrategy;
-import org.mule.extension.ws.api.security.WssEncryptSecurityStrategy;
-import org.mule.extension.ws.api.security.WssSignSecurityStrategy;
-import org.mule.extension.ws.api.security.WssTimestampSecurityStrategy;
-import org.mule.extension.ws.api.security.WssUsernameTokenSecurityStrategy;
-import org.mule.extension.ws.api.security.WssVerifySignatureSecurityStrategy;
+import org.mule.extension.ws.api.security.WssDecryptSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssEncryptSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssSignSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssTimestampSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssUsernameTokenSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssVerifySignatureSecurityStrategyAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
-import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
+import org.mule.soap.api.security.SecurityStrategy;
 
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssSignSecurityStrategy signSecurityStrategy;
+  private WssSignSecurityStrategyAdapter signSecurityStrategy;
 
   /**
    * a verify signature WSS configuration
@@ -52,7 +52,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssVerifySignatureSecurityStrategy verifySignatureSecurityStrategy;
+  private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
 
   /**
    * a usernameToken WSS configuration
@@ -61,7 +61,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssUsernameTokenSecurityStrategy usernameTokenSecurityStrategy;
+  private WssUsernameTokenSecurityStrategyAdapter usernameTokenSecurityStrategy;
 
   /**
    * a timestamp WSS configuration
@@ -70,7 +70,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssTimestampSecurityStrategy timestampSecurityStrategy;
+  private WssTimestampSecurityStrategyAdapter timestampSecurityStrategy;
 
   /**
    * a decrypt WSS configuration
@@ -79,7 +79,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssDecryptSecurityStrategy decryptSecurityStrategy;
+  private WssDecryptSecurityStrategyAdapter decryptSecurityStrategy;
 
   /**
    * an encrypt WSS configuration
@@ -88,7 +88,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssEncryptSecurityStrategy encryptSecurityStrategy;
+  private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
 
   public List<SecurityStrategy> strategiesList() {
     return Stream.of(signSecurityStrategy,
