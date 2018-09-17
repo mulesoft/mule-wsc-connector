@@ -44,7 +44,7 @@ import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
- * {@link ConnectionProvider} that returns instances of {@link SoapClient}.
+ * {@link ConnectionProvider} that returns instances of {@link WscSoapClient}.
  *
  * @since 1.0
  */

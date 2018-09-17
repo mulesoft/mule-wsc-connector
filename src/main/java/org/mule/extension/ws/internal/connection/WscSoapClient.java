@@ -12,6 +12,11 @@ import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
 
+/**
+ * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
+ *
+ * @since 1.1
+ */
 public class WscSoapClient {
 
   private final CustomTransportConfiguration transportConfiguration;

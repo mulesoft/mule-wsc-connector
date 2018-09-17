@@ -8,6 +8,11 @@ package org.mule.extension.ws.api;
 
 import org.mule.soap.api.SoapVersion;
 
+/**
+ * The possible SOAP versions of a SOAP service.
+ *
+ * @since 1.1
+ */
 public enum SoapVersionAdapter {
 
   SOAP11(SoapVersion.SOAP_11), SOAP12(SoapVersion.SOAP_12);

@@ -35,12 +35,12 @@ public class WscExceptionEnricher extends ExceptionHandler {
 
   private Map<Class<?>, WscError> ERRORS_MAPPING =
       ImmutableMap.<Class<?>, WscError>builder()
-      .put(BadResponseException.class, BAD_RESPONSE)
-      .put(BadRequestException.class, BAD_REQUEST)
-      .put(DispatcherException.class, CANNOT_DISPATCH)
-      .put(InvalidWsdlException.class, INVALID_WSDL)
-      .put(EncodingException.class, ENCODING)
-      .build();
+          .put(BadResponseException.class, BAD_RESPONSE)
+          .put(BadRequestException.class, BAD_REQUEST)
+          .put(DispatcherException.class, CANNOT_DISPATCH)
+          .put(InvalidWsdlException.class, INVALID_WSDL)
+          .put(EncodingException.class, ENCODING)
+          .build();
 
   /**
    * {@inheritDoc}

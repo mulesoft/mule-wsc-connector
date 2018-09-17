@@ -30,6 +30,11 @@ import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.toMap;
 import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
+/**
+ * {@link TransportDispatcher} implementation that sends messages using the {@link HttpClient}.
+ *
+ * @since 1.1
+ */
 public class DefaultHttpMessageDispatcher implements TransportDispatcher {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHttpMessageDispatcher.class.getName());

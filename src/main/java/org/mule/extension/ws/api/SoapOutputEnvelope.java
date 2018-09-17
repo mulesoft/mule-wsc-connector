@@ -27,6 +27,11 @@ import static java.util.stream.Collectors.joining;
 import static org.mule.runtime.api.metadata.DataType.builder;
 import static org.mule.runtime.api.metadata.MediaType.APPLICATION_XML;
 
+/**
+ * Represents the response of the consume operation. Bundles the SOAP body, SOAP Headers and Mime Attachments if there are any.
+ *
+ * @since 1.0
+ */
 public class SoapOutputEnvelope {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(SoapOutputEnvelope.class.getName());

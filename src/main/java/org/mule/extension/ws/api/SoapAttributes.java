@@ -11,6 +11,12 @@ import java.util.Map;
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableMap.of;
 
+/**
+ * The attributes returned by the consume operation, it carries the protocol specific headers bounded to the response.
+ * i.e. HTTP headers.
+ *
+ * @since 1.1
+ */
 public class SoapAttributes {
 
   private static final long serialVersionUID = 4591210489306615571L;

@@ -8,6 +8,11 @@ package org.mule.extension.ws.api.security;
 
 import org.mule.soap.api.security.PasswordType;
 
+/**
+ * The password types that can be used in WSS strategies.
+ *
+ * @since 1.2
+ */
 public enum PasswordTypeAdapter {
 
   DIGEST(PasswordType.DIGEST), TEXT(PasswordType.TEXT);

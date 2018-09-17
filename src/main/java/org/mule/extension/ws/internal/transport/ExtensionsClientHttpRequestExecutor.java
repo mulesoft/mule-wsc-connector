@@ -4,7 +4,7 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.api.transport;
+package org.mule.extension.ws.internal.transport;
 
 import org.mule.extension.http.api.HttpAttributes;
 import org.mule.runtime.api.metadata.TypedValue;
@@ -28,6 +28,11 @@ import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.http.api.HttpConstants.Method.GET;
 import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
+/**
+ * Executes an HTTP requester operation using the {@link ExtensionsClient}.
+ *
+ * @since 1.1
+ */
 public class ExtensionsClientHttpRequestExecutor {
 
   private final String requesterConfig;

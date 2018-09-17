@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
 package org.mule.extension.ws;
 
 import org.apache.commons.io.IOUtils;
@@ -23,8 +29,8 @@ import java.io.StringReader;
 import java.io.StringWriter;
 
 public class SoapTestUtils {
-  public SoapTestUtils() {
-  }
+
+  public SoapTestUtils() {}
 
   public static void assertSimilarXml(String expected, String result) throws Exception {
     XMLUnit.setIgnoreWhitespace(true);
@@ -60,9 +66,9 @@ public class SoapTestUtils {
 
   public static String payloadBodyAsString(Message message) throws Exception {
     Object payload = message.getPayload().getValue();
-    TypedValue<InputStream> body = ((SoapOutputEnvelope)payload).getBody();
-    InputStream val = body.getValue() instanceof CursorStreamProvider ?
-        ((CursorStreamProvider)body.getValue()).openCursor() : body.getValue();
+    TypedValue<InputStream> body = ((SoapOutputEnvelope) payload).getBody();
+    InputStream val =
+        body.getValue() instanceof CursorStreamProvider ? ((CursorStreamProvider) body.getValue()).openCursor() : body.getValue();
     return IOUtils.toString(val);
   }
 }

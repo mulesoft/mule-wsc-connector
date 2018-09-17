@@ -8,7 +8,12 @@ package org.mule.extension.ws.internal.error;
 
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 
+/**
+ * Errors thrown by the WSC.
+ *
+ * @since 1.0
+ */
 public enum WscError implements ErrorTypeDefinition<WscError> {
 
-  INVALID_WSDL, ENCODING, BAD_REQUEST, BAD_RESPONSE, CANNOT_DISPATCH, CONNECTIVITY, SOAP_FAULT
+  INVALID_WSDL, ENCODING, BAD_REQUEST, BAD_RESPONSE, CANNOT_DISPATCH, SOAP_FAULT
 }

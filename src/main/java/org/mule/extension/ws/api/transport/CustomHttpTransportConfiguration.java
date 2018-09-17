@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.api.transport;
 
+import org.mule.extension.ws.internal.transport.ExtensionsClientHttpRequestExecutor;
+import org.mule.extension.ws.internal.transport.HttpResourceLocator;
 import org.mule.runtime.api.util.Pair;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -20,9 +22,9 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * TODO
+ * Provides the capability to send soap messages using a custom HTTP Requester configuration.
  *
- * @since 1.0
+ * @since 1.1
  */
 @Alias("http-transport-configuration")
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {

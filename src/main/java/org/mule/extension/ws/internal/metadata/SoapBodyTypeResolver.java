@@ -29,7 +29,7 @@ public class SoapBodyTypeResolver implements InputTypeResolver<String> {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME +"Body Resolver";
+    return WebServiceConsumer.NAME + "Body Resolver";
   }
 
   @Override
