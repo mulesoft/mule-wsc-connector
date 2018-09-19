@@ -36,7 +36,7 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + " Output Resolver";
+    return WebServiceConsumer.NAME + "OutputResolver";
   }
 
   /**

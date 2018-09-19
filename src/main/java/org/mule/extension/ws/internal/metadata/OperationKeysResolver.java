@@ -35,7 +35,7 @@ public class OperationKeysResolver implements TypeKeysResolver {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + "Keys Resolver";
+    return WebServiceConsumer.NAME + "KeysResolver";
   }
 
   @Override

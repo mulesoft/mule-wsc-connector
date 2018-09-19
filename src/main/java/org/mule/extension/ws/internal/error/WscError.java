@@ -15,5 +15,38 @@ import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
  */
 public enum WscError implements ErrorTypeDefinition<WscError> {
 
-  INVALID_WSDL, ENCODING, BAD_REQUEST, BAD_RESPONSE, CANNOT_DISPATCH, SOAP_FAULT
+  /**
+   * Error thrown when an invalid WSDL file was provided.
+   */
+  INVALID_WSDL,
+
+  /**
+   * Error thrown when an encoding problem occurred.
+   */
+  ENCODING,
+
+  /**
+   * Error thrown when an error occurred trying to build the request.
+   */
+  BAD_REQUEST,
+
+  /**
+   * Error thrown when an error occurred parsing the response.
+   */
+  BAD_RESPONSE,
+
+  /**
+   * Error thrown when something went wrong while dispatching.
+   */
+  CANNOT_DISPATCH,
+
+  /**
+   * Error thrown when a SOAP FAULT was returned by the server
+   */
+  SOAP_FAULT,
+
+  /**
+   * Error thrown when the dispatching process timed out.
+   */
+  TIMEOUT
 }

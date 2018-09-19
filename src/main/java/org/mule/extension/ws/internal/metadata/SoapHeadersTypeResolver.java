@@ -29,7 +29,7 @@ public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + "Headers Resolver";
+    return WebServiceConsumer.NAME + "HeadersResolver";
   }
 
   @Override

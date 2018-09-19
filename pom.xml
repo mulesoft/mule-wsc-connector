@@ -184,13 +184,6 @@
             <version>${jettyVersion}</version>
             <scope>test</scope>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.mule.services</groupId>-->
-            <!--<artifactId>mule-service-soap</artifactId>-->
-            <!--<version>${muleSoapServiceVersion}</version>-->
-            <!--<type>test-jar</type>-->
-            <!--<scope>test</scope>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-wsdl</artifactId>

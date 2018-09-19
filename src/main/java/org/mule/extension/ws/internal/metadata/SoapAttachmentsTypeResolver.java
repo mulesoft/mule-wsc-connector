@@ -29,7 +29,7 @@ public class SoapAttachmentsTypeResolver implements InputTypeResolver<String> {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + "Attachments Resolver";
+    return WebServiceConsumer.NAME + "AttachmentsResolver";
   }
 
   @Override

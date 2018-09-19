@@ -98,7 +98,7 @@ public class SoapOutputEnvelope {
           "attachments: [" + as + "]" + "\n" +
           "}";
     } catch (Exception e) {
-      LOGGER.error("Error building soap output envelope string " + e.getMessage(), e);
+      LOGGER.debug("Error building soap output envelope string: " + e.getMessage(), e);
       return "Error building soap output envelope string";
     }
   }

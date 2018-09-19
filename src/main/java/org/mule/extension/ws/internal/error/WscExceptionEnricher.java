@@ -54,6 +54,6 @@ public class WscExceptionEnricher extends ExceptionHandler {
     if (error != null) {
       return new ModuleException(error, e);
     }
-    return new Exception("Unexpected error while consuming web service: " + e.getMessage(), e);
+    return new WscException("Unexpected error while consuming web service: " + e.getMessage(), e);
   }
 }
