@@ -6,32 +6,32 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.collection.IsIn.isIn;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.service.soap.SoapTestXmlValues.ECHO_HEADERS;
-import static org.mule.service.soap.SoapTestXmlValues.FAIL;
-import static org.mule.service.soap.SoapTestXmlValues.LARGE;
-import static org.mule.service.soap.SoapTestXmlValues.NO_PARAMS;
-import static org.mule.service.soap.SoapTestXmlValues.NO_PARAMS_HEADERS;
-import static org.mule.service.soap.SoapTestXmlValues.ONE_WAY;
-import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
-
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
+import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.runtime.api.metadata.MetadataKey;
 import org.mule.runtime.api.metadata.MetadataKeysContainer;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.Set;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.collection.IsIn.isIn;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.extension.ws.SoapTestXmlValues.FAIL;
+import static org.mule.extension.ws.SoapTestXmlValues.LARGE;
+import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS;
+import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS_HEADERS;
+import static org.mule.extension.ws.SoapTestXmlValues.ONE_WAY;
+import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
@@ -54,7 +54,7 @@ public class KeysMetadataTestCase extends AbstractMetadataTestCase {
   public void getOperationKeys() {
     MetadataResult<MetadataKeysContainer> result = service.getMetadataKeys(location(ECHO_ACCOUNT_FLOW));
     assertThat(result.isSuccess(), is(true));
-    Set<MetadataKey> keys = result.get().getKeys("WebServiceConsumerCategory").get();
+    Set<MetadataKey> keys = result.get().getKeys(WebServiceConsumer.NAME).get();
     assertThat(keys, hasSize(OPERATIONS.length));
     keys.forEach(key -> assertThat(key.getId(), isIn(OPERATIONS)));
   }

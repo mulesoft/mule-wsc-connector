@@ -4,16 +4,16 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.api.exception;
+package org.mule.extension.ws.internal.error;
 
 /**
- * Base {@link RuntimeException} type for the Web Service Consumer.
+ * Exception thrown when an unknown error occurred when using the Web Service Consumer.
  *
- * @since 1.0
+ * @since 1.1.2
  */
-public class WscException extends RuntimeException {
+public class WscException extends Exception {
 
-  public WscException(String message, Throwable cause) {
-    super(message, cause);
+  public WscException(String msg, Exception cause) {
+    super(msg, cause);
   }
 }

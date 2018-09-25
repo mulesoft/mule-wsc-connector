@@ -6,31 +6,25 @@
  */
 package org.mule.extension.ws.runtime;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-import static org.mule.service.soap.SoapTestUtils.payloadBodyAsString;
-import static org.mule.service.soap.SoapTestXmlValues.HEADER_IN;
-import static org.mule.service.soap.SoapTestXmlValues.HEADER_INOUT;
-import static org.mule.service.soap.SoapTestXmlValues.HEADER_OUT;
-
-import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.runtime.api.message.Message;
-import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
-import org.mule.runtime.core.internal.streaming.bytes.ManagedCursorStreamProvider;
-import org.mule.runtime.extension.api.soap.SoapOutputPayload;
-import org.mule.service.soap.SoapTestUtils;
-
-import java.io.InputStream;
-import java.util.Map;
-
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.extension.ws.api.SoapOutputEnvelope;
+import org.mule.runtime.api.message.Message;
+import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
+
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+import static org.mule.extension.ws.SoapTestUtils.payloadBodyAsString;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
@@ -66,7 +60,7 @@ public class EchoTestCase extends AbstractWscTestCase {
 
     assertSimilarXml(testValues.getEchoWithHeadersResponse(), payloadBodyAsString(message));
 
-    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    SoapOutputEnvelope payload = (SoapOutputEnvelope) message.getPayload().getValue();
     assertThat(payload.getHeaders().entrySet(), hasSize(2));
 
     String inoutHeader = payload.getHeaders().entrySet().stream()
@@ -117,7 +111,7 @@ public class EchoTestCase extends AbstractWscTestCase {
   public void echoAccountOperation() throws Exception {
     Message message = runFlowWithRequest(ECHO_ACCOUNT_FLOW, testValues.getEchoAccountRequest());
     assertSimilarXml(testValues.getEchoAccountResponse(), payloadBodyAsString(message));
-    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    SoapOutputEnvelope payload = (SoapOutputEnvelope) message.getPayload().getValue();
     assertThat(payload.getHeaders().isEmpty(), is(true));
   }
 
@@ -127,7 +121,7 @@ public class EchoTestCase extends AbstractWscTestCase {
     Message message = flowRunner(ECHO_ACCOUNT_DYNAMIC_FLOW).withVariable("wsdlLocation", httpServer.getDefaultAddress())
         .withPayload(testValues.getEchoAccountRequest()).keepStreamsOpen().run().getMessage();
     assertSimilarXml(testValues.getEchoAccountResponse(), payloadBodyAsString(message));
-    SoapOutputPayload payload = (SoapOutputPayload) message.getPayload().getValue();
+    SoapOutputEnvelope payload = (SoapOutputEnvelope) message.getPayload().getValue();
     assertThat(payload.getHeaders().isEmpty(), is(true));
   }
 }

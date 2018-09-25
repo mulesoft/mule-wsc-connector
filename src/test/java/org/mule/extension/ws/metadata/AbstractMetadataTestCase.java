@@ -6,12 +6,7 @@
  */
 package org.mule.extension.ws.metadata;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.runtime.api.component.location.Location.builder;
-import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
-
+import io.qameta.allure.Step;
 import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectType;
@@ -22,11 +17,14 @@ import org.mule.runtime.api.metadata.MetadataService;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
+import javax.inject.Inject;
 import java.util.List;
 
-import javax.inject.Inject;
-
-import io.qameta.allure.Step;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.runtime.api.component.location.Location.builder;
+import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
 
 public abstract class AbstractMetadataTestCase extends AbstractWscTestCase {
 

@@ -6,35 +6,33 @@
  */
 package org.mule.extension.ws.runtime;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Step;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.runtime.api.message.Message;
+import org.mule.runtime.api.metadata.DataType;
+import org.mule.runtime.api.metadata.MediaType;
+import org.mule.runtime.extension.api.soap.SoapAttachment;
+import org.mule.tck.junit4.FlakyTest;
+import org.mule.tck.junit4.rule.SystemProperty;
+
+import javax.xml.stream.XMLStreamException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringWriter;
+
 import static org.apache.commons.io.IOUtils.copy;
 import static org.apache.commons.io.IOUtils.toInputStream;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
 import static org.mule.runtime.api.metadata.MediaType.parse;
-import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-import static org.mule.service.soap.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
-import static org.mule.service.soap.SoapTestXmlValues.UPLOAD_ATTACHMENT;
-
-import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.runtime.api.message.Message;
-import org.mule.runtime.api.metadata.DataType;
-import org.mule.runtime.api.metadata.MediaType;
-import org.mule.runtime.extension.api.soap.SoapAttachment;
-import org.mule.tck.junit4.FlakinessDetectorTestRunner;
-import org.mule.tck.junit4.FlakyTest;
-import org.mule.tck.junit4.rule.SystemProperty;
-import org.mule.test.runner.RunnerDelegateTo;
-
-import io.qameta.allure.Description;
-import io.qameta.allure.Step;
-import org.junit.Rule;
-import org.junit.Test;
-import javax.xml.stream.XMLStreamException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.StringWriter;
 
 public abstract class AttachmentsTestCase extends AbstractWscTestCase {
 

@@ -9,9 +9,9 @@ package org.mule.extension.ws.api.security;
 import org.mule.extension.ws.api.security.config.WssKeyStoreConfigurationAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
-import org.mule.runtime.extension.api.soap.security.SignSecurityStrategy;
-import org.mule.runtime.extension.api.soap.security.config.WssKeyStoreConfiguration;
+import org.mule.soap.api.security.SecurityStrategy;
+import org.mule.soap.api.security.WssSignSecurityStrategy;
+import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
@@ -20,7 +20,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
  *
  * @since 1.0
  */
-public class WssSignSecurityStrategy implements SecurityStrategyAdapter {
+public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
    * The keystore to use when signing the message.
@@ -31,10 +31,10 @@ public class WssSignSecurityStrategy implements SecurityStrategyAdapter {
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
-    WssKeyStoreConfiguration keyStore =
-        new WssKeyStoreConfiguration(keyStoreConfiguration.getAlias(), keyStoreConfiguration.getKeyPassword(),
-                                     keyStoreConfiguration.getPassword(), keyStoreConfiguration.getStorePath(),
-                                     keyStoreConfiguration.getType());
-    return new SignSecurityStrategy(keyStore);
+    return new WssSignSecurityStrategy(new WssKeyStoreConfiguration(keyStoreConfiguration.getAlias(),
+                                                                    keyStoreConfiguration.getPassword(),
+                                                                    keyStoreConfiguration.getStorePath(),
+                                                                    keyStoreConfiguration.getKeyPassword(),
+                                                                    keyStoreConfiguration.getType()));
   }
 }

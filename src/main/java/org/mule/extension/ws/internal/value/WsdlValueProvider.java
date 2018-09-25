@@ -17,7 +17,6 @@ import org.mule.wsdl.parser.WsdlParser;
 import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
-import org.mule.wsdl.parser.model.WsdlStyle;
 
 import java.net.URL;
 import java.util.HashSet;
@@ -39,6 +38,7 @@ public class WsdlValueProvider implements ValueProvider {
 
   private static final String RPC_ERROR_MESSAGE = "RPC style WSDLs are not supported by the Web service Consumer";
   private static final String INVALID_VALUE = "INVALID_WSDL_VALUE";
+
   @Parameter
   private String wsdlLocation;
 

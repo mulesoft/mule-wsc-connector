@@ -6,27 +6,36 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import org.mule.extension.ws.internal.WebServiceConsumer;
+import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
-import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
+import org.mule.soap.api.metadata.SoapMetadataResolver;
+import org.mule.soap.api.metadata.SoapMetadataResolverFactory;
 
 /**
  * {@link InputTypeResolver} implementation to resolve metadata for the message headers of a particular operation.
  *
  * @since 1.0
  */
-public class SoapHeadersTypeResolver extends AbstractSoapOperationMetadataResolver implements InputTypeResolver<String> {
+public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
 
   @Override
-  public String getResolverName() {
-    return "SoapHeadersTypeResolver";
+  public String getCategoryName() {
+    return WebServiceConsumer.NAME;
   }
 
   @Override
-  public MetadataType getInputMetadata(MetadataContext context, String operationName)
-      throws MetadataResolvingException, ConnectionException {
-    return getSoapMetadata(context, operationName).getHeadersType();
+  public String getResolverName() {
+    return WebServiceConsumer.NAME + "HeadersResolver";
+  }
+
+  @Override
+  public MetadataType getInputMetadata(MetadataContext context, String operationName) throws ConnectionException {
+    WscSoapClient client = context.<WscSoapClient>getConnection().get();
+    SoapMetadataResolver soapMetadataResolver = SoapMetadataResolverFactory.getDefault().create(client.getWsdlLocation());
+    return soapMetadataResolver.resolve(operationName).getInput().getHeaders();
   }
 }

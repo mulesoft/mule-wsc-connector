@@ -9,8 +9,8 @@ package org.mule.extension.ws.api.security;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
-import org.mule.runtime.extension.api.soap.security.TimestampSecurityStrategy;
+import org.mule.soap.api.security.SecurityStrategy;
+import org.mule.soap.api.security.WssTimestampSecurityStrategy;
 
 import java.util.concurrent.TimeUnit;
 
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @since 1.0
  */
-public class WssTimestampSecurityStrategy implements SecurityStrategyAdapter {
+public class WssTimestampSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
    * The time difference between creation and expiry time in the time unit specified in {@code timeToLiveUnit}.
@@ -46,6 +46,6 @@ public class WssTimestampSecurityStrategy implements SecurityStrategyAdapter {
   @Override
   public SecurityStrategy getSecurityStrategy() {
     long seconds = timeToLiveUnit.toSeconds(timeToLive);
-    return new TimestampSecurityStrategy(seconds > 0 ? seconds : 1);
+    return new WssTimestampSecurityStrategy(seconds > 0 ? seconds : 1);
   }
 }

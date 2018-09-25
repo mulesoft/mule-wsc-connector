@@ -7,7 +7,7 @@
 package org.mule.extension.ws.api.security;
 
 import org.mule.runtime.extension.api.annotation.Alias;
-import org.mule.runtime.extension.api.soap.security.SecurityStrategy;
+import org.mule.soap.api.security.SecurityStrategy;
 
 /**
  * Adapter interface for classes that wraps a security class for the SOAP Protocol.

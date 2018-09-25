@@ -6,24 +6,22 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.service.soap.SoapTestUtils.assertSimilarXml;
-
-import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.functional.api.exception.ExpectedError;
-import org.mule.runtime.api.message.Message;
-import org.mule.service.soap.server.BasicAuthHttpServer;
-import org.mule.service.soap.server.HttpServer;
-import org.mule.tck.junit4.rule.SystemProperty;
-import org.mule.tck.util.TestConnectivityUtils;
-
-import org.junit.Rule;
-import org.junit.Test;
-
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
+import org.junit.Rule;
+import org.junit.Test;
+import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.extension.ws.server.BasicAuthHttpServer;
+import org.mule.extension.ws.server.HttpServer;
+import org.mule.functional.api.exception.ExpectedError;
+import org.mule.runtime.api.message.Message;
+import org.mule.tck.junit4.rule.SystemProperty;
+import org.mule.tck.util.TestConnectivityUtils;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})
