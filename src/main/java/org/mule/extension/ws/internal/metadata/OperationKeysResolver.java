@@ -9,11 +9,12 @@ package org.mule.extension.ws.internal.metadata;
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataKey;
 import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
-import org.mule.soap.api.metadata.SoapMetadataResolverFactory;
+import org.mule.wsdl.parser.model.WsdlModel;
 
 import java.util.Set;
 
@@ -40,8 +41,11 @@ public class OperationKeysResolver implements TypeKeysResolver {
 
   @Override
   public Set<MetadataKey> getKeys(MetadataContext context) throws ConnectionException {
-    WscSoapClient client = context.<WscSoapClient>getConnection().get();
-    Set<String> operations = SoapMetadataResolverFactory.getDefault().create(client.getWsdlLocation()).operations();
-    return operations.stream().map(ope -> newKey(ope).build()).collect(toSet());
+    WsdlConnectionInfo connectionInfo = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlModel wsdlModel = OperationModelFinder.getInstance().getOrCreateWsdlModel(context, connectionInfo.getWsdlLocation());
+    return wsdlModel.getService(connectionInfo.getService())
+        .getPort(connectionInfo.getPort())
+        .getOperations().stream()
+        .map(ope -> newKey(ope.getName()).build()).collect(toSet());
   }
 }

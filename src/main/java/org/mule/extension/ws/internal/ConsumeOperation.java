@@ -15,6 +15,7 @@ import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
+import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
 import org.mule.runtime.api.metadata.DataType;
@@ -80,7 +81,8 @@ public class ConsumeOperation {
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             StreamingHelper streamingHelper,
-                                                            ExtensionsClient client) {
+                                                            ExtensionsClient client)
+      throws ConnectionException {
     SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders()).build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()

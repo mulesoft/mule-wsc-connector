@@ -113,9 +113,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
       if (customTransportConfiguration == null) {
         customTransportConfiguration = new DefaultHttpTransportConfiguration(client);
       }
-      return new WscSoapClient(info.getWsdlLocation(),
-                               SOAP_CLIENT_FACTORY.create(getConfiguration()),
-                               customTransportConfiguration);
+      return new WscSoapClient(info, () -> SOAP_CLIENT_FACTORY.create(getConfiguration()), customTransportConfiguration);
     } catch (Exception e) {
       throw new ConnectionException(e.getMessage(), e);
     }

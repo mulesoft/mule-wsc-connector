@@ -8,15 +8,14 @@ package org.mule.extension.ws.internal.metadata;
 
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
+import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
-import org.mule.soap.api.metadata.SoapMetadataResolverFactory;
-import org.mule.soap.api.metadata.SoapOperationMetadata;
+import org.mule.wsdl.parser.model.operation.Type;
 
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
@@ -43,19 +42,18 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, String ope) throws ConnectionException {
-    WscSoapClient client = context.<WscSoapClient>getConnection().get();
-    SoapOperationMetadata resolve = SoapMetadataResolverFactory.getDefault().create(client.getWsdlLocation()).resolve(ope);
-    ObjectTypeBuilder output = context.getTypeBuilder().objectType();
-
-    MetadataType body = resolve.getOutput().getBody();
-    MetadataType headers = resolve.getOutput().getHeaders();
-    MetadataType attachments = resolve.getOutput().getAttachments();
+  public MetadataType getOutputType(MetadataContext context, String operation)
+      throws ConnectionException, MetadataResolvingException {
+    Type outputType = OperationModelFinder.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
+    MetadataType body = outputType.getBody();
+    MetadataType headers = outputType.getHeaders();
+    MetadataType attachments = outputType.getAttachments();
 
     if (isNullType(body) && isNullType(headers) && isNullType(attachments)) {
       return context.getTypeBuilder().nullType().build();
     }
 
+    ObjectTypeBuilder output = context.getTypeBuilder().objectType();
     addIfNotNullType(output, BODY, body);
     addIfNotNullType(output, HEADERS, headers);
     addIfNotNullType(output, ATTACHMENTS, attachments);

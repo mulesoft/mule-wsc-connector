@@ -9,6 +9,7 @@ package org.mule.extension.ws.metadata;
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectFieldType;
@@ -56,7 +57,7 @@ public class BodyMetadataTestCase extends AbstractMetadataTestCase {
 
   @Test
   @Description("Checks the dynamic metadata of the request body parameter for the echo operation")
-  public void getNoParamsInputBody() {
+  public void getNoParamsInputBody() throws InterruptedException {
     MetadataType body = getBody(NO_PARAMS_FLOW, NO_PARAMS);
 
     Collection<ObjectFieldType> fields = toObjectType(body).getFields();
