@@ -7,7 +7,6 @@
 package org.mule.extension.ws.internal.metadata;
 
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
@@ -35,7 +34,7 @@ public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
   @Override
   public MetadataType getInputMetadata(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    OperationModel operationModel = OperationModelFinder.getInstance().getOperationFromCacheOrCreate(context, operation);
+    OperationModel operationModel = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
     return operationModel.getInputType().getHeaders();
   }
 }

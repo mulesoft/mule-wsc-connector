@@ -15,6 +15,12 @@ import java.io.InputStream;
 
 import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
 
+/**
+ * {@link ResourceLocator} implementation that tries to fetch a resource from the {@link MetadataCache} first, if not there, then
+ * delegates the fetching to another locator.
+ *
+ * @since 1.2
+ */
 public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
 
   private final ResourceLocator delegate;

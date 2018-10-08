@@ -18,15 +18,21 @@ import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
 
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
-public class OperationModelFinder {
+/**
+ * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
+ * store them there.
+ *
+ * @since 1.2
+ */
+public class MetadataResolverUtils {
 
-  private OperationModelFinder() {}
+  private MetadataResolverUtils() {}
 
-  private static OperationModelFinder instance;
+  private static MetadataResolverUtils instance;
 
-  public static OperationModelFinder getInstance() {
+  public static MetadataResolverUtils getInstance() {
     if (instance == null) {
-      instance = new OperationModelFinder();
+      instance = new MetadataResolverUtils();
     }
     return instance;
   }

@@ -48,11 +48,9 @@ public abstract class AbstractMetadataTestCase extends AbstractWscTestCase {
   protected MetadataResult<ComponentMetadataDescriptor<OperationModel>> getMetadata(String flow, String key) {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result =
         service.getOperationMetadata(location(flow), newKey(key).build());
-    if (!result.isSuccess()) {
-      throw new RuntimeException("Error resolving metadata: \n\t" + result.getFailures().stream()
-          .map(f -> f.toString())
-          .collect(joining(", \n\t")));
-    }
+    assertThat("Failures: " + result.getFailures().stream().map(MetadataFailure::toString).collect(joining(", \n\t")),
+               result.isSuccess(), is(true));
+
     return result;
   }
 

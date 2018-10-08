@@ -42,7 +42,7 @@ public class OperationKeysResolver implements TypeKeysResolver {
   @Override
   public Set<MetadataKey> getKeys(MetadataContext context) throws ConnectionException {
     WsdlConnectionInfo connectionInfo = context.<WscSoapClient>getConnection().get().getInfo();
-    WsdlModel wsdlModel = OperationModelFinder.getInstance().getOrCreateWsdlModel(context, connectionInfo.getWsdlLocation());
+    WsdlModel wsdlModel = MetadataResolverUtils.getInstance().getOrCreateWsdlModel(context, connectionInfo.getWsdlLocation());
     return wsdlModel.getService(connectionInfo.getService())
         .getPort(connectionInfo.getPort())
         .getOperations().stream()

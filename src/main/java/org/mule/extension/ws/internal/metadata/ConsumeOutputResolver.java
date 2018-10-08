@@ -44,7 +44,7 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   @Override
   public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    Type outputType = OperationModelFinder.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
+    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
     MetadataType body = outputType.getBody();
     MetadataType headers = outputType.getHeaders();
     MetadataType attachments = outputType.getAttachments();
