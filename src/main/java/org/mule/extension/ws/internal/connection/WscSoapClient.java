@@ -7,10 +7,13 @@
 package org.mule.extension.ws.internal.connection;
 
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
+
+import java.util.function.Supplier;
 
 /**
  * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
@@ -20,27 +23,36 @@ import org.mule.soap.api.message.SoapResponse;
 public class WscSoapClient {
 
   private final CustomTransportConfiguration transportConfiguration;
-  private final String wsdlLocation;
-  private final SoapClient delegate;
+  private final WsdlConnectionInfo info;
+  private final Supplier<SoapClient> clientSupplier;
+  private SoapClient delegate;
 
-  public WscSoapClient(String wsdlLocation,
-                       SoapClient soapClient,
+  public WscSoapClient(WsdlConnectionInfo info,
+                       Supplier<SoapClient> clientSupplier,
                        CustomTransportConfiguration transportConfiguration) {
-
-    this.wsdlLocation = wsdlLocation;
-    this.delegate = soapClient;
+    this.info = info;
+    this.clientSupplier = clientSupplier;
     this.transportConfiguration = transportConfiguration;
   }
 
-  public SoapResponse consume(SoapRequest request, ExtensionsClient client) {
+  public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
+    if (delegate == null) {
+      try {
+        delegate = clientSupplier.get();
+      } catch (Exception e) {
+        throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
+      }
+    }
     return delegate.consume(request, transportConfiguration.buildDispatcher(client));
   }
 
-  public void destroy() {
-    delegate.destroy();
+  public WsdlConnectionInfo getInfo() {
+    return info;
   }
 
-  public String getWsdlLocation() {
-    return wsdlLocation;
+  public void destroy() {
+    if (delegate != null) {
+      delegate.destroy();
+    }
   }
 }

@@ -7,13 +7,12 @@
 package org.mule.extension.ws.internal.metadata;
 
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
+import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
-import org.mule.soap.api.metadata.SoapMetadataResolver;
-import org.mule.soap.api.metadata.SoapMetadataResolverFactory;
+import org.mule.wsdl.parser.model.operation.OperationModel;
 
 /**
  * {@link InputTypeResolver} implementation to resolve metadata for the message body of a particular operation.
@@ -33,9 +32,9 @@ public class SoapBodyTypeResolver implements InputTypeResolver<String> {
   }
 
   @Override
-  public MetadataType getInputMetadata(MetadataContext context, String operationName) throws ConnectionException {
-    WscSoapClient client = context.<WscSoapClient>getConnection().get();
-    SoapMetadataResolver soapMetadataResolver = SoapMetadataResolverFactory.getDefault().create(client.getWsdlLocation());
-    return soapMetadataResolver.resolve(operationName).getInput().getBody();
+  public MetadataType getInputMetadata(MetadataContext context, String operation)
+      throws ConnectionException, MetadataResolvingException {
+    OperationModel operationModel = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
+    return operationModel.getInputType().getBody();
   }
 }

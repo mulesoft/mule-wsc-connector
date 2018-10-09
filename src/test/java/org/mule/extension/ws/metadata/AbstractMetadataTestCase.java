@@ -15,11 +15,14 @@ import org.mule.runtime.api.meta.model.operation.OperationModel;
 import org.mule.runtime.api.meta.model.parameter.ParameterModel;
 import org.mule.runtime.api.metadata.MetadataService;
 import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
+import org.mule.runtime.api.metadata.resolving.MetadataFailure;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.joining;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
@@ -45,7 +48,9 @@ public abstract class AbstractMetadataTestCase extends AbstractWscTestCase {
   protected MetadataResult<ComponentMetadataDescriptor<OperationModel>> getMetadata(String flow, String key) {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result =
         service.getOperationMetadata(location(flow), newKey(key).build());
-    assertThat(result.isSuccess(), is(true));
+    assertThat("Failures: " + result.getFailures().stream().map(MetadataFailure::toString).collect(joining(", \n\t")),
+               result.isSuccess(), is(true));
+
     return result;
   }
 
