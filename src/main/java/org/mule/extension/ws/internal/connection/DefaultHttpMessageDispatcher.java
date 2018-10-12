@@ -38,12 +38,13 @@ import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 public class DefaultHttpMessageDispatcher implements TransportDispatcher {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHttpMessageDispatcher.class.getName());
-  private static final int DEFAULT_TIMEOUT_MILLIS = 5000;
 
   private final HttpClient client;
+  private final int timeout;
 
-  public DefaultHttpMessageDispatcher(HttpClient client) {
+  public DefaultHttpMessageDispatcher(HttpClient client, int timeout) {
     this.client = client;
+    this.timeout = timeout;
   }
 
   @Override
@@ -55,7 +56,7 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
           .entity(new InputStreamHttpEntity(content))
           .headers(new MultiMap<>(request.getHeaders()))
           .build();
-      HttpResponse response = client.send(httpPostRequest, DEFAULT_TIMEOUT_MILLIS, false, null);
+      HttpResponse response = client.send(httpPostRequest, timeout, false, null);
       return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response));
     } catch (IOException ioe) {
       throw new DispatcherException("An error occurred while sending the SOAP request", ioe);

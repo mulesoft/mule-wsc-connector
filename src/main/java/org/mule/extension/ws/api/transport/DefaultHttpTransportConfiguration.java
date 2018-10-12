@@ -7,6 +7,8 @@
 package org.mule.extension.ws.api.transport;
 
 import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.soap.api.transport.TransportDispatcher;
@@ -22,8 +24,12 @@ public class DefaultHttpTransportConfiguration implements CustomTransportConfigu
 
   private final DefaultHttpMessageDispatcher dispatcher;
 
+  @Parameter
+  @Optional(defaultValue = "5000")
+  private int timeout;
+
   public DefaultHttpTransportConfiguration(HttpClient client) {
-    this.dispatcher = new DefaultHttpMessageDispatcher(client);
+    this.dispatcher = new DefaultHttpMessageDispatcher(client, timeout);
   }
 
   @Override
