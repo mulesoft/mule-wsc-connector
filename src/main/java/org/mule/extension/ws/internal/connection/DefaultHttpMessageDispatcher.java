@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.internal.connection;
 
+import org.mule.extension.ws.internal.error.DispatcherTimeoutException;
 import org.mule.runtime.api.util.MultiMap;
 import org.mule.runtime.core.api.util.IOUtils;
 import org.mule.runtime.http.api.client.HttpClient;
@@ -61,7 +62,7 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
     } catch (IOException ioe) {
       throw new DispatcherException("An error occurred while sending the SOAP request", ioe);
     } catch (TimeoutException te) {
-      throw new DispatcherException("The SOAP request timed out", te);
+      throw new DispatcherTimeoutException("The SOAP request timed out", te);
     }
   }
 

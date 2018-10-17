@@ -6,10 +6,10 @@
  */
 package org.mule.extension.ws.internal;
 
-import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
-import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.*;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.internal.error.WscError;
+import org.mule.extension.ws.internal.transport.*;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.SubTypeMapping;
@@ -27,7 +27,8 @@ import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 @ErrorTypes(WscError.class)
 @Operations(ConsumeOperation.class)
 @ConnectionProviders(SoapClientConnectionProvider.class)
-@SubTypeMapping(baseType = CustomTransportConfiguration.class, subTypes = CustomHttpTransportConfiguration.class)
+@SubTypeMapping(baseType = CustomTransportConfiguration.class,
+    subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
 @Extension(name = NAME)
 @Xml(prefix = "wsc")
 public class WebServiceConsumer {

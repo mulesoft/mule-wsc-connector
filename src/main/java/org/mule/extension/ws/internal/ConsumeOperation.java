@@ -82,7 +82,7 @@ public class ConsumeOperation {
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
-      throws ConnectionException {
+      throws Exception {
     SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders()).build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()

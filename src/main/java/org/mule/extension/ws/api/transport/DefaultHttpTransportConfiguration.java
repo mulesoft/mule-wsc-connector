@@ -6,39 +6,28 @@
  */
 package org.mule.extension.ws.api.transport;
 
-import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
-import org.mule.runtime.extension.api.annotation.param.Optional;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.client.ExtensionsClient;
-import org.mule.runtime.http.api.client.HttpClient;
-import org.mule.soap.api.transport.TransportDispatcher;
-import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
-import org.mule.soap.api.transport.locator.TransportResourceLocator;
+import org.mule.runtime.extension.api.annotation.param.*;
+import org.mule.runtime.extension.api.client.*;
+import org.mule.soap.api.transport.*;
+import org.mule.soap.api.transport.locator.*;
 
-/**
- * Default transport configuration, sends SOAP messages through HTTP with a default configuration.
- *
- * @since 1.1
- */
 public class DefaultHttpTransportConfiguration implements CustomTransportConfiguration {
-
-  private final DefaultHttpMessageDispatcher dispatcher;
 
   @Parameter
   @Optional(defaultValue = "5000")
   private int timeout;
 
-  public DefaultHttpTransportConfiguration(HttpClient client) {
-    this.dispatcher = new DefaultHttpMessageDispatcher(client, timeout);
-  }
-
   @Override
   public TransportDispatcher buildDispatcher(ExtensionsClient client) {
-    return dispatcher;
+    return null;
   }
 
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
-    return new NullTransportResourceLocator();
+    return null;
+  }
+
+  public int getTimeout() {
+    return timeout;
   }
 }

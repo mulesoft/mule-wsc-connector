@@ -19,6 +19,7 @@ import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
 import static org.mule.extension.ws.internal.error.WscError.ENCODING;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
+import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
 /**
  * {@link ErrorTypeProvider} implementation for the {@link ConsumeOperation}.
@@ -32,6 +33,6 @@ public class ConsumeErrorTypeProvider implements ErrorTypeProvider {
    */
   @Override
   public Set<ErrorTypeDefinition> getErrorTypes() {
-    return ImmutableSet.of(BAD_REQUEST, BAD_RESPONSE, ENCODING, INVALID_WSDL, SOAP_FAULT, CANNOT_DISPATCH);
+    return ImmutableSet.of(BAD_REQUEST, BAD_RESPONSE, ENCODING, INVALID_WSDL, SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT);
   }
 }

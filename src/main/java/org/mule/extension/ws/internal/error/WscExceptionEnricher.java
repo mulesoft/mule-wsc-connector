@@ -24,6 +24,7 @@ import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
 import static org.mule.extension.ws.internal.error.WscError.ENCODING;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
+import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
 /**
  * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a
@@ -38,6 +39,7 @@ public class WscExceptionEnricher extends ExceptionHandler {
           .put(BadResponseException.class, BAD_RESPONSE)
           .put(BadRequestException.class, BAD_REQUEST)
           .put(DispatcherException.class, CANNOT_DISPATCH)
+          .put(DispatcherTimeoutException.class, TIMEOUT)
           .put(InvalidWsdlException.class, INVALID_WSDL)
           .put(EncodingException.class, ENCODING)
           .build();
@@ -47,6 +49,9 @@ public class WscExceptionEnricher extends ExceptionHandler {
    */
   @Override
   public Exception enrichException(Exception e) {
+    if (e instanceof ModuleException) {
+      return e;
+    }
     if (e instanceof SoapFaultException) {
       return new SoapFaultMessageAwareException(((SoapFaultException) e));
     }

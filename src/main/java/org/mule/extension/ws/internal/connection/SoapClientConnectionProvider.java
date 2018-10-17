@@ -8,8 +8,8 @@ package org.mule.extension.ws.internal.connection;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
-import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
-import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
+import org.mule.extension.ws.api.transport.*;
+import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
 import org.mule.extension.ws.internal.value.WsdlValueProvider;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionException;
@@ -17,10 +17,7 @@ import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.lifecycle.Lifecycle;
 import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
-import org.mule.runtime.extension.api.annotation.param.Optional;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.*;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
@@ -30,7 +27,6 @@ import org.mule.runtime.http.api.HttpService;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.runtime.http.api.client.HttpClientConfiguration;
 import org.mule.soap.api.SoapWebServiceConfiguration;
-import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.client.SoapClientFactory;
 import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
@@ -48,7 +44,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
  *
  * @since 1.0
  */
-public class SoapClientConnectionProvider implements CachedConnectionProvider<WscSoapClient>, Lifecycle, NoConnectivityTest {
+public class SoapClientConnectionProvider implements CachedConnectionProvider<WscSoapClient>, NoConnectivityTest, Lifecycle {
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
   private final SoapClientFactory SOAP_CLIENT_FACTORY = SoapClientFactory.getDefault();
@@ -102,6 +98,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Transport Configuration")
+  @NullSafe(defaultImplementingType = DefaultHttpTransportConfiguration.class)
   private CustomTransportConfiguration customTransportConfiguration;
 
   /**
@@ -110,8 +107,10 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Override
   public WscSoapClient connect() throws ConnectionException {
     try {
-      if (customTransportConfiguration == null) {
-        customTransportConfiguration = new DefaultHttpTransportConfiguration(client);
+      // TODO(MULE-15847): remove instance of and move HTTP Client lifecycle to the subtype
+      if (customTransportConfiguration instanceof DefaultHttpTransportConfiguration) {
+        DefaultHttpTransportConfiguration transport = (DefaultHttpTransportConfiguration) customTransportConfiguration;
+        this.customTransportConfiguration = new DefaultHttpTransportConfigurationImpl(client, transport.getTimeout());
       }
       return new WscSoapClient(info, () -> SOAP_CLIENT_FACTORY.create(getConfiguration()), customTransportConfiguration);
     } catch (Exception e) {
