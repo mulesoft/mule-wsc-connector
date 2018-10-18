@@ -17,7 +17,7 @@ import org.mule.soap.api.transport.locator.TransportResourceLocator;
 /**
  * Default transport configuration, sends SOAP messages through HTTP with a default configuration.
  *
- * @since 1.1
+ * @since 1.2.0
  */
 public class DefaultHttpTransportConfigurationImpl implements CustomTransportConfiguration {
 
