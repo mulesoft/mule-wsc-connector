@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.runtime.wss;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.apache.cxf.interceptor.Interceptor;
@@ -14,8 +16,6 @@ import org.mule.extension.ws.service.ServerPasswordCallback;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
 @Feature(WSC_EXTENSION)
 @Story("WSS")

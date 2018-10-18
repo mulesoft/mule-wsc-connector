@@ -7,6 +7,11 @@
 
 package org.mule.extension.ws.internal.value;
 
+import static java.lang.Thread.currentThread;
+import static java.util.stream.Collectors.toSet;
+import static org.mule.runtime.extension.api.values.ValueBuilder.newValue;
+import static org.mule.wsdl.parser.model.WsdlStyle.RPC;
+
 import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -22,11 +27,6 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.lang.Thread.currentThread;
-import static java.util.stream.Collectors.toSet;
-import static org.mule.runtime.extension.api.values.ValueBuilder.newValue;
-import static org.mule.wsdl.parser.model.WsdlStyle.RPC;
 
 /**
  * {@link ValueProvider} implementation which provides the possible and supported values for the {@link WsdlConnectionInfo}

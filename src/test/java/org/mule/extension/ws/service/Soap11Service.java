@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.service;
 
+import static java.lang.String.format;
+
 import org.mule.runtime.core.api.util.IOUtils;
 
 import javax.activation.DataHandler;
@@ -21,8 +23,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import static java.lang.String.format;
 
 @WebService(portName = "TestPort", serviceName = "TestService")
 public class Soap11Service {

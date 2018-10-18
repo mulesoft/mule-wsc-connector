@@ -6,6 +6,12 @@
  */
 package org.mule.extension.ws.internal.connection;
 
+import static java.lang.String.join;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static org.mule.runtime.http.api.HttpConstants.Method.POST;
+
+import org.mule.extension.ws.internal.error.DispatcherTimeoutException;
 import org.mule.runtime.api.util.MultiMap;
 import org.mule.runtime.core.api.util.IOUtils;
 import org.mule.runtime.http.api.client.HttpClient;
@@ -25,11 +31,6 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
-import static java.lang.String.join;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-import static org.mule.runtime.http.api.HttpConstants.Method.POST;
-
 /**
  * {@link TransportDispatcher} implementation that sends messages using the {@link HttpClient}.
  *
@@ -38,12 +39,13 @@ import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 public class DefaultHttpMessageDispatcher implements TransportDispatcher {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHttpMessageDispatcher.class.getName());
-  private static final int DEFAULT_TIMEOUT_MILLIS = 5000;
 
   private final HttpClient client;
+  private final int timeout;
 
-  public DefaultHttpMessageDispatcher(HttpClient client) {
+  public DefaultHttpMessageDispatcher(HttpClient client, int timeout) {
     this.client = client;
+    this.timeout = timeout;
   }
 
   @Override
@@ -55,12 +57,12 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
           .entity(new InputStreamHttpEntity(content))
           .headers(new MultiMap<>(request.getHeaders()))
           .build();
-      HttpResponse response = client.send(httpPostRequest, DEFAULT_TIMEOUT_MILLIS, false, null);
+      HttpResponse response = client.send(httpPostRequest, timeout, false, null);
       return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response));
     } catch (IOException ioe) {
       throw new DispatcherException("An error occurred while sending the SOAP request", ioe);
     } catch (TimeoutException te) {
-      throw new DispatcherException("The SOAP request timed out", te);
+      throw new DispatcherTimeoutException("The SOAP request timed out", te);
     }
   }
 

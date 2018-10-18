@@ -6,33 +6,37 @@
  */
 package org.mule.extension.ws.api.transport;
 
-import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
+import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
-import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.soap.api.transport.TransportDispatcher;
-import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 /**
- * Default transport configuration, sends SOAP messages through HTTP with a default configuration.
+ * DTO subtype used to instantiate {@link DefaultHttpTransportConfigurationImpl} objects.
  *
  * @since 1.1
  */
 public class DefaultHttpTransportConfiguration implements CustomTransportConfiguration {
 
-  private final DefaultHttpMessageDispatcher dispatcher;
-
-  public DefaultHttpTransportConfiguration(HttpClient client) {
-    this.dispatcher = new DefaultHttpMessageDispatcher(client);
-  }
+  @Parameter
+  @Optional(defaultValue = "5000")
+  private int timeout;
 
   @Override
   public TransportDispatcher buildDispatcher(ExtensionsClient client) {
-    return dispatcher;
+    // Just using this impl as DTO
+    return null;
   }
 
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
-    return new NullTransportResourceLocator();
+    // Just using this impl as DTO
+    return null;
+  }
+
+  public int getTimeout() {
+    return timeout;
   }
 }

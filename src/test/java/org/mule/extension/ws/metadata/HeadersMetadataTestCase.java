@@ -6,6 +6,15 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -21,15 +30,6 @@ import org.mule.runtime.api.metadata.descriptor.ComponentMetadataDescriptor;
 import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.Collection;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

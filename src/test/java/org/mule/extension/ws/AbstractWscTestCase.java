@@ -6,6 +6,13 @@
  */
 package org.mule.extension.ws;
 
+import static java.lang.Thread.currentThread;
+import static java.util.Arrays.asList;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
+import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP11;
+import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP12;
+
 import org.apache.cxf.interceptor.Interceptor;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Rule;
@@ -21,13 +28,6 @@ import org.mule.tck.junit4.rule.SystemProperty;
 import org.mule.test.runner.RunnerDelegateTo;
 
 import java.util.Collection;
-
-import static java.lang.Thread.currentThread;
-import static java.util.Arrays.asList;
-import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
-import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
-import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP11;
-import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP12;
 
 @RunnerDelegateTo(Parameterized.class)
 public abstract class AbstractWscTestCase extends MuleArtifactFunctionalTestCase {

@@ -6,13 +6,13 @@
  */
 package org.mule.extension.ws.runtime.wss;
 
+import static java.lang.String.format;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+
 import io.qameta.allure.Description;
 import org.junit.Test;
 import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
-
-import static java.lang.String.format;
-import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
 
 public abstract class AbstractWebServiceSecurityTestCase extends AbstractWscTestCase {
 

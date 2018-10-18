@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.runtime.wss;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -17,9 +20,6 @@ import org.mule.runtime.api.message.Message;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
 
 @Feature(WSC_EXTENSION)
 @Story("WSS")

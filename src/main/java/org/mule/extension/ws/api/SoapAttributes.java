@@ -6,13 +6,13 @@
  */
 package org.mule.extension.ws.api;
 
-import org.mule.runtime.extension.api.annotation.param.Parameter;
-
-import java.util.Map;
-
 import static com.google.common.collect.ImmutableMap.copyOf;
 import static com.google.common.collect.ImmutableMap.of;
 import static java.util.stream.Collectors.joining;
+
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+
+import java.util.Map;
 
 /**
  * The attributes returned by the consume operation, it carries the protocol specific headers bounded to the response.

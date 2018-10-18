@@ -6,14 +6,14 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
+
 import org.mule.runtime.api.metadata.MetadataCache;
 import org.mule.wsdl.parser.locator.GlobalResourceLocator;
 import org.mule.wsdl.parser.locator.ResourceLocator;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-
-import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
 
 /**
  * {@link ResourceLocator} implementation that tries to fetch a resource from the {@link MetadataCache} first, if not there, then

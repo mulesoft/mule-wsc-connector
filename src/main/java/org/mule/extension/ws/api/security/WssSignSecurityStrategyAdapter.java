@@ -6,14 +6,14 @@
  */
 package org.mule.extension.ws.api.security;
 
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
 import org.mule.extension.ws.api.security.config.WssKeyStoreConfigurationAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssSignSecurityStrategy;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
-
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * Signs the SOAP request that is being sent, using the private key of the key-store in the provided TLS context.

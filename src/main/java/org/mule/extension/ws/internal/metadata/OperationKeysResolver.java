@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static java.util.stream.Collectors.toSet;
+import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
+
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
@@ -17,9 +20,6 @@ import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
 import org.mule.wsdl.parser.model.WsdlModel;
 
 import java.util.Set;
-
-import static java.util.stream.Collectors.toSet;
-import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
 
 /**
  * {@link TypeKeysResolver} implementation for the {@link ConsumeOperation}, retrieves a metadata key for each operation available

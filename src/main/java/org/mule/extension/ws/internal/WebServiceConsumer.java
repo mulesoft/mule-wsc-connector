@@ -6,8 +6,11 @@
  */
 package org.mule.extension.ws.internal;
 
+import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
+
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.internal.error.WscError;
 import org.mule.runtime.extension.api.annotation.Extension;
@@ -17,8 +20,6 @@ import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProvider
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 
-import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
-
 /**
  * Web Service Consumer extension used to consume SOAP web services.
  *
@@ -27,7 +28,8 @@ import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 @ErrorTypes(WscError.class)
 @Operations(ConsumeOperation.class)
 @ConnectionProviders(SoapClientConnectionProvider.class)
-@SubTypeMapping(baseType = CustomTransportConfiguration.class, subTypes = CustomHttpTransportConfiguration.class)
+@SubTypeMapping(baseType = CustomTransportConfiguration.class,
+    subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
 @Extension(name = NAME)
 @Xml(prefix = "wsc")
 public class WebServiceConsumer {

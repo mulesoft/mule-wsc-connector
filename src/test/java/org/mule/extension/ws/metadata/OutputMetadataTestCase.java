@@ -6,6 +6,22 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isIn;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
+import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -23,22 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO_HEADERS;
-import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
-import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.HEADERS;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

@@ -6,12 +6,12 @@
  */
 package org.mule.extension.ws.internal.transport;
 
+import static java.util.Collections.emptyMap;
+
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 import java.io.InputStream;
-
-import static java.util.Collections.emptyMap;
 
 /**
  * {@link TransportResourceLocator} implementation that uses a custom HTTP connector requester configuration to

@@ -6,6 +6,11 @@
  */
 package org.mule.extension.ws.api;
 
+import static java.nio.charset.Charset.forName;
+import static java.util.stream.Collectors.joining;
+import static org.mule.runtime.api.metadata.DataType.builder;
+import static org.mule.runtime.api.metadata.MediaType.APPLICATION_XML;
+
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
 import org.mule.runtime.api.metadata.DataType;
@@ -21,11 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.Map;
-
-import static java.nio.charset.Charset.forName;
-import static java.util.stream.Collectors.joining;
-import static org.mule.runtime.api.metadata.DataType.builder;
-import static org.mule.runtime.api.metadata.MediaType.APPLICATION_XML;
 
 /**
  * Represents the response of the consume operation. Bundles the SOAP body, SOAP Headers and Mime Attachments if there are any.

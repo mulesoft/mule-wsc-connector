@@ -6,6 +6,16 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
+import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.BODY;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -20,16 +30,6 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.Collection;
 import java.util.Iterator;
-
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO_ACCOUNT;
-import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.BODY;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

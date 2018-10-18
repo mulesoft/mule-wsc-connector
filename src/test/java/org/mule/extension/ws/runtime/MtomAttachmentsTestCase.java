@@ -6,14 +6,14 @@
  */
 package org.mule.extension.ws.runtime;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP11;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
 import org.mule.extension.ws.service.Mtom11Service;
 import org.mule.extension.ws.service.Mtom12Service;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP11;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Attachments"), @Story("MTOM")})

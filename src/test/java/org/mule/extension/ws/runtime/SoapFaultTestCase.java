@@ -6,6 +6,11 @@
  */
 package org.mule.extension.ws.runtime;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
@@ -15,11 +20,6 @@ import org.junit.Test;
 import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.functional.api.exception.ExpectedError;
 import org.mule.runtime.core.api.event.CoreEvent;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Soap Fault")})

@@ -6,12 +6,12 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
 import org.mule.extension.ws.runtime.SoapWithAttachmentsTestCase;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Attachments"), @Story("MTOM")})

@@ -6,6 +6,16 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
+import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
+import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.BODY;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -21,16 +31,6 @@ import org.mule.runtime.api.metadata.resolving.MetadataResult;
 
 import java.util.Collection;
 import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestXmlValues.ECHO;
-import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.ATTACHMENTS;
-import static org.mule.extension.ws.internal.metadata.ConsumeOutputResolver.BODY;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

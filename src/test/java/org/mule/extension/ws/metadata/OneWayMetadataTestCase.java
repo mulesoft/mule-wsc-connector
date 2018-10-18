@@ -6,18 +6,18 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestXmlValues.ONE_WAY;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.Test;
 import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.meta.model.operation.OperationModel;
-
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestXmlValues.ONE_WAY;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")
