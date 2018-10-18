@@ -7,6 +7,14 @@
 
 package org.mule.extension.ws.value;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.startsWith;
+import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SERVICE_KEY;
+import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -20,14 +28,6 @@ import org.mule.test.runner.RunnerDelegateTo;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Set;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.startsWith;
-import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SERVICE_KEY;
-import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
 
 @RunnerDelegateTo()
 public class WscValueProviderTestCase extends AbstractWscTestCase {

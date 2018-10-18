@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.api;
 
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.api.util.collection.Collectors.toImmutableList;
+
 import org.mule.extension.ws.api.security.SecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssDecryptSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssEncryptSecurityStrategyAdapter;
@@ -23,9 +26,6 @@ import org.mule.soap.api.security.SecurityStrategy;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.api.util.collection.Collectors.toImmutableList;
 
 /**
  * This class serves as {@link ParameterGroup} for configuring Web Service Security.

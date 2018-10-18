@@ -6,17 +6,6 @@
  */
 package org.mule.extension.ws.metadata;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.junit.Test;
-import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.runtime.api.metadata.MetadataKey;
-import org.mule.runtime.api.metadata.MetadataKeysContainer;
-import org.mule.runtime.api.metadata.resolving.MetadataResult;
-
-import java.util.Set;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.collection.IsIn.isIn;
 import static org.hamcrest.core.Is.is;
@@ -32,6 +21,17 @@ import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS;
 import static org.mule.extension.ws.SoapTestXmlValues.NO_PARAMS_HEADERS;
 import static org.mule.extension.ws.SoapTestXmlValues.ONE_WAY;
 import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
+
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.junit.Test;
+import org.mule.extension.ws.internal.WebServiceConsumer;
+import org.mule.runtime.api.metadata.MetadataKey;
+import org.mule.runtime.api.metadata.MetadataKeysContainer;
+import org.mule.runtime.api.metadata.resolving.MetadataResult;
+
+import java.util.Set;
 
 @Feature(WSC_EXTENSION)
 @Story("Metadata")

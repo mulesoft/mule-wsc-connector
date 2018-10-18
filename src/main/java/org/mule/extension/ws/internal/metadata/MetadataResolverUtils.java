@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
+
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataCache;
@@ -15,8 +17,6 @@ import org.mule.wsdl.parser.WsdlParser;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
-
-import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
 /**
  * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and

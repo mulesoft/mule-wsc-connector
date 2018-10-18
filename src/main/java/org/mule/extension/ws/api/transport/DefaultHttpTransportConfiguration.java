@@ -6,11 +6,18 @@
  */
 package org.mule.extension.ws.api.transport;
 
-import org.mule.runtime.extension.api.annotation.param.*;
-import org.mule.runtime.extension.api.client.*;
-import org.mule.soap.api.transport.*;
-import org.mule.soap.api.transport.locator.*;
+import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.soap.api.transport.TransportDispatcher;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
+/**
+ * DTO subtype used to instantiate {@link DefaultHttpTransportConfigurationImpl} objects.
+ *
+ * @since 1.2.0
+ */
 public class DefaultHttpTransportConfiguration implements CustomTransportConfiguration {
 
   @Parameter
@@ -19,11 +26,13 @@ public class DefaultHttpTransportConfiguration implements CustomTransportConfigu
 
   @Override
   public TransportDispatcher buildDispatcher(ExtensionsClient client) {
+    // Just using this impl as DTO
     return null;
   }
 
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
+    // Just using this impl as DTO
     return null;
   }
 

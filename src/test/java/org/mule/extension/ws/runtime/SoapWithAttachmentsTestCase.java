@@ -6,10 +6,10 @@
  */
 package org.mule.extension.ws.runtime;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 
 @Feature(WSC_EXTENSION)
 @Story("Attachments")

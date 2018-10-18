@@ -6,6 +6,12 @@
  */
 package org.mule.extension.ws.internal.transport;
 
+import static java.lang.String.join;
+import static java.util.stream.Collectors.toMap;
+import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
+import static org.mule.runtime.http.api.HttpConstants.Method.GET;
+import static org.mule.runtime.http.api.HttpConstants.Method.POST;
+
 import org.mule.extension.http.api.HttpAttributes;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
@@ -21,12 +27,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-
-import static java.lang.String.join;
-import static java.util.stream.Collectors.toMap;
-import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
-import static org.mule.runtime.http.api.HttpConstants.Method.GET;
-import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
 /**
  * Executes an HTTP requester operation using the {@link ExtensionsClient}.

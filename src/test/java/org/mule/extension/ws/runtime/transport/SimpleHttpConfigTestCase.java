@@ -6,15 +6,15 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
+import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+
 import io.qameta.allure.Feature;
 import io.qameta.allure.Stories;
 import io.qameta.allure.Story;
 import org.junit.Test;
 import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.runtime.api.message.Message;
-
-import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
-import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
 
 @Feature(WSC_EXTENSION)
 @Stories({@Story("Operation Execution"), @Story("Custom Transport"), @Story("Http")})

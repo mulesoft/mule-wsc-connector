@@ -6,6 +6,17 @@
  */
 package org.mule.extension.ws.runtime;
 
+import static org.apache.commons.io.IOUtils.copy;
+import static org.apache.commons.io.IOUtils.toInputStream;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
+import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
+import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
+import static org.mule.runtime.api.metadata.MediaType.parse;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.junit.Rule;
@@ -22,17 +33,6 @@ import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
-
-import static org.apache.commons.io.IOUtils.copy;
-import static org.apache.commons.io.IOUtils.toInputStream;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mule.extension.ws.SoapTestUtils.assertSimilarXml;
-import static org.mule.extension.ws.SoapTestXmlValues.DOWNLOAD_ATTACHMENT;
-import static org.mule.extension.ws.SoapTestXmlValues.UPLOAD_ATTACHMENT;
-import static org.mule.runtime.api.metadata.MediaType.parse;
 
 public abstract class AttachmentsTestCase extends AbstractWscTestCase {
 

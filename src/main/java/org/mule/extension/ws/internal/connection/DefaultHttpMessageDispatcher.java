@@ -6,6 +6,11 @@
  */
 package org.mule.extension.ws.internal.connection;
 
+import static java.lang.String.join;
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
+import static org.mule.runtime.http.api.HttpConstants.Method.POST;
+
 import org.mule.extension.ws.internal.error.DispatcherTimeoutException;
 import org.mule.runtime.api.util.MultiMap;
 import org.mule.runtime.core.api.util.IOUtils;
@@ -25,11 +30,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-
-import static java.lang.String.join;
-import static java.util.function.Function.identity;
-import static java.util.stream.Collectors.toMap;
-import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
 /**
  * {@link TransportDispatcher} implementation that sends messages using the {@link HttpClient}.

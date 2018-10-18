@@ -6,7 +6,6 @@
  */
 package org.mule.extension.ws.runtime.transport;
 
-import static org.hamcrest.core.StringContains.containsString;
 import static org.mule.extension.ws.AllureConstants.WscFeature.WSC_EXTENSION;
 import static org.mule.extension.ws.api.SoapVersionAdapter.SOAP11;
 
@@ -14,7 +13,8 @@ import io.qameta.allure.Feature;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.extension.ws.service.*;
+import org.mule.extension.ws.service.SlowService;
+import org.mule.extension.ws.service.SlowService12;
 import org.mule.functional.api.exception.ExpectedError;
 
 @Feature(WSC_EXTENSION)

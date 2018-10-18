@@ -35,7 +35,7 @@ public class WscSoapClient {
     this.transportConfiguration = transportConfiguration;
   }
 
-  public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws Exception {
+  public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
     if (delegate == null) {
       try {
         delegate = clientSupplier.get();

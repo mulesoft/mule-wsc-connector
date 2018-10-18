@@ -6,12 +6,13 @@
  */
 package org.mule.extension.ws.internal.transport;
 
-import org.mule.extension.ws.api.transport.*;
-import org.mule.extension.ws.internal.connection.*;
-import org.mule.runtime.extension.api.client.*;
-import org.mule.runtime.http.api.client.*;
-import org.mule.soap.api.transport.*;
-import org.mule.soap.api.transport.locator.*;
+import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
+import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.soap.api.transport.TransportDispatcher;
+import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 /**
  * Default transport configuration, sends SOAP messages through HTTP with a default configuration.

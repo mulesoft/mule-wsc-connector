@@ -6,12 +6,12 @@
  */
 package org.mule.extension.ws.internal.error;
 
+import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
+
 import org.mule.runtime.api.exception.ErrorMessageAwareException;
 import org.mule.runtime.api.message.Message;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.soap.api.exception.SoapFaultException;
-
-import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
 
 /**
  * {@link ErrorMessageAwareException} that provides all the soap fault information on the `error.errorMessage`.

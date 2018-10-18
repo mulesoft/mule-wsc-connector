@@ -6,6 +6,13 @@
  */
 package org.mule.extension.ws.internal.error;
 
+import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
+import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
+import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
+import static org.mule.extension.ws.internal.error.WscError.ENCODING;
+import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
+import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
+
 import com.google.common.collect.ImmutableMap;
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.runtime.extension.api.exception.ModuleException;
@@ -18,13 +25,6 @@ import org.mule.soap.api.exception.SoapFaultException;
 import org.mule.soap.api.transport.DispatcherException;
 
 import java.util.Map;
-
-import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
-import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
-import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
-import static org.mule.extension.ws.internal.error.WscError.ENCODING;
-import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
-import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
 /**
  * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a

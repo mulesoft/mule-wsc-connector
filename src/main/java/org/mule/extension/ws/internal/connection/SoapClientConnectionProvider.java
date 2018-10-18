@@ -6,9 +6,13 @@
  */
 package org.mule.extension.ws.internal.connection;
 
+import static java.lang.Thread.currentThread;
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
-import org.mule.extension.ws.api.transport.*;
+import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
 import org.mule.extension.ws.internal.value.WsdlValueProvider;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -17,7 +21,11 @@ import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.lifecycle.Lifecycle;
 import org.mule.runtime.extension.api.annotation.Expression;
-import org.mule.runtime.extension.api.annotation.param.*;
+import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
+import org.mule.runtime.extension.api.annotation.param.NullSafe;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
@@ -35,9 +43,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
 import java.net.URL;
-
-import static java.lang.Thread.currentThread;
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link WscSoapClient}.

@@ -6,6 +6,10 @@
  */
 package org.mule.extension.ws.server;
 
+import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
+import static org.eclipse.jetty.util.security.Constraint.__BASIC_AUTH;
+import static org.eclipse.jetty.util.security.Credential.getCredential;
+
 import org.apache.cxf.interceptor.Interceptor;
 import org.apache.cxf.transport.servlet.CXFNonSpringServlet;
 import org.eclipse.jetty.security.ConstraintMapping;
@@ -17,10 +21,6 @@ import org.eclipse.jetty.security.authentication.BasicAuthenticator;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.util.security.Constraint;
-
-import static org.eclipse.jetty.servlet.ServletContextHandler.SESSIONS;
-import static org.eclipse.jetty.util.security.Constraint.__BASIC_AUTH;
-import static org.eclipse.jetty.util.security.Credential.getCredential;
 
 public class BasicAuthHttpServer extends HttpServer {
 

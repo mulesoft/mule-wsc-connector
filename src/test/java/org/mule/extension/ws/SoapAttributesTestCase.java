@@ -6,25 +6,12 @@
  */
 package org.mule.extension.ws;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+
 import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 import org.mule.extension.ws.api.SoapAttributes;
-import org.mule.extension.ws.api.SoapOutputEnvelope;
-import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
-import org.mule.soap.api.message.SoapAttachment;
-import org.mule.soap.internal.message.DefaultSoapResponse;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.Map;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static java.util.Collections.emptyMap;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class SoapAttributesTestCase {
 

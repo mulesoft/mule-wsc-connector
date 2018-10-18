@@ -6,16 +6,6 @@
  */
 package org.mule.extension.ws.runtime;
 
-import io.qameta.allure.Description;
-import io.qameta.allure.Feature;
-import io.qameta.allure.Story;
-import org.apache.commons.io.IOUtils;
-import org.junit.Test;
-import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.extension.ws.api.SoapOutputEnvelope;
-import org.mule.runtime.api.message.Message;
-import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
-
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
@@ -25,6 +15,16 @@ import static org.mule.extension.ws.SoapTestUtils.payloadBodyAsString;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
+
+import io.qameta.allure.Description;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Story;
+import org.apache.commons.io.IOUtils;
+import org.junit.Test;
+import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.extension.ws.api.SoapOutputEnvelope;
+import org.mule.runtime.api.message.Message;
+import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")

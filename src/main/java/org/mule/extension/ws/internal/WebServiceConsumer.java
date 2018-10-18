@@ -6,18 +6,19 @@
  */
 package org.mule.extension.ws.internal;
 
-import org.mule.extension.ws.api.transport.*;
+import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
+
+import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
+import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.internal.error.WscError;
-import org.mule.extension.ws.internal.transport.*;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.SubTypeMapping;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
-
-import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 
 /**
  * Web Service Consumer extension used to consume SOAP web services.

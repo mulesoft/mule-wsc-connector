@@ -7,14 +7,14 @@
 
 package org.mule.extension.ws.internal.connection;
 
+import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
+
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.ValuePart;
-
-import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 /**
  * Groups together the parameters retrieved from a WSDL that are going to be used for establishing a connection to a SOAP endpoint.

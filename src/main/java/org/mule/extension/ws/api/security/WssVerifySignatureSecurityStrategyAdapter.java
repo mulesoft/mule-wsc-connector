@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.api.security;
 
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
 import org.mule.extension.ws.api.security.config.WssTrustStoreConfigurationAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -13,8 +15,6 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssVerifySignatureSecurityStrategy;
 import org.mule.soap.api.security.stores.WssTrustStoreConfiguration;
-
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
  * Verifies the signature of a SOAP response, using certificates of the trust-store in the provided TLS context.

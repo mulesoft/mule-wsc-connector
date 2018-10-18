@@ -7,6 +7,10 @@
 package org.mule.extension.ws.internal;
 
 
+import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
+import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
+import static org.mule.runtime.api.metadata.MediaType.XML;
+
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.api.TransportConfiguration;
@@ -40,10 +44,6 @@ import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
-import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
-import static org.mule.runtime.api.metadata.MediaType.XML;
 
 /**
  * The only {@link WebServiceConsumer} operation. the {@link ConsumeOperation} consumes an operation of the connected web service
@@ -82,7 +82,7 @@ public class ConsumeOperation {
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
-      throws Exception {
+      throws ConnectionException {
     SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders()).build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
