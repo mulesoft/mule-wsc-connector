@@ -16,7 +16,7 @@ import org.mule.soap.api.transport.locator.TransportResourceLocator;
 /**
  * DTO subtype used to instantiate {@link DefaultHttpTransportConfigurationImpl} objects.
  *
- * @since 1.2.0
+ * @since 1.1
  */
 public class DefaultHttpTransportConfiguration implements CustomTransportConfiguration {
 
