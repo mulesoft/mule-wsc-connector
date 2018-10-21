@@ -7,7 +7,7 @@
           http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <wsc:config name="wsc-config">
-        <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="simple-requester"/>
