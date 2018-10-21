@@ -11,7 +11,7 @@ import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.soap.api.transport.TransportDispatcher;
-import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
+import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 /**
@@ -37,6 +37,6 @@ public class DefaultHttpTransportConfigurationImpl implements CustomTransportCon
 
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
-    return new NullTransportResourceLocator();
+    return new DefaultTransportResourceLocator();
   }
 }

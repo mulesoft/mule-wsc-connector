@@ -19,6 +19,7 @@ import org.mule.runtime.extension.api.values.ValueBuilder;
 import org.mule.runtime.extension.api.values.ValueProvider;
 import org.mule.runtime.extension.api.values.ValueResolvingException;
 import org.mule.wsdl.parser.WsdlParser;
+import org.mule.wsdl.parser.WsdlTypelessParser;
 import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
@@ -46,7 +47,7 @@ public class WsdlValueProvider implements ValueProvider {
   public Set<Value> resolve() throws ValueResolvingException {
     URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
     String wsdl = resource != null ? resource.getPath() : wsdlLocation;
-    WsdlModel wsdlModel = WsdlParser.Companion.parse(wsdl);
+    WsdlModel wsdlModel = WsdlTypelessParser.Companion.parse(wsdl);
 
     if (wsdlModel.isWsdlStyle(RPC)) {
       throw new ValueResolvingException(RPC_ERROR_MESSAGE, INVALID_VALUE);
@@ -69,9 +70,9 @@ public class WsdlValueProvider implements ValueProvider {
   private Set<ValueBuilder> portValues(List<PortModel> ports) {
     return ports.stream().map(port -> {
       ValueBuilder portBuilder = newValue(port.getName());
-      URL address = port.getAddress();
+      String address = port.getAddress();
       if (address != null) {
-        portBuilder.withChild(newValue(address.toString()));
+        portBuilder.withChild(newValue(address));
       }
       return portBuilder;
     }).collect(toSet());

@@ -16,4 +16,8 @@
         <wsc:connection wsdlLocation="wsdl/rpc.wsdl"/>
     </wsc:config>
 
+    <wsc:config name="address">
+        <wsc:connection wsdlLocation="http://disapi.da-desk.com/disweb/1.0/spring-ws/DaDeskDataExchange/dataexchange.wsdl"/>
+    </wsc:config>
+
 </mule>

@@ -82,4 +82,10 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
     assertThat(values.getFailure().isPresent(), is(true));
     assertThat(values.getFailure().get().getReason(), containsString("RPC style WSDLs are not supported"));
   }
+
+  @Test
+  public void address() {
+    ValueResult values = service.getValues(Location.builder().globalName("address").addConnectionPart().build(), CONNECTION);
+    Set<Value> values1 = values.getValues();
+  }
 }

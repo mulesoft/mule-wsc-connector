@@ -36,7 +36,7 @@ import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.runtime.http.api.client.HttpClientConfiguration;
 import org.mule.soap.api.SoapWebServiceConfiguration;
 import org.mule.soap.api.client.SoapClientFactory;
-import org.mule.soap.api.transport.locator.NullTransportResourceLocator;
+import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,7 +149,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
     if (customTransportConfiguration != null) {
       locator = customTransportConfiguration.resourceLocator(extensionsClient);
     } else {
-      locator = new NullTransportResourceLocator();
+      locator = new DefaultTransportResourceLocator();
     }
 
     return SoapWebServiceConfiguration.builder()
