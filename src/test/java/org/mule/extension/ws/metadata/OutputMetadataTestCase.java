@@ -102,7 +102,9 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     List<ObjectFieldType> operationFields = new ArrayList<>(toObjectType(type).getFields());
     ObjectFieldType headersField = operationFields.stream()
         .filter(f -> f.getKey().getName().getLocalPart().contains(HEADERS)).findAny().get();
-    Collection<ObjectFieldType> headers = toObjectType(headersField.getValue()).getFields();
+    Collection<ObjectFieldType> headersContainer = toObjectType(headersField.getValue()).getFields();
+    assertThat(headersContainer, hasSize(1));
+    Collection<ObjectFieldType> headers = toObjectType(headersContainer.iterator().next().getValue()).getFields();
     assertThat(headers, hasSize(2));
     headers.forEach(e -> {
       assertThat(e.getKey().getName().getLocalPart(), isIn(new String[] {HEADER_OUT, HEADER_INOUT}));
