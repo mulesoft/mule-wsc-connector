@@ -38,11 +38,13 @@ public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
   @Test
   @Description("Checks the input Soap Headers metadata for an operation with headers")
   public void getEchoInputHeaders() {
-    ObjectType headers = toObjectType(getHeaders(ECHO_HEADERS_FLOW, ECHO_HEADERS));
+    ObjectType type = toObjectType(getHeaders(ECHO_HEADERS_FLOW, ECHO_HEADERS));
+    Collection<ObjectFieldType> containerFields = type.getFields();
+    assertThat(containerFields, hasSize(1));
+    ObjectType headers = toObjectType(containerFields.iterator().next().getValue());
+    assertThat(headers.getFields(), hasSize(2));
 
-    Collection<ObjectFieldType> fields = headers.getFields();
-    assertThat(fields, hasSize(2));
-    fields.forEach(field -> {
+    headers.getFields().forEach(field -> {
       Collection<ObjectFieldType> headerFields = ((ObjectType) field.getValue()).getFields();
       assertThat(headerFields, hasSize(1));
       MetadataType headerField = headerFields.iterator().next().getValue();
@@ -60,9 +62,12 @@ public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
   @Test
   @Description("Checks the metadata for a Header that is defined in another message that is not the main operation message")
   public void getCommonHeaderDefinedInDifferentMessageMetadata() {
-    ObjectType headers = toObjectType(getHeaders("sharedHeader", "Get_Employee"));
-    assertThat(headers.getFields(), hasSize(1));
-    ObjectFieldType header = headers.getFields().iterator().next();
+    ObjectType container = toObjectType(getHeaders("sharedHeader", "Get_Employee"));
+    assertThat(container.getFields(), hasSize(1));
+    ObjectType headers = toObjectType(container.getFields().iterator().next().getValue());
+    Collection<ObjectFieldType> headersFields = headers.getFields();
+    assertThat(headersFields, hasSize(1));
+    ObjectFieldType header = headersFields.iterator().next();
     assertThat(header.getKey().getName().getLocalPart(), is("header"));
     assertThat(header.getValue().getAnnotation(TypeIdAnnotation.class).get().getValue(),
                is("{urn:com.workday/bsvc}Workday_Common_Header"));
