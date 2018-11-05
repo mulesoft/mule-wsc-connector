@@ -57,7 +57,7 @@ public class OperationKeysResolver implements TypeKeysResolver {
     }
     PortModel port = service.getPort(info.getPort());
     if (port == null) {
-      throw new MetadataResolvingException("port name [" + info.getPort() + " ] not found in wsdl", INVALID_CONFIGURATION);
+      throw new MetadataResolvingException("port name [" + info.getPort() + "] not found in wsdl", INVALID_CONFIGURATION);
     }
     return port.getOperations().stream().map(ope -> newKey(ope.getName()).build()).collect(toSet());
   }
