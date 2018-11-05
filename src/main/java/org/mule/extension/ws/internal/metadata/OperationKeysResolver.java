@@ -8,15 +8,23 @@ package org.mule.extension.ws.internal.metadata;
 
 import static java.util.stream.Collectors.toSet;
 import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
+import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
+import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
+
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataKey;
+import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
+
+import org.mule.wsdl.parser.exception.OperationNotFoundException;
+import org.mule.wsdl.parser.model.PortModel;
+import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 
 import java.util.Set;
@@ -40,12 +48,17 @@ public class OperationKeysResolver implements TypeKeysResolver {
   }
 
   @Override
-  public Set<MetadataKey> getKeys(MetadataContext context) throws ConnectionException {
-    WsdlConnectionInfo connectionInfo = context.<WscSoapClient>getConnection().get().getInfo();
-    WsdlModel wsdlModel = MetadataResolverUtils.getInstance().getOrCreateWsdlModel(context, connectionInfo.getWsdlLocation());
-    return wsdlModel.getService(connectionInfo.getService())
-        .getPort(connectionInfo.getPort())
-        .getOperations().stream()
-        .map(ope -> newKey(ope.getName()).build()).collect(toSet());
+  public Set<MetadataKey> getKeys(MetadataContext context) throws ConnectionException, MetadataResolvingException {
+    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlModel model = MetadataResolverUtils.getInstance().getOrCreateWsdlModel(context, info.getWsdlLocation());
+    ServiceModel service = model.getService(info.getService());
+    if (service == null) {
+      throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
+    }
+    PortModel port = service.getPort(info.getPort());
+    if (port == null) {
+      throw new MetadataResolvingException("port name [" + info.getPort() + " ] not found in wsdl", INVALID_CONFIGURATION);
+    }
+    return port.getOperations().stream().map(ope -> newKey(ope.getName()).build()).collect(toSet());
   }
 }

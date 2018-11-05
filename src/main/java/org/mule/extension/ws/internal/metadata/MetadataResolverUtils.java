@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
 import org.mule.extension.ws.internal.connection.WscSoapClient;
@@ -13,7 +14,12 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataCache;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
+
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.wsdl.parser.WsdlParser;
+import org.mule.wsdl.parser.exception.OperationNotFoundException;
+import org.mule.wsdl.parser.model.PortModel;
+import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
@@ -39,15 +45,21 @@ public class MetadataResolverUtils {
 
   public OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    String location = context.<WscSoapClient>getConnection().get().getInfo().getWsdlLocation();
-
-    WsdlModel model = getOrCreateWsdlModel(context, location);
-
-    OperationModel operationModel = model.getOperation(operation);
-    if (operationModel == null) {
+    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    try {
+      ServiceModel service = model.getService(info.getService());
+      if (service == null) {
+        throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
+      }
+      PortModel port = service.getPort(info.getPort());
+      if (port == null) {
+        throw new MetadataResolvingException("port name [" + info.getPort() + " ] not found in wsdl", INVALID_CONFIGURATION);
+      }
+      return port.getOperation(operation);
+    } catch (OperationNotFoundException e) {
       throw new MetadataResolvingException("Operation [" + operation + "] was not found in the wsdl file", INVALID_METADATA_KEY);
     }
-    return operationModel;
   }
 
   public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location) {
