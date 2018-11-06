@@ -22,6 +22,7 @@
         <commons.lang.version>3.7</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
         <cxf.version>3.2.1</cxf.version>
+        <javax.jws-api.version>1.1</javax.jws-api.version>
         <mule.http.connector.version>1.2.0-SNAPSHOT</mule.http.connector.version>
         <soap.engine.version>1.0.1-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.2.1-SNAPSHOT</wsdl.parser.version>
@@ -188,6 +189,12 @@
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-wsdl</artifactId>
             <version>${cxf.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>javax.jws</groupId>
+            <artifactId>javax.jws-api</artifactId>
+            <version>${javax.jws-api.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
