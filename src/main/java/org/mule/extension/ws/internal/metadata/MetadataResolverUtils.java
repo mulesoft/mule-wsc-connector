@@ -45,21 +45,26 @@ public class MetadataResolverUtils {
 
   public OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
-    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    PortModel port = findPortFromContext(context);
     try {
-      ServiceModel service = model.getService(info.getService());
-      if (service == null) {
-        throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
-      }
-      PortModel port = service.getPort(info.getPort());
-      if (port == null) {
-        throw new MetadataResolvingException("port name [" + info.getPort() + " ] not found in wsdl", INVALID_CONFIGURATION);
-      }
       return port.getOperation(operation);
     } catch (OperationNotFoundException e) {
       throw new MetadataResolvingException("Operation [" + operation + "] was not found in the wsdl file", INVALID_METADATA_KEY);
     }
+  }
+
+  public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
+    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    ServiceModel service = model.getService(info.getService());
+    if (service == null) {
+      throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
+    }
+    PortModel port = service.getPort(info.getPort());
+    if (port == null) {
+      throw new MetadataResolvingException("port name [" + info.getPort() + "] not found in wsdl", INVALID_CONFIGURATION);
+    }
+    return port;
   }
 
   public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location) {
