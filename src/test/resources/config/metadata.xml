@@ -22,6 +22,14 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="invalid-service">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="INVALID" port="TestPort"/>
+    </wsc:config>
+
+    <wsc:config name="invalid-port">
+        <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="INVALID"/>
+    </wsc:config>
+
     <flow name="getEchoMetadata">
         <wsc:consume config-ref="config" operation="echo">
             <wsc:message>
@@ -89,6 +97,14 @@
             </wsc:message>
         </wsc:consume>
         <object-to-string-transformer/>
+    </flow>
+
+    <flow name="invalid-service-flow">
+        <wsc:consume config-ref="invalid-service" operation="nothing"/>
+    </flow>
+
+    <flow name="invalid-port-flow">
+        <wsc:consume config-ref="invalid-port" operation="nothing"/>
     </flow>
 
 </mule>
