@@ -15,16 +15,20 @@ import static org.mule.extension.ws.SoapTestUtils.payloadBodyAsString;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
+import static org.mule.functional.api.exception.ExpectedError.none;
+
+import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.extension.ws.api.SoapOutputEnvelope;
+import org.mule.functional.api.exception.ExpectedError;
+import org.mule.runtime.api.message.Message;
+import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.apache.commons.io.IOUtils;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mule.extension.ws.AbstractWscTestCase;
-import org.mule.extension.ws.api.SoapOutputEnvelope;
-import org.mule.runtime.api.message.Message;
-import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
@@ -35,6 +39,10 @@ public class EchoTestCase extends AbstractWscTestCase {
   private static final String ECHO_ACCOUNT_FLOW = "echoAccountOperation";
   private static final String ECHO_ACCOUNT_DYNAMIC_FLOW = "echoAccountOperation";
   private static final String JSON_RESPONSE = "jsonResponse";
+  private static final String ECHO_INVALID_STATIC_HEADERS_FLOW = "echoWithInvalidStaticHeadersOperation";
+
+  @Rule
+  public ExpectedError expectedError = none();
 
   @Override
   protected String getConfigurationFile() {
@@ -124,4 +132,16 @@ public class EchoTestCase extends AbstractWscTestCase {
     SoapOutputEnvelope payload = (SoapOutputEnvelope) message.getPayload().getValue();
     assertThat(payload.getHeaders().isEmpty(), is(true));
   }
+
+  @Test
+  @Description("Consumes an operation that expects an input and a set of static headers badly formed.")
+  public void echoWithStaticHeadersOperation() throws Exception {
+    expectedError.expectErrorType("WSC", "BAD_REQUEST");
+    flowRunner(ECHO_INVALID_STATIC_HEADERS_FLOW)
+        .withVariable(HEADER_IN, testValues.getHeaderIn())
+        .withVariable(HEADER_INOUT, testValues.getHeaderInOutRequest())
+        .keepStreamsOpen()
+        .run();
+  }
+
 }
