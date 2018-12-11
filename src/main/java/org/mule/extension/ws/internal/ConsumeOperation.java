@@ -40,10 +40,11 @@ import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapRequestBuilder;
 import org.mule.soap.api.message.SoapResponse;
 
-import javax.inject.Inject;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.inject.Inject;
 
 /**
  * The only {@link WebServiceConsumer} operation. the {@link ConsumeOperation} consumes an operation of the connected web service
@@ -129,11 +130,16 @@ public class ConsumeOperation {
 
   private Object evaluateHeaders(InputStream headers) {
     BindingContext context = BindingContext.builder().addBinding("payload", new TypedValue<>(headers, XML_STREAM)).build();
-    return expressionExecutor.evaluate("%dw 2.0 \n"
+    Object expressionResult = expressionExecutor.evaluate("%dw 2.0 \n"
         + "output application/java \n"
         + "---\n"
         + "payload.headers mapObject (value, key) -> {\n"
         + "    '$key' : write((key): value, \"application/xml\")\n"
         + "}", context).getValue();
+    if (expressionResult == null) {
+      throw new ModuleException("Invalid input headers XML: It must be an xml with the root tag named \'headers\'.",
+                                BAD_REQUEST);
+    }
+    return expressionResult;
   }
 }

@@ -69,6 +69,31 @@
         </wsc:consume>
     </flow>
 
+    <flow name="echoWithInvalidStaticHeadersOperation">
+        <wsc:consume config-ref="config" operation="echoWithHeaders">
+            <wsc:message>
+                <wsc:body>
+                    #[
+                    %dw 2.0
+                    output application/xml
+                    ns con http://service.ws.extension.mule.org/
+                    ---
+                    con#echoWithHeaders: {
+                    text: "test"
+                    }]
+                </wsc:body>
+                <wsc:headers>
+                    <![CDATA[
+                    <invalidHeaders>
+                        <con:headerIn xmlns:con="http://service.ws.extension.mule.org/">Header In Value</con:headerIn>
+                        <con:headerInOut xmlns:con="http://service.ws.extension.mule.org/">Header In Out Value</con:headerInOut>
+                    </invalidHeaders>
+                    ]]>
+                </wsc:headers>
+            </wsc:message>
+        </wsc:consume>
+    </flow>
+
     <flow name="jsonResponse">
         <wsc:consume config-ref="config" operation="echoWithHeaders">
             <wsc:message>
