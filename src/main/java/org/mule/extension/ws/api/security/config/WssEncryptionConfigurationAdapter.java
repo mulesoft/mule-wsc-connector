@@ -1,0 +1,67 @@
+/*
+ * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * The software in this package is published under the terms of the CPAL v1.0
+ * license, a copy of which has been included with this distribution in the
+ * LICENSE.txt file.
+ */
+package org.mule.extension.ws.api.security.config;
+
+import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+
+import org.mule.runtime.extension.api.annotation.Alias;
+import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.param.Optional;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
+import org.mule.soap.api.security.configuration.EncryptionDigestAlgorithmConstants;
+import org.mule.soap.api.security.configuration.EncryptionKeyTransportAlgorithmConstants;
+import org.mule.soap.api.security.configuration.EncryptionSymAlgorithmConstants;
+
+/**
+ * Group which holds the configuration regarding encryption algorithms used on the encryption security strategy.
+ *
+ * @since 1.3.0
+ */
+@Alias("wss-encryption-algorithms-configuration")
+public class WssEncryptionConfigurationAdapter {
+
+  @Parameter
+  @Optional(defaultValue = "AES_128")
+  @Expression(NOT_SUPPORTED)
+  @Summary("The symmetric encryption algorithm to use.")
+  private EncryptionSymAlgorithmConstants encryptionSymAlgorithm;
+
+  @Parameter
+  @Optional(defaultValue = "KEYTRANSPORT_RSAOAEP")
+  @Expression(NOT_SUPPORTED)
+  @Summary("The algorithm to use to encrypt the generated symmetric key.")
+  private EncryptionKeyTransportAlgorithmConstants encryptionKeyTransportAlgorithm;
+
+  @Parameter
+  @Optional(defaultValue = "SHA1")
+  @Expression(NOT_SUPPORTED)
+  @Summary("The encryption digest algorithm to use with the key transport algorithm.")
+  private EncryptionDigestAlgorithmConstants encryptionDigestAlgorithm;
+
+  /**
+   * @return The symmetric encryption algorithm.
+   */
+  public EncryptionSymAlgorithmConstants getEncryptionSymAlgorithm() {
+    return encryptionSymAlgorithm;
+  }
+
+  /**
+   * @return The encryption key transport algorithm.
+   */
+  public EncryptionKeyTransportAlgorithmConstants getEncryptionKeyTransportAlgorithm() {
+    return encryptionKeyTransportAlgorithm;
+  }
+
+  /**
+   * @return The encryption digest algorithm.
+   */
+  public EncryptionDigestAlgorithmConstants getEncryptionDigestAlgorithm() {
+    return encryptionDigestAlgorithm;
+  }
+
+}

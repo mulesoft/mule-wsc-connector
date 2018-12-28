@@ -13,6 +13,7 @@
             <wsc:web-service-security>
                 <wsc:encrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/ssltest-cacerts.jks" password="changeit" alias="s1as" type="jks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_256_GCM" encryptionDigestAlgorithm="SHA256"/>
                 </wsc:encrypt-security-strategy>
             </wsc:web-service-security>
         </wsc:connection>

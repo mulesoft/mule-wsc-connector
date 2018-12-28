@@ -14,6 +14,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Password;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 /**
@@ -25,27 +26,32 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 public class WssKeyStoreConfigurationAdapter {
 
   @Parameter
+  @Placement(order = 0)
+  @Summary("The location of the KeyStore file")
+  @Path(type = FILE, location = EMBEDDED)
+  private String keyStorePath;
+
+  @Parameter
+  @Placement(order = 1)
   @Summary("The alias of the private key to use")
   private String alias;
 
   @Parameter
+  @Placement(order = 2)
+  @Summary("The password to access the store.")
+  @Password
+  private String password;
+
+  @Parameter
+  @Placement(order = 3)
   @Summary("The password used to access the private key.")
   @Optional
   @Password
   private String keyPassword;
 
   @Parameter
-  @Summary("The password to access the store.")
-  @Password
-  private String password;
-
-  @Parameter
-  @Summary("The location of the KeyStore file")
-  @Path(type = FILE, location = EMBEDDED)
-  private String keyStorePath;
-
-  @Parameter
   @Optional(defaultValue = "jks")
+  @Placement(order = 4)
   @Summary("The type of store (jks, pkcs12, jceks, or any other)")
   private String type;
 

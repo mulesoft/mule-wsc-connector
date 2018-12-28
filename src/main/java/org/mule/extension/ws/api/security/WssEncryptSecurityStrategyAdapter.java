@@ -8,11 +8,17 @@ package org.mule.extension.ws.api.security;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
+import org.mule.extension.ws.api.security.config.WssEncryptionConfigurationAdapter;
 import org.mule.extension.ws.api.security.config.WssKeyStoreConfigurationAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
+import org.mule.runtime.extension.api.annotation.dsl.xml.ParameterDsl;
+import org.mule.runtime.extension.api.annotation.param.NullSafe;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssEncryptSecurityStrategy;
+import org.mule.soap.api.security.configuration.WssEncryptionConfiguration;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
 
 /**
@@ -29,12 +35,32 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
   @Expression(NOT_SUPPORTED)
   private WssKeyStoreConfigurationAdapter keyStoreConfiguration;
 
+  @Parameter
+  @Expression(NOT_SUPPORTED)
+  @Optional
+  @NullSafe
+  private WssEncryptionConfigurationAdapter EncryptionAlgorithmsConfiguration;
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
-    return new WssEncryptSecurityStrategy(new WssKeyStoreConfiguration(keyStoreConfiguration.getAlias(),
-                                                                       keyStoreConfiguration.getPassword(),
-                                                                       keyStoreConfiguration.getStorePath(),
-                                                                       keyStoreConfiguration.getKeyPassword(),
-                                                                       keyStoreConfiguration.getType()));
+
+    WssKeyStoreConfiguration wssKeyStoreConfiguration = new WssKeyStoreConfiguration(keyStoreConfiguration.getAlias(),
+                                                                                     keyStoreConfiguration.getPassword(),
+                                                                                     keyStoreConfiguration.getStorePath(),
+                                                                                     keyStoreConfiguration.getKeyPassword(),
+                                                                                     keyStoreConfiguration.getType());
+
+    WssEncryptionConfiguration wssEncryptionConfiguration = new WssEncryptionConfiguration(
+                                                                                           EncryptionAlgorithmsConfiguration
+                                                                                               .getEncryptionSymAlgorithm()
+                                                                                               .toString(),
+                                                                                           EncryptionAlgorithmsConfiguration
+                                                                                               .getEncryptionKeyTransportAlgorithm()
+                                                                                               .toString(),
+                                                                                           EncryptionAlgorithmsConfiguration
+                                                                                               .getEncryptionDigestAlgorithm()
+                                                                                               .toString());
+
+    return new WssEncryptSecurityStrategy(wssKeyStoreConfiguration, wssEncryptionConfiguration);
   }
 }
