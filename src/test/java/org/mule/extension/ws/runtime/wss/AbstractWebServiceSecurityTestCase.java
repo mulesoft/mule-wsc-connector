@@ -30,7 +30,7 @@ public abstract class AbstractWebServiceSecurityTestCase extends AbstractWscTest
   @Test
   @Description("Consumes a simple operation of a secured web service and expects a valid response")
   public void expectedSecuredRequest() throws Exception {
-    Message message = runFlowWithRequest(security + "Flow", testValues.getEchoResquest());
+    Message message = runFlowWithRequest(security + "Flow", testValues.getEchoRequest());
     String out = (String) message.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);
   }

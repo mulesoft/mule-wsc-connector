@@ -48,7 +48,7 @@ public class WssTimestampTestCase extends AbstractWebServiceSecurityTestCase {
   @Test
   @Description("Consumes a simple operation ")
   public void expectedSecuredRequest() throws Exception {
-    Message message = runFlowWithRequest("less-than-a-second-flow", testValues.getEchoResquest());
+    Message message = runFlowWithRequest("less-than-a-second-flow", testValues.getEchoRequest());
     String out = (String) message.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);
   }

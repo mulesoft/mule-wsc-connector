@@ -7,6 +7,7 @@
 package org.mule.extension.ws.internal.transport;
 
 import static java.lang.String.join;
+import static java.lang.Thread.currentThread;
 import static java.util.stream.Collectors.toMap;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.http.api.HttpConstants.Method.GET;
@@ -27,6 +28,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Executes an HTTP requester operation using the {@link ExtensionsClient}.
@@ -70,7 +72,11 @@ public class ExtensionsClientHttpRequestExecutor {
       Map<String, String> httpHeaders = getHttpHeaders(result);
       InputStream content = getContent(result);
       return new Pair<>(content, httpHeaders);
-    } catch (Exception e) {
+    } catch (ExecutionException e) {
+      throw new DispatcherException("Could not dispatch soap message using the [" + requesterConfig + "] HTTP configuration",
+                                    e.getCause());
+    } catch (InterruptedException e) {
+      currentThread().interrupt();
       throw new DispatcherException("Could not dispatch soap message using the [" + requesterConfig + "] HTTP configuration", e);
     }
   }

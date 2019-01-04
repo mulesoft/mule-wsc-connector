@@ -31,7 +31,7 @@ public class DefaultHttpConfigTestCase extends AbstractWscTestCase {
   @Test
   public void timeoutError() throws Exception {
     expectedError.expectErrorType("WSC", "TIMEOUT");
-    runFlowWithRequest("timeoutError", testValues.getEchoResquest());
+    runFlowWithRequest("timeoutError", testValues.getEchoRequest());
   }
 
   @Override

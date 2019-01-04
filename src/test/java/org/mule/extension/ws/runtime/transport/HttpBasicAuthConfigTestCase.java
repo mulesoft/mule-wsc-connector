@@ -35,7 +35,7 @@ public class HttpBasicAuthConfigTestCase extends AbstractWscTestCase {
 
   @Test
   public void requestWithHttpBasicAuthConfiguration() throws Exception {
-    Message message = runFlowWithRequest("basicAuthRequester", testValues.getEchoResquest());
+    Message message = runFlowWithRequest("basicAuthRequester", testValues.getEchoRequest());
     String out = (String) message.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);
   }
@@ -43,12 +43,12 @@ public class HttpBasicAuthConfigTestCase extends AbstractWscTestCase {
   @Test
   public void requestWithUnauthorizedConfiguration() throws Exception {
     expectUnauthorizedError();
-    flowRunner("unauthorizedRequest").withPayload(testValues.getEchoResquest()).run();
+    flowRunner("unauthorizedRequest").withPayload(testValues.getEchoRequest()).run();
   }
 
   @Test
   public void authorizedRemoteProtectedWsdl() throws Exception {
-    Message message = runFlowWithRequest("authorizedRemoteProtectedWsdl", testValues.getEchoResquest());
+    Message message = runFlowWithRequest("authorizedRemoteProtectedWsdl", testValues.getEchoRequest());
     String out = (String) message.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);
   }

@@ -52,7 +52,7 @@ public class EchoTestCase extends AbstractWscTestCase {
   @Test
   @Description("Consumes an operation that expects a simple type and returns a simple type")
   public void echoOperation() throws Exception {
-    Message message = runFlowWithRequest(ECHO_FLOW, testValues.getEchoResquest());
+    Message message = runFlowWithRequest(ECHO_FLOW, testValues.getEchoRequest());
     assertSimilarXml(testValues.getEchoResponse(), payloadBodyAsString(message));
   }
 
