@@ -22,7 +22,7 @@ public class SimpleHttpConfigTestCase extends AbstractWscTestCase {
 
   @Test
   public void simpleConfigNoAuthentication() throws Exception {
-    Message message = runFlowWithRequest("simpleRequesterConfig", testValues.getEchoResquest());
+    Message message = runFlowWithRequest("simpleRequesterConfig", testValues.getEchoRequest());
     String out = (String) message.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);
   }

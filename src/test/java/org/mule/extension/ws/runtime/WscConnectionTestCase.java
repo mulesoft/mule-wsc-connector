@@ -51,7 +51,7 @@ public class WscConnectionTestCase extends AbstractWscTestCase {
   @Description("Consumes an operation using a connection that uses a local .wsdl file")
   public void localWsdlConnection() throws Exception {
     Message msg = flowRunner(LOCAL_WSDL_FLOW)
-        .withVariable("req", testValues.getEchoResquest())
+        .withVariable("req", testValues.getEchoRequest())
         .run().getMessage();
     String out = (String) msg.getPayload().getValue();
     assertSimilarXml(testValues.getEchoResponse(), out);

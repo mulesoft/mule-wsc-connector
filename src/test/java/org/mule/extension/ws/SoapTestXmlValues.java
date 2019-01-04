@@ -30,7 +30,7 @@ public class SoapTestXmlValues {
     this.ns = ns;
   }
 
-  public String getEchoResquest() {
+  public String getEchoRequest() {
     return buildXml(ECHO, "<text>test</text>");
   }
 
