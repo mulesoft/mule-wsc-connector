@@ -8,14 +8,14 @@ package org.mule.extension.ws.api.security.config;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
+import org.mule.extension.ws.api.security.Constants.EncryptionDigestAlgorithmConstants;
+import org.mule.extension.ws.api.security.Constants.EncryptionSymAlgorithmConstants;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.soap.api.security.configuration.EncryptionDigestAlgorithmConstants;
 import org.mule.soap.api.security.configuration.EncryptionKeyTransportAlgorithmConstants;
-import org.mule.soap.api.security.configuration.EncryptionSymAlgorithmConstants;
 
 /**
  * Group which holds the configuration regarding encryption algorithms used on the encryption security strategy.

@@ -8,14 +8,14 @@ package org.mule.extension.ws.api.security.config;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
+import org.mule.extension.ws.api.security.Constants.SignatureAlgorithmConstants;
+import org.mule.extension.ws.api.security.Constants.SignatureC14nAlgorithmConstants;
+import org.mule.extension.ws.api.security.Constants.SignatureDigestAlgorithmConstants;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.soap.api.security.configuration.SignatureAlgorithmConstants;
-import org.mule.soap.api.security.configuration.SignatureC14nAlgorithmConstants;
-import org.mule.soap.api.security.configuration.SignatureDigestAlgorithmConstants;
 
 /**
  * Group which holds the configuration regarding signing algorithms used on sign security strategy.
