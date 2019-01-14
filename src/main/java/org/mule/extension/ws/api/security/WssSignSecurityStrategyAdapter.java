@@ -60,7 +60,9 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
         ? wssSignConfigurationAdapter.getSignatureAlgorithm().toString() : null;
 
     WssSignConfiguration wssSignConfiguration =
-        new WssSignConfiguration(signatureAlgorithm, wssSignConfigurationAdapter.getSignatureDigestAlgorithm().toString(),
+        new WssSignConfiguration(wssSignConfigurationAdapter.getSignatureKeyIdentifier().toString(),
+                                 signatureAlgorithm,
+                                 wssSignConfigurationAdapter.getSignatureDigestAlgorithm().toString(),
                                  wssSignConfigurationAdapter.getSignatureC14nAlgorithm().toString());
 
 

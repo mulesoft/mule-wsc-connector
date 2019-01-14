@@ -9,13 +9,14 @@ package org.mule.extension.ws.api.security.config;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 import org.mule.extension.ws.api.security.Constants.EncryptionDigestAlgorithmConstants;
+import org.mule.extension.ws.api.security.Constants.EncryptionKeyIdentifierConstants;
+import org.mule.extension.ws.api.security.Constants.EncryptionKeyTransportAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.EncryptionSymAlgorithmConstants;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.soap.api.security.configuration.EncryptionKeyTransportAlgorithmConstants;
 
 /**
  * Group which holds the configuration regarding encryption algorithms used on the encryption security strategy.
@@ -24,6 +25,12 @@ import org.mule.soap.api.security.configuration.EncryptionKeyTransportAlgorithmC
  */
 @Alias("wss-encryption-algorithms-configuration")
 public class WssEncryptionConfigurationAdapter {
+
+  @Parameter
+  @Optional(defaultValue = "ISSUER_SERIAL")
+  @Expression(NOT_SUPPORTED)
+  @Summary("The key identifier type to use for encryption.")
+  private EncryptionKeyIdentifierConstants encryptionKeyIdentifier;
 
   @Parameter
   @Optional(defaultValue = "AES_128")
@@ -42,6 +49,13 @@ public class WssEncryptionConfigurationAdapter {
   @Expression(NOT_SUPPORTED)
   @Summary("The encryption digest algorithm to use with the key transport algorithm.")
   private EncryptionDigestAlgorithmConstants encryptionDigestAlgorithm;
+
+  /**
+   * @return The Encryption key identifier.
+   */
+  public EncryptionKeyIdentifierConstants getEncryptionKeyIdentifier() {
+    return encryptionKeyIdentifier;
+  }
 
   /**
    * @return The symmetric encryption algorithm.
