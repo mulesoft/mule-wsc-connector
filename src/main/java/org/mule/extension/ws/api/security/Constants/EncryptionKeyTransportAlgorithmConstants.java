@@ -13,8 +13,9 @@ package org.mule.extension.ws.api.security.Constants;
  */
 public enum EncryptionKeyTransportAlgorithmConstants {
 
-  KEYTRANSPORT_RSAOAEP("http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"), KEYTRANSPORT_RSAOAEP_XENC11(
-      "http://www.w3.org/2009/xmlenc11#rsa-oaep");
+  KEYTRANSPORT_RSA15("http://www.w3.org/2001/04/xmlenc#rsa-1_5"), KEYTRANSPORT_RSAOAEP(
+      "http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"), KEYTRANSPORT_RSAOAEP_XENC11(
+          "http://www.w3.org/2009/xmlenc11#rsa-oaep");
 
   private String value;
 
