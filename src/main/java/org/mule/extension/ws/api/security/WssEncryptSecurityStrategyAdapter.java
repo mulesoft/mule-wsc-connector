@@ -51,7 +51,9 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                                      keyStoreConfiguration.getKeyPassword(),
                                                                                      keyStoreConfiguration.getType());
 
-    WssEncryptionConfiguration wssEncryptionConfiguration = new WssEncryptionConfiguration(
+    WssEncryptionConfiguration wssEncryptionConfiguration = new WssEncryptionConfiguration(EncryptionAlgorithmsConfiguration
+        .getEncryptionKeyIdentifier()
+        .toString(),
                                                                                            EncryptionAlgorithmsConfiguration
                                                                                                .getEncryptionSymAlgorithm()
                                                                                                .toString(),

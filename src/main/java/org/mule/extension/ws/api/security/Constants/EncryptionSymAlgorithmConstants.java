@@ -9,6 +9,8 @@ package org.mule.extension.ws.api.security.Constants;
 /**
  * List of the algorithm listed on the <a href="https://www.w3.org/TR/xmlenc-core1/</a> specification and implemented by
  * Apache WSS4J to be used for symmetric encryption.
+ *
+ * @since 1.3.0
  */
 public enum EncryptionSymAlgorithmConstants {
 

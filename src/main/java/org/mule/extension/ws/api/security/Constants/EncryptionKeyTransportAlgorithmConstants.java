@@ -5,7 +5,7 @@
  * LICENSE.txt file.
  */
 
-package org.mule.soap.api.security.configuration;
+package org.mule.extension.ws.api.security.Constants;
 
 /**
  * List of the algorithm listed on the <a href="https://www.w3.org/TR/xmlenc-core1/</a> specification and implemented by

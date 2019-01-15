@@ -11,6 +11,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import org.mule.extension.ws.api.security.Constants.SignatureAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.SignatureC14nAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.SignatureDigestAlgorithmConstants;
+import org.mule.extension.ws.api.security.Constants.SignatureKeyIdentifierConstants;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -23,6 +24,12 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
  * @since 1.3.0
  */
 public class WssSignConfigurationAdapter {
+
+  @Parameter
+  @Optional(defaultValue = "ISSUER_SERIAL")
+  @Expression(NOT_SUPPORTED)
+  @Summary("The key identifier type to use for signature.")
+  private SignatureKeyIdentifierConstants signatureKeyIdentifier;
 
   @Parameter
   @Optional
@@ -42,6 +49,13 @@ public class WssSignConfigurationAdapter {
   @Expression(NOT_SUPPORTED)
   @Summary("Defines which signature c14n (canonicalization) algorithm to use.")
   private SignatureC14nAlgorithmConstants signatureC14nAlgorithm;
+
+  /**
+   * @return The key identifier.
+   */
+  public SignatureKeyIdentifierConstants getSignatureKeyIdentifier() {
+    return signatureKeyIdentifier;
+  }
 
   /**
    * @return The signature algorithm.
