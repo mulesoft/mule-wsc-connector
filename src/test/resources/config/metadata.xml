@@ -5,10 +5,9 @@
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <wsc:config name="config">
-        <wsc:connection address="http://localhost:${servicePort}/server"
-                        service="TestService"
+        <wsc:connection service="TestService"
                         port="TestPort"
-                        wsdlLocation="http://localhost:${servicePort}/server?wsdl"
+                        wsdlLocation="wsdl/simple-service.wsdl"
                         soapVersion="${soapVersion}">
         </wsc:connection>
     </wsc:config>

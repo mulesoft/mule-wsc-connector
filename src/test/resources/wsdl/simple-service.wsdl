@@ -6,8 +6,8 @@
         <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://service.soap.service.mule.org/" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.soap.service.mule.org/">
             <xs:element name="downloadAttachment" type="tns:downloadAttachment"/>
             <xs:element name="downloadAttachmentResponse" type="tns:downloadAttachmentResponse"/>
-            <xs:element name="echo" type="tns:echo"/>
-            <xs:element name="echoAccount" type="tns:echoAccount"/>
+            <xs:element name="echo" type="tns:echoType"/>
+            <xs:element name="echoAccount" type="tns:echoAccountType"/>
             <xs:element name="echoAccountResponse" type="tns:echoAccountResponse"/>
             <xs:element name="echoResponse" type="tns:echoResponse"/>
             <xs:element name="echoWithHeaders" type="tns:echoWithHeaders"/>
@@ -16,14 +16,14 @@
             <xs:element name="failResponse" type="tns:failResponse"/>
             <xs:element name="large" type="tns:large"/>
             <xs:element name="largeResponse" type="tns:largeResponse"/>
-            <xs:element name="noParams" type="tns:noParams"/>
+            <xs:element name="noParams" type="tns:noParamsType"/>
             <xs:element name="noParamsResponse" type="tns:noParamsResponse"/>
             <xs:element name="noParamsWithHeader" type="tns:noParamsWithHeader"/>
             <xs:element name="noParamsWithHeaderResponse" type="tns:noParamsWithHeaderResponse"/>
             <xs:element name="oneWay" type="tns:oneWay"/>
             <xs:element name="uploadAttachment" type="tns:uploadAttachment"/>
             <xs:element name="uploadAttachmentResponse" type="tns:uploadAttachmentResponse"/>
-            <xs:complexType name="echo">
+            <xs:complexType name="echoType">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="text" type="xs:string"/>
                 </xs:sequence>
@@ -83,7 +83,7 @@
                     <xs:element minOccurs="0" name="attachment" type="xs:base64Binary"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="noParams">
+            <xs:complexType name="noParamsType">
                 <xs:sequence/>
             </xs:complexType>
             <xs:complexType name="noParamsResponse">
@@ -99,7 +99,7 @@
                     <xs:element minOccurs="0" name="text" type="xs:string"/>
                 </xs:sequence>
             </xs:complexType>
-            <xs:complexType name="echoAccount">
+            <xs:complexType name="echoAccountType">
                 <xs:sequence>
                     <xs:element minOccurs="0" name="account" type="tns:account"/>
                     <xs:element minOccurs="0" name="name" type="xs:string"/>
