@@ -12,11 +12,14 @@ import org.mule.extension.ws.api.security.Constants.SignatureAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.SignatureC14nAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.SignatureDigestAlgorithmConstants;
 import org.mule.extension.ws.api.security.Constants.SignatureKeyIdentifierConstants;
+import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+
+import java.util.List;
 
 /**
  * Group which holds the configuration regarding signing algorithms used on sign security strategy.
@@ -50,6 +53,14 @@ public class WssSignConfigurationAdapter {
   @Summary("Defines which signature c14n (canonicalization) algorithm to use.")
   private SignatureC14nAlgorithmConstants signatureC14nAlgorithm;
 
+  @Parameter
+  @Alias("wss-parts")
+  @Optional
+  @DisplayName("Parts")
+  @Expression(NOT_SUPPORTED)
+  @Summary("Lists of parts to be signed. If any part is specified the SOAP Body will be signed.")
+  private List<WssPartAdapter> wssParts;
+
   /**
    * @return The key identifier.
    */
@@ -76,6 +87,13 @@ public class WssSignConfigurationAdapter {
    */
   public SignatureC14nAlgorithmConstants getSignatureC14nAlgorithm() {
     return signatureC14nAlgorithm;
+  }
+
+  /**
+   * @return The lists of parts to be signed.
+   */
+  public List<WssPartAdapter> getWssParts() {
+    return wssParts;
   }
 
 }
