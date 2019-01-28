@@ -49,7 +49,7 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
   @Placement(order = 1)
   @DisplayName("Signing algorithms configuration")
   @Expression(NOT_SUPPORTED)
-  private WssSignConfigurationAdapter wssSignConfigurationAdapter;
+  private WssSignConfigurationAdapter signAlgorithmConfiguration;
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
@@ -60,12 +60,12 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
                                                                                      keyStoreConfiguration.getKeyPassword(),
                                                                                      keyStoreConfiguration.getType());
 
-    String signatureAlgorithm = wssSignConfigurationAdapter.getSignatureAlgorithm() != null
-        ? wssSignConfigurationAdapter.getSignatureAlgorithm().toString() : null;
+    String signatureAlgorithm = signAlgorithmConfiguration.getSignatureAlgorithm() != null
+        ? signAlgorithmConfiguration.getSignatureAlgorithm().toString() : null;
 
     List<WssPart> wssSignParts = null;
-    if (wssSignConfigurationAdapter.getWssParts() != null) {
-      wssSignParts = wssSignConfigurationAdapter.getWssParts().stream()
+    if (signAlgorithmConfiguration.getWssParts() != null) {
+      wssSignParts = signAlgorithmConfiguration.getWssParts().stream()
           .map(wssSignPartAdapter -> new WssPart(wssSignPartAdapter.getEncode().toString(),
                                                  wssSignPartAdapter.getNamespace(),
                                                  wssSignPartAdapter.getLocalname()))
@@ -73,10 +73,10 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
     }
 
     WssSignConfiguration wssSignConfiguration =
-        new WssSignConfiguration(wssSignConfigurationAdapter.getSignatureKeyIdentifier().toString(),
+        new WssSignConfiguration(signAlgorithmConfiguration.getSignatureKeyIdentifier().toString(),
                                  signatureAlgorithm,
-                                 wssSignConfigurationAdapter.getSignatureDigestAlgorithm().toString(),
-                                 wssSignConfigurationAdapter.getSignatureC14nAlgorithm().toString(),
+                                 signAlgorithmConfiguration.getSignatureDigestAlgorithm().toString(),
+                                 signAlgorithmConfiguration.getSignatureC14nAlgorithm().toString(),
                                  wssSignParts);
 
     return new WssSignSecurityStrategy(wssKeyStoreConfiguration, wssSignConfiguration);

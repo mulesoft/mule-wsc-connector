@@ -14,7 +14,7 @@
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
-                    <wsc:wss-sign-configuration-adapter signatureDigestAlgorithm="SHA256"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
         </wsc:connection>
