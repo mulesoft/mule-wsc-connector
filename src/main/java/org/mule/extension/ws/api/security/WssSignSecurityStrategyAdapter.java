@@ -18,8 +18,12 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssSignSecurityStrategy;
+import org.mule.soap.api.security.configuration.WssPart;
 import org.mule.soap.api.security.configuration.WssSignConfiguration;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Signs the SOAP request that is being sent, using the private key of the key-store in the provided TLS context.
@@ -45,7 +49,7 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
   @Placement(order = 1)
   @DisplayName("Signing algorithms configuration")
   @Expression(NOT_SUPPORTED)
-  private WssSignConfigurationAdapter wssSignConfigurationAdapter;
+  private WssSignConfigurationAdapter signAlgorithmConfiguration;
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
@@ -56,15 +60,24 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
                                                                                      keyStoreConfiguration.getKeyPassword(),
                                                                                      keyStoreConfiguration.getType());
 
-    String signatureAlgorithm = wssSignConfigurationAdapter.getSignatureAlgorithm() != null
-        ? wssSignConfigurationAdapter.getSignatureAlgorithm().toString() : null;
+    String signatureAlgorithm = signAlgorithmConfiguration.getSignatureAlgorithm() != null
+        ? signAlgorithmConfiguration.getSignatureAlgorithm().toString() : null;
+
+    List<WssPart> wssSignParts = null;
+    if (signAlgorithmConfiguration.getWssParts() != null) {
+      wssSignParts = signAlgorithmConfiguration.getWssParts().stream()
+          .map(wssSignPartAdapter -> new WssPart(wssSignPartAdapter.getEncode().toString(),
+                                                 wssSignPartAdapter.getNamespace(),
+                                                 wssSignPartAdapter.getLocalname()))
+          .collect(Collectors.toList());
+    }
 
     WssSignConfiguration wssSignConfiguration =
-        new WssSignConfiguration(wssSignConfigurationAdapter.getSignatureKeyIdentifier().toString(),
+        new WssSignConfiguration(signAlgorithmConfiguration.getSignatureKeyIdentifier().toString(),
                                  signatureAlgorithm,
-                                 wssSignConfigurationAdapter.getSignatureDigestAlgorithm().toString(),
-                                 wssSignConfigurationAdapter.getSignatureC14nAlgorithm().toString());
-
+                                 signAlgorithmConfiguration.getSignatureDigestAlgorithm().toString(),
+                                 signAlgorithmConfiguration.getSignatureC14nAlgorithm().toString(),
+                                 wssSignParts);
 
     return new WssSignSecurityStrategy(wssKeyStoreConfiguration, wssSignConfiguration);
   }

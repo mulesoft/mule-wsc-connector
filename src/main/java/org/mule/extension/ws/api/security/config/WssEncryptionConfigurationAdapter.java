@@ -16,7 +16,10 @@ import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
+
+import java.util.List;
 
 /**
  * Group which holds the configuration regarding encryption algorithms used on the encryption security strategy.
@@ -50,6 +53,13 @@ public class WssEncryptionConfigurationAdapter {
   @Summary("The encryption digest algorithm to use with the key transport algorithm.")
   private EncryptionDigestAlgorithmConstants encryptionDigestAlgorithm;
 
+  @Parameter
+  @Optional
+  @DisplayName("Parts")
+  @Expression(NOT_SUPPORTED)
+  @Summary("Lists of parts to be encrypted. If any part is specified the SOAP Body will be encrypted.")
+  private List<WssPartAdapter> wssPartAdapters;
+
   /**
    * @return The Encryption key identifier.
    */
@@ -76,6 +86,13 @@ public class WssEncryptionConfigurationAdapter {
    */
   public EncryptionDigestAlgorithmConstants getEncryptionDigestAlgorithm() {
     return encryptionDigestAlgorithm;
+  }
+
+  /**
+   * @return The list of Parts to be encrypted.
+   */
+  public List<WssPartAdapter> getWssPartAdapters() {
+    return wssPartAdapters;
   }
 
 }

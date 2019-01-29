@@ -18,7 +18,11 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssEncryptSecurityStrategy;
 import org.mule.soap.api.security.configuration.WssEncryptionConfiguration;
+import org.mule.soap.api.security.configuration.WssPart;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Verifies the signature of a SOAP response, using certificates of the trust-store in the provided TLS context.
@@ -51,9 +55,19 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                                      keyStoreConfiguration.getKeyPassword(),
                                                                                      keyStoreConfiguration.getType());
 
-    WssEncryptionConfiguration wssEncryptionConfiguration = new WssEncryptionConfiguration(EncryptionAlgorithmsConfiguration
-        .getEncryptionKeyIdentifier()
-        .toString(),
+    List<WssPart> wssParts = null;
+    if (EncryptionAlgorithmsConfiguration.getWssPartAdapters() != null) {
+      wssParts = EncryptionAlgorithmsConfiguration.getWssPartAdapters().stream()
+          .map(wssSignPartAdapter -> new WssPart(wssSignPartAdapter.getEncode().toString(),
+                                                 wssSignPartAdapter.getNamespace(),
+                                                 wssSignPartAdapter.getLocalname()))
+          .collect(Collectors.toList());
+    }
+
+    WssEncryptionConfiguration wssEncryptionConfiguration = new WssEncryptionConfiguration(
+                                                                                           EncryptionAlgorithmsConfiguration
+                                                                                               .getEncryptionKeyIdentifier()
+                                                                                               .toString(),
                                                                                            EncryptionAlgorithmsConfiguration
                                                                                                .getEncryptionSymAlgorithm()
                                                                                                .toString(),
@@ -62,7 +76,8 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                                                .toString(),
                                                                                            EncryptionAlgorithmsConfiguration
                                                                                                .getEncryptionDigestAlgorithm()
-                                                                                               .toString());
+                                                                                               .toString(),
+                                                                                           wssParts);
 
     return new WssEncryptSecurityStrategy(wssKeyStoreConfiguration, wssEncryptionConfiguration);
   }
