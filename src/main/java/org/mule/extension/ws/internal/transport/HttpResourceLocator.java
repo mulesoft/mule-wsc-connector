@@ -34,6 +34,6 @@ public class HttpResourceLocator implements TransportResourceLocator {
 
   @Override
   public InputStream getResource(String url) {
-    return executor.get(url, emptyMap()).getFirst();
+    return executor.get(url, emptyMap()).getContent();
   }
 }

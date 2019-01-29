@@ -17,8 +17,15 @@ public class SoapAttributesTestCase {
 
   @Test
   public void toStringAttributes() {
-    String result = new SoapAttributes(ImmutableMap.of("Header1", "Value1", "Header2", "Value2")).toString();
+    String result = new SoapAttributes(
+                                       ImmutableMap.of("Header1", "Value1", "Header2", "Value2"),
+                                       ImmutableMap.of("statusCode", "200", "reasonPhrase", "OK"))
+                                           .toString();
     assertThat(result, is("{\n"
+        + "  additionalTransportData = [\n"
+        + "    statusCode:200,\n"
+        + "    reasonPhrase:OK\n"
+        + "  ]\n"
         + "  protocolHeaders = [\n"
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"

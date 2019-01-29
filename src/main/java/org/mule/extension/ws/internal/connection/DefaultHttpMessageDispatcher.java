@@ -28,6 +28,7 @@ import org.slf4j.LoggerFactory;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
@@ -58,7 +59,8 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
           .headers(new MultiMap<>(request.getHeaders()))
           .build();
       HttpResponse response = client.send(httpPostRequest, timeout, false, null);
-      return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response));
+      return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response),
+                                   toStatusLineMap(response));
     } catch (IOException ioe) {
       throw new DispatcherException("An error occurred while sending the SOAP request", ioe);
     } catch (TimeoutException te) {
@@ -81,5 +83,12 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
 
   private Map<String, String> toHeadersMap(HttpResponse response) {
     return response.getHeaderNames().stream().collect(toMap(identity(), name -> join(" ", response.getHeaderValues(name))));
+  }
+
+  private Map<String, String> toStatusLineMap(HttpResponse response) {
+    Map<String, String> statusLine = new HashMap<>();
+    statusLine.put("statusCode", String.valueOf(response.getStatusCode()));
+    statusLine.put("reasonPhrase", response.getReasonPhrase());
+    return statusLine;
   }
 }

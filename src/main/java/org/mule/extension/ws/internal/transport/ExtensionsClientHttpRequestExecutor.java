@@ -14,6 +14,7 @@ import static org.mule.runtime.http.api.HttpConstants.Method.GET;
 import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
 import org.mule.extension.http.api.HttpAttributes;
+import org.mule.extension.http.api.HttpResponseAttributes;
 import org.mule.extension.ws.api.transport.HttpRequestResponse;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
@@ -26,6 +27,7 @@ import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.soap.api.transport.DispatcherException;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -97,14 +99,16 @@ public class ExtensionsClientHttpRequestExecutor {
     }
   }
 
-  private Map<String, String> getStatusLine(Result<Object, Object> result){
+  private Map<String, String> getStatusLine(Result<Object, Object> result) {
     try {
-      Optional httpAttributes = result.getAttributes();
-      if (!httpAttributes.isPresent()) {
+      Optional httpResponseAttributes = result.getAttributes();
+      if (!httpResponseAttributes.isPresent()) {
         throw new IllegalStateException("No Http Attributes found on the response, cannot get response headers.");
       } else {
-        Map<String, ? extends List<String>> headers = ((HttpAttributes) httpAttributes.get()).getHeaders().toListValuesMap();
-        return headers.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> join(" ", e.getValue())));
+        Map<String, String> statusLine = new HashMap<>();
+        statusLine.put("statusCode", String.valueOf(((HttpResponseAttributes) httpResponseAttributes.get()).getStatusCode()));
+        statusLine.put("reasonPhrase", ((HttpResponseAttributes) httpResponseAttributes.get()).getReasonPhrase());
+        return statusLine;
       }
     } catch (Exception e) {
       throw new IllegalStateException("Something went wrong when introspecting the http response attributes.", e);

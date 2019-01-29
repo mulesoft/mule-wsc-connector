@@ -38,7 +38,7 @@ public class SoapOutputEnvelopeTestCase {
   @Test
   public void toStringOnlyBody() {
     InputStream body = new ByteArrayInputStream("<xml>ABC</xml>".getBytes(UTF_8));
-    DefaultSoapResponse response = new DefaultSoapResponse(body, emptyMap(), emptyMap(), emptyMap(), "text/xml");
+    DefaultSoapResponse response = new DefaultSoapResponse(body, emptyMap(), emptyMap(), emptyMap(), emptyMap(), "text/xml");
     String result = new SoapOutputEnvelope(response, streamingHelper).toString();
     assertThat(result, is("{\n"
         + "body:<xml>ABC</xml>,\n"
@@ -55,7 +55,7 @@ public class SoapOutputEnvelopeTestCase {
     ByteArrayInputStream dummyContent = new ByteArrayInputStream(new byte[] {});
     Map<String, SoapAttachment> as = ImmutableMap.of("attachment1", new SoapAttachment(dummyContent, "text/json"),
                                                      "attachment2", new SoapAttachment(dummyContent, "text/json"));
-    DefaultSoapResponse response = new DefaultSoapResponse(body, hs, emptyMap(), as, "text/xml");
+    DefaultSoapResponse response = new DefaultSoapResponse(body, hs, emptyMap(), emptyMap(), as, "text/xml");
     String result = new SoapOutputEnvelope(response, streamingHelper).toString();
     assertThat(result, is("{\n"
         + "body:<xml>ABC</xml>,\n"
