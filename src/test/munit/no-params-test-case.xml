@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="no-params-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="">
+                <munit:parameters>
+                    <munit:parameter propertyName="servicePort" value="8080"/>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="serviceHost" value="localhost"/>
+                    <munit:parameter propertyName="urlPath" value=""/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <!-- Tests -->
+    <munit:test name="noParamsOperation" description="Consumes an operation that expects no parameters and returns a simple type">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="noParams">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#noParams: {}
+                        ]
+                    </wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.noParamsResponse.text]" expected="#['response']"/>
+        </munit:validation>
+    </munit:test>
+
+
+    <munit:test name="noParamsOperationNoPayload" description="Consumes an operation that expects no parameters and returns a simple type">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="noParams">
+                <wsc:message>
+                    <wsc:body>#[null]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.noParamsResponse.text]" expected="#['response']"/>
+        </munit:validation>
+    </munit:test>
+</mule>

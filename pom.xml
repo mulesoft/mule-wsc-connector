@@ -35,6 +35,17 @@
         <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
+
+        <!-- Remove when a new parent version with MTF is available -->
+        <munit.input.directory>src/test/munit</munit.input.directory>
+        <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
+        <munit.extensions.maven.plugin.version>1.0.0-BETA</munit.extensions.maven.plugin.version>
+        <munit.version>2.2.0-SNAPSHOT</munit.version>
+        <mavenResourcesVersion>3.0.2</mavenResourcesVersion>
+
+        <validations.module.version>1.1.0</validations.module.version>
+        <java.module.version>1.1.1</java.module.version>
+        <docker.maven.plugin.version>0.25.2</docker.maven.plugin.version>
     </properties>
 
     <dependencies>
@@ -253,4 +264,156 @@
             <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
         </pluginRepository>
     </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${mavenResourcesVersion}</version>
+                <executions>
+                    <execution>
+                        <id>copy-munit-resources</id>
+                        <phase>process-test-resources</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${munit.output.directory}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${munit.input.directory}</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.mulesoft.munit</groupId>
+                <artifactId>munit-extensions-maven-plugin</artifactId>
+                <version>${munit.extensions.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test</goal>
+                        </goals>
+                        <phase>integration-test</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <runtimeConfiguration>
+                        <discoverRuntimes>
+                            <product>EE</product>
+                            <includeSnapshots>true</includeSnapshots>
+                        </discoverRuntimes>
+                    </runtimeConfiguration>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>com.mulesoft.munit</groupId>
+                        <artifactId>munit-runner</artifactId>
+                        <version>${munit.version}</version>
+                        <classifier>mule-plugin</classifier>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.mulesoft.munit</groupId>
+                        <artifactId>munit-tools</artifactId>
+                        <version>${munit.version}</version>
+                        <classifier>mule-plugin</classifier>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.mule.connectors</groupId>
+                        <artifactId>mule-http-connector</artifactId>
+                        <version>${mule.http.connector.version}</version>
+                        <classifier>mule-plugin</classifier>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.mule.connectors</groupId>
+                        <artifactId>mule-soap-engine</artifactId>
+                        <version>${soap.engine.version}</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <activation>
+                <property>
+                    <name>soapui-wsmock-simple</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <id>soapui-wsmock-simple</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.maven.plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <name>soapui-services-mock</name>
+                                    <build>
+                                        <dockerFileDir>${project.basedir}</dockerFileDir>
+                                    </build>
+                                    <run>
+                                        <env>
+                                            <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
+                                            <PROJECT>/home/soapui/soapui-prj/simple-service-soapui-project.xml</PROJECT>
+                                        </env>
+                                        <ports>
+                                            <port>8080:8080</port>
+                                        </ports>
+                                        <log>
+                                            <enabled>false</enabled>
+                                        </log>
+                                    </run>
+                                </image>
+                            </images>
+                            <verbose>true</verbose>
+                        </configuration>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.slf4j</groupId>
+                                <artifactId>slf4j-api</artifactId>
+                                <version>1.7.24</version>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.slf4j</groupId>
+                                <artifactId>jcl-over-slf4j</artifactId>
+                                <version>1.7.24</version>
+                            </dependency>
+                        </dependencies>
+                        <executions>
+                            <execution>
+                                <id>start</id>
+                                <phase>test-compile</phase>
+                                <goals>
+                                    <goal>build</goal>
+                                    <goal>start</goal>
+                                </goals>
+                                <configuration>
+                                    <showLogs>false</showLogs>
+                                    <logStdout>false</logStdout>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>stop</id>
+                                <phase>post-integration-test</phase>
+                                <goals>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
 </project>
