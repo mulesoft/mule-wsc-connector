@@ -361,7 +361,7 @@
    <soapenv:Header/>
    <soapenv:Body>
       <ser:downloadAttachment>
-         <fileName>attachment</fileName>
+         <fileName>attachment.txt</fileName>
       </ser:downloadAttachment>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request><con:credentials><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/><con:wsrmConfig version="1.2"/></con:call></con:operation><con:operation id="fcef34a4-8e4a-4f3c-9581-75a9f55ed39b" isOneWay="false" action="echoOperationCustomAction" name="echo" bindingOperationName="echo" type="Request-Response" outputName="echoResponse" inputName="echo" receivesAttachments="false" sendsAttachments="false" anonymous="optional"><con:settings/><con:call id="2b4c2164-55b5-41b9-a40f-6620b53581a7" name="Request 1"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:ser="http://service.soap.service.mule.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -448,10 +448,10 @@
    <soapenv:Header/>
    <soapenv:Body>
       <ser:downloadAttachmentResponse>
-         <attachment>attachment.txt</attachment>
+         <attachment>cid:1271018540948</attachment>
       </ser:downloadAttachmentResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:responseContent><con:attachment><con:name>attachment.txt</con:name><con:contentType>text/plain</con:contentType><con:size>26</con:size><con:contentId>attachment.txt</con:contentId><con:part>&lt;anonymous></con:part><con:data>UEsDBBQACAgIAG6LPE4AAAAAAAAAAAAAAAAOAAAAYXR0YWNobWVudC50eHQLzswtyElVcCwpSUzOyE3NK1Fwzs8rAdJcAFBLBwhl6Ny1GgAAABoAAABQSwECFAAUAAgICABuizxOZejctRoAAAAaAAAADgAAAAAAAAAAAAAAAAAAAAAAYXR0YWNobWVudC50eHRQSwUGAAAAAAEAAQA8AAAAVgAAAAAA</con:data><con:id>6d8b3404-5cbe-4ae3-a78c-2e2aef4fc271</con:id></con:attachment><con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/></con:response><con:response name="Response MTOM" id="e736de33-e7c1-46fa-8797-41eef49bffcb" httpResponseStatus="200" encoding="UTF-8"><con:settings><con:setting id="WsdlSettings@enable-mtom">true</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse@force_mtom">false</con:setting></con:settings><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+</soapenv:Envelope>]]></con:responseContent><con:attachment><con:name>attachment.txt</con:name><con:contentType>text/plain</con:contentType><con:size>26</con:size><con:contentId>attachment.txt</con:contentId><con:part>1271018540948</con:part><con:data>UEsDBBQACAgIAG6LPE4AAAAAAAAAAAAAAAAOAAAAYXR0YWNobWVudC50eHQLzswtyElVcCwpSUzOyE3NK1Fwzs8rAdJcAFBLBwhl6Ny1GgAAABoAAABQSwECFAAUAAgICABuizxOZejctRoAAAAaAAAADgAAAAAAAAAAAAAAAAAAAAAAYXR0YWNobWVudC50eHRQSwUGAAAAAAEAAQA8AAAAVgAAAAAA</con:data><con:id>6d8b3404-5cbe-4ae3-a78c-2e2aef4fc271</con:id></con:attachment><con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/></con:response><con:response name="Response MTOM" id="e736de33-e7c1-46fa-8797-41eef49bffcb" httpResponseStatus="200" encoding="UTF-8"><con:settings><con:setting id="WsdlSettings@enable-mtom">true</con:setting><con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockResponse@force_mtom">false</con:setting></con:settings><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:downloadAttachmentResponse>
