@@ -14,6 +14,7 @@ import static org.mule.runtime.http.api.HttpConstants.Method.GET;
 import static org.mule.runtime.http.api.HttpConstants.Method.POST;
 
 import org.mule.extension.http.api.HttpAttributes;
+import org.mule.extension.ws.api.transport.HttpRequestResponse;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 import org.mule.runtime.api.util.MultiMap;
@@ -45,16 +46,16 @@ public class ExtensionsClientHttpRequestExecutor {
     this.client = client;
   }
 
-  public Pair<InputStream, Map<String, String>> get(String url, Map<String, String> headers) {
+  public HttpRequestResponse get(String url, Map<String, String> headers) {
     return this.request(GET.toString(), url, headers, null);
   }
 
-  public Pair<InputStream, Map<String, String>> post(String url, Map<String, String> headers, InputStream body) {
+  public HttpRequestResponse post(String url, Map<String, String> headers, InputStream body) {
     return this.request(POST.toString(), url, headers, body);
   }
 
-  private Pair<InputStream, Map<String, String>> request(String method, String url, Map<String, String> headers,
-                                                         InputStream body) {
+  private HttpRequestResponse request(String method, String url, Map<String, String> headers,
+                                      InputStream body) {
     DefaultOperationParametersBuilder params = DefaultOperationParameters
         .builder()
         .configName(requesterConfig)
@@ -69,9 +70,10 @@ public class ExtensionsClientHttpRequestExecutor {
 
     try {
       Result result = client.executeAsync("HTTP", "request", params.build()).get();
-      Map<String, String> httpHeaders = getHttpHeaders(result);
       InputStream content = getContent(result);
-      return new Pair<>(content, httpHeaders);
+      Map<String, String> httpHeaders = getHttpHeaders(result);
+      Map<String, String> statusLine = getStatusLine(result);
+      return new HttpRequestResponse(content, httpHeaders, statusLine);
     } catch (ExecutionException e) {
       throw new DispatcherException("Could not dispatch soap message using the [" + requesterConfig + "] HTTP configuration",
                                     e.getCause());
@@ -82,6 +84,20 @@ public class ExtensionsClientHttpRequestExecutor {
   }
 
   private Map<String, String> getHttpHeaders(Result<Object, Object> result) {
+    try {
+      Optional httpAttributes = result.getAttributes();
+      if (!httpAttributes.isPresent()) {
+        throw new IllegalStateException("No Http Attributes found on the response, cannot get response headers.");
+      } else {
+        Map<String, ? extends List<String>> headers = ((HttpAttributes) httpAttributes.get()).getHeaders().toListValuesMap();
+        return headers.entrySet().stream().collect(toMap(Map.Entry::getKey, e -> join(" ", e.getValue())));
+      }
+    } catch (Exception e) {
+      throw new IllegalStateException("Something went wrong when introspecting the http response attributes.", e);
+    }
+  }
+
+  private Map<String, String> getStatusLine(Result<Object, Object> result){
     try {
       Optional httpAttributes = result.getAttributes();
       if (!httpAttributes.isPresent()) {
