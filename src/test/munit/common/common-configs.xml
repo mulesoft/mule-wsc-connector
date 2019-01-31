@@ -8,16 +8,20 @@
       http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
     <!-- Configs -->
+    <http:request-config name="simple-requester" >
+        <http:request-connection host="localhost" port="${WS_PORT}" protocol="HTTP"/>
+    </http:request-config>
+
     <wsc:config name="default-config">
-        <wsc:connection wsdlLocation="http://${serviceHost}:${servicePort}/${urlPath}?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://${serviceHost}:${servicePort}/${urlPath}"
+        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/"
                         mtomEnabled="${mtomEnabled}">
         </wsc:connection>
     </wsc:config>
 
     <wsc:config name="default-timeout-config">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${servicePort}/server">
+                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
             <wsc:custom-transport-configuration>
                 <wsc:default-http-transport-configuration timeout="1"/>
             </wsc:custom-transport-configuration>
@@ -26,22 +30,17 @@
 
     <wsc:config name="dynamic-config">
         <wsc:connection wsdlLocation="#[vars.wsdlLocation]" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}">
+                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
         </wsc:connection>
     </wsc:config>
 
     <wsc:config name="custom-transport-config">
-        <wsc:connection wsdlLocation="http://${serviceHost}:${servicePort}/${urlPath}?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://${serviceHost}:${servicePort}/${urlPath}"
+        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/"
                         mtomEnabled="${mtomEnabled}">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="simple-requester"/>
             </wsc:custom-transport-configuration>
         </wsc:connection>
     </wsc:config>
-
-    <http:request-config name="simple-requester" >
-        <http:request-connection host="localhost" port="${servicePort}" protocol="HTTP"/>
-    </http:request-config>
-
 </mule>

@@ -309,6 +309,9 @@
                             <includeSnapshots>true</includeSnapshots>
                         </discoverRuntimes>
                     </runtimeConfiguration>
+                    <environmentVariables>
+                        <WS_PORT>${host.port}</WS_PORT>
+                    </environmentVariables>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -367,7 +370,7 @@
                                             <PROJECT>/home/soapui/soapui-prj/simple-service-soapui-project.xml</PROJECT>
                                         </env>
                                         <ports>
-                                            <port>8080:8080</port>
+                                            <port>host.port:8080</port>
                                         </ports>
                                         <log>
                                             <enabled>false</enabled>

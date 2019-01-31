@@ -3,7 +3,7 @@
       xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
       xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
       xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
-      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
       http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
@@ -13,10 +13,7 @@
         <munit:parameterizations>
             <munit:parameterization name="">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-timeout-config" />
                 </munit:parameters>
