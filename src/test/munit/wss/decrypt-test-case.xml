@@ -9,14 +9,11 @@
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
-    <munit:config name="wss-incoming-test-cases">
+    <munit:config name="decrypt-test-cases">
         <munit:parameterizations>
             <munit:parameterization name="">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
@@ -25,7 +22,7 @@
 
     <!-- Configs -->
     <wsc:config name="decrypt-config">
-        <wsc:connection wsdlLocation="http://${serviceHost}:${servicePort}/${urlPath}?wsdl" service="TestService" port="TestPort">
+        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${WS_PORT}/">
             <wsc:web-service-security>
                 <wsc:decrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/ssltest-keystore.jks" keyPassword="changeit"
@@ -35,33 +32,12 @@
         </wsc:connection>
     </wsc:config>
 
-    <wsc:config name="verify-config">
-        <wsc:connection wsdlLocation="http://${serviceHost}:${servicePort}/${urlPath}?wsdl" service="TestService" port="TestPort">
-            <wsc:web-service-security>
-                <wsc:verify-signature-security-strategy>
-                    <wsc:trust-store-configuration trustStorePath="security/trustStore" password="mulepassword"/>
-                </wsc:verify-signature-security-strategy>
-            </wsc:web-service-security>
-        </wsc:connection>
-    </wsc:config>
-
-
     <!-- Tests -->
 
-    <flow name="buildSimpleRequest">
-        <set-payload value="#[%dw 2.0
-output application/xml
-ns con http://service.soap.service.mule.org/
----
-con#echo: {
-    text: vars.text
-}]" />
-    </flow>
-
-    <munit:test name="decryptRequest">
+    <munit:test name="decryptRequest" description="Consumes an operation and decrypt response.">
         <munit:execution>
             <set-variable variableName="text" value="encrypted" />
-            <flow-ref name="buildSimpleRequest" />
+            <flow-ref name="buildEchoRequest" />
             <wsc:consume config-ref="decrypt-config" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
@@ -73,10 +49,10 @@ con#echo: {
         </munit:validation>
     </munit:test>
 
-    <munit:test name="failToDecryptRequest" expectedErrorType="WSC:SOAP_FAULT">
+    <munit:test name="failToDecryptRequest" expectedErrorType="WSC:SOAP_FAULT" description="Consumes an operation and fails decrypting non-encrypted response.">
         <munit:execution>
             <set-variable variableName="text" value="not_encypted" />
-            <flow-ref name="buildSimpleRequest" />
+            <flow-ref name="buildEchoRequest" />
             <wsc:consume config-ref="decrypt-config" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
@@ -84,32 +60,4 @@ con#echo: {
             </wsc:consume>
         </munit:execution>
     </munit:test>
-
-    <munit:test name="verifySignedRequest">
-        <munit:execution>
-            <set-variable variableName="text" value="signed" />
-            <flow-ref name="buildSimpleRequest" />
-            <wsc:consume config-ref="verify-config" operation="echo">
-                <wsc:message>
-                    <wsc:body>#[payload]</wsc:body>
-                </wsc:message>
-            </wsc:consume>
-        </munit:execution>
-        <munit:validation>
-            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['test response']"/>
-        </munit:validation>
-    </munit:test>
-
-    <munit:test name="failToVerifySignedRequest" expectedErrorType="WSC:SOAP_FAULT">
-        <munit:execution>
-            <set-variable variableName="text" value="not_signed" />
-            <flow-ref name="buildSimpleRequest" />
-            <wsc:consume config-ref="verify-config" operation="echo">
-                <wsc:message>
-                    <wsc:body>#[payload]</wsc:body>
-                </wsc:message>
-            </wsc:consume>
-        </munit:execution>
-    </munit:test>
-
 </mule>

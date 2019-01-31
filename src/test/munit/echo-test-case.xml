@@ -13,22 +13,16 @@
         <munit:parameterizations>
             <munit:parameterization name="DefaultTransport">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="CustomTransport">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
@@ -38,18 +32,11 @@
 
     <munit:test name="echoOperation" description="Consumes an operation that expects a simple type and returns a simple type">
         <munit:execution>
+            <set-variable variableName="text" value="test" />
+            <flow-ref name="buildEchoRequest" />
             <wsc:consume config-ref="${config}" operation="echo">
                 <wsc:message>
-                    <wsc:body>
-                        #[
-                        %dw 2.0
-                        output application/xml
-                        ns con http://service.soap.service.mule.org/
-                        ---
-                        con#echo: {
-                            text: "test"
-                        }]
-                    </wsc:body>
+                    <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
             </wsc:consume>
         </munit:execution>
@@ -161,7 +148,7 @@
 
     <munit:test name="withDynamicConfiguration" description="Consumes an operation that uses a dynamic config with a dynamic wsdlLocation">
         <munit:execution>
-            <set-variable variableName="wsdlLocation" value="http://${serviceHost}:${servicePort}/${urlPath}?wsdl" />
+            <set-variable variableName="wsdlLocation" value="http://localhost:${WS_PORT}/?wsdl" />
             <wsc:consume config-ref="dynamic-config" operation="echoAccount">
                 <wsc:message>
                     <wsc:body>

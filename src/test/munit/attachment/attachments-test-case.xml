@@ -13,10 +13,7 @@
         <munit:parameterizations>
             <munit:parameterization name="MTOMEnabled">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
@@ -24,10 +21,7 @@
             </munit:parameterization>
             <munit:parameterization name="MTOMEnabledWithCustomTransport">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
@@ -35,10 +29,7 @@
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabled">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
@@ -46,10 +37,7 @@
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabledWithCustomTransport">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />

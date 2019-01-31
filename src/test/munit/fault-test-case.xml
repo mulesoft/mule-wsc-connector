@@ -13,10 +13,7 @@
         <munit:parameterizations>
             <munit:parameterization name="">
                 <munit:parameters>
-                    <munit:parameter propertyName="servicePort" value="8080"/>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="serviceHost" value="localhost"/>
-                    <munit:parameter propertyName="urlPath" value=""/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config" />
                 </munit:parameters>
@@ -27,7 +24,7 @@
     <!-- Configs -->
 
     <!-- Tests -->
-    <munit:test name="failAndCheckErrorMessage">
+    <munit:test name="failAndCheckErrorMessage" description="Consumes an operation that throws a SOAP Fault and expects a Soap Fault Exception">
         <munit:execution>
             <try>
                 <wsc:consume config-ref="${config}" operation="fail">
