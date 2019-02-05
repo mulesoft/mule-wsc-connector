@@ -21,7 +21,7 @@ import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 
 /**
- * Web Service Consumer extension used to  SOAP web services.
+ * Web Service Consumer extension used to consume SOAP web services.
  *
  * @since 1.0
  */

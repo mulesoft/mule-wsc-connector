@@ -106,8 +106,9 @@ public class ExtensionsClientHttpRequestExecutor {
         throw new IllegalStateException("No Http Attributes found on the response, cannot get response headers.");
       } else {
         Map<String, String> statusLine = new HashMap<>();
-        statusLine.put("statusCode", String.valueOf(((HttpResponseAttributes) httpResponseAttributes.get()).getStatusCode()));
-        statusLine.put("reasonPhrase", ((HttpResponseAttributes) httpResponseAttributes.get()).getReasonPhrase());
+        HttpResponseAttributes attributes = (HttpResponseAttributes) httpResponseAttributes.get();
+        statusLine.put("statusCode", String.valueOf(attributes.getStatusCode()));
+        statusLine.put("reasonPhrase", attributes.getReasonPhrase());
         return statusLine;
       }
     } catch (Exception e) {
