@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Map;
 
 /**
- * POJO that simulates a HTTP response.
+ * Abstraction of a HTTP Request Response.
  *
  * @since 1.2
  */
@@ -36,7 +36,7 @@ public class HttpRequestResponse {
   }
 
   /**
-   * @return a set containing values for the http headers.
+   * @return a map containing values for the http headers.
    *
    * @since 1.2
    */
@@ -45,7 +45,7 @@ public class HttpRequestResponse {
   }
 
   /**
-   * @return a set containing values for the parts of the status line: status code, reason phrase and protocol version.
+   * @return a map containing values for the parts of the status line (for example status code, reason phrase, protocol version).
    *
    * @since 1.2
    */
