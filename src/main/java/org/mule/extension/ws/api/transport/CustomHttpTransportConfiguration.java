@@ -38,8 +38,8 @@ public class CustomHttpTransportConfiguration implements CustomTransportConfigur
     return req -> {
       try {
         ExtensionsClientHttpRequestExecutor executor = new ExtensionsClientHttpRequestExecutor(requesterConfig, client);
-        Pair<InputStream, Map<String, String>> postResult = executor.post(req.getAddress(), req.getHeaders(), req.getContent());
-        return new TransportResponse(postResult.getFirst(), postResult.getSecond());
+        HttpRequestResponse postResult = executor.post(req.getAddress(), req.getHeaders(), req.getContent());
+        return new TransportResponse(postResult.getContent(), postResult.getHttpHeaders(), postResult.getStatusLine());
       } catch (Exception e) {
         throw new DispatcherException("Error dispatching message with config [" + requesterConfig + "]:" + e.getMessage(), e);
       }

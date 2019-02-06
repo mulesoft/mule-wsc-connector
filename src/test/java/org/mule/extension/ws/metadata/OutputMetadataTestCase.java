@@ -86,12 +86,14 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     MetadataResult<ComponentMetadataDescriptor<OperationModel>> result = getMetadata(ECHO_FLOW, ECHO);
     MetadataType type = result.get().getModel().getOutputAttributes().getType();
     Collection<ObjectFieldType> attributeFields = toObjectType(type).getFields();
-    assertThat(attributeFields, hasSize(1));
+    assertThat(attributeFields, hasSize(2));
 
     Iterator<ObjectFieldType> iterator = attributeFields.iterator();
-    MetadataType protocolHeaders = iterator.next().getValue();
-    assertThat(protocolHeaders, is(instanceOf(ObjectType.class)));
-    assertThat(((ObjectType) protocolHeaders).isOpen(), is(true));
+    while (iterator.hasNext()) {
+      MetadataType protocolHeaders = iterator.next().getValue();
+      assertThat(protocolHeaders, is(instanceOf(ObjectType.class)));
+      assertThat(((ObjectType) protocolHeaders).isOpen(), is(true));
+    }
   }
 
   @Test

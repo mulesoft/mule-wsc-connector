@@ -88,7 +88,7 @@ public class ConsumeOperation {
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(response, streamingHelper))
-        .attributes(new SoapAttributes(response.getTransportHeaders()))
+        .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData()))
         .build();
   }
 
