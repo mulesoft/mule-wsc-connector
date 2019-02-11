@@ -54,7 +54,7 @@ public class OutputMetadataTestCase extends AbstractMetadataTestCase {
     ObjectFieldType body = operationFields.iterator().next();
     Collection<ObjectFieldType> bodyFields = toObjectType(body.getValue()).getFields();
     ObjectFieldType echo = bodyFields.iterator().next();
-    assertThat(echo.getKey().getName().toString(), containsString("{http://service.soap.service.mule.org/}echoResponse"));
+    assertThat(echo.getKey().getName().toString(), containsString("{http://service.ws.extension.mule.org/}echoResponse"));
     ObjectType echoType = toObjectType(echo.getValue());
     Collection<ObjectFieldType> echoFields = echoType.getFields();
     assertThat(echoFields, hasSize(1));
