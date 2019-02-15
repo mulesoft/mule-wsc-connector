@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="keys-metadata-test-case.xml" />
+
+    <mtf:tooling-test name="getOperationKeys" >
+        <mtf:get-metadata-keys>
+            <wsc:consume config-ref="default-config" operation="echoAccount">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-metadata-keys>
+        <mtf:validation>
+            <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','downloadAttachment','large','oneWay']]" />
+            <set-variable variableName="keys" value="#[payload pluck $$]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.keys)]" expected="#[sizeOf(vars.operations)]" />
+            <foreach collection="#[vars.keys]" counterVariableName="index">
+                <munit-tools:assert-that expression="#[vars.operations]" is="#[MunitTools::hasItem(payload)]"/>
+            </foreach>
+        </mtf:validation>
+    </mtf:tooling-test>
+</mule>
