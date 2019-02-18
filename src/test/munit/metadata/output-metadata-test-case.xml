@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="output-metadata-test-case.xml" />
+
+    <mtf:tooling-test name="getEchoOutputBodyMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:consume config-ref="default-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="operationFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationFields)]" expected="#[1]" />
+
+            <set-variable variableName="echo" value="#[vars.operationFields[0].model.fields[0]]" />
+            <munit-tools:assert-that expression="#[vars.echo.key.name]" is="#[MunitTools::containsString('{http://service.soap.service.mule.org/}echoResponse')]" />
+
+            <set-variable variableName="echoFields" value="#[vars.echo.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.echoFields)]" expected="#[1]" />
+
+            <set-variable variableName="textField" value="#[vars.echoFields[0]]" />
+            <munit-tools:assert-equals actual="#[vars.textField.key.name]" expected="text" />
+            <munit-tools:assert-equals actual="#[vars.textField.model.'type']" expected="String" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoAccountOutputBodyMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:consume config-ref="default-config" operation="echoAccount">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="operationFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationFields)]" expected="#[1]" />
+
+            <set-variable variableName="echo" value="#[vars.operationFields[0].model.fields[0]]" />
+            <set-variable variableName="echoFields" value="#[vars.echo.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.echoFields)]" expected="#[1]" />
+
+            <set-variable variableName="accountField" value="#[vars.echoFields[0]]" />
+            <munit-tools:assert-equals actual="#[vars.accountField.key.name]" expected="account" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.accountField.model.fields)]" expected="#[4]" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoHeadersOutputMetadata" >
+        <mtf:get-attributes-metadata>
+            <wsc:consume config-ref="default-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-attributes-metadata>
+        <mtf:validation>
+            <set-variable variableName="attributeFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attributeFields)]" expected="#[2]" />
+            <foreach collection="#[vars.attributeFields]" counterVariableName="index">
+                <munit-tools:assert-equals actual="#[payload.model.'type']" expected="Object" />
+                <munit-tools:assert-that expression="#[payload.model.open]" is="#[MunitTools::notNullValue()]"/>
+            </foreach>
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoWithHeadersOutputAttributesMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:consume config-ref="default-config" operation="echoWithHeaders">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="headersField" value="#[(payload.fields filter (element, index) -> (element.key.name contains 'headers')).model.fields ]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headersField)]" expected="#[1]" />
+
+            <set-variable variableName="headers" value="#[vars.headersField[0].model.fields[0]]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headers)]" expected="#[2]" />
+
+            <set-variable variableName="headersNames" value="#[['headerOut', 'headerInOut']]"/>
+            <foreach collection="#[vars.headers]" counterVariableName="index">
+                <munit-tools:assert-that expression="#[vars.headersNames]" is="#[MunitTools::hasItem(payload.key.name)]"/>
+                <munit-tools:assert-equals actual="#[payload.model.fields[0].model.'type']" expected="String" />
+            </foreach>
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getDownloadAttachmentMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:consume config-ref="default-config" operation="downloadAttachment">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="attributesFields" value="#[payload.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attributesFields)]" expected="#[1]" />
+            <munit-tools:assert-equals actual="#[vars.attributesFields[0].key.name]" expected="attachments" />
+
+            <set-variable variableName="attachmentsFields" value="#[vars.attributesFields[0].model.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attachmentsFields)]" expected="#[1]" />
+            <munit-tools:assert-equals actual="#[vars.attachmentsFields[0].model.'type']" expected="Binary" />
+        </mtf:validation>
+    </mtf:tooling-test>
+</mule>
