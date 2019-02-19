@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="body-metadata-test-case.xml" />
+
+    <mtf:tooling-test name="getEchoInputBody" >
+        <mtf:get-input-metadata parameter="body">
+            <wsc:consume config-ref="default-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <set-variable variableName="fields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.fields)]" expected="#[1]" />
+
+            <set-variable variableName="operationField" value="#[vars.fields[0]]" />
+            <munit-tools:assert-that expression="#[vars.operationField.key.name]" is="#[MunitTools::endsWith('}echo')]" />
+
+            <set-variable variableName="operationParams" value="#[vars.operationField.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationParams)]" expected="#[1]" />
+            <munit-tools:assert-equals actual="#[vars.operationParams[0].key.name]" expected="text" />
+            <munit-tools:assert-equals actual="#[vars.operationParams[0].model.'type']" expected="String" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getNoParamsInputBody" >
+        <mtf:get-input-metadata parameter="body">
+            <wsc:consume config-ref="default-config" operation="noParams">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <set-variable variableName="fields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.fields)]" expected="#[1]" />
+
+            <set-variable variableName="operationField" value="#[vars.fields[0]]" />
+            <munit-tools:assert-that expression="#[vars.operationField.key.name]" is="#[MunitTools::endsWith('}noParams')]" />
+
+            <set-variable variableName="operationParams" value="#[vars.operationField.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationParams)]" expected="#[0]" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoAccountInputBody" >
+        <mtf:get-input-metadata parameter="body">
+            <wsc:consume config-ref="default-config" operation="echoAccount">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <set-variable variableName="fields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.fields)]" expected="#[1]" />
+
+            <set-variable variableName="operationField" value="#[vars.fields[0]]" />
+            <munit-tools:assert-that expression="#[vars.operationField.key.name]" is="#[MunitTools::endsWith('}echoAccount')]" />
+
+            <set-variable variableName="operationParams" value="#[vars.operationField.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationParams)]" expected="#[2]" />
+
+            <set-variable variableName="accountField" value="#[vars.operationParams[0]]" />
+            <munit-tools:assert-that expression="#[vars.accountField.key.name]" is="#[MunitTools::endsWith('account')]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.accountField.model.fields)]" expected="#[4]" />
+
+            <set-variable variableName="name" value="#[vars.operationParams[1]]" />
+            <munit-tools:assert-equals actual="#[vars.name.key.name]" expected="name" />
+            <munit-tools:assert-equals actual="#[vars.name.model.'type']" expected="String" />
+        </mtf:validation>
+    </mtf:tooling-test>
+</mule>
