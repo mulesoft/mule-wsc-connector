@@ -19,6 +19,15 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="human-resources">
+        <wsc:connection service="Human_ResourcesService"
+                        port="Human_Resources"
+                        address="http://dummy-metadata-address.com"
+                        wsdlLocation="${HUMAN_WSDL_PATH}"
+                        soapVersion="${soapVersion}">
+        </wsc:connection>
+    </wsc:config>
+
     <wsc:config name="default-timeout-config">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">

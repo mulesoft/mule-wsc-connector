@@ -316,6 +316,7 @@
                     </runtimeConfiguration>
                     <environmentVariables>
                         <WS_PORT>${host.port}</WS_PORT>
+                        <HUMAN_WSDL_PATH>${basedir}/target/test-classes/wsdl/human.wsdl</HUMAN_WSDL_PATH> <!-- used for testing -->
                     </environmentVariables>
                 </configuration>
                 <dependencies>
