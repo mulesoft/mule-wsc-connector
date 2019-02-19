@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="metadata-negative-test-case.xml" />
+
+    <wsc:config name="invalid-service">
+        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/server?wsdl" service="INVALID" port="TestPort"/>
+    </wsc:config>
+
+    <wsc:config name="invalid-port">
+        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/server?wsdl" service="TestService" port="INVALID"/>
+    </wsc:config>
+
+    <mtf:tooling-test name="invalidService" expectFailureMessage="service name [INVALID] not found in wsdl" >
+        <mtf:get-metadata-keys>
+            <wsc:consume config-ref="invalid-service" operation="nothing"/>
+        </mtf:get-metadata-keys>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="invalidPort" expectFailureMessage="port name [INVALID] not found in wsdl" >
+        <mtf:get-metadata-keys>
+            <wsc:consume config-ref="invalid-port" operation="nothing"/>
+        </mtf:get-metadata-keys>
+    </mtf:tooling-test>
+</mule>

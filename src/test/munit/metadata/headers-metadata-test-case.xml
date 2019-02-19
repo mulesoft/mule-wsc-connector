@@ -13,6 +13,15 @@
 
     <munit:config name="headers-metadata-test-case.xml" />
 
+    <wsc:config name="human-resources">
+        <wsc:connection service="Human_ResourcesService"
+                        port="Human_Resources"
+                        address="http://dummy-metadata-address.com"
+                        wsdlLocation="target/test-classes/wsdl/human.wsdl"
+                        soapVersion="${soapVersion}">
+        </wsc:connection>
+    </wsc:config>
+
     <mtf:tooling-test name="getEchoInputHeaders" >
         <mtf:get-input-metadata parameter="headers">
             <wsc:consume config-ref="default-config" operation="echoWithHeaders">
