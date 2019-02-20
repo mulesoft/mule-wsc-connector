@@ -24,7 +24,7 @@
         <cxf.version>3.2.1</cxf.version>
       
         <mule.http.connector.version>1.2.0</mule.http.connector.version>
-        <soap.engine.version>1.1.0</soap.engine.version>
+        <soap.engine.version>1.1.1-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.2.3</wsdl.parser.version>
         <javax.activation.version>1.1.1</javax.activation.version>
         <javax.jaxws-api.version>2.3.0</javax.jaxws-api.version>
@@ -34,6 +34,7 @@
         <!-- tests props -->
         <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
+        <jsonassert.version>1.5.0</jsonassert.version>
     </properties>
 
     <dependencies>
@@ -90,7 +91,7 @@
             <version>${commons.lang.version}</version>
         </dependency>
 
-        <!-- Test Server Dependencies -->
+        <!-- Test Dependencies -->
 
         <dependency>
             <groupId>org.mule.runtime</groupId>
@@ -102,6 +103,12 @@
             <groupId>xmlunit</groupId>
             <artifactId>xmlunit</artifactId>
             <version>${xmlUnitVersion}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.skyscreamer</groupId>
+            <artifactId>jsonassert</artifactId>
+            <version>${jsonassert.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -131,8 +138,6 @@
             <version>${mule.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Test Server Dependencies -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>
