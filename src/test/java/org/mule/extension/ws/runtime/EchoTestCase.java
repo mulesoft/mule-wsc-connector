@@ -16,6 +16,7 @@ import static org.mule.extension.ws.SoapTestXmlValues.HEADER_IN;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_INOUT;
 import static org.mule.extension.ws.SoapTestXmlValues.HEADER_OUT;
 import static org.mule.functional.api.exception.ExpectedError.none;
+import static org.skyscreamer.jsonassert.JSONCompareMode.STRICT;
 
 import org.mule.extension.ws.AbstractWscTestCase;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
@@ -29,6 +30,7 @@ import io.qameta.allure.Story;
 import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
 import org.junit.Test;
+import org.skyscreamer.jsonassert.JSONAssert;
 
 @Feature(WSC_EXTENSION)
 @Story("Operation Execution")
@@ -94,7 +96,7 @@ public class EchoTestCase extends AbstractWscTestCase {
         .getPayload()
         .getValue();
     String payloadString = IOUtils.toString(((CursorStreamProvider) payload).openCursor());
-    assertThat(payloadString, is("{\n"
+    String expectedPayload = "{\n"
         + "  \"body\": {\n"
         + "    \"echoWithHeadersResponse\": {\n"
         + "      \"text\": \"test response\"\n"
@@ -111,7 +113,9 @@ public class EchoTestCase extends AbstractWscTestCase {
         + "      \"headerInOut\": \"Header In Out Value INOUT\"\n"
         + "    }\n"
         + "  }\n"
-        + "}"));
+        + "}";
+
+    JSONAssert.assertEquals(expectedPayload, payloadString, STRICT);
   }
 
   @Test
