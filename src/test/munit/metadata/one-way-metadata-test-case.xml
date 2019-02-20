@@ -11,8 +11,6 @@
       http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
-    <!--<munit:config name="one-way-metadata-test-case.xml">-->
-
     <munit:config name="one-way-metadata-test-case.xml">
         <munit:parameterizations>
             <munit:parameterization name="SOAP11">
