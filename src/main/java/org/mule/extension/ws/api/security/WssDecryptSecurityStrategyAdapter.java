@@ -16,6 +16,8 @@ import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssDecryptSecurityStrategy;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
 
+import java.util.Objects;
+
 /**
  * Decrypts an encrypted SOAP response, using the private key of the key-store in the provided TLS context.
  *
@@ -38,5 +40,24 @@ public class WssDecryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                        keyStoreConfiguration.getStorePath(),
                                                                        keyStoreConfiguration.getKeyPassword(),
                                                                        keyStoreConfiguration.getType()));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssDecryptSecurityStrategyAdapter that = (WssDecryptSecurityStrategyAdapter) o;
+    return Objects.equals(keyStoreConfiguration, that.keyStoreConfiguration);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(keyStoreConfiguration);
   }
 }

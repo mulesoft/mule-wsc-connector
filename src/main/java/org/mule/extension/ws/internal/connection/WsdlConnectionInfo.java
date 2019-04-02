@@ -16,6 +16,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.ValuePart;
 
+import java.util.Objects;
+
 /**
  * Groups together the parameters retrieved from a WSDL that are going to be used for establishing a connection to a SOAP endpoint.
  *
@@ -71,5 +73,27 @@ public class WsdlConnectionInfo {
 
   public String getWsdlLocation() {
     return wsdlLocation;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WsdlConnectionInfo that = (WsdlConnectionInfo) o;
+    return Objects.equals(wsdlLocation, that.wsdlLocation) &&
+        Objects.equals(service, that.service) &&
+        Objects.equals(port, that.port) &&
+        Objects.equals(address, that.address);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(wsdlLocation, service, port, address);
   }
 }

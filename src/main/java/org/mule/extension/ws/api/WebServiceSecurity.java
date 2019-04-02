@@ -101,4 +101,29 @@ public class WebServiceSecurity {
         .map(SecurityStrategyAdapter::getSecurityStrategy)
         .collect(toImmutableList());
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WebServiceSecurity that = (WebServiceSecurity) o;
+    return Objects.equals(signSecurityStrategy, that.signSecurityStrategy) &&
+        Objects.equals(verifySignatureSecurityStrategy, that.verifySignatureSecurityStrategy) &&
+        Objects.equals(usernameTokenSecurityStrategy, that.usernameTokenSecurityStrategy) &&
+        Objects.equals(timestampSecurityStrategy, that.timestampSecurityStrategy) &&
+        Objects.equals(decryptSecurityStrategy, that.decryptSecurityStrategy) &&
+        Objects.equals(encryptSecurityStrategy, that.encryptSecurityStrategy);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(signSecurityStrategy, verifySignatureSecurityStrategy, usernameTokenSecurityStrategy,
+                        timestampSecurityStrategy, decryptSecurityStrategy, encryptSecurityStrategy);
+  }
 }
