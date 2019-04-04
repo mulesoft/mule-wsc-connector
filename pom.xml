@@ -24,8 +24,8 @@
         <cxf.version>3.2.1</cxf.version>
       
         <mule.http.connector.version>1.2.0</mule.http.connector.version>
-        <soap.engine.version>1.1.0</soap.engine.version>
-        <wsdl.parser.version>1.2.3</wsdl.parser.version>
+        <soap.engine.version>1.1.1</soap.engine.version>
+        <wsdl.parser.version>1.2.4</wsdl.parser.version>
         <javax.activation.version>1.1.1</javax.activation.version>
         <javax.jaxws-api.version>2.3.0</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
