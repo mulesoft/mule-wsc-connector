@@ -23,6 +23,7 @@ import org.mule.soap.api.security.configuration.WssSignConfiguration;
 import org.mule.soap.api.security.stores.WssKeyStoreConfiguration;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -80,5 +81,24 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
                                  wssSignParts);
 
     return new WssSignSecurityStrategy(wssKeyStoreConfiguration, wssSignConfiguration);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssSignSecurityStrategyAdapter that = (WssSignSecurityStrategyAdapter) o;
+    return Objects.equals(keyStoreConfiguration, that.keyStoreConfiguration) &&
+        Objects.equals(signAlgorithmConfiguration, that.signAlgorithmConfiguration);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(keyStoreConfiguration, signAlgorithmConfiguration);
   }
 }

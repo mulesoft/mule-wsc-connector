@@ -20,6 +20,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Group which holds the configuration regarding encryption algorithms used on the encryption security strategy.
@@ -95,4 +96,27 @@ public class WssEncryptionConfigurationAdapter {
     return wssPartAdapters;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssEncryptionConfigurationAdapter that = (WssEncryptionConfigurationAdapter) o;
+    return encryptionKeyIdentifier == that.encryptionKeyIdentifier &&
+        encryptionSymAlgorithm == that.encryptionSymAlgorithm &&
+        encryptionKeyTransportAlgorithm == that.encryptionKeyTransportAlgorithm &&
+        encryptionDigestAlgorithm == that.encryptionDigestAlgorithm &&
+        Objects.equals(wssPartAdapters, that.wssPartAdapters);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(encryptionKeyIdentifier, encryptionSymAlgorithm, encryptionKeyTransportAlgorithm,
+                        encryptionDigestAlgorithm, wssPartAdapters);
+  }
 }

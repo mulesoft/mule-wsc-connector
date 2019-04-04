@@ -17,6 +17,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
+import java.util.Objects;
+
 /**
  * Implementation for Key Stores, used for encryption, decryption and signing.
  *
@@ -88,5 +90,28 @@ public class WssKeyStoreConfigurationAdapter {
    */
   public String getType() {
     return type;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssKeyStoreConfigurationAdapter that = (WssKeyStoreConfigurationAdapter) o;
+    return Objects.equals(keyStorePath, that.keyStorePath) &&
+        Objects.equals(alias, that.alias) &&
+        Objects.equals(password, that.password) &&
+        Objects.equals(keyPassword, that.keyPassword) &&
+        Objects.equals(type, that.type);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(keyStorePath, alias, password, keyPassword, type);
   }
 }

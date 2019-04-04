@@ -14,6 +14,8 @@ import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
+import java.util.Objects;
+
 /**
  * Group which holds the data that identifies a part of a SOAP message to be signed or encrypted.
  *
@@ -56,4 +58,24 @@ public class WssPartAdapter {
     return localname;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssPartAdapter that = (WssPartAdapter) o;
+    return encode == that.encode &&
+        Objects.equals(namespace, that.namespace) &&
+        Objects.equals(localname, that.localname);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(encode, namespace, localname);
+  }
 }

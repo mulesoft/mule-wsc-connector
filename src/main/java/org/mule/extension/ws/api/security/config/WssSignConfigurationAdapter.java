@@ -20,6 +20,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Group which holds the configuration regarding signing algorithms used on sign security strategy.
@@ -96,4 +97,26 @@ public class WssSignConfigurationAdapter {
     return wssParts;
   }
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssSignConfigurationAdapter that = (WssSignConfigurationAdapter) o;
+    return signatureKeyIdentifier == that.signatureKeyIdentifier &&
+        signatureAlgorithm == that.signatureAlgorithm &&
+        signatureDigestAlgorithm == that.signatureDigestAlgorithm &&
+        signatureC14nAlgorithm == that.signatureC14nAlgorithm &&
+        Objects.equals(wssParts, that.wssParts);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(signatureKeyIdentifier, signatureAlgorithm, signatureDigestAlgorithm, signatureC14nAlgorithm, wssParts);
+  }
 }

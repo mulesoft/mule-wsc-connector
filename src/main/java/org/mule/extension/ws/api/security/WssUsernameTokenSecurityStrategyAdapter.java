@@ -14,6 +14,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssUsernameTokenSecurityStrategy;
 
+import java.util.Objects;
+
 /**
  * Provides the capability to authenticate using Username and Password with a SOAP service by adding the UsernameToken
  * element in the SOAP request.
@@ -60,5 +62,27 @@ public class WssUsernameTokenSecurityStrategyAdapter implements SecurityStrategy
   @Override
   public SecurityStrategy getSecurityStrategy() {
     return new WssUsernameTokenSecurityStrategy(username, password, passwordType.getType(), addNonce, addCreated);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssUsernameTokenSecurityStrategyAdapter that = (WssUsernameTokenSecurityStrategyAdapter) o;
+    return addNonce == that.addNonce &&
+        addCreated == that.addCreated &&
+        Objects.equals(username, that.username) &&
+        Objects.equals(password, that.password) &&
+        passwordType == that.passwordType;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(username, password, passwordType, addNonce, addCreated);
   }
 }

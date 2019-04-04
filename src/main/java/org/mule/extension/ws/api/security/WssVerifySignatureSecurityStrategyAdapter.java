@@ -16,6 +16,8 @@ import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssVerifySignatureSecurityStrategy;
 import org.mule.soap.api.security.stores.WssTrustStoreConfiguration;
 
+import java.util.Objects;
+
 /**
  * Verifies the signature of a SOAP response, using certificates of the trust-store in the provided TLS context.
  *
@@ -36,5 +38,24 @@ public class WssVerifySignatureSecurityStrategyAdapter implements SecurityStrate
     return new WssVerifySignatureSecurityStrategy(new WssTrustStoreConfiguration(trustStoreConfiguration.getStorePath(),
                                                                                  trustStoreConfiguration.getPassword(),
                                                                                  trustStoreConfiguration.getType()));
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssVerifySignatureSecurityStrategyAdapter that = (WssVerifySignatureSecurityStrategyAdapter) o;
+    return Objects.equals(trustStoreConfiguration, that.trustStoreConfiguration);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(trustStoreConfiguration);
   }
 }

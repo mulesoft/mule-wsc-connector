@@ -13,6 +13,8 @@ import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.soap.api.transport.TransportDispatcher;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
+import java.util.Objects;
+
 /**
  * DTO subtype used to instantiate {@link DefaultHttpTransportConfigurationImpl} objects.
  *
@@ -38,5 +40,24 @@ public class DefaultHttpTransportConfiguration implements CustomTransportConfigu
 
   public int getTimeout() {
     return timeout;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    DefaultHttpTransportConfiguration that = (DefaultHttpTransportConfiguration) o;
+    return timeout == that.timeout;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(timeout);
   }
 }

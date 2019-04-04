@@ -16,6 +16,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Password;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
+import java.util.Objects;
+
 /**
  * Implementation for Trust Stores, used for signature verification.
  *
@@ -58,5 +60,26 @@ public class WssTrustStoreConfigurationAdapter {
    */
   public String getType() {
     return type;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssTrustStoreConfigurationAdapter that = (WssTrustStoreConfigurationAdapter) o;
+    return Objects.equals(trustStorePath, that.trustStorePath) &&
+        Objects.equals(password, that.password) &&
+        Objects.equals(type, that.type);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(trustStorePath, password, type);
   }
 }
