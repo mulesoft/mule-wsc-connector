@@ -129,7 +129,9 @@
             <set-payload value="#[output application/json --- payload]"/>
         </munit:execution>
         <munit:validation>
-            <munit-tools:assert-equals actual="#[payload]" expected='#[{ "body": { "echoWithHeadersResponse": { "text": "test response" } }, "attachments": { }, "headers": { "headerInOut": { "headerInOut": "Header In Out Value INOUT" }, "headerOut": { "headerOut": "Header In Value OUT" } } }]'/>
+            <munit-tools:assert-equals actual="#[payload.body]" expected='#[{ "echoWithHeadersResponse": { "text": "test response" } }]'/>
+            <munit-tools:assert-equals actual="#[payload.attachments]" expected='#[{}]'/>
+            <munit-tools:assert-equals actual="#[payload.headers]" expected='#[{ "headerInOut": { "headerInOut": "Header In Out Value INOUT" }, "headerOut": { "headerOut": "Header In Value OUT" } }]'/>
         </munit:validation>
     </munit:test>
 
