@@ -39,10 +39,10 @@
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
-        <munit.extensions.maven.plugin.version>1.0.0-SNAPSHOT</munit.extensions.maven.plugin.version>
-        <munit.version>2.2.0-SNAPSHOT</munit.version>
         <mavenResourcesVersion>3.0.2</mavenResourcesVersion>
-        <mtf.tools.version>1.0.0-SNAPSHOT</mtf.tools.version>
+        <munit.version>2.2.0-BETA2</munit.version>
+        <mtf.tools.version>1.0.0-BETA2</mtf.tools.version>
+        <munit.extensions.maven.plugin.version>1.0.0-BETA2</munit.extensions.maven.plugin.version>
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
@@ -286,7 +286,6 @@
                                     <filtering>true</filtering>
                                 </resource>
                             </resources>
-
                         </configuration>
                     </execution>
                 </executions>
@@ -315,10 +314,11 @@
                         </additionalRuntimes>
                     </runtimeConfiguration>
                     <environmentVariables>
-                        <WS_PORT>${host.port}</WS_PORT>
+                        <WS_SOAP11_PORT>${soap.host.port}</WS_SOAP11_PORT>
+                        <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
                     </environmentVariables>
                 </configuration>
-                <dependencies>
+                    <dependencies>
                     <dependency>
                         <groupId>com.mulesoft.munit</groupId>
                         <artifactId>munit-runner</artifactId>
@@ -350,84 +350,86 @@
                     </dependency>
                 </dependencies>
             </plugin>
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>${docker.maven.plugin.version}</version>
+                <configuration>
+                    <images>
+                        <image>
+                            <name>ws-simple</name>
+                            <build>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                            </build>
+                            <run>
+                                <env>
+                                    <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
+                                    <PROJECT>/home/soapui/soapui-prj/simple-service-soapui-project.xml</PROJECT>
+                                </env>
+                                <ports>
+                                    <port>soap.host.port:8080</port>
+                                </ports>
+                                <log>
+                                    <enabled>false</enabled>
+                                </log>
+                            </run>
+                        </image>
+                        <image>
+                            <name>ws-simple-soap12</name>
+                            <build>
+                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                            </build>
+                            <run>
+                                <env>
+                                    <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
+                                    <PROJECT>/home/soapui/soapui-prj/simple-service-soap12-soapui-project.xml</PROJECT>
+                                </env>
+                                <ports>
+                                    <port>soap12.host.port:8080</port>
+                                </ports>
+                                <log>
+                                    <enabled>false</enabled>
+                                </log>
+                            </run>
+                        </image>
+                    </images>
+                    <verbose>true</verbose>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                        <version>1.7.24</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>jcl-over-slf4j</artifactId>
+                        <version>1.7.24</version>
+                    </dependency>
+                </dependencies>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                        <configuration>
+                            <showLogs>false</showLogs>
+                            <logStdout>false</logStdout>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <activation>
-                <property>
-                    <name>soapui-wsmock-simple</name>
-                    <value>true</value>
-                </property>
-            </activation>
-            <id>soapui-wsmock-simple</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>io.fabric8</groupId>
-                        <artifactId>docker-maven-plugin</artifactId>
-                        <version>${docker.maven.plugin.version}</version>
-                        <configuration>
-                            <images>
-                                <image>
-                                    <name>soapui-services-mock</name>
-                                    <build>
-                                        <dockerFileDir>${project.basedir}</dockerFileDir>
-                                    </build>
-                                    <run>
-                                        <env>
-                                            <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
-                                            <PROJECT>/home/soapui/soapui-prj/simple-service-soapui-project.xml</PROJECT>
-                                        </env>
-                                        <ports>
-                                            <port>host.port:8080</port>
-                                        </ports>
-                                        <log>
-                                            <enabled>false</enabled>
-                                        </log>
-                                    </run>
-                                </image>
-                            </images>
-                            <verbose>true</verbose>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.slf4j</groupId>
-                                <artifactId>slf4j-api</artifactId>
-                                <version>1.7.24</version>
-                            </dependency>
-                            <dependency>
-                                <groupId>org.slf4j</groupId>
-                                <artifactId>jcl-over-slf4j</artifactId>
-                                <version>1.7.24</version>
-                            </dependency>
-                        </dependencies>
-                        <executions>
-                            <execution>
-                                <id>start</id>
-                                <phase>test-compile</phase>
-                                <goals>
-                                    <goal>build</goal>
-                                    <goal>start</goal>
-                                </goals>
-                                <configuration>
-                                    <showLogs>false</showLogs>
-                                    <logStdout>false</logStdout>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>stop</id>
-                                <phase>post-integration-test</phase>
-                                <goals>
-                                    <goal>stop</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>

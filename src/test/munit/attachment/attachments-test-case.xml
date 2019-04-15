@@ -11,33 +11,73 @@
 
     <munit:config name="attachments-test-cases">
         <munit:parameterizations>
-            <munit:parameterization name="MTOMEnabled">
+            <munit:parameterization name="MTOMEnabled_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="MTOMEnabledWithCustomTransport">
+            <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="MTOMDisabled">
+            <munit:parameterization name="MTOMDisabled_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="MTOMDisabledWithCustomTransport">
+            <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabled_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabled_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
@@ -47,7 +87,7 @@
     </munit:config>
 
     <!-- Tests -->
-    <munit:test name="downloadAttachment" description="Downloads an attachment from the server">
+    <munit:test name="downloadAttachment" description="Downloads an attachment from the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="downloadAttachment">
                 <wsc:message>
@@ -70,7 +110,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="uploadAttachment" description="Uploads an attachment to the server">
+    <munit:test name="uploadAttachment" description="Uploads an attachment to the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <set-variable variableName="attachmentContent" value="#[output text/plain --- 'Some Content']" />
             <wsc:consume config-ref="${config}" operation="uploadAttachment">

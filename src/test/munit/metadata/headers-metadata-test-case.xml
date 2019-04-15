@@ -16,11 +16,13 @@
             <munit:parameterization name="SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="SOAP12">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>

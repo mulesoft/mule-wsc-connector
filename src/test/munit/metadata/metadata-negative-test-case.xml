@@ -16,22 +16,24 @@
             <munit:parameterization name="SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="SOAP12">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
     </munit:config>
 
     <wsc:config name="invalid-service">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/server?wsdl" service="INVALID" port="TestPort"/>
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/server?wsdl" service="INVALID" port="TestPort"/>
     </wsc:config>
 
     <wsc:config name="invalid-port">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/server?wsdl" service="TestService" port="INVALID"/>
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="INVALID"/>
     </wsc:config>
 
     <mtf:tooling-test name="invalidService" expectFailureMessage="service name [INVALID] not found in wsdl" >

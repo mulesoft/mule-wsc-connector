@@ -9,19 +9,19 @@
 
     <!-- Configs -->
     <http:request-config name="simple-requester" >
-        <http:request-connection host="localhost" port="${WS_PORT}" protocol="HTTP"/>
+        <http:request-connection protocol="HTTP"/>
     </http:request-config>
 
     <wsc:config name="default-config">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/"
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
                         mtomEnabled="${mtomEnabled}">
         </wsc:connection>
     </wsc:config>
 
     <wsc:config name="default-timeout-config">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
                 <wsc:default-http-transport-configuration timeout="1"/>
             </wsc:custom-transport-configuration>
@@ -30,13 +30,13 @@
 
     <wsc:config name="dynamic-config">
         <wsc:connection wsdlLocation="#[vars.wsdlLocation]" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
         </wsc:connection>
     </wsc:config>
 
     <wsc:config name="custom-transport-config">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/"
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
                         mtomEnabled="${mtomEnabled}">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="simple-requester"/>
