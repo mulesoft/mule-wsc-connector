@@ -11,16 +11,34 @@
 
     <munit:config name="echo-test-cases">
         <munit:parameterizations>
-            <munit:parameterization name="DefaultTransport">
+            <munit:parameterization name="DefaultTransport_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config"/>
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="CustomTransport">
+            <munit:parameterization name="CustomTransport_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="DefaultTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="CustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config"/>
                 </munit:parameters>
@@ -30,7 +48,7 @@
 
     <!-- Tests -->
 
-    <munit:test name="echoOperation" description="Consumes an operation that expects a simple type and returns a simple type">
+    <munit:test name="echoOperation" description="Consumes an operation that expects a simple type and returns a simple type" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <set-variable variableName="text" value="test" />
             <flow-ref name="buildEchoRequest" />
@@ -45,7 +63,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="echoWithHeadersOperation" description="Consumes an operation that expects an input and a set of headers and returns a simple type and a set of header">
+    <munit:test name="echoWithHeadersOperation" description="Consumes an operation that expects an input and a set of headers and returns a simple type and a set of header" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="echoWithHeaders">
                 <wsc:message>
@@ -81,7 +99,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="responseToJson" description="Consumes an operation and transforms the whole payload into a json">
+    <munit:test name="responseToJson" description="Consumes an operation and transforms the whole payload into a json" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="echoWithHeaders">
                 <wsc:message>
@@ -115,7 +133,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="echoAccountOperation" description="Consumes an operation that expects 2 parameters (a simple one and a complex one) and returns a complex type">
+    <munit:test name="echoAccountOperation" description="Consumes an operation that expects 2 parameters (a simple one and a complex one) and returns a complex type" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="echoAccount">
                 <wsc:message>
@@ -146,9 +164,9 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="withDynamicConfiguration" description="Consumes an operation that uses a dynamic config with a dynamic wsdlLocation">
+    <munit:test name="withDynamicConfiguration" description="Consumes an operation that uses a dynamic config with a dynamic wsdlLocation" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
-            <set-variable variableName="wsdlLocation" value="http://localhost:${WS_PORT}/?wsdl" />
+            <set-variable variableName="wsdlLocation" value="http://localhost:${wsPort}/${soapVersion}/?wsdl" />
             <wsc:consume config-ref="dynamic-config" operation="echoAccount">
                 <wsc:message>
                     <wsc:body>
@@ -174,7 +192,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="echoWithStaticHeadersOperation" description="Consumes an operation that expects an input and a set of static headers badly formed." expectedErrorType="WSC:BAD_REQUEST">
+    <munit:test name="echoWithStaticHeadersOperation" description="Consumes an operation that expects an input and a set of static headers badly formed." expectedErrorType="WSC:BAD_REQUEST" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="echoWithHeaders">
                 <wsc:message>

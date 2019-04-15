@@ -16,6 +16,7 @@
             <munit:parameterization name="">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="requestConfig" value="basic-auth-requester" />
                 </munit:parameters>
             </munit:parameterization>
@@ -26,7 +27,7 @@
 
     <wsc:config name="authorized-local-wsdl">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
             </wsc:custom-transport-configuration>
@@ -35,7 +36,7 @@
 
     <wsc:config name="unauthorized-local-wsdl">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
             </wsc:custom-transport-configuration>
@@ -43,8 +44,8 @@
     </wsc:config>
 
     <wsc:config name="authorized-remote-wsdl">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
             </wsc:custom-transport-configuration>
@@ -52,8 +53,8 @@
     </wsc:config>
 
     <wsc:config name="unauthorized-remote-wsdl">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${WS_PORT}/">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
                 <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
             </wsc:custom-transport-configuration>
@@ -61,7 +62,7 @@
     </wsc:config>
 
     <http:request-config name="basic-auth-requester">
-        <http:request-connection host="localhost" port="${WS_PORT}" protocol="HTTP">
+        <http:request-connection host="localhost" port="${wsPort}" protocol="HTTP">
             <http:authentication>
                 <http:basic-authentication username="juani" password="changeIt"/>
             </http:authentication>
@@ -69,7 +70,7 @@
     </http:request-config>
 
     <http:request-config name="unauthorized-requester">
-        <http:request-connection host="localhost" port="${WS_PORT}" protocol="HTTP">
+        <http:request-connection host="localhost" port="${wsPort}" protocol="HTTP">
             <http:authentication>
                 <http:basic-authentication username="invalid" password="invalid"/>
             </http:authentication>

@@ -11,9 +11,17 @@
 
     <munit:config name="username-test-cases">
         <munit:parameterizations>
-            <munit:parameterization name="">
+            <munit:parameterization name="SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
@@ -23,7 +31,7 @@
     <!-- Configs -->
 
     <wsc:config name="username-config">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${WS_PORT}/">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="true" addNonce="true"/>
             </wsc:web-service-security>
@@ -31,7 +39,7 @@
     </wsc:config>
 
     <wsc:config name="invalid-username-config">
-        <wsc:connection wsdlLocation="http://localhost:${WS_PORT}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${WS_PORT}/">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:username-token-security-strategy username="invalid" password="invalid" addCreated="true" addNonce="true"/>
             </wsc:web-service-security>
