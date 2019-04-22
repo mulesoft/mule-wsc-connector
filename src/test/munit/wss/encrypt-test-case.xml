@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="encrypt-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <wsc:config name="encrypt-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/ssltest-cacerts.jks" password="changeit" alias="s1as" type="jks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="invalid-encrypt-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/serverKeystore" password="mulepassword" alias="muleserver" type="jks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+
+    <!-- Tests -->
+
+    <munit:test name="encryptRequest" description="Encrypt request using server public key and expects a non encrypted response.">
+        <munit:execution>
+            <set-variable variableName="text" value="encryptedRequest" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="encrypt-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['test response']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="failToEncryptRequest" expectedErrorType="WSC:SOAP_FAULT" description="Encrypt request using server private key and expects a server failure when decrypting.">
+        <munit:execution>
+            <set-variable variableName="text" value="invalidEncryptedRequest" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="invalid-encrypt-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+</mule>
