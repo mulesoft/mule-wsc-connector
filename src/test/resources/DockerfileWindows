@@ -1,0 +1,25 @@
+# The image tag could be parameterized when needing to support multiple windows server versions
+FROM mcr.microsoft.com/windows/servercore:ltsc2019
+
+ENV chocolateyUseWindowsCompression false
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+RUN iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'));\
+    choco feature disable --name showDownloadProgress
+
+RUN choco install -y soapui --version 5.4.0
+
+EXPOSE 8080
+
+COPY .\\soapui-prj\\* C:\\Users\\Administrator\\soapui-prj/
+COPY .\\security\\* C:\\Users\\Administrator\\security/
+COPY .\\wsdl\\* C:\\Users\\Administrator\\wsdl/
+COPY [".\\\\docker-libs\\\\xmlsec-1.5.8.jar", "C:\\\\Program Files\\\\SmartBear\\\\SoapUI-5.4.0\\\\lib\\\\xmlsec-1.4.5.jar"]
+
+CMD  & 'C:\Program Files\SmartBear\SoapUI-5.4.0\bin\mockservicerunner.bat'\
+    -m $env:MOCK_SERVICE_NAME\
+    '-Djava.awt.headless=true'\
+    '-Dfile.encoding=UTF8'\
+    -p 8080\
+    $env:PROJECT
