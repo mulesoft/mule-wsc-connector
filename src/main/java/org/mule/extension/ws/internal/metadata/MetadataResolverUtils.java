@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
@@ -23,6 +24,8 @@ import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
+
+import java.net.URL;
 
 /**
  * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
@@ -55,7 +58,7 @@ public class MetadataResolverUtils {
 
   public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
     WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
-    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    WsdlModel model = getOrCreateWsdlModel(context, getWsdlLocation(info.getWsdlLocation()));
     ServiceModel service = model.getService(info.getService());
     if (service == null) {
       throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
@@ -65,6 +68,11 @@ public class MetadataResolverUtils {
       throw new MetadataResolvingException("port name [" + info.getPort() + "] not found in wsdl", INVALID_CONFIGURATION);
     }
     return port;
+  }
+
+  private String getWsdlLocation(String wsdlLocation) {
+    URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
+    return resource != null ? resource.toString() : wsdlLocation;
   }
 
   public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location) {

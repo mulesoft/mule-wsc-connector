@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:types.nmvs.eu:v2.0" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="urn:types.nmvs.eu:v2.0">
+	<include schemaLocation="NMVS_Composite_Types.xsd"/>
+	<element name="I7_Request" type="tns:I7_Request_Type"/>
+
+	<complexType name="I7_Request_Type">
+		<complexContent>
+			<extension base="tns:Header_Type">
+
+			</extension>
+		</complexContent>
+
+	</complexType>
+
+</schema>

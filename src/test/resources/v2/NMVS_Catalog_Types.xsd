@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:types.nmvs.eu:v2.0" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="urn:types.nmvs.eu:v2.0">	
+	<simpleType name="CatalogState_Type">
+		<restriction base="tns:CatalogEntry_Base_Type">
+            <enumeration value="ACTIVE">
+            <annotation> <documentation> Product, Batch or Package is dispensable  </documentation></annotation> </enumeration>
+            <enumeration value="INACTIVE">
+            <annotation> <documentation> Product, Batch or Package is not dispensable </documentation></annotation> </enumeration>
+            <enumeration value="UNKNOWN">
+            <annotation> <documentation> Product, Batch or Package is not dispensable </documentation></annotation> </enumeration>
+		</restriction>
+	</simpleType>
+	<simpleType name="CatalogProductScheme_Type">
+		<annotation>
+			<documentation>
+				Name of the coding system for product code
+				(GTINs and PPNs are possible in any country due to inter-market transactions). 
+			</documentation>
+		</annotation>
+		<restriction base="tns:CatalogEntry_Base_Type">
+            <enumeration value="GTIN">
+            <annotation> <documentation> GTIN </documentation></annotation> </enumeration>
+            <enumeration value="PPN">
+            <annotation> <documentation> PPN </documentation></annotation> </enumeration>
+		</restriction>
+	</simpleType>	
+	<simpleType name="CatalogStateReason_Type">
+		<restriction base="tns:CatalogEntry_Base_Type">
+            <enumeration value="SUPPLIED">
+            <annotation> <documentation> Pack-related reason "supplied" </documentation></annotation> </enumeration>
+            <enumeration value="DESTROYED">
+            <annotation> <documentation> Pack-related reason "destroyed" </documentation></annotation> </enumeration>
+            <enumeration value="LOCKED">
+            <annotation> <documentation> Pack-related reason "locked" </documentation></annotation> </enumeration>
+            <enumeration value="EXPORTED">
+            <annotation> <documentation> Pack-related reason "exported" </documentation></annotation> </enumeration>
+            <enumeration value="SAMPLE">
+            <annotation> <documentation> Pack-related reason "sample" </documentation></annotation> </enumeration>
+            <enumeration value="STOLEN">
+            <annotation> <documentation> Pack-related reason "stolen" </documentation></annotation> </enumeration>
+            <enumeration value="CHECKED_OUT">
+            <annotation> <documentation> Pack-related reason "checked out" </documentation></annotation> </enumeration>
+            <enumeration value="FREESAMPLE">
+            <annotation> <documentation> Pack-related reason "freesample" </documentation></annotation> </enumeration>
+            <enumeration value="RECALLED">
+            <annotation> <documentation> Batch-related reason "recalled" </documentation></annotation> </enumeration>
+            <enumeration value="EXPIRED">
+            <annotation> <documentation> Batch-related reason "expired" </documentation></annotation> </enumeration> 	
+            <enumeration value="WITHDRAWN">
+            <annotation> <documentation> Product-related reason "withdrawn" </documentation></annotation> </enumeration> 	
+            <enumeration value="UNKNOWN">
+            <annotation> <documentation> Batch-, Pack-, Product-related reason "unknown" </documentation></annotation> </enumeration>
+		</restriction>
+	</simpleType>
+	<simpleType name="CatalogReturnCode_Type">
+		<restriction base="tns:CatalogEntry_Base_Type">
+			<enumeration value="NMVS_ERROR">
+			<annotation> <documentation>A general technical exception occurred.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_01">
+			<annotation> <documentation>The entered user or password does not match</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_02">
+			<annotation> <documentation>The user is locked, login is not possible.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_03">
+			<annotation> <documentation>A general infringement was found.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_05">
+			<annotation> <documentation>Maximum number of failed login attempts reached. Account is blocked.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_06">
+			<annotation> <documentation>The entered user or password does not match</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_09">
+			<annotation> <documentation>Access to the entered serial number is not possible. The user has no mandate for the associated product.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_10">
+			<annotation> <documentation> Entered password does not match the stored current password. </documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_11">
+            <annotation> <documentation>The entered password is either expired or an initial password. Please renew your password.</documentation></annotation> </enumeration>
+            <enumeration value="NMVS_FE_AU_12">
+            <annotation> <documentation>The user has no mandate for the associated product.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_15">
+            <annotation> <documentation>No rights to execute process for this product code.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_GR_01">
+			<annotation> <documentation>Invalid Productcode.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_GR_02">
+			<annotation> <documentation>The check digit of the Pharmacy Central Number (PZN) is incorrect.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_GR_03">
+			<annotation> <documentation>The inserted prefix for the Productcode does not match the country code for Germany.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_GR_04">
+			<annotation> <documentation>Invalid Productcode.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_01">
+			<annotation> <documentation>The associated batch of the entered serial number was recalled.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_02">
+			<annotation> <documentation>Selected batch designation already exists with a different expiry date.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_03">
+			<annotation> <documentation>Selected batch designation does not exist.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_04">
+			<annotation> <documentation>Selected batch designation already exists with a different expiry date.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_05">
+			<annotation> <documentation>Selected batch designation is not "locked".</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_LOT_06">
+			<annotation> <documentation>The entered (old) expiry date does not match the stored expiry date</documentation></annotation> </enumeration>			
+			<enumeration value="NMVS_FE_LOT_07">
+			<annotation> <documentation>The expiry date contains incorrect date value</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_PKI_01">
+            <annotation> <documentation> Zertifikat hat die maximale Gultigkeitsdauer uberschritten.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_PKI_06">
+            <annotation> <documentation>There is no valid certificate for this user.</documentation></annotation> </enumeration>	
+            <enumeration value="NMVS_FE_PKI_07">
+            <annotation> <documentation> Fur den Benutzer liegt kein neues Zertifikat vor.</documentation></annotation> </enumeration>				
+			<enumeration value="NMVS_FE_TX_01">
+			<annotation> <documentation>The entered transaction number does not match the transaction number of dispense.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_TX_02">
+			<annotation> <documentation> The entered bulk transaction id is not available. </documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_TX_03">
+			<annotation> <documentation>The entered transaction number does not match the transaction number of destruction.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_TX_05">
+            <annotation> <documentation>Transaction number (reference from previous Set Property operation) is not valid for the undo operation.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FI_CFG_02">
+			<annotation> <documentation>No database scheme could be identified for the selected client.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FI_CFG_03">
+			<annotation> <documentation>Client for this product is unknown.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_01">
+			<annotation> <documentation>Pack status is not "dispensable".</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_02">
+			<annotation> <documentation>Pack expired.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_03">
+			<annotation> <documentation>Pack status is not "dispensable" (in context: verification w/o status change).</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_04">
+			<annotation> <documentation>Pack status is not  "dispensed".</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_05">
+			<annotation> <documentation>The time frame between notification dispensed and reverse dispensed serial number  exceeded the max. permissible limit.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_06">
+			<annotation> <documentation>Actual pack status doesn't match the undo transaction (set and undo status must be equivalent).</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_11">
+			<annotation> <documentation>State of pack is "dispensed", "exported" or "destroyed".</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_13">
+			<annotation> <documentation>The time frame  between notification destroyed and reverse destroyed serial number exceeded the max. permissible limit.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_15">
+			<annotation> <documentation>Selected product number is "locked" due to notified takeover process.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_18">
+			<annotation> <documentation>Pack has an exclusive property.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_19">
+			<annotation> <documentation>Property is already set on pack.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_20">
+			<annotation> <documentation>Defined timeframe between setting this property and the undo was exceeded.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_21">
+			<annotation> <documentation>Undo can only be executed by the same user who previously set the attribute.</documentation></annotation> </enumeration>			
+			<enumeration value="NMVS_NC_PCK_22">
+			<annotation> <documentation>Pack is already inactive.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PCK_23">
+			<annotation> <documentation>Re-setting of the property via double scan is registered.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_01">
+			<annotation> <documentation>Unknown product code.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_02">
+			<annotation> <documentation>Unknown serial number.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_03">
+			<annotation> <documentation>The entered product number is already assigned to another client.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_04">
+			<annotation> <documentation>The entered product number is already unlocked for use on the EU Hub.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_05">
+			<annotation> <documentation>The entered product master data do not match with the stored product master data.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PC_06">
+			<annotation> <documentation>Product code not available in the system (no alert)</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_SUCCESS">
+			<annotation> <documentation>Successfully processed.</documentation></annotation> </enumeration>  
+			<enumeration value="NMVS_TE_XM_01">
+			<annotation> <documentation>The XML structure of input data is not valid.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_TE_XM_02">
+			<annotation> <documentation>Input data do not match the XML scheme definition.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_TI_AU_01">
+			<annotation> <documentation>The authentication process has failed due to technical reasons.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_TI_TO_01">
+			<annotation> <documentation>Process runtime exceeds max. configured runtime.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_TI_XM_01">
+			<annotation> <documentation>Output data do not match the XML scheme definition.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_PMS_02">
+            <annotation> <documentation>The entered (new) password is the same as the stored password.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_PMS_03">
+            <annotation> <documentation>New password matches one of the last 20 passwords of the history.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_PMS_04">
+			<annotation> <documentation>Password does not meet the password policy</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_NC_PMS_23">
+            <annotation> <documentation>The current version of the Terms and Conditions has already been confirmed.</documentation></annotation> </enumeration>
+            <enumeration value="NMVS_NC_PMS_24">
+            <annotation> <documentation>There is no Terms and Conditions available. If this should lead to problems, please contact your responsible NMVO.</documentation></annotation> </enumeration>
+			<enumeration value="NMVS_FE_AU_23">
+            <annotation> <documentation>The terms and conditions were not accepted in the allowed timeframe. Please accept the new Terms and Conditions to get access to the system again.</documentation></annotation> </enumeration>
+            <enumeration value="NMVS_FE_AU_24">
+            <annotation> <documentation>Password change not allowed, as a new password has already been assigned.</documentation></annotation> </enumeration>	
+			
+		</restriction>
+	</simpleType>
+	<simpleType name="CatalogUseCase_Type">
+		<restriction base="tns:CatalogEntry_Base_Type">
+			<enumeration value="G110"/>
+			<enumeration value="G115"/>
+			<enumeration value="G120"/>
+			<enumeration value="G121"/>
+			<enumeration value="G122"/>
+			<enumeration value="G125"/>
+			<enumeration value="G127"/>
+			<enumeration value="G130"/>
+			<enumeration value="G131"/>
+			<enumeration value="G135"/>
+			<enumeration value="G137"/>
+			<enumeration value="G140"/>
+			<enumeration value="G141"/>
+			<enumeration value="G145"/>
+			<enumeration value="G147"/>
+			<enumeration value="G150"/>
+			<enumeration value="G151"/>
+			<enumeration value="G155"/>
+			<enumeration value="G157"/>
+			<enumeration value="G160"/>
+			<enumeration value="G161"/>
+			<enumeration value="G165"/>
+			<enumeration value="G167"/>
+			<enumeration value="G170"/>
+			<enumeration value="G171"/>
+			<enumeration value="G175"/>
+			<enumeration value="G177"/>
+			<enumeration value="G180"/>
+			<enumeration value="G181"/>
+			<enumeration value="G182"/>
+			<enumeration value="G185"/>
+			<enumeration value="G187"/>
+			<enumeration value="G188"/>
+		</restriction>
+	</simpleType>
+	<simpleType name="CatalogUseCaseMixedManual_Type">
+        <restriction base="tns:CatalogEntry_Base_Type">
+            <enumeration value="G122"/>
+            <enumeration value="G182"/>                
+        </restriction>
+    </simpleType>    
+    <simpleType name="CatalogUseCaseMixed_Type">
+        <restriction base="tns:CatalogEntry_Base_Type">
+            <enumeration value="G110"/>
+            <enumeration value="G120"/>        
+            <enumeration value="G121"/>
+            <enumeration value="G130"/>
+            <enumeration value="G131"/>
+            <enumeration value="G140"/>
+            <enumeration value="G141"/>
+            <enumeration value="G150"/>
+            <enumeration value="G151"/>
+            <enumeration value="G160"/>
+            <enumeration value="G161"/>
+            <enumeration value="G170"/>
+            <enumeration value="G171"/>
+            <enumeration value="G180"/>
+            <enumeration value="G181"/>              
+        </restriction>
+    </simpleType>
+	<simpleType name="CatalogEntry_Base_Type">
+		<restriction base="normalizedString"/>
+	</simpleType>
+	<simpleType name="CatalogNotificationCode_Type">
+		<restriction base="tns:CatalogEntry_Base_Type">
+			<enumeration value="NMVS_NOTIFY_AU_01">
+				<annotation> 
+					<documentation>You are using an old password.
+							The password of your user account has changed, so please adjust your password as soon as possible.
+							The password you are using will be deactivated in $oldPWExpDate days.
+					</documentation>
+				</annotation> 
+			</enumeration>
+			<enumeration value="NMVS_NOTIFY_AU_02">
+			<annotation> 
+					<documentation>Your password will expire in $PWExpDate days.
+							Please change your password using the password-change function in the system.
+							If your password expires, you will no longer be able to connect to the system.
+					</documentation>
+				</annotation> 
+			</enumeration>
+			<enumeration value="NMVS_NOTIFY_PMS_01">
+				<annotation> 
+					<documentation>A new version of the NMVS terms and conditions is available.
+						You have $restDays days to accept the terms and conditions.
+						If you have not confirmed by this time, you will no longer have access to the system.
+					</documentation>
+				</annotation> 
+			</enumeration>
+		 </restriction>
+	</simpleType>
+</schema>

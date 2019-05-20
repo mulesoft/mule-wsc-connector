@@ -13,6 +13,10 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="Web_Service_Consumer_Config">
+        <wsc:connection wsdlLocation="v2/WS_BULK.wsdl" service="BulkServices" port="Port_BulkServices" address="http://localhost:8080/WS_BULK_TRANSACTIONS_V1/BulkServiceV10" />
+    </wsc:config>
+
     <wsc:config name="human-resources">
         <wsc:connection service="Human_ResourcesService"
                         port="Human_Resources"
@@ -29,6 +33,10 @@
     <wsc:config name="invalid-port">
         <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="INVALID"/>
     </wsc:config>
+
+    <flow name="weirdImports">
+        <wsc:consume operation="G177BulkUndoLock" config-ref="Web_Service_Consumer_Config"/>
+    </flow>
 
     <flow name="getEchoMetadata">
         <wsc:consume config-ref="config" operation="echo">
