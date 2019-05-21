@@ -20,7 +20,6 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
 import org.junit.Test;
-
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.ObjectFieldType;
 import org.mule.metadata.api.model.ObjectType;
@@ -37,10 +36,61 @@ import java.util.Iterator;
 public class BodyMetadataTestCase extends AbstractMetadataTestCase {
 
   @Test
-  @Description("Test metadata from weird imports")
-  public void getWeirdImportsMetadata() throws Exception {
-    MetadataType body = getBody("weirdImports", "G177BulkUndoLock");
-    int a = 2;
+  @Description("Checks the dynamic metadata of the request body parameter for the echo operation")
+  public void getEchoInputBody() {
+    MetadataResult<ComponentMetadataDescriptor<OperationModel>> metadata = getMetadata(ECHO_FLOW, ECHO);
+    MetadataType body = getParameterType(metadata.get().getModel().getAllParameterModels(), BODY);
+
+    Collection<ObjectFieldType> fields = toObjectType(body).getFields();
+    assertThat(fields, hasSize(1));
+
+    ObjectFieldType operationField = fields.iterator().next();
+    assertThat(operationField.getKey().getName().getLocalPart(), is(ECHO));
+
+    Collection<ObjectFieldType> operationParams = toObjectType(operationField.getValue()).getFields();
+    assertThat(operationParams, hasSize(1));
+    ObjectFieldType field = operationParams.iterator().next();
+    assertThat(field.getKey().getName().getLocalPart(), is("text"));
+    assertThat(field.getValue(), is(instanceOf(StringType.class)));
+  }
+
+  @Test
+  @Description("Checks the dynamic metadata of the request body parameter for the echo operation")
+  public void getNoParamsInputBody() {
+    MetadataType body = getBody(NO_PARAMS_FLOW, NO_PARAMS);
+
+    Collection<ObjectFieldType> fields = toObjectType(body).getFields();
+    assertThat(fields, hasSize(1));
+    ObjectFieldType operationField = fields.iterator().next();
+    assertThat(operationField.getKey().getName().getLocalPart(), is(NO_PARAMS));
+
+    Collection<ObjectFieldType> operationParams = toObjectType(operationField.getValue()).getFields();
+    assertThat(operationParams, hasSize(0));
+  }
+
+  @Test
+  @Description("Checks the dynamic metadata of the request body parameter for the echoAccount operation")
+  public void getEchoAccountInputBody() {
+    MetadataType body = getBody(ECHO_ACCOUNT_FLOW, ECHO_ACCOUNT);
+
+    Collection<ObjectFieldType> fields = toObjectType(body).getFields();
+    assertThat(fields, hasSize(1));
+    ObjectFieldType operationField = fields.iterator().next();
+    assertThat(operationField.getKey().getName().getLocalPart(), is(ECHO_ACCOUNT));
+
+    Collection<ObjectFieldType> operationParams = toObjectType(operationField.getValue()).getFields();
+    assertThat(operationParams, hasSize(2));
+    Iterator<ObjectFieldType> iterator = operationParams.iterator();
+    ObjectFieldType accountField = iterator.next();
+    assertThat(accountField.getKey().getName().getLocalPart(), is("account"));
+
+    ObjectType accountType = toObjectType(accountField.getValue());
+    Collection<ObjectFieldType> accountFields = accountType.getFields();
+    assertThat(accountFields, hasSize(4));
+
+    ObjectFieldType name = iterator.next();
+    assertThat(name.getKey().getName().getLocalPart(), is("name"));
+    assertThat(name.getValue(), is(instanceOf(StringType.class)));
   }
 
   private MetadataType getBody(String flow, String key) {
