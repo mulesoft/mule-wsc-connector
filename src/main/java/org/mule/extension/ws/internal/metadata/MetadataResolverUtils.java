@@ -6,7 +6,6 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
@@ -24,8 +23,6 @@ import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
-
-import java.net.URL;
 
 /**
  * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
