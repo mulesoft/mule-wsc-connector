@@ -28,34 +28,19 @@
         </munit:parameterizations>
     </munit:config>
 
-    <wsc:config name="Web_Service_Consumer_Config">
-        <wsc:connection wsdlLocation="v2/WS_BULK.wsdl" service="BulkServices" port="Port_BulkServices" address="http://localhost:8080/WS_BULK_TRANSACTIONS_V1/BulkServiceV10" />
-    </wsc:config>
+    <!--<wsc:config name="dilbert-wsc">-->
+        <!--<wsc:connection wsdlLocation="wsdl/document.wsdl" service="Dilbert" port="DilbertSoap" address="http://www.gcomputer.net/webservices/dilbert.asmx" />-->
+    <!--</wsc:config>-->
 
 
-    <flow name="weirdImports">
-        <wsc:consume operation="G177BulkUndoLock" config-ref="Web_Service_Consumer_Config"/>
-    </flow>
-
-    <mtf:tooling-test name="asdasd" >
-        <mtf:get-output-metadata>
-            <wsc:consume operation="G177BulkUndoLock" config-ref="Web_Service_Consumer_Config"/>
-        </mtf:get-output-metadata>
-        <mtf:validation>
-            <set-variable variableName="operationFields" value="#[payload.fields]" />
-            <munit-tools:assert-equals actual="#[sizeOf(vars.operationFields)]" expected="#[1]" />
-
-            <set-variable variableName="echo" value="#[vars.operationFields[0].model.fields[0]]" />
-            <munit-tools:assert-that expression="#[vars.echo.key.name]" is="#[MunitTools::containsString('{http://service.soap.service.mule.org/}echoResponse')]" />
-
-            <set-variable variableName="echoFields" value="#[vars.echo.model.fields]" />
-            <munit-tools:assert-equals actual="#[sizeOf(vars.echoFields)]" expected="#[1]" />
-
-            <set-variable variableName="textField" value="#[vars.echoFields[0]]" />
-            <munit-tools:assert-equals actual="#[vars.textField.key.name]" expected="text" />
-            <munit-tools:assert-equals actual="#[vars.textField.model.'type']" expected="String" />
-        </mtf:validation>
-    </mtf:tooling-test>
+    <!--<mtf:tooling-test name="getOutputBodyMetadataFromWsdlOnRelativePath" >-->
+        <!--<mtf:get-output-metadata>-->
+            <!--<wsc:consume operation="TodaysDilbert" config-ref="dilbert-wsc"/>-->
+        <!--</mtf:get-output-metadata>-->
+        <!--<mtf:validation>-->
+            <!--<munit-tools:assert-equals actual="#[sizeOf(payload.fields)]" expected="#[1]" />-->
+        <!--</mtf:validation>-->
+    <!--</mtf:tooling-test>-->
 
     <mtf:tooling-test name="getEchoOutputBodyMetadata" >
         <mtf:get-output-metadata>
