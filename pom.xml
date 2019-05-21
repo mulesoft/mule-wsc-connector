@@ -22,7 +22,7 @@
         <commons.lang.version>3.7</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
         <cxf.version>3.2.1</cxf.version>
-      
+
         <mule.http.connector.version>1.2.0</mule.http.connector.version>
         <soap.engine.version>1.1.2-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.4.0-SNAPSHOT</wsdl.parser.version>
@@ -46,8 +46,12 @@
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
-        <docker.maven.plugin.version>0.25.2</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.30.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
+        <dockerfile>Dockerfile</dockerfile>
+        <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
+        <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
+        <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
     </properties>
 
     <dependencies>
@@ -264,6 +268,24 @@
     </pluginRepositories>
 
     <build>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>**/soapui-prj/**</exclude>
+                </excludes>
+            </testResource>
+            <testResource>
+                <directory>${project.basedir}/src/test/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>**/soapui-prj/**</include>
+                </includes>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -315,7 +337,7 @@
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
                     </environmentVariables>
                 </configuration>
-                    <dependencies>
+                <dependencies>
                     <dependency>
                         <groupId>com.mulesoft.munit</groupId>
                         <artifactId>munit-runner</artifactId>
@@ -356,12 +378,14 @@
                         <image>
                             <name>ws-simple</name>
                             <build>
-                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <!--TODO: Improve the way we locate and handle paths referencing-->
+                                <contextDir>${project.build.testOutputDirectory}</contextDir>
+                                <dockerFile>${project.build.testOutputDirectory}/${dockerfile}</dockerFile>
                             </build>
                             <run>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
-                                    <PROJECT>/home/soapui/soapui-prj/simple-service-soapui-project.xml</PROJECT>
+                                    <PROJECT>${docker.soapui.container.project.home}simple-service-soapui-project.xml</PROJECT>
                                 </env>
                                 <ports>
                                     <port>soap.host.port:8080</port>
@@ -369,17 +393,21 @@
                                 <log>
                                     <enabled>false</enabled>
                                 </log>
+                                <!--Workaround for avoiding name collisions with zombie containers left from failed executions-->
+                                <!--or parallel executions on same agent-->
+                                <containerNamePattern>%n-%i-%t</containerNamePattern>
                             </run>
                         </image>
                         <image>
                             <name>ws-simple-soap12</name>
                             <build>
-                                <dockerFileDir>${project.basedir}</dockerFileDir>
+                                <contextDir>${project.build.testOutputDirectory}</contextDir>
+                                <dockerFile>${project.build.testOutputDirectory}/${dockerfile}</dockerFile>
                             </build>
                             <run>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
-                                    <PROJECT>/home/soapui/soapui-prj/simple-service-soap12-soapui-project.xml</PROJECT>
+                                    <PROJECT>${docker.soapui.container.project.home}simple-service-soap12-soapui-project.xml</PROJECT>
                                 </env>
                                 <ports>
                                     <port>soap12.host.port:8080</port>
@@ -387,6 +415,9 @@
                                 <log>
                                     <enabled>false</enabled>
                                 </log>
+                                <!--Workaround for avoiding name collisions with zombie containers left from failed executions-->
+                                <!--or parallel executions on same agent-->
+                                <containerNamePattern>%n-%i-%t</containerNamePattern>
                             </run>
                         </image>
                     </images>
@@ -428,5 +459,25 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>docker-windows</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                    <name>windows server 2016</name>
+                    <version>10.0</version>
+                    <arch>amd64</arch>
+                </os>
+            </activation>
+            <properties>
+                <dockerfile>DockerfileWindows</dockerfile>
+                <docker.soapui.container.user.home.url>file:///C:/Users/Administrator</docker.soapui.container.user.home.url>
+                <docker.soapui.container.user.home.path>C:/Users/Administrator</docker.soapui.container.user.home.path>
+                <docker.soapui.container.project.home>C:\Users\Administrator\soapui-prj\</docker.soapui.container.project.home>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>
