@@ -6,7 +6,6 @@
  */
 package org.mule.extension.ws.internal.connection;
 
-import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
@@ -42,7 +41,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
-import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -156,7 +154,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
     return SoapWebServiceConfiguration.builder()
         .withService(info.getService())
         .withPort(info.getPort())
-        .withWsdlLocation(getWsdlLocation(info.getWsdlLocation()))
+        .withWsdlLocation(info.getAbsoluteWsdlLocation())
         .withAddress(info.getAddress())
         .withEncoding(encoding)
         .enableMtom(mtomEnabled)
@@ -164,11 +162,6 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         .withResourceLocator(locator)
         .withVersion(soapVersion.getVersion())
         .build();
-  }
-
-  private String getWsdlLocation(String wsdlLocation) {
-    URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
-    return resource != null ? resource.toString() : wsdlLocation;
   }
 
   @Override

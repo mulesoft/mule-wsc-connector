@@ -7,6 +7,7 @@
 
 package org.mule.extension.ws.internal.connection;
 
+import static java.lang.Thread.currentThread;
 import static org.mule.runtime.api.meta.model.display.PathModel.Type.FILE;
 
 import org.mule.runtime.extension.api.annotation.param.Optional;
@@ -16,6 +17,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.ValuePart;
 
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -73,6 +75,11 @@ public class WsdlConnectionInfo {
 
   public String getWsdlLocation() {
     return wsdlLocation;
+  }
+
+  public String getAbsoluteWsdlLocation() {
+    URL resource = currentThread().getContextClassLoader().getResource(wsdlLocation);
+    return resource != null ? resource.toString() : wsdlLocation;
   }
 
   @Override

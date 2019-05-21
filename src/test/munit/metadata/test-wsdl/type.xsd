@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="typeNamespace" attributeFormDefault="qualified"
+        elementFormDefault="qualified" targetNamespace="typeNamespace">
+    <element name="TodaysDilbertResponse" type="tns:TodaysDilbertResponse_Type"/>
+    <complexType name="TodaysDilbertResponse_Type">
+        <sequence>
+            <element minOccurs="1" maxOccurs="1" name="TodaysDilbertResult" type="string"/>
+            <element minOccurs="1" maxOccurs="1" name="AnotherTodaysDilbertResult" type="string"/>
+        </sequence>
+    </complexType>
+    <complexType name="TodaysDilbertResponse"></complexType>
+</schema>
