@@ -32,7 +32,6 @@
         <wsc:connection wsdlLocation="wsdl/test-wsdl/document.wsdl" service="Dilbert" port="DilbertSoap" address="http://www.gcomputer.net/webservices/dilbert.asmx" />
     </wsc:config>
 
-
     <mtf:tooling-test name="getOutputBodyMetadataFromWsdlOnRelativePath" >
         <mtf:get-output-metadata>
             <wsc:consume operation="TodaysDilbert" config-ref="dilbert-wsc"/>
