@@ -55,7 +55,7 @@ public class MetadataResolverUtils {
 
   public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
     WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
-    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    WsdlModel model = getOrCreateWsdlModel(context, info.getAbsoluteWsdlLocation());
     ServiceModel service = model.getService(info.getService());
     if (service == null) {
       throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
