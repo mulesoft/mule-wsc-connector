@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="attachments-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="MTOMEnabled_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabled_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabled_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabled_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Tests -->
+    <munit:test name="downloadAttachment" description="Downloads an attachment from the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="downloadAttachment">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#downloadAttachment: {
+                            fileName: "${attachmentName}"
+                        }]
+                    </wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <set-payload value="#[output text/plain --- payload.attachments['${attachmentName}']]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]" expected="#['Simple Attachment Content\n']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="uploadAttachment" description="Uploads an attachment to the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <set-variable variableName="attachmentContent" value="#[output text/plain --- 'Some Content']" />
+            <wsc:consume config-ref="${config}" operation="uploadAttachment">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#uploadAttachment: {}
+                        ]
+                    </wsc:body>
+                    <wsc:attachments>
+                        #[{ attachment: vars.attachmentContent } ]
+                    </wsc:attachments>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.uploadAttachmentResponse.result]" expected="#['OK']"/>
+        </munit:validation>
+    </munit:test>
+</mule>

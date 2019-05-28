@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+      http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+    <munit:config name="basic-auth-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="requestConfig" value="basic-auth-requester" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="requestConfig" value="basic-auth-requester" />
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <http:request-config name="basic-auth-requester">
+        <http:request-connection host="localhost" port="${wsPort}" protocol="HTTP">
+            <http:authentication>
+                <http:basic-authentication username="juani" password="changeIt"/>
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+
+    <http:request-config name="unauthorized-requester">
+        <http:request-connection host="localhost" port="${wsPort}" protocol="HTTP">
+            <http:authentication>
+                <http:basic-authentication username="invalid" password="invalid"/>
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+
+    <wsc:config name="authorized-local-wsdl">
+        <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="unauthorized-local-wsdl">
+        <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="authorized-remote-wsdl">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="unauthorized-remote-wsdl">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="unauthorized-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <!-- Tests -->
+
+    <munit:test name="requestWithHttpBasicAuthConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="authorized-local-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="requestWithHttpBasicAuthRemoteConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="authorized-remote-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="requestWithUnauthorizedConfiguration" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="unauthorized-local-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="requestWithUnauthorizedRemoteConfiguration" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="unauthorized-remote-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+</mule>

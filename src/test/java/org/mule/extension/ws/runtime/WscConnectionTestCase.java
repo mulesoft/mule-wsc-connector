@@ -30,7 +30,6 @@ public class WscConnectionTestCase extends AbstractWscTestCase {
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
-  private static final String LOCAL_WSDL_FLOW = "withLocalWsdlConnection";
   private static final String RPC_CONNECTION = "rpcConnection";
 
   @Override
@@ -47,13 +46,4 @@ public class WscConnectionTestCase extends AbstractWscTestCase {
     flowRunner(RPC_CONNECTION).withVariable("wsdl", wsdl.getPath()).run();
   }
 
-  @Test
-  @Description("Consumes an operation using a connection that uses a local .wsdl file")
-  public void localWsdlConnection() throws Exception {
-    Message msg = flowRunner(LOCAL_WSDL_FLOW)
-        .withVariable("req", testValues.getEchoRequest())
-        .run().getMessage();
-    String out = (String) msg.getPayload().getValue();
-    assertSimilarXml(testValues.getEchoResponse(), out);
-  }
 }

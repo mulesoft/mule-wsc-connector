@@ -8,20 +8,9 @@
         <wsc:connection wsdlLocation="http://localhost:${servicePort}/server?wsdl" service="TestService" port="TestPort" soapVersion="${soapVersion}"/>
     </wsc:config>
 
-
     <wsc:config name="rpcWsdl">
         <wsc:connection service="SoapResponder" port="SoapResponderPortType" wsdlLocation="#[vars.wsdl]" soapVersion="${soapVersion}"/>
     </wsc:config>
-
-    <flow name="withLocalWsdlConnection">
-        <wsc:consume config-ref="local" operation="echo">
-            <wsc:message>
-                <wsc:body>#[vars.req]</wsc:body>
-            </wsc:message>
-        </wsc:consume>
-        <set-payload value="#[payload.body]"/>
-        <object-to-string-transformer/>
-    </flow>
 
     <flow name="rpcConnection">
         <wsc:consume config-ref="rpcWsdl" operation="Method1"/>

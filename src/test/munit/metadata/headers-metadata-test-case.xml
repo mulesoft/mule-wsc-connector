@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="headers-metadata-test-case.xml">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <wsc:config name="human-resources">
+        <wsc:connection service="Human_ResourcesService"
+                        port="Human_Resources"
+                        address="http://dummy-metadata-address.com"
+                        wsdlLocation="target/test-classes/wsdl/human.wsdl"
+                        soapVersion="${soapVersion}">
+        </wsc:connection>
+    </wsc:config>
+
+    <mtf:tooling-test name="getEchoInputHeaders" >
+        <mtf:get-input-metadata parameter="headers">
+            <wsc:consume config-ref="default-config" operation="echoWithHeaders">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <set-variable variableName="containerFields" value="#[payload.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.containerFields)]" expected="#[1]" />
+
+            <set-variable variableName="headersFields" value="#[vars.containerFields[0].model.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headersFields)]" expected="#[2]" />
+
+            <foreach collection="#[vars.headersFields]" counterVariableName="index">
+                <munit-tools:assert-equals actual="#[sizeOf(payload.model.fields)]" expected="#[1]" />
+                <munit-tools:assert-equals actual="#[payload.model.fields[0].model.'type']" expected="String" />
+            </foreach>
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoNoHeaders" >
+        <mtf:get-input-metadata parameter="headers">
+            <wsc:consume config-ref="default-config" operation="echoAccount">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <munit-tools:assert-equals actual="#[payload.'type']" expected="Null" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getCommonHeaderDefinedInDifferentMessageMetadata" >
+        <mtf:get-input-metadata parameter="headers">
+            <wsc:consume config-ref="human-resources" operation="Get_Employee">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </mtf:get-input-metadata>
+        <mtf:validation>
+            <set-variable variableName="containerFields" value="#[payload.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.containerFields)]" expected="#[1]" />
+
+            <set-variable variableName="headersFields" value="#[vars.containerFields[0].model.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headersFields)]" expected="#[1]" />
+
+            <set-variable variableName="headers" value="#[vars.headersFields[0]]"/>
+            <munit-tools:assert-that expression="#[vars.headers.key.name]" is="#[MunitTools::endsWith('header')]" />
+            <munit-tools:assert-equals actual="#[vars.headers.model.fields[0].model.annotations.typeId]" expected="{urn:com.workday/bsvc}Workday_Common_HeaderType" />
+        </mtf:validation>
+    </mtf:tooling-test>
+</mule>
