@@ -14,6 +14,8 @@ import org.mule.soap.api.transport.TransportDispatcher;
 import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
+import java.util.Objects;
+
 /**
  * Default transport configuration, sends SOAP messages through HTTP with a default configuration.
  *
@@ -38,5 +40,24 @@ public class DefaultHttpTransportConfigurationImpl implements CustomTransportCon
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
     return new DefaultTransportResourceLocator();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    DefaultHttpTransportConfigurationImpl that = (DefaultHttpTransportConfigurationImpl) o;
+    return timeout == that.timeout;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(httpClient, timeout);
   }
 }

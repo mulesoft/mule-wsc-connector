@@ -20,6 +20,7 @@ import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Provides the capability to send soap messages using a custom HTTP Requester configuration.
@@ -49,5 +50,24 @@ public class CustomHttpTransportConfiguration implements CustomTransportConfigur
   @Override
   public TransportResourceLocator resourceLocator(ExtensionsClient client) {
     return new HttpResourceLocator(requesterConfig, client);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    CustomHttpTransportConfiguration that = (CustomHttpTransportConfiguration) o;
+    return Objects.equals(requesterConfig, that.requesterConfig);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(requesterConfig);
   }
 }

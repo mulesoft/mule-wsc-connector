@@ -12,6 +12,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssTimestampSecurityStrategy;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,5 +48,25 @@ public class WssTimestampSecurityStrategyAdapter implements SecurityStrategyAdap
   public SecurityStrategy getSecurityStrategy() {
     long seconds = timeToLiveUnit.toSeconds(timeToLive);
     return new WssTimestampSecurityStrategy(seconds > 0 ? seconds : 1);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    WssTimestampSecurityStrategyAdapter that = (WssTimestampSecurityStrategyAdapter) o;
+    return timeToLive == that.timeToLive &&
+        timeToLiveUnit == that.timeToLiveUnit;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(timeToLive, timeToLiveUnit);
   }
 }

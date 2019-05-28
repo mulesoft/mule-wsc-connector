@@ -41,6 +41,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.inject.Inject;
+import java.util.Objects;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link WscSoapClient}.
@@ -181,5 +182,30 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Override
   public void start() {
     client.start();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    SoapClientConnectionProvider that = (SoapClientConnectionProvider) o;
+    return mtomEnabled == that.mtomEnabled &&
+        Objects.equals(info, that.info) &&
+        Objects.equals(wsSecurity, that.wsSecurity) &&
+        soapVersion == that.soapVersion &&
+        Objects.equals(encoding, that.encoding) &&
+        Objects.equals(customTransportConfiguration, that.customTransportConfiguration);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(httpService, extensionsClient, client, info, wsSecurity, soapVersion,
+                        mtomEnabled, encoding, customTransportConfiguration);
   }
 }
