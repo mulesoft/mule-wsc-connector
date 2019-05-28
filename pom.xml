@@ -108,7 +108,7 @@
             <version>${commons.lang.version}</version>
         </dependency>
 
-        <!-- Test Server Dependencies -->
+        <!-- Test Dependencies -->
 
         <dependency>
             <groupId>org.mule.runtime</groupId>
@@ -149,8 +149,6 @@
             <version>${mule.version}</version>
             <scope>test</scope>
         </dependency>
-
-        <!-- Test Server Dependencies -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
             <artifactId>cxf-rt-transports-http-jetty</artifactId>

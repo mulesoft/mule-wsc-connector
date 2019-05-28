@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.metadata;
 
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
@@ -70,8 +71,7 @@ public class HeadersMetadataTestCase extends AbstractMetadataTestCase {
     ObjectFieldType header = headersFields.iterator().next();
     assertThat(header.getKey().getName().getLocalPart(), is("header"));
     assertThat(header.getValue().getAnnotation(TypeIdAnnotation.class).get().getValue(),
-               is("{urn:com.workday/bsvc}Workday_Common_Header"));
-
+               anyOf(is("#root:{urn:com.workday/bsvc}Workday_Common_Header"), is("{urn:com.workday/bsvc}Workday_Common_Header")));
   }
 
   private MetadataType getHeaders(String flow, String key) {
