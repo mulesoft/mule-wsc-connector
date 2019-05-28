@@ -91,12 +91,15 @@ public class WebServiceSecurity {
   private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
 
   public List<SecurityStrategy> strategiesList() {
-    return Stream.of(signSecurityStrategy,
-                     verifySignatureSecurityStrategy,
+    // Default order: Timestamp UsernameToken Signature Encryption
+    // Timestamp and UsernameToken actions need to come first because they are needed in case
+    // signing/encryption use them.
+    return Stream.of(timestampSecurityStrategy,
                      usernameTokenSecurityStrategy,
-                     timestampSecurityStrategy,
+                     signSecurityStrategy,
+                     encryptSecurityStrategy,
                      decryptSecurityStrategy,
-                     encryptSecurityStrategy)
+                     verifySignatureSecurityStrategy)
         .filter(Objects::nonNull)
         .map(SecurityStrategyAdapter::getSecurityStrategy)
         .collect(toImmutableList());
