@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+
+    <munit:config name="sign-encrypt-order-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <wsc:config name="sign-encrypt-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256">
+                        <wsc:wss-parts>
+                            <wsc:wss-part namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" localname="Timestamp" encode="CONTENT"/>
+                            <wsc:wss-part namespace="http://schemas.xmlsoap.org/soap/envelope/" localname="Body" encode="CONTENT"/>
+                        </wsc:wss-parts>
+                    </wsc:sign-algorithm-configuration>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="30"/>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/ssltest-cacerts.jks" password="changeit" alias="s1as" type="jks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <!-- Tests -->
+
+    <munit:test name="signAndEncryptRequest" description="Sign and Encrypt request in that exact order.">
+        <munit:execution>
+            <set-variable variableName="text" value="encryptedRequest" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="sign-encrypt-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['test response']"/>
+        </munit:validation>
+    </munit:test>
+</mule>
