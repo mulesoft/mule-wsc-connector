@@ -41,8 +41,8 @@
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.0.2</mavenResourcesVersion>
         <munit.version>2.2.0-BETA2</munit.version>
-        <mtf.tools.version>1.0.0-BETA2</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.0.0-BETA2</munit.extensions.maven.plugin.version>
+        <mtf.tools.version>2.2.0-SNAPSHOT</mtf.tools.version>
+        <munit.extensions.maven.plugin.version>2.2.0-SNAPSHOT</munit.extensions.maven.plugin.version>
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
@@ -326,15 +326,16 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <argLines>
+                        <argLine>
+                            -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${session.executionRootDirectory}/target/jacoco.exec
+                        </argLine>
+                    </argLines>
                     <runtimeConfiguration>
                         <discoverRuntimes>
                             <product>EE</product>
                             <includeSnapshots>true</includeSnapshots>
                         </discoverRuntimes>
-                        <additionalRuntimes>
-                            <additionalRuntime>MULE_EE:4.1.2</additionalRuntime>
-                            <additionalRuntime>MULE_EE:4.1.3</additionalRuntime>
-                        </additionalRuntimes>
                     </runtimeConfiguration>
                     <environmentVariables>
                         <WS_SOAP11_PORT>${soap.host.port}</WS_SOAP11_PORT>
