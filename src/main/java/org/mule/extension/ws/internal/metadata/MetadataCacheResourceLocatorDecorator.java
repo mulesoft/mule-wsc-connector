@@ -9,7 +9,6 @@ package org.mule.extension.ws.internal.metadata;
 import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
 
 import org.mule.runtime.api.metadata.MetadataCache;
-import org.mule.wsdl.parser.locator.GlobalResourceLocator;
 import org.mule.wsdl.parser.locator.ResourceLocator;
 
 import java.io.ByteArrayInputStream;
@@ -26,8 +25,8 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   private final ResourceLocator delegate;
   private final MetadataCache cache;
 
-  MetadataCacheResourceLocatorDecorator(MetadataCache cache) {
-    this.delegate = new GlobalResourceLocator();
+  MetadataCacheResourceLocatorDecorator(MetadataCache cache, ResourceLocator resourceLocator) {
+    this.delegate = resourceLocator;
     this.cache = cache;
   }
 

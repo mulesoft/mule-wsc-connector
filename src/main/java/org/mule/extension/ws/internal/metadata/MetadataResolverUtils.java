@@ -10,19 +10,23 @@ import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIG
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
 import org.mule.extension.ws.internal.connection.WscSoapClient;
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataCache;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
-
-import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
+import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.WsdlParser;
 import org.mule.wsdl.parser.exception.OperationNotFoundException;
+import org.mule.wsdl.parser.locator.ResourceLocator;
 import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
+
+import java.io.InputStream;
 
 /**
  * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
@@ -32,15 +36,13 @@ import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
  */
 public class MetadataResolverUtils {
 
-  private MetadataResolverUtils() {}
+  private ResourceLocator resourceLocator;
 
-  private static MetadataResolverUtils instance;
-
-  public static MetadataResolverUtils getInstance() {
-    if (instance == null) {
-      instance = new MetadataResolverUtils();
-    }
-    return instance;
+  public MetadataResolverUtils(WscSoapClient wscSoapClient) {
+    ExtensionsClient extensionsClient = wscSoapClient.getExtensionsClient();
+    TransportResourceLocator transportResourceLocator =
+        wscSoapClient.getTransportConfiguration().resourceLocator(extensionsClient);
+    this.resourceLocator = new ResourceLocatorAdapter(transportResourceLocator);
   }
 
   public OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
@@ -72,10 +74,30 @@ public class MetadataResolverUtils {
     return cache.get(location)
         .map(serialized -> WsdlModelSerializer.INSTANCE.deserialize((String) serialized))
         .orElseGet(() -> {
-          WsdlModel wsdl = WsdlParser.Companion.parse(location, new MetadataCacheResourceLocatorDecorator(cache));
+          WsdlModel wsdl =
+              WsdlParser.Companion.parse(location, new MetadataCacheResourceLocatorDecorator(cache, resourceLocator));
           String serialized = WsdlModelSerializer.INSTANCE.serialize(wsdl, false);
           cache.put(location, serialized);
           return wsdl;
         });
+  }
+
+  private class ResourceLocatorAdapter implements ResourceLocator {
+
+    private final TransportResourceLocator locator;
+
+    ResourceLocatorAdapter(TransportResourceLocator locator) {
+      this.locator = locator;
+    }
+
+    @Override
+    public boolean handles(String s) {
+      return locator.handles(s);
+    }
+
+    @Override
+    public InputStream getResource(String s) {
+      return locator.getResource(s);
+    }
   }
 }

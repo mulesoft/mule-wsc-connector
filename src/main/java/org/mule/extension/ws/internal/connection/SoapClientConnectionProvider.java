@@ -116,7 +116,8 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         DefaultHttpTransportConfiguration transport = (DefaultHttpTransportConfiguration) customTransportConfiguration;
         this.customTransportConfiguration = new DefaultHttpTransportConfigurationImpl(client, transport.getTimeout());
       }
-      return new WscSoapClient(info, () -> SOAP_CLIENT_FACTORY.create(getConfiguration()), customTransportConfiguration);
+      return new WscSoapClient(info, () -> SOAP_CLIENT_FACTORY.create(getConfiguration()), customTransportConfiguration,
+                               extensionsClient);
     } catch (Exception e) {
       throw new ConnectionException(e.getMessage(), e);
     }

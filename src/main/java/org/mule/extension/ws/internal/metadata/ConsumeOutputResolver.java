@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal.metadata;
 
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
+import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
@@ -15,6 +16,8 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
+import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.model.operation.Type;
 
 /**
@@ -44,7 +47,11 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   @Override
   public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
+
+    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection().get();
+    MetadataResolverUtils metadataResolverUtils = new MetadataResolverUtils(wscSoapClient);
+
+    Type outputType = metadataResolverUtils.getOperationFromCacheOrCreate(context, operation).getOutputType();
     MetadataType body = outputType.getBody();
     MetadataType headers = outputType.getHeaders();
     MetadataType attachments = outputType.getAttachments();
@@ -70,4 +77,5 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   private boolean isNullType(MetadataType metadataType) {
     return metadataType instanceof NullType;
   }
+
 }
