@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal.metadata;
 
 import static java.util.stream.Collectors.toSet;
 import static org.mule.runtime.api.metadata.MetadataKeyBuilder.newKey;
+import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
 
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
@@ -41,7 +42,9 @@ public class OperationKeysResolver implements TypeKeysResolver {
 
   @Override
   public Set<MetadataKey> getKeys(MetadataContext context) throws ConnectionException, MetadataResolvingException {
-    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection().get();
+    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection()
+        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve wsdl definition",
+                                                          CONNECTION_FAILURE));
     MetadataResolverUtils metadataResolverUtils = new MetadataResolverUtils(wscSoapClient);
 
     PortModel port = metadataResolverUtils.findPortFromContext(context);

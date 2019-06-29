@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
+
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
@@ -16,8 +18,6 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
-import org.mule.runtime.extension.api.client.ExtensionsClient;
-import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.model.operation.Type;
 
 /**
@@ -48,7 +48,9 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
 
-    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection().get();
+    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection()
+        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve wsdl definition",
+                                                          CONNECTION_FAILURE));
     MetadataResolverUtils metadataResolverUtils = new MetadataResolverUtils(wscSoapClient);
 
     Type outputType = metadataResolverUtils.getOperationFromCacheOrCreate(context, operation).getOutputType();
