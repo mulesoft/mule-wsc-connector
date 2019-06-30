@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
@@ -36,13 +37,15 @@ import java.io.InputStream;
  */
 public class MetadataResolverUtils {
 
-  private ResourceLocator resourceLocator;
+  private MetadataResolverUtils() {}
 
-  public MetadataResolverUtils(WscSoapClient wscSoapClient) {
-    ExtensionsClient extensionsClient = wscSoapClient.getExtensionsClient();
-    TransportResourceLocator transportResourceLocator =
-        wscSoapClient.getTransportConfiguration().resourceLocator(extensionsClient);
-    this.resourceLocator = new ResourceLocatorAdapter(transportResourceLocator);
+  private static MetadataResolverUtils instance;
+
+  public static MetadataResolverUtils getInstance() {
+    if (instance == null) {
+      instance = new MetadataResolverUtils();
+    }
+    return instance;
   }
 
   public OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
@@ -56,7 +59,7 @@ public class MetadataResolverUtils {
   }
 
   public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
-    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlConnectionInfo info = getWscSoapClient(context).getInfo();
     WsdlModel model = getOrCreateWsdlModel(context, info.getAbsoluteWsdlLocation());
     ServiceModel service = model.getService(info.getService());
     if (service == null) {
@@ -69,17 +72,33 @@ public class MetadataResolverUtils {
     return port;
   }
 
-  public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location) {
+  public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location)
+      throws ConnectionException, MetadataResolvingException {
+    WscSoapClient wscSoapClient = getWscSoapClient(context);
     MetadataCache cache = context.getCache();
     return cache.get(location)
         .map(serialized -> WsdlModelSerializer.INSTANCE.deserialize((String) serialized))
         .orElseGet(() -> {
+          ResourceLocator resourceLocator = getResourceLocator(wscSoapClient);
           WsdlModel wsdl =
               WsdlParser.Companion.parse(location, new MetadataCacheResourceLocatorDecorator(cache, resourceLocator));
           String serialized = WsdlModelSerializer.INSTANCE.serialize(wsdl, false);
           cache.put(location, serialized);
           return wsdl;
         });
+  }
+
+  private WscSoapClient getWscSoapClient(MetadataContext context) throws ConnectionException, MetadataResolvingException {
+    return context.<WscSoapClient>getConnection()
+        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve metadata",
+                                                          CONNECTION_FAILURE));
+  }
+
+  private ResourceLocator getResourceLocator(WscSoapClient wscSoapClient) {
+    ExtensionsClient extensionsClient = wscSoapClient.getExtensionsClient();
+    TransportResourceLocator transportResourceLocator =
+        wscSoapClient.getTransportConfiguration().resourceLocator(extensionsClient);
+    return new ResourceLocatorAdapter(transportResourceLocator);
   }
 
   private class ResourceLocatorAdapter implements ResourceLocator {

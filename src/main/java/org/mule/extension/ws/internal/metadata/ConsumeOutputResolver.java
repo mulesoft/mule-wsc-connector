@@ -6,11 +6,8 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
-
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.metadata.api.model.NullType;
@@ -47,13 +44,7 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   @Override
   public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-
-    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection()
-        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve wsdl definition",
-                                                          CONNECTION_FAILURE));
-    MetadataResolverUtils metadataResolverUtils = new MetadataResolverUtils(wscSoapClient);
-
-    Type outputType = metadataResolverUtils.getOperationFromCacheOrCreate(context, operation).getOutputType();
+    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
     MetadataType body = outputType.getBody();
     MetadataType headers = outputType.getHeaders();
     MetadataType attachments = outputType.getAttachments();

@@ -6,10 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
-
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
@@ -37,13 +34,7 @@ public class SoapBodyTypeResolver implements InputTypeResolver<String> {
   @Override
   public MetadataType getInputMetadata(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-
-    WscSoapClient wscSoapClient = (WscSoapClient) context.getConnection()
-        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve wsdl definition",
-                                                          CONNECTION_FAILURE));
-    MetadataResolverUtils metadataResolverUtils = new MetadataResolverUtils(wscSoapClient);
-
-    OperationModel operationModel = metadataResolverUtils.getOperationFromCacheOrCreate(context, operation);
+    OperationModel operationModel = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
     return operationModel.getInputType().getBody();
   }
 }
