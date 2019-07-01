@@ -6,23 +6,28 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.api.metadata.resolving.FailureCode.CONNECTION_FAILURE;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_CONFIGURATION;
 import static org.mule.runtime.api.metadata.resolving.FailureCode.INVALID_METADATA_KEY;
 
 import org.mule.extension.ws.internal.connection.WscSoapClient;
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataCache;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
-
-import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
+import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.WsdlParser;
 import org.mule.wsdl.parser.exception.OperationNotFoundException;
+import org.mule.wsdl.parser.locator.ResourceLocator;
 import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
 import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
+
+import java.io.InputStream;
 
 /**
  * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
@@ -54,7 +59,7 @@ public class MetadataResolverUtils {
   }
 
   public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
-    WsdlConnectionInfo info = context.<WscSoapClient>getConnection().get().getInfo();
+    WsdlConnectionInfo info = getWscSoapClient(context).getInfo();
     WsdlModel model = getOrCreateWsdlModel(context, info.getAbsoluteWsdlLocation());
     ServiceModel service = model.getService(info.getService());
     if (service == null) {
@@ -67,15 +72,51 @@ public class MetadataResolverUtils {
     return port;
   }
 
-  public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location) {
+  public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location)
+      throws ConnectionException, MetadataResolvingException {
+    WscSoapClient wscSoapClient = getWscSoapClient(context);
     MetadataCache cache = context.getCache();
     return cache.get(location)
         .map(serialized -> WsdlModelSerializer.INSTANCE.deserialize((String) serialized))
         .orElseGet(() -> {
-          WsdlModel wsdl = WsdlParser.Companion.parse(location, new MetadataCacheResourceLocatorDecorator(cache));
+          ResourceLocator resourceLocator = getResourceLocator(wscSoapClient);
+          WsdlModel wsdl =
+              WsdlParser.Companion.parse(location, new MetadataCacheResourceLocatorDecorator(cache, resourceLocator));
           String serialized = WsdlModelSerializer.INSTANCE.serialize(wsdl, false);
           cache.put(location, serialized);
           return wsdl;
         });
+  }
+
+  private WscSoapClient getWscSoapClient(MetadataContext context) throws ConnectionException, MetadataResolvingException {
+    return context.<WscSoapClient>getConnection()
+        .orElseThrow(() -> new MetadataResolvingException("No connection available to retrieve metadata",
+                                                          CONNECTION_FAILURE));
+  }
+
+  private ResourceLocator getResourceLocator(WscSoapClient wscSoapClient) {
+    ExtensionsClient extensionsClient = wscSoapClient.getExtensionsClient();
+    TransportResourceLocator transportResourceLocator =
+        wscSoapClient.getTransportConfiguration().resourceLocator(extensionsClient);
+    return new ResourceLocatorAdapter(transportResourceLocator);
+  }
+
+  private class ResourceLocatorAdapter implements ResourceLocator {
+
+    private final TransportResourceLocator locator;
+
+    ResourceLocatorAdapter(TransportResourceLocator locator) {
+      this.locator = locator;
+    }
+
+    @Override
+    public boolean handles(String s) {
+      return locator.handles(s);
+    }
+
+    @Override
+    public InputStream getResource(String s) {
+      return locator.getResource(s);
+    }
   }
 }

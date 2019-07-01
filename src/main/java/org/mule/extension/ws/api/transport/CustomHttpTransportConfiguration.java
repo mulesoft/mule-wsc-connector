@@ -8,7 +8,6 @@ package org.mule.extension.ws.api.transport;
 
 import org.mule.extension.ws.internal.transport.ExtensionsClientHttpRequestExecutor;
 import org.mule.extension.ws.internal.transport.HttpResourceLocator;
-import org.mule.runtime.api.util.Pair;
 import org.mule.runtime.extension.api.annotation.Alias;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.reference.ConfigReference;
@@ -18,8 +17,6 @@ import org.mule.soap.api.transport.TransportDispatcher;
 import org.mule.soap.api.transport.TransportResponse;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
-import java.io.InputStream;
-import java.util.Map;
 import java.util.Objects;
 
 /**

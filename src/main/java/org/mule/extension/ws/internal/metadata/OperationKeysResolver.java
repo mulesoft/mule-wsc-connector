@@ -17,7 +17,6 @@ import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataKey;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.TypeKeysResolver;
-
 import org.mule.wsdl.parser.model.PortModel;
 
 import java.util.Set;

@@ -26,13 +26,16 @@ public class WscSoapClient {
   private final WsdlConnectionInfo info;
   private final Supplier<SoapClient> clientSupplier;
   private SoapClient delegate;
+  private ExtensionsClient extensionsClient;
 
   public WscSoapClient(WsdlConnectionInfo info,
                        Supplier<SoapClient> clientSupplier,
-                       CustomTransportConfiguration transportConfiguration) {
+                       CustomTransportConfiguration transportConfiguration,
+                       ExtensionsClient extensionsClient) {
     this.info = info;
     this.clientSupplier = clientSupplier;
     this.transportConfiguration = transportConfiguration;
+    this.extensionsClient = extensionsClient;
   }
 
   public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
@@ -46,8 +49,16 @@ public class WscSoapClient {
     return delegate.consume(request, transportConfiguration.buildDispatcher(client));
   }
 
+  public CustomTransportConfiguration getTransportConfiguration() {
+    return transportConfiguration;
+  }
+
   public WsdlConnectionInfo getInfo() {
     return info;
+  }
+
+  public ExtensionsClient getExtensionsClient() {
+    return extensionsClient;
   }
 
   public void destroy() {
