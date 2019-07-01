@@ -70,4 +70,5 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
   private boolean isNullType(MetadataType metadataType) {
     return metadataType instanceof NullType;
   }
+
 }

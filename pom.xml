@@ -332,6 +332,7 @@
                     </runtimeConfiguration>
                     <environmentVariables>
                         <WS_SOAP11_PORT>${soap.host.port}</WS_SOAP11_PORT>
+                        <WS_SOAP11_SSL_PORT>${soap.host.port.ssl}</WS_SOAP11_SSL_PORT>
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
                     </environmentVariables>
                 </configuration>
@@ -387,6 +388,7 @@
                                 </env>
                                 <ports>
                                     <port>soap.host.port:8080</port>
+                                    <port>soap.host.port.ssl:8443</port>
                                 </ports>
                                 <log>
                                     <enabled>false</enabled>
