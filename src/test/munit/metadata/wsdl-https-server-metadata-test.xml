@@ -15,7 +15,7 @@
 
     <munit:config name="wsdl-https-server-metadata-test.xml"/>
 
-    <http:request-config name="HTTP_Request_configuration">
+    <http:request-config name="HTTP_Request_configuration_insecure">
         <http:request-connection protocol="HTTPS">
             <tls:context>
                 <tls:trust-store insecure="true"/>
@@ -23,10 +23,10 @@
         </http:request-connection>
     </http:request-config>
 
-    <wsc:config name="Web_Service_Consumer_Config">
+    <wsc:config name="Web_Service_Consumer_Config_insecure">
         <wsc:connection wsdlLocation="https://localhost:${WS_SOAP11_SSL_PORT}/SOAP11?wsdl" service="TestService" port="TestPort" address="https://localhost">
             <wsc:custom-transport-configuration>
-                <wsc:http-transport-configuration requesterConfig="HTTP_Request_configuration"/>
+                <wsc:http-transport-configuration requesterConfig="HTTP_Request_configuration_insecure"/>
             </wsc:custom-transport-configuration>
         </wsc:connection>
     </wsc:config>
@@ -43,9 +43,9 @@
         </wsc:connection>
     </wsc:config>
 
-    <mtf:tooling-test name="getOperationKeysFromHttpsServer">
+    <mtf:tooling-test name="getOperationKeysFromHttpsServerWithSelfSignedCertificateWithInsecureHTTPCustomConfiguration">
         <mtf:get-metadata-keys>
-            <wsc:consume config-ref="Web_Service_Consumer_Config" operation="echoAccount"/>
+            <wsc:consume config-ref="Web_Service_Consumer_Config_insecure" operation="echoAccount"/>
         </mtf:get-metadata-keys>
         <mtf:validation>
             <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','downloadAttachment','large','oneWay']]"/>
@@ -57,7 +57,7 @@
         </mtf:validation>
     </mtf:tooling-test>
 
-    <mtf:tooling-test name="getOperationKeysFromHttpsServerSecure" expectFailureMessage="Error fetching the resource [https://localhost:${WS_SOAP11_SSL_PORT}/SOAP11?wsdl]: Error while obtaining resource [https://localhost:${WS_SOAP11_SSL_PORT}/SOAP11?wsdl]">
+    <mtf:tooling-test name="getOperationKeysFromHttpsServerWithSelfSignedCertificateWithSecureHTTPCustomConfiguration" expectFailureMessage="Error fetching the resource [https://localhost:${WS_SOAP11_SSL_PORT}/SOAP11?wsdl]: Error while obtaining resource [https://localhost:${WS_SOAP11_SSL_PORT}/SOAP11?wsdl]">
         <mtf:get-metadata-keys>
             <wsc:consume config-ref="Web_Service_Consumer_Config_secure" operation="echoAccount"/>
         </mtf:get-metadata-keys>
