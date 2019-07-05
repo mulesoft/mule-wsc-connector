@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="timestamp-verification-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <wsc:config name="decryptAndTimestampOnResponse-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:timestamp-verification-security-strategy />
+                <wsc:decrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/ssltest-keystore.jks" keyPassword="changeit"
+                                                 password="changeit" alias="s1as"/>
+                </wsc:decrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="decryptOnResponse-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:decrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/ssltest-keystore.jks" keyPassword="changeit"
+                                                 password="changeit" alias="s1as"/>
+                </wsc:decrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="timestampOnResponse-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:timestamp-verification-security-strategy/>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <!-- Tests -->
+
+    <munit:test name="encryptedWithTimestampResponseWhenTimestampConfigured" description="Process response encrypted including a timestamp without errors when timestamp is configured">
+        <munit:execution>
+            <set-variable variableName="text" value="encryptedAndTimestamp"/>
+            <flow-ref name="buildEchoRequest"/>
+            <wsc:consume config-ref="decryptAndTimestampOnResponse-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="encryptedWithTimestampResponseWhenTimestampIsNotConfigured" expectedErrorType="WSC:SOAP_FAULT" description="Process response encrypted including a timestamp and expects a Soap Fault when timestamp verification is not configured">
+        <munit:execution>
+            <set-variable variableName="text" value="encryptedAndTimestamp"/>
+            <flow-ref name="buildEchoRequest"/>
+            <wsc:consume config-ref="decryptOnResponse-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="encryptedWithExpiredTimestampResponseWhenTimestampIsConfigured" expectedErrorType="WSC:SOAP_FAULT" description="Process response including an expired timestamp header">
+        <munit:execution>
+            <set-variable variableName="text" value="encryptedAndExpiredTimestamp"/>
+            <flow-ref name="buildEchoRequest"/>
+            <try>
+            <wsc:consume config-ref="decryptAndTimestampOnResponse-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <munit-tools:fail/>
+            <error-handler>
+                <on-error-propagate enableNotifications="false" logException="true" type="WSC:SOAP_FAULT">
+                    <set-variable value="#[error.description]" variableName="errorMessage"/>
+                </on-error-propagate>
+            </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[vars.errorMessage]" expected="Invalid timestamp: The message timestamp has expired"/>
+        </munit:validation>
+    </munit:test>
+
+</mule>

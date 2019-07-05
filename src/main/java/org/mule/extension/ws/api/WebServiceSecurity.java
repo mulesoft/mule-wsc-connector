@@ -14,13 +14,16 @@ import org.mule.extension.ws.api.security.WssDecryptSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssEncryptSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssSignSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssTimestampSecurityStrategyAdapter;
+import org.mule.extension.ws.api.security.WssIncomingTimestampSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssUsernameTokenSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssVerifySignatureSecurityStrategyAdapter;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.security.SecurityStrategy;
 
 import java.util.List;
@@ -41,25 +44,25 @@ public class WebServiceSecurity {
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
+  @Placement(tab = SECURITY_TAB, order = 0)
   @Optional
   private WssSignSecurityStrategyAdapter signSecurityStrategy;
 
   /**
-   * a verify signature WSS configuration
+   * an encrypt WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
+  @Placement(tab = SECURITY_TAB, order = 1)
   @Optional
-  private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
+  private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
 
   /**
    * a usernameToken WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
+  @Placement(tab = SECURITY_TAB, order = 2)
   @Optional
   private WssUsernameTokenSecurityStrategyAdapter usernameTokenSecurityStrategy;
 
@@ -68,27 +71,40 @@ public class WebServiceSecurity {
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
+  @Placement(tab = SECURITY_TAB, order = 3)
   @Optional
+  @DisplayName("Outgoing Timestamp Security Strategy")
   private WssTimestampSecurityStrategyAdapter timestampSecurityStrategy;
+
+  /**
+   * a verify signature WSS configuration
+   */
+  @Parameter
+  @Expression(NOT_SUPPORTED)
+  @Placement(tab = SECURITY_TAB, order = 4)
+  @Optional
+  private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
 
   /**
    * a decrypt WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
+  @Placement(tab = SECURITY_TAB, order = 5)
   @Optional
   private WssDecryptSecurityStrategyAdapter decryptSecurityStrategy;
 
+
   /**
-   * an encrypt WSS configuration
+   * a timestamp verification WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB)
   @Optional
-  private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
+  @Placement(tab = SECURITY_TAB, order = 6)
+  @DisplayName("Incoming Timestamp Security Strategy")
+  private WssIncomingTimestampSecurityStrategyAdapter incomingTimestampSecurityStrategy;
+
 
   public List<SecurityStrategy> strategiesList() {
     // Default order: Timestamp UsernameToken Signature Encryption
@@ -99,7 +115,8 @@ public class WebServiceSecurity {
                      signSecurityStrategy,
                      encryptSecurityStrategy,
                      decryptSecurityStrategy,
-                     verifySignatureSecurityStrategy)
+                     verifySignatureSecurityStrategy,
+                     incomingTimestampSecurityStrategy)
         .filter(Objects::nonNull)
         .map(SecurityStrategyAdapter::getSecurityStrategy)
         .collect(toImmutableList());
@@ -120,6 +137,7 @@ public class WebServiceSecurity {
         Objects.equals(verifySignatureSecurityStrategy, that.verifySignatureSecurityStrategy) &&
         Objects.equals(usernameTokenSecurityStrategy, that.usernameTokenSecurityStrategy) &&
         Objects.equals(timestampSecurityStrategy, that.timestampSecurityStrategy) &&
+        Objects.equals(incomingTimestampSecurityStrategy, that.incomingTimestampSecurityStrategy) &&
         Objects.equals(decryptSecurityStrategy, that.decryptSecurityStrategy) &&
         Objects.equals(encryptSecurityStrategy, that.encryptSecurityStrategy);
   }
@@ -127,6 +145,7 @@ public class WebServiceSecurity {
   @Override
   public int hashCode() {
     return Objects.hash(signSecurityStrategy, verifySignatureSecurityStrategy, usernameTokenSecurityStrategy,
-                        timestampSecurityStrategy, decryptSecurityStrategy, encryptSecurityStrategy);
+                        timestampSecurityStrategy, incomingTimestampSecurityStrategy, decryptSecurityStrategy,
+                        encryptSecurityStrategy);
   }
 }
