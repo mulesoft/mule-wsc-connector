@@ -1,0 +1,8 @@
+Map pipelineParams = [
+        name                   : 'mule-wsc-connector-windows-soapui',
+        contextDir             : "./src/test/resources",
+        dockerFile             : "DockerfileWindows",
+        agentLabel             : 'windows2019-heavy'
+]
+
+runtimeDockerImagePublish(pipelineParams)
