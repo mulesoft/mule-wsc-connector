@@ -23,7 +23,6 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
-import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.security.SecurityStrategy;
 
 import java.util.List;
@@ -49,20 +48,20 @@ public class WebServiceSecurity {
   private WssSignSecurityStrategyAdapter signSecurityStrategy;
 
   /**
-   * an encrypt WSS configuration
+   * a verify signature WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB, order = 1)
+  @Placement(tab = SECURITY_TAB, order = 4)
   @Optional
-  private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
+  private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
 
   /**
    * a usernameToken WSS configuration
    */
   @Parameter
   @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB, order = 2)
+  @Placement(tab = SECURITY_TAB, order = 1)
   @Optional
   private WssUsernameTokenSecurityStrategyAdapter usernameTokenSecurityStrategy;
 
@@ -77,15 +76,6 @@ public class WebServiceSecurity {
   private WssTimestampSecurityStrategyAdapter timestampSecurityStrategy;
 
   /**
-   * a verify signature WSS configuration
-   */
-  @Parameter
-  @Expression(NOT_SUPPORTED)
-  @Placement(tab = SECURITY_TAB, order = 4)
-  @Optional
-  private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
-
-  /**
    * a decrypt WSS configuration
    */
   @Parameter
@@ -94,6 +84,14 @@ public class WebServiceSecurity {
   @Optional
   private WssDecryptSecurityStrategyAdapter decryptSecurityStrategy;
 
+  /**
+   * an encrypt WSS configuration
+   */
+  @Parameter
+  @Expression(NOT_SUPPORTED)
+  @Placement(tab = SECURITY_TAB, order = 2)
+  @Optional
+  private WssEncryptSecurityStrategyAdapter encryptSecurityStrategy;
 
   /**
    * a timestamp verification WSS configuration
