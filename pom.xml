@@ -48,7 +48,6 @@
         <java.module.version>1.1.1</java.module.version>
         <docker.maven.plugin.version>0.30.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
-        <dockerfile>Dockerfile</dockerfile>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
         <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
@@ -382,12 +381,7 @@
                 <configuration>
                     <images>
                         <image>
-                            <name>ws-simple</name>
-                            <build>
-                                <!--TODO: Improve the way we locate and handle paths referencing-->
-                                <contextDir>${project.build.testOutputDirectory}</contextDir>
-                                <dockerFile>${project.build.testOutputDirectory}/${dockerfile}</dockerFile>
-                            </build>
+                            <alias>ws-simple</alias>
                             <run>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
@@ -406,11 +400,7 @@
                             </run>
                         </image>
                         <image>
-                            <name>ws-simple-soap12</name>
-                            <build>
-                                <contextDir>${project.build.testOutputDirectory}</contextDir>
-                                <dockerFile>${project.build.testOutputDirectory}/${dockerfile}</dockerFile>
-                            </build>
+                            <alias>ws-simple-soap12</alias>
                             <run>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
@@ -479,11 +469,68 @@
                 </os>
             </activation>
             <properties>
-                <dockerfile>DockerfileWindows</dockerfile>
                 <docker.soapui.container.user.home.url>file:///C:/Users/Administrator</docker.soapui.container.user.home.url>
                 <docker.soapui.container.user.home.path>C:/Users/Administrator</docker.soapui.container.user.home.path>
                 <docker.soapui.container.project.home>C:\Users\Administrator\soapui-prj\</docker.soapui.container.project.home>
             </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.maven.plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <alias>ws-simple</alias>
+                                    <name>artifacts.msap.io/mulesoft/windows-soapui-for-wsc</name>
+                                </image>
+                                <image>
+                                    <alias>ws-simple-soap12</alias>
+                                    <name>artifacts.msap.io/mulesoft/windows-soapui-for-wsc</name>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>docker-unix</id>
+            <activation>
+                <os>
+                    <family>!windows</family>
+                </os>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>io.fabric8</groupId>
+                        <artifactId>docker-maven-plugin</artifactId>
+                        <version>${docker.maven.plugin.version}</version>
+                        <configuration>
+                            <images>
+                                <image>
+                                    <alias>ws-simple</alias>
+                                    <name>ws-simple</name>
+                                    <build>
+                                        <contextDir>${project.build.testOutputDirectory}</contextDir>
+                                        <dockerFile>${project.build.testOutputDirectory}/Dockerfile</dockerFile>
+                                    </build>
+                                </image>
+                                <image>
+                                    <alias>ws-simple-soap12</alias>
+                                    <name>ws-simple-soap12</name>
+                                    <build>
+                                        <contextDir>${project.build.testOutputDirectory}</contextDir>
+                                        <dockerFile>${project.build.testOutputDirectory}/Dockerfile</dockerFile>
+                                    </build>
+                                </image>
+                            </images>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
