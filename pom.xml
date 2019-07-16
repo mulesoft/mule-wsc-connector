@@ -483,11 +483,11 @@
                             <images>
                                 <image>
                                     <alias>ws-simple</alias>
-                                    <name>artifacts.msap.io/mulesoft/windows-soapui</name>
+                                    <name>artifacts.msap.io/mulesoft/windows-soapui-for-wsc</name>
                                 </image>
                                 <image>
                                     <alias>ws-simple-soap12</alias>
-                                    <name>artifacts.msap.io/mulesoft/windows-soapui</name>
+                                    <name>artifacts.msap.io/mulesoft/windows-soapui-for-wsc</name>
                                 </image>
                             </images>
                         </configuration>

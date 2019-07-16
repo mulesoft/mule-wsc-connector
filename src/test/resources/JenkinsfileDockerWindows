@@ -1,5 +1,5 @@
 Map pipelineParams = [
-        name                   : 'windows-soapui',
+        name                   : 'windows-soapui-for-wsc',
         contextDir             : "./src/test/resources",
         dockerFile             : "DockerfileWindows",
         agentLabel             : 'windows2019-heavy'
