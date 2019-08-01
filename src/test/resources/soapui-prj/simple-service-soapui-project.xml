@@ -794,7 +794,14 @@
          </xenc:CipherData>
       </xenc:EncryptedData>
    </soapenv:Body>
-</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/></con:response><con:response name="latin2EncodedResponse" id="efe8b9ef-7584-4879-b720-7df16e2c5604" httpResponseStatus="200" encoding="ISO-8859-2"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoResponse>
+         <text>odpowiedź testowa</text>
+      </ser:echoResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:header><con:name>Content-Type</con:name><con:value>text/xml; charset=iso-8859-2</con:value></con:header><con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <con:query>
                     <con:name>Encrypted</con:name>
                     <con:query>declare namespace con='http://service.soap.service.mule.org/'
@@ -828,7 +835,9 @@
                     <con:response>encryptedAndTimestampResponse</con:response>
                 </con:query>
             <con:query><con:name>encryptedAndExpiredTimestamp</con:name><con:query>declare namespace con='http://service.soap.service.mule.org/'
-                        //con:echo/text</con:query><con:match>encryptedAndExpiredTimestamp</con:match><con:response>encryptedAndExpiredTimestampResponse</con:response></con:query></con:dispatchConfig>
+                        //con:echo/text</con:query><con:match>encryptedAndExpiredTimestamp</con:match><con:response>encryptedAndExpiredTimestampResponse</con:response></con:query><con:query><con:name>latin2Encoded</con:name><con:query>declare namespace con='http://service.soap.service.mule.org/'
+                        //con:echo/text
+                    </con:query><con:match>latin2Encoded</con:match><con:response>latin2EncodedResponse</con:response></con:query></con:dispatchConfig>
         </con:mockOperation>
         <con:mockOperation name="echoAccount" id="35e23e58-03f2-4757-a859-b1ab6bfe439f" interface="TestServiceSoapBinding" operation="echoAccount">
             <con:settings/>
