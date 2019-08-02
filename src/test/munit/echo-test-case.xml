@@ -224,4 +224,19 @@
         </munit:execution>
     </munit:test>
 
+    <munit:test name="echoOperationLatin2ResponseEncoding" description="Consumes an operation that returns response encoded with ISO-8859-2" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <set-variable variableName="text" value="latin2Encoded" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="${config}" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['odpowiedź testowa']"/>
+        </munit:validation>
+    </munit:test>
+
 </mule>
