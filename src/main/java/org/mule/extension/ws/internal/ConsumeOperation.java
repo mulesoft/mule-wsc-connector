@@ -6,10 +6,10 @@
  */
 package org.mule.extension.ws.internal;
 
-
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
+import static org.mule.runtime.http.api.HttpHeaders.Names.CONTENT_TYPE;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
@@ -23,6 +23,7 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
 import org.mule.runtime.api.metadata.DataType;
+import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.transformation.TransformationService;
 import org.mule.runtime.extension.api.annotation.OnException;
@@ -43,6 +44,7 @@ import org.mule.soap.api.message.SoapResponse;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -94,15 +96,22 @@ public class ConsumeOperation {
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
+
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
     requestBuilder.operation(operation);
+
+    Optional<MediaType> mediaType = getMediaType(message.getBody());
+    mediaType.ifPresent(mt -> requestBuilder.contentType(mt.toRfcString()));
+
     requestBuilder.transportHeaders(transportHeaders);
 
     InputStream headers = message.getHeaders();
     if (headers != null) {
       requestBuilder.soapHeaders((Map<String, String>) evaluateHeaders(headers));
     }
-    requestBuilder.content(message.getBody());
+
+    requestBuilder.content(message.getBody().getValue());
+
     return requestBuilder;
   }
 
@@ -118,6 +127,11 @@ public class ConsumeOperation {
       }
     });
     return soapAttachmentMap;
+  }
+
+  private Optional<MediaType> getMediaType(TypedValue<InputStream> typedValue) {
+    DataType dataType = typedValue.getDataType();
+    return dataType != null ? Optional.of(dataType.getMediaType()) : Optional.empty();
   }
 
   private InputStream toInputStream(TypedValue typedValue) {

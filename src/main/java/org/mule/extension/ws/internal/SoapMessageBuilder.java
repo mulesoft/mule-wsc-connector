@@ -34,7 +34,7 @@ public class SoapMessageBuilder {
   @Content(primary = true)
   @TypeResolver(SoapBodyTypeResolver.class)
   @Summary("The XML body to include in the SOAP message, with all the required parameters.")
-  private InputStream body;
+  private TypedValue<InputStream> body;
 
   /**
    * The XML headers to include in the SOAP message.
@@ -57,7 +57,7 @@ public class SoapMessageBuilder {
   @Summary("The attachments to include in the SOAP request.")
   private Map<String, TypedValue<?>> attachments;
 
-  public InputStream getBody() {
+  public TypedValue<InputStream> getBody() {
     return body;
   }
 
