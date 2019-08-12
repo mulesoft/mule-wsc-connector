@@ -21,5 +21,6 @@ CMD  & 'C:\Program Files\SmartBear\SoapUI-5.4.0\bin\mockservicerunner.bat'\
     -m $env:MOCK_SERVICE_NAME\
     '-Djava.awt.headless=true'\
     '-Dfile.encoding=UTF8'\
+    -s $env:PROJECT_SETTINGS\
     -p 8080\
     $env:PROJECT
