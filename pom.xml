@@ -386,6 +386,7 @@
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
                                     <PROJECT>${docker.soapui.container.project.home}simple-service-soapui-project.xml</PROJECT>
+                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml</PROJECT_SETTINGS>
                                 </env>
                                 <ports>
                                     <port>soap.host.port:8080</port>
@@ -405,6 +406,7 @@
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
                                     <PROJECT>${docker.soapui.container.project.home}simple-service-soap12-soapui-project.xml</PROJECT>
+                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml</PROJECT_SETTINGS>
                                 </env>
                                 <ports>
                                     <port>soap12.host.port:8080</port>
