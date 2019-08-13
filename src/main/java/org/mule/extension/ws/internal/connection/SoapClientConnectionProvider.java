@@ -7,6 +7,7 @@
 package org.mule.extension.ws.internal.connection;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
@@ -91,7 +92,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Parameter
   @Placement(order = 7)
   @Expression(NOT_SUPPORTED)
-  @DefaultEncoding
+  @Optional
   private String encoding;
 
   /**
@@ -104,6 +105,9 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @DisplayName("Transport Configuration")
   @NullSafe(defaultImplementingType = DefaultHttpTransportConfiguration.class)
   private CustomTransportConfiguration customTransportConfiguration;
+
+  @DefaultEncoding
+  private String defaultEncoding;
 
   /**
    * {@inheritDoc}
@@ -173,6 +177,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Override
   public void initialise() {
     client = httpService.getClientFactory().create(new HttpClientConfiguration.Builder().setName("wsc-dispatcher").build());
+    encoding = isBlank(encoding) ? defaultEncoding : encoding;
   }
 
   @Override
