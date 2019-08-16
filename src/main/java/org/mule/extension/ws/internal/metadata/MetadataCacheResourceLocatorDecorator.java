@@ -38,11 +38,12 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   @Override
   public InputStream getResource(String url) {
     try {
-      byte[] resource = (byte[]) cache.get(url).orElseGet(() -> {
-        byte[] bytes = toByteArray(delegate.getResource(url));
-        cache.put(url, bytes);
-        return bytes;
-      });
+      byte[] resource = (byte[]) cache.get(url)
+          .orElseGet(() -> {
+            byte[] bytes = toByteArray(delegate.getResource(url));
+            cache.put(url, bytes);
+            return bytes;
+          });
       return new ByteArrayInputStream(resource);
     } catch (Exception e) {
       throw new RuntimeException("Error while obtaining resource [" + url + "]", e);
