@@ -115,7 +115,7 @@ public class WebServiceSecurity {
   @Parameter
   @Placement(tab = SECURITY_TAB, order = 0)
   @Optional(defaultValue = "true")
-  @Summary("Value of the mustUnderstand attribute in {@code wsse:Security} header.")
+  @Summary("Value of the mustUnderstand attribute in WS-Security header.")
   private boolean mustUnderstand;
 
   /**
@@ -126,7 +126,7 @@ public class WebServiceSecurity {
    */
   @Parameter
   @Placement(tab = SECURITY_TAB, order = 1)
-  @Summary("The expiration time in the time unit specified. This value converted to seconds must be greater or equal to 1 second")
+  @Summary("The SOAP Actor attribute is used to address the WS-Security header to a specific endpoint. This parameter values must be a URI.")
   @Optional
   @OfValues(SoapActorValueProvider.class)
   private String actor;
