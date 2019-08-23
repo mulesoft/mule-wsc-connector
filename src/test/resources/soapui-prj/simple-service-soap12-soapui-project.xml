@@ -843,10 +843,11 @@
         <con:mockOperation name="echoAccount" id="35e23e58-03f2-4757-a859-b1ab6bfe439f" interface="TestServiceSoapBinding" operation="echoAccount">
             <con:settings/>
             <con:defaultResponse>Response 1</con:defaultResponse>
-            <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
+            <con:dispatchStyle>QUERY_MATCH</con:dispatchStyle>
             <con:response name="Response 1" id="c8c483c8-1ea3-4bb1-b528-7db801ee09ab" httpResponseStatus="200" encoding="UTF-8">
                 <con:settings/>
-                <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                <con:responseContent><![CDATA[
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:echoAccountResponse>
@@ -861,9 +862,21 @@
       </ser:echoAccountResponse>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:responseContent>
-                <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoAccount"/>
+                <con:wsaConfig mustUnderstand="true" version="200508" action="echoAccount"/>
             </con:response>
-            <con:dispatchConfig/>
+            <con:response name="MustUnderstand" id="f7ad31e3-9480-4dd3-9217-ed5912e246dc" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoAccountResponse>
+         <account>
+            <clientName>DidNotUnderstand</clientName>
+         </account>
+      </ser:echoAccountResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="false" version="200508" action="echoAccount"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:query><con:name>MustUnderstand</con:name><con:query>declare namespace wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+            declare namespace soapenv="http://www.w3.org/2003/05/soap-envelope"
+            concat(//wsse:Security/@soapenv:mustUnderstand,//wsse:Security/@soapenv:role)</con:query><con:match>customActor</con:match><con:response>MustUnderstand</con:response></con:query></con:dispatchConfig>
         </con:mockOperation>
         <con:mockOperation name="echoWithHeaders" id="073c5690-5890-4bf9-9007-cfca827f3685" interface="TestServiceSoapBinding" operation="echoWithHeaders">
             <con:settings/>
