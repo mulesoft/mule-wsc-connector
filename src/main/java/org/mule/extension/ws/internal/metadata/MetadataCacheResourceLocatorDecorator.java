@@ -66,10 +66,15 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   //  that ends up in a different the key for the same file content.
   private Optional<String> getCacheKey(String url) {
     try {
+      // check for files paths, not file URLs.
+      File file = new File(url);
+      if (file.exists()) {
+        return Optional.of(file.getName());
+      }
+      // check for URLs
       URL urlInstance = new URL(url);
-      File file = new File(urlInstance.getFile());
-      String result = file.exists() ? file.getName() : url;
-      return Optional.of(result);
+      file = new File(urlInstance.getFile());
+      return Optional.of(file.exists() ? file.getName() : url);
     } catch (Exception e) {
       LOGGER.error("Failed to generate key for URL [" + url + "], item will not be cached", e.getMessage());
       return Optional.empty();
