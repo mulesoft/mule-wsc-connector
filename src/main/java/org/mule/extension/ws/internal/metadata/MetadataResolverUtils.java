@@ -26,7 +26,6 @@ import org.mule.wsdl.parser.model.PortModel;
 import org.mule.wsdl.parser.model.ServiceModel;
 import org.mule.wsdl.parser.model.WsdlModel;
 import org.mule.wsdl.parser.model.operation.OperationModel;
-import org.mule.wsdl.parser.serializer.WsdlModelSerializer;
 
 import java.io.InputStream;
 
@@ -61,7 +60,7 @@ public class MetadataResolverUtils {
     return instance;
   }
 
-  public OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
+  OperationModel getOperationFromCacheOrCreate(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
     PortModel port = findPortFromContext(context);
     try {
@@ -71,9 +70,9 @@ public class MetadataResolverUtils {
     }
   }
 
-  public PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
+  PortModel findPortFromContext(MetadataContext context) throws MetadataResolvingException, ConnectionException {
     WsdlConnectionInfo info = getWscSoapClient(context).getInfo();
-    WsdlModel model = getOrCreateWsdlModel(context, info.getWsdlLocation());
+    WsdlModel model = getWsdlModel(context, info.getAbsoluteWsdlLocation());
     ServiceModel service = model.getService(info.getService());
     if (service == null) {
       throw new MetadataResolvingException("service name [" + info.getService() + "] not found in wsdl", INVALID_CONFIGURATION);
@@ -85,18 +84,18 @@ public class MetadataResolverUtils {
     return port;
   }
 
-  public WsdlModel getOrCreateWsdlModel(MetadataContext context, String location)
+  private WsdlModel getWsdlModel(MetadataContext context, String location)
       throws ConnectionException, MetadataResolvingException {
     WsdlModel model = recentlyQueriedCache.getIfPresent(location);
     if (model != null) {
       return model;
     }
-    WsdlModel persistedModel = getFromPersistentCache(context, location);
-    recentlyQueriedCache.put(location, persistedModel);
-    return persistedModel;
+    model = parseWithPersistentCache(context, location);
+    recentlyQueriedCache.put(location, model);
+    return model;
   }
 
-  private WsdlModel getFromPersistentCache(MetadataContext context, String location)
+  private WsdlModel parseWithPersistentCache(MetadataContext context, String location)
       throws ConnectionException, MetadataResolvingException {
     MetadataCache persistentCache = context.getCache();
     ResourceLocator locator = getResourceLocator(getWscSoapClient(context));

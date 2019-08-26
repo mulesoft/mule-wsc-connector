@@ -12,7 +12,15 @@ import org.mule.runtime.api.metadata.MetadataCache;
 import org.mule.wsdl.parser.locator.ResourceLocator;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Optional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link ResourceLocator} implementation that tries to fetch a resource from the {@link MetadataCache} first, if not there, then
@@ -21,6 +29,8 @@ import java.io.InputStream;
  * @since 1.2
  */
 public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
+
+  private static final Logger LOGGER = LoggerFactory.getLogger(MetadataCacheResourceLocatorDecorator.class.getName());
 
   private final ResourceLocator delegate;
   private final MetadataCache cache;
@@ -41,12 +51,28 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
       byte[] resource = (byte[]) cache.get(url)
           .orElseGet(() -> {
             byte[] bytes = toByteArray(delegate.getResource(url));
-            cache.put(url, bytes);
+            getCacheKey(url).ifPresent(key -> cache.put(key, bytes));
             return bytes;
           });
       return new ByteArrayInputStream(resource);
     } catch (Exception e) {
       throw new RuntimeException("Error while obtaining resource [" + url + "]", e);
+    }
+  }
+
+  // TODO: Remove once MULE-17388 is done, this will create a cache key with the file name, but wont be necessary if the
+  //  relative path of the file is used instead, by trimming the file path we avoid caching the same WSDL multiple times because
+  //  Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
+  //  that ends up in a different the key for the same file content.
+  private Optional<String> getCacheKey(String url) {
+    try {
+      URL urlInstance = new URL(url);
+      File file = new File(urlInstance.getFile());
+      String result = file.exists() ? file.getName() : url;
+      return Optional.of(result);
+    } catch (Exception e) {
+      LOGGER.error("Failed to generate key for URL [" + url + "], item will not be cached", e.getMessage());
+      return Optional.empty();
     }
   }
 }
