@@ -116,9 +116,12 @@ public class ExtensionsClientHttpRequestExecutor {
     }
   }
 
+  private static CursorStreamProvider cursorStreamProviderAlPingo;
+
   private InputStream getContent(Result<Object, Object> result) {
     Object output = result.getOutput();
     if (output instanceof CursorStreamProvider) {
+      cursorStreamProviderAlPingo = (CursorStreamProvider) output;
       return ((CursorStreamProvider) output).openCursor();
     } else if (output instanceof InputStream) {
       return (InputStream) output;
