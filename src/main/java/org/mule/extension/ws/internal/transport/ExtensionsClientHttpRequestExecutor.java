@@ -17,21 +17,24 @@ import org.mule.extension.http.api.HttpAttributes;
 import org.mule.extension.http.api.HttpResponseAttributes;
 import org.mule.extension.ws.api.transport.HttpRequestResponse;
 import org.mule.runtime.api.metadata.TypedValue;
+import org.mule.runtime.api.streaming.bytes.CursorStream;
 import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 import org.mule.runtime.api.util.MultiMap;
-import org.mule.runtime.api.util.Pair;
 import org.mule.runtime.extension.api.client.DefaultOperationParameters;
 import org.mule.runtime.extension.api.client.DefaultOperationParametersBuilder;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.soap.api.transport.DispatcherException;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Executes an HTTP requester operation using the {@link ExtensionsClient}.
@@ -56,8 +59,7 @@ public class ExtensionsClientHttpRequestExecutor {
     return this.request(POST.toString(), url, headers, body);
   }
 
-  private HttpRequestResponse request(String method, String url, Map<String, String> headers,
-                                      InputStream body) {
+  private HttpRequestResponse request(String method, String url, Map<String, String> headers, InputStream body) {
     DefaultOperationParametersBuilder params = DefaultOperationParameters
         .builder()
         .configName(requesterConfig)
@@ -116,17 +118,71 @@ public class ExtensionsClientHttpRequestExecutor {
     }
   }
 
-  private static CursorStreamProvider cursorStreamProviderAlPingo;
-
   private InputStream getContent(Result<Object, Object> result) {
     Object output = result.getOutput();
     if (output instanceof CursorStreamProvider) {
-      cursorStreamProviderAlPingo = (CursorStreamProvider) output;
-      return ((CursorStreamProvider) output).openCursor();
+      return new CursorStreamWithProvider(((CursorStreamProvider) output).openCursor(), (CursorStreamProvider) output);
     } else if (output instanceof InputStream) {
       return (InputStream) output;
     } else {
       throw new IllegalStateException("Content was expected to be an stream but got a [" + output.getClass().getName() + "]");
+    }
+  }
+
+  private class CursorStreamWithProvider extends InputStream {
+
+    CursorStream cursorStreamDelegate;
+    CursorStreamProvider cursorStreamDelegateProvider;
+
+    public CursorStreamWithProvider(CursorStream cursorStreamDelegate, CursorStreamProvider cursorStreamDelegateProvider) {
+      this.cursorStreamDelegate = cursorStreamDelegate;
+      this.cursorStreamDelegateProvider = cursorStreamDelegateProvider;
+    }
+
+    @Override
+    public int read(@NotNull byte[] b) throws IOException {
+      return cursorStreamDelegate.read(b);
+    }
+
+    @Override
+    public int read(@NotNull byte[] b, int off, int len) throws IOException {
+      return cursorStreamDelegate.read(b, off, len);
+    }
+
+    @Override
+    public long skip(long n) throws IOException {
+      return cursorStreamDelegate.skip(n);
+    }
+
+    @Override
+    public int available() throws IOException {
+      return cursorStreamDelegate.available();
+    }
+
+    @Override
+    public void close() throws IOException {
+      cursorStreamDelegate.close();
+      cursorStreamDelegateProvider.close();
+    }
+
+    @Override
+    public synchronized void mark(int readlimit) {
+      cursorStreamDelegate.mark(readlimit);
+    }
+
+    @Override
+    public synchronized void reset() throws IOException {
+      cursorStreamDelegate.reset();
+    }
+
+    @Override
+    public boolean markSupported() {
+      return cursorStreamDelegate.markSupported();
+    }
+
+    @Override
+    public int read() throws IOException {
+      return cursorStreamDelegate.read();
     }
   }
 }
