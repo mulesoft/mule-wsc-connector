@@ -19,7 +19,6 @@ import org.mule.extension.ws.api.transport.HttpRequestResponse;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.streaming.bytes.CursorStreamProvider;
 import org.mule.runtime.api.util.MultiMap;
-import org.mule.runtime.api.util.Pair;
 import org.mule.runtime.extension.api.client.DefaultOperationParameters;
 import org.mule.runtime.extension.api.client.DefaultOperationParametersBuilder;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
@@ -119,7 +118,7 @@ public class ExtensionsClientHttpRequestExecutor {
   private InputStream getContent(Result<Object, Object> result) {
     Object output = result.getOutput();
     if (output instanceof CursorStreamProvider) {
-      return ((CursorStreamProvider) output).openCursor();
+      return new CursorStreamWithProvider(((CursorStreamProvider) output).openCursor(), (CursorStreamProvider) output);
     } else if (output instanceof InputStream) {
       return (InputStream) output;
     } else {
