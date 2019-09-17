@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-core-modules-parent</artifactId>
-        <version>1.1.2</version>
+        <version>1.1.6</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -23,7 +23,7 @@
         <guava.version>25.1-jre</guava.version>
         <cxf.version>3.2.1</cxf.version>
 
-        <javax.activation.version>1.1.1</javax.activation.version>
+        <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.0</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <mule.http.connector.version>1.5.6</mule.http.connector.version>
