@@ -13,7 +13,7 @@
     <groupId>org.mule.connectors</groupId>
     <artifactId>mule-wsc-connector</artifactId>
     <packaging>mule-extension</packaging>
-    <version>1.5.1-SNAPSHOT</version>
+    <version>1.5.1</version>
 
     <name>Web Service Consumer Connector</name>
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
