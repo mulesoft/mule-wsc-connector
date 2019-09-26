@@ -61,8 +61,9 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
     ValueResult result = service.getValues(Location.builder().globalName("weather").addConnectionPart().build(), CONNECTION);
     Set<Value> values = result.getValues();
     assertThat(result.isSuccess(), is(true));
+
     assertThat(values, hasItems(valueWithId("GlobalWeather").withPartName("service")
-        .withChilds(valueWithId("GlobalWeatherHttpGet").withPartName("port")
+        .withChilds(valueWithId("GlobalWeatherSoap12").withPartName("port")
             .withChilds(valueWithId(startsWith("http://www.webservicex.com/globalweather.asmx")).withPartName("address")))));
   }
 
