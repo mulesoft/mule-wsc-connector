@@ -12,6 +12,7 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.core.IsNot.not;
 import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SERVICE_KEY;
 import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
 
@@ -61,8 +62,13 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
     ValueResult result = service.getValues(Location.builder().globalName("weather").addConnectionPart().build(), CONNECTION);
     Set<Value> values = result.getValues();
     assertThat(result.isSuccess(), is(true));
-    assertThat(values, hasItems(valueWithId("GlobalWeather").withPartName("service")
+
+    assertThat(values, not(hasItems(valueWithId("GlobalWeather").withPartName("service")
         .withChilds(valueWithId("GlobalWeatherHttpGet").withPartName("port")
+            .withChilds(valueWithId(startsWith("http://www.webservicex.com/globalweather.asmx")).withPartName("address"))))));
+
+    assertThat(values, hasItems(valueWithId("GlobalWeather").withPartName("service")
+        .withChilds(valueWithId("GlobalWeatherSoap12").withPartName("port")
             .withChilds(valueWithId(startsWith("http://www.webservicex.com/globalweather.asmx")).withPartName("address")))));
   }
 
