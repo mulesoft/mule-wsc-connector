@@ -48,16 +48,29 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   @Override
   public InputStream getResource(String url) {
     try {
-      byte[] resource = (byte[]) cache.get(url)
-          .orElseGet(() -> {
-            byte[] bytes = toByteArray(delegate.getResource(url));
-            getCacheKey(url).ifPresent(key -> cache.put(key, bytes));
-            return bytes;
-          });
+      Optional<String> optionalCacheKey = getCacheKey(url);
+
+      byte[] resource;
+
+      if (optionalCacheKey.isPresent()) {
+        String cacheKey = optionalCacheKey.get();
+        resource = (byte[]) cache.get(cacheKey).orElseGet(() -> {
+          byte[] bytes = fetchResource(url);
+          cache.put(cacheKey, bytes);
+          return bytes;
+        });
+      } else {
+        resource = fetchResource(url);
+      }
+
       return new ByteArrayInputStream(resource);
     } catch (Exception e) {
       throw new RuntimeException("Error while obtaining resource [" + url + "]", e);
     }
+  }
+
+  private byte[] fetchResource(String url) {
+    return toByteArray(delegate.getResource(url));
   }
 
   // TODO: Remove once MULE-17388 is done, this will create a cache key with the file name, but wont be necessary if the
@@ -65,19 +78,24 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   //  Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
   //  that ends up in a different the key for the same file content.
   private Optional<String> getCacheKey(String url) {
+    File file = null;
     try {
       // check for files paths, not file URLs.
-      File file = new File(url);
+      file = new File(url);
       if (file.exists()) {
         return Optional.of(file.getName());
       }
       // check for URLs
       URL urlInstance = new URL(url);
-      file = new File(urlInstance.getFile());
-      return Optional.of(file.exists() ? file.getName() : url);
+      File urlFile = new File(urlInstance.getFile());
+      return Optional.of(urlFile.exists() ? urlFile.getName() : url);
     } catch (Exception e) {
-      LOGGER.error("Failed to generate key for URL [" + url + "], item will not be cached", e.getMessage());
-      return Optional.empty();
+      if (file == null) {
+        return Optional.empty();
+      }
+      String fileName = file.getName();
+      LOGGER.debug("{} is not an absolute path for an existing file or a valid URL. Using cache key {}", url, fileName);
+      return Optional.of(fileName);
     }
   }
 }

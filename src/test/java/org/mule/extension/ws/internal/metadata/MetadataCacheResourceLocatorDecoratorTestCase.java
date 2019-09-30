@@ -7,6 +7,7 @@
 package org.mule.extension.ws.internal.metadata;
 
 
+import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsMapContaining.hasKey;
 import static org.hamcrest.core.Is.is;
@@ -20,69 +21,80 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameter;
+import org.junit.runners.Parameterized.Parameters;
 
+@RunWith(Parameterized.class)
 public class MetadataCacheResourceLocatorDecoratorTestCase {
 
   private static final String REMOTE = "http://tshirt-service.cloudhub.io/?wsdl";
   private static final String RELATIVE_PATH = "wsdl/document.wsdl";
   private static final URL FULL_PATH_URL = Thread.currentThread().getContextClassLoader().getResource(RELATIVE_PATH);
+  private static final String FILE_NAME = "document.wsdl";
+  private static final int TIMES_TO_GET_RESOURCE = 10;
 
-  @Test
-  public void remoteKey() {
-    TestCache cache = new TestCache();
-    MetadataCacheResourceLocatorDecorator locator = new MetadataCacheResourceLocatorDecorator(cache, new TestLocator());
-    locator.getResource(REMOTE);
+  @Parameter
+  public String parameterizationName;
 
-    assertThat(cache.delegate.size(), is(1));
-    assertThat(cache.delegate, hasKey(REMOTE));
+  @Parameter(1)
+  public String url;
+
+  @Parameter(2)
+  public String cacheKey;
+
+  @Parameters(name = "{0}")
+  public static Collection<Object[]> data() {
+    return asList(new Object[][] {
+        {"Remote key", REMOTE, REMOTE},
+        {"Relative path key", RELATIVE_PATH, FILE_NAME},
+        {"Full path key", FULL_PATH_URL.getPath(), FILE_NAME},
+        {"Full path as URL key", FULL_PATH_URL.toString(), FILE_NAME}
+    });
   }
 
   @Test
-  public void relativePathKey() {
+  public void resourceIsCached() {
     TestCache cache = new TestCache();
     MetadataCacheResourceLocatorDecorator locator = new MetadataCacheResourceLocatorDecorator(cache, new TestLocator());
-    locator.getResource(RELATIVE_PATH);
+    locator.getResource(url);
 
-    assertThat(cache.delegate.size(), is(0));
+    assertThat(cache.delegate.size(), is(1));
+    assertThat(cache.delegate, hasKey(cacheKey));
   }
 
   @Test
-  public void fullPathKey() {
+  public void resourceIsCachedOnlyOnce() {
     TestCache cache = new TestCache();
     MetadataCacheResourceLocatorDecorator locator = new MetadataCacheResourceLocatorDecorator(cache, new TestLocator());
-    locator.getResource(FULL_PATH_URL.getPath());
-
-    assertThat(cache.delegate.size(), is(1));
-    assertThat(cache.delegate, hasKey("document.wsdl"));
-  }
-
-  @Test
-  public void fullPathAsURLKey() {
-    TestCache cache = new TestCache();
-    MetadataCacheResourceLocatorDecorator locator = new MetadataCacheResourceLocatorDecorator(cache, new TestLocator());
-    locator.getResource(FULL_PATH_URL.toString());
-
-    assertThat(cache.delegate.size(), is(1));
-    assertThat(cache.delegate, hasKey("document.wsdl"));
+    for (int i = 0; i < TIMES_TO_GET_RESOURCE; i++) {
+      locator.getResource(url);
+    }
+    assertThat(cache.getTimesValueIsCached(), is(1));
   }
 
   private class TestCache implements MetadataCache {
 
+    private int timesValueIsCached = 0;
     private Map<Serializable, Serializable> delegate = new HashMap<>();
 
     @Override
     public void put(Serializable s1, Serializable s2) {
+      timesValueIsCached++;
       delegate.put(s1, s2);
     }
 
     @Override
     public void putAll(Map<? extends Serializable, ? extends Serializable> map) {
+      timesValueIsCached++;
       delegate.putAll(map);
     }
 
@@ -100,6 +112,10 @@ public class MetadataCacheResourceLocatorDecoratorTestCase {
           throw new RuntimeException(e);
         }
       });
+    }
+
+    public int getTimesValueIsCached() {
+      return timesValueIsCached;
     }
   }
 
