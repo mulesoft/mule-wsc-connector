@@ -105,7 +105,7 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   private Optional<String> getCacheKeyFromUrl(String url) {
     try {
       URL urlInstance = new URL(url);
-      return of(getCacheKeyFromAbsolutePath(urlInstance.getPath()).orElse(url));
+      return of(getCacheKeyFromAbsolutePath(urlInstance.getFile()).orElse(url));
     } catch (Exception e) {
       // Supress any exception thrown
     }
