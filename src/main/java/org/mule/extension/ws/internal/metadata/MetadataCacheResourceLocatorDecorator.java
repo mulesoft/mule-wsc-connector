@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
 
 import org.mule.runtime.api.metadata.MetadataCache;
@@ -14,8 +17,6 @@ import org.mule.wsdl.parser.locator.ResourceLocator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -78,24 +79,46 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   //  Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
   //  that ends up in a different the key for the same file content.
   private Optional<String> getCacheKey(String url) {
-    File file = null;
-    try {
-      // check for files paths, not file URLs.
-      file = new File(url);
-      if (file.exists()) {
-        return Optional.of(file.getName());
-      }
-      // check for URLs
-      URL urlInstance = new URL(url);
-      File urlFile = new File(urlInstance.getFile());
-      return Optional.of(urlFile.exists() ? urlFile.getName() : url);
-    } catch (Exception e) {
-      if (file == null) {
-        return Optional.empty();
-      }
-      String fileName = file.getName();
-      LOGGER.debug("{} is not an absolute path for an existing file or a valid URL. Using cache key {}", url, fileName);
-      return Optional.of(fileName);
+    String cacheKey = getCacheKeyFromAbsolutePath(url)
+        .orElse(getCacheKeyFromUrl(url)
+            .orElse(getCacheKeyFromRelativePath(url)
+                .orElse(null)));
+    if (cacheKey == null) {
+      LOGGER.error("Failed to generate cache key for URL [" + url + "], item will not be cached");
     }
+
+    return ofNullable(cacheKey);
+  }
+
+  private Optional<String> getCacheKeyFromAbsolutePath(String absolutePath) {
+    try {
+      File file = new File(absolutePath);
+      if (file.exists()) {
+        return of(file.getName());
+      }
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
+  }
+
+  private Optional<String> getCacheKeyFromUrl(String url) {
+    try {
+      URL urlInstance = new URL(url);
+      return of(getCacheKeyFromAbsolutePath(urlInstance.getPath()).orElse(url));
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
+  }
+
+  private Optional<String> getCacheKeyFromRelativePath(String relativePath) {
+    try {
+      File file = new File(relativePath);
+      return of(file.getName());
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
   }
 }
