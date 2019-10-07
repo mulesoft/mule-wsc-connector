@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static java.util.Optional.empty;
+import static java.util.Optional.of;
+import static java.util.Optional.ofNullable;
 import static org.mule.runtime.core.api.util.IOUtils.toByteArray;
 
 import org.mule.runtime.api.metadata.MetadataCache;
@@ -14,8 +17,6 @@ import org.mule.wsdl.parser.locator.ResourceLocator;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
-import java.io.Serializable;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -48,16 +49,29 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   @Override
   public InputStream getResource(String url) {
     try {
-      byte[] resource = (byte[]) cache.get(url)
-          .orElseGet(() -> {
-            byte[] bytes = toByteArray(delegate.getResource(url));
-            getCacheKey(url).ifPresent(key -> cache.put(key, bytes));
-            return bytes;
-          });
+      Optional<String> optionalCacheKey = getCacheKey(url);
+
+      byte[] resource;
+
+      if (optionalCacheKey.isPresent()) {
+        String cacheKey = optionalCacheKey.get();
+        resource = (byte[]) cache.get(cacheKey).orElseGet(() -> {
+          byte[] bytes = fetchResource(url);
+          cache.put(cacheKey, bytes);
+          return bytes;
+        });
+      } else {
+        resource = fetchResource(url);
+      }
+
       return new ByteArrayInputStream(resource);
     } catch (Exception e) {
       throw new RuntimeException("Error while obtaining resource [" + url + "]", e);
     }
+  }
+
+  private byte[] fetchResource(String url) {
+    return toByteArray(delegate.getResource(url));
   }
 
   // TODO: Remove once MULE-17388 is done, this will create a cache key with the file name, but wont be necessary if the
@@ -65,19 +79,46 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   //  Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
   //  that ends up in a different the key for the same file content.
   private Optional<String> getCacheKey(String url) {
-    try {
-      // check for files paths, not file URLs.
-      File file = new File(url);
-      if (file.exists()) {
-        return Optional.of(file.getName());
-      }
-      // check for URLs
-      URL urlInstance = new URL(url);
-      file = new File(urlInstance.getFile());
-      return Optional.of(file.exists() ? file.getName() : url);
-    } catch (Exception e) {
-      LOGGER.error("Failed to generate key for URL [" + url + "], item will not be cached", e.getMessage());
-      return Optional.empty();
+    String cacheKey = getCacheKeyFromAbsolutePath(url)
+        .orElse(getCacheKeyFromUrl(url)
+            .orElse(getCacheKeyFromRelativePath(url)
+                .orElse(null)));
+    if (cacheKey == null) {
+      LOGGER.error("Failed to generate cache key for URL [" + url + "], item will not be cached");
     }
+
+    return ofNullable(cacheKey);
+  }
+
+  private Optional<String> getCacheKeyFromAbsolutePath(String absolutePath) {
+    try {
+      File file = new File(absolutePath);
+      if (file.exists()) {
+        return of(file.getName());
+      }
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
+  }
+
+  private Optional<String> getCacheKeyFromUrl(String url) {
+    try {
+      URL urlInstance = new URL(url);
+      return of(getCacheKeyFromAbsolutePath(urlInstance.getFile()).orElse(url));
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
+  }
+
+  private Optional<String> getCacheKeyFromRelativePath(String relativePath) {
+    try {
+      File file = new File(relativePath);
+      return of(file.getName());
+    } catch (Exception e) {
+      // Supress any exception thrown
+    }
+    return empty();
   }
 }
