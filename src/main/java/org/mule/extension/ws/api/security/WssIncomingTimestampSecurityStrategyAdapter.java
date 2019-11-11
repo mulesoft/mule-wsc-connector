@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * the creation and expiration of the security semantic of the message.
  *
  * @see <a href="http://docs.oasis-open.org/wss/v1.1/wss-v1.1-spec-errata-os-SOAPMessageSecurity.htm#_Toc118717167">Security Timestamps</a>
- *
+ *x
  * @since 1.4.0
  */
 public class WssIncomingTimestampSecurityStrategyAdapter implements SecurityStrategyAdapter {
