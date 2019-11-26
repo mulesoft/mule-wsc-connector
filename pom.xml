@@ -19,7 +19,7 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.7</commons.lang.version>
+        <commons.lang.version>3.9</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
         <cxf.version>3.2.1</cxf.version>
 
