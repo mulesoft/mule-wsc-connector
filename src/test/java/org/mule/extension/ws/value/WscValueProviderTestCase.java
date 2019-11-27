@@ -7,6 +7,7 @@
 
 package org.mule.extension.ws.value;
 
+import static java.lang.Thread.currentThread;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasItems;
@@ -16,10 +17,11 @@ import static org.hamcrest.core.IsNot.not;
 import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SERVICE_KEY;
 import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
 
+import org.custommonkey.xmlunit.XMLUnit;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mule.extension.ws.AbstractWscTestCase;
+import org.mule.functional.junit4.MuleArtifactFunctionalTestCase;
 import org.mule.runtime.api.component.location.Location;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.api.value.ValueProviderService;
@@ -31,7 +33,7 @@ import javax.inject.Named;
 import java.util.Set;
 
 @RunnerDelegateTo()
-public class WscValueProviderTestCase extends AbstractWscTestCase {
+public class WscValueProviderTestCase extends MuleArtifactFunctionalTestCase {
 
   public static final String CONNECTION = "Connection";
 
@@ -41,6 +43,11 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
   @Inject
   @Named(VALUE_PROVIDER_SERVICE_KEY)
   private ValueProviderService service;
+
+  @Override
+  protected String[] getConfigFiles() {
+    return new String[] {"config/wsld-value-provider.xml"};
+  }
 
   @Override
   public boolean enableLazyInit() {
@@ -53,8 +60,10 @@ public class WscValueProviderTestCase extends AbstractWscTestCase {
   }
 
   @Override
-  protected String getConfigurationFile() {
-    return "config/wsld-value-provider.xml";
+  protected void doSetUpBeforeMuleContextCreation() throws Exception {
+    super.doSetUpBeforeMuleContextCreation();
+    System.setProperty("humanWsdl", currentThread().getContextClassLoader().getResource("wsdl/human.wsdl").getPath());
+    XMLUnit.setIgnoreWhitespace(true);
   }
 
   @Test
