@@ -21,7 +21,6 @@
     <properties>
         <commons.lang.version>3.9</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
-        <cxf.version>3.3.4</cxf.version>
 
         <mule.http.connector.version>1.5.11</mule.http.connector.version>
         <soap.engine.version>1.3.3</soap.engine.version>
@@ -32,7 +31,6 @@
         <formatterConfigPath>formatter.xml</formatterConfigPath>
 
         <!-- tests props -->
-        <jettyVersion>9.4.6.v20170531</jettyVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
@@ -153,66 +151,6 @@
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
             <version>${mule.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http-jetty</artifactId>
-            <version>${cxf.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-transports-http</artifactId>
-            <version>${cxf.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-frontend-jaxws</artifactId>
-            <version>${cxf.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-ws-security</artifactId>
-            <version>${cxf.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.sf.ehcache</groupId>
-                    <artifactId>ehcache</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-servlet</artifactId>
-            <version>${jettyVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-security</artifactId>
-            <version>${jettyVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-server</artifactId>
-            <version>${jettyVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>
-            <version>${jettyVersion}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-wsdl</artifactId>
-            <version>${cxf.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
