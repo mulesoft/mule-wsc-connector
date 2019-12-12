@@ -22,7 +22,7 @@
         <commons.lang.version>3.9</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
 
-        <mule.http.connector.version>1.5.11</mule.http.connector.version>
+        <mule.http.connector.version>1.5.12</mule.http.connector.version>
         <soap.engine.version>1.3.5-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.3.4-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
