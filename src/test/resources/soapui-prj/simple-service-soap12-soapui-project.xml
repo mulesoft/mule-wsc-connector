@@ -400,6 +400,21 @@
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
                 <con:wsrmConfig version="1.2"/>
             </con:call>
+            <con:call id="6685bfd6-973c-410d-8316-fbd57cb25aa5" name="Request 2"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:encoding>UTF-8</con:encoding><con:endpoint>http://localhost:8080/SOAP12</con:endpoint><con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:downloadAttachment>
+      </ser:downloadAttachment>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+                <con:credentials>
+                    <con:authType>No Authorization</con:authType>
+                </con:credentials>
+                <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+                <con:jmsPropertyConfig/>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
+                <con:wsrmConfig version="1.2"/>
+            </con:call>
         </con:operation>
         <con:operation id="fcef34a4-8e4a-4f3c-9581-75a9f55ed39b" isOneWay="false" action="echoOperationCustomAction" name="echo" bindingOperationName="echo" type="Request-Response" outputName="echoResponse" inputName="echo" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
             <con:settings/>
@@ -674,6 +689,17 @@
                 </con:attachment>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
             </con:response>
+            <con:response name="Response NonAttachment" id="2ffc67e2-bcf4-432d-b6af-8d301258c728" httpResponseStatus="200" encoding="UTF-8">
+                <con:settings/>
+                <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:downloadAttachmentResponse>
+      </ser:downloadAttachmentResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
+            </con:response>
             <con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <con:query>
                     <con:name>MTOM</con:name>
@@ -682,6 +708,14 @@
                     </con:query>
                     <con:match>attachment.txt</con:match>
                     <con:response>Response MTOM</con:response>
+                </con:query>
+                <con:query>
+                    <con:name>NonAttachment</con:name>
+                    <con:query>declare namespace con='http://service.soap.service.mule.org/'
+                    boolean(//con:downloadAttachment/fileName)
+                    </con:query>
+                    <con:match>false</con:match>
+                    <con:response>Response NonAttachment</con:response>
                 </con:query>
             </con:dispatchConfig>
         </con:mockOperation>
@@ -825,7 +859,7 @@
                     <con:match>timestamp</con:match>
                     <con:response>TimestampResponse</con:response>
                 </con:query>
-                
+
             <con:query>
                 <con:name>encryptedAndTimestamp</con:name>
                 <con:query>declare namespace con='http://service.soap.service.mule.org/'

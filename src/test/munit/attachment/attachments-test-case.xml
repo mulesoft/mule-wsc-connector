@@ -134,4 +134,25 @@
             <munit-tools:assert-equals actual="#[payload.body.uploadAttachmentResponse.result]" expected="#['OK']"/>
         </munit:validation>
     </munit:test>
+
+    <munit:test name="optionalAttachment" description="Downloads optional attachment from the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="downloadAttachment">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#downloadAttachment: {
+                        }]
+                    </wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[sizeOf(payload.attachments)]" expected="#[0]"/>
+        </munit:validation>
+    </munit:test>
 </mule>
