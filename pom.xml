@@ -7,6 +7,7 @@
         <groupId>org.mule.extensions</groupId>
         <artifactId>mule-core-modules-parent</artifactId>
         <version>1.1.6</version>
+        <relativePath></relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -70,13 +71,6 @@
             <artifactId>mule-http-connector</artifactId>
             <version>${mule.http.connector.version}</version>
             <classifier>mule-plugin</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-http</artifactId>
-            <version>${muleHttpServiceVersion}</version>
-            <classifier>mule-service</classifier>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -248,11 +242,6 @@
             <id>mule</id>
             <name>Mule Repository</name>
             <url>https://repository.mulesoft.org/nexus/content/repositories/public/</url>
-        </repository>
-        <repository>
-            <id>spring-snapshot</id>
-            <name>Spring Snapshot Repository</name>
-            <url>http://repo.spring.io/snapshot/</url>
         </repository>
     </repositories>
 
