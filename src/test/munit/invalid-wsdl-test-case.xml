@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <!-- Configs -->
+    <munit:config name="invalid-wsdl-config">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <wsc:config name="Web_Service_Consumer_Bad_Path">
+        <wsc:connection wsdlLocation="http://localhost:8080/notavalidurl.wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="Web_Service_Consumer_Bad_Format">
+        <wsc:connection wsdlLocation="invalid-wsdl-test-case.xml" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+        </wsc:connection>
+    </wsc:config>
+
+    <!-- Tests -->
+    <munit:test name="CantGetWsdl" description="Trying to consume without a wsdl valid path">
+        <munit:execution>
+            <try>
+                <wsc:consume config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
+                    <wsc:message>
+                        <wsc:body>
+                            #[
+                            %dw 2.0
+                            output application/xml
+                            ns con http://service.soap.service.mule.org/
+                            ---
+                            con#some: {}
+                            ]
+                        </wsc:body>
+                    </wsc:message>
+                </wsc:consume>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:CONNECTIVITY">
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="BadWsdl" description="Trying to consume a bad formatted wsdl">
+        <munit:execution>
+            <try>
+                <wsc:consume config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
+                    <wsc:message>
+                        <wsc:body>
+                            #[
+                            %dw 2.0
+                            output application/xml
+                            ns con http://service.soap.service.mule.org/
+                            ---
+                            con#some: {}
+                            ]
+                        </wsc:body>
+                    </wsc:message>
+                </wsc:consume>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:INVALID_WSDL">
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+    </munit:test>
+</mule>

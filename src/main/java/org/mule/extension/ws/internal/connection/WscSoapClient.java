@@ -12,6 +12,9 @@ import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
+import org.mule.soap.api.exception.InvalidWsdlException;
+import org.mule.wsdl.parser.exception.WsdlGettingException;
+import org.mule.wsdl.parser.exception.WsdlParsingException;
 
 import java.util.function.Supplier;
 
@@ -43,6 +46,14 @@ public class WscSoapClient {
       try {
         delegate = clientSupplier.get();
       } catch (Exception e) {
+        if (e instanceof WsdlGettingException) {
+          // can not get any wsdl
+          throw new ConnectionException("Error getting a wsdl:" + e.getMessage(), e);
+        } else if (e instanceof WsdlParsingException) {
+          // cant parse the wsdl
+          throw new InvalidWsdlException("Error parsing wsdl:" + e.getMessage(), e);
+        }
+        // Throws connection exception in any other case for backward compatibility
         throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
       }
     }
