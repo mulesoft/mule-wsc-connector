@@ -16,8 +16,6 @@ import org.mule.soap.api.exception.InvalidWsdlException;
 import org.mule.wsdl.parser.exception.WsdlGettingException;
 import org.mule.wsdl.parser.exception.WsdlParsingException;
 
-import java.util.function.Supplier;
-
 /**
  * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
  *
@@ -27,12 +25,12 @@ public class WscSoapClient {
 
   private final CustomTransportConfiguration transportConfiguration;
   private final WsdlConnectionInfo info;
-  private final Supplier<SoapClient> clientSupplier;
+  private final ThrowingSupplier<SoapClient, Exception> clientSupplier;
   private SoapClient delegate;
   private ExtensionsClient extensionsClient;
 
   public WscSoapClient(WsdlConnectionInfo info,
-                       Supplier<SoapClient> clientSupplier,
+                       ThrowingSupplier<SoapClient, Exception> clientSupplier,
                        CustomTransportConfiguration transportConfiguration,
                        ExtensionsClient extensionsClient) {
     this.info = info;
@@ -45,14 +43,11 @@ public class WscSoapClient {
     if (delegate == null) {
       try {
         delegate = clientSupplier.get();
+      } catch (WsdlGettingException e) {
+        throw new ConnectionException("Error getting a wsdl:" + e.getMessage(), e);
+      } catch (WsdlParsingException e) {
+        throw new InvalidWsdlException("Error parsing wsdl:" + e.getMessage(), e);
       } catch (Exception e) {
-        if (e instanceof WsdlGettingException) {
-          // can not get any wsdl
-          throw new ConnectionException("Error getting a wsdl:" + e.getMessage(), e);
-        } else if (e instanceof WsdlParsingException) {
-          // cant parse the wsdl
-          throw new InvalidWsdlException("Error parsing wsdl:" + e.getMessage(), e);
-        }
         // Throws connection exception in any other case for backward compatibility
         throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
       }
