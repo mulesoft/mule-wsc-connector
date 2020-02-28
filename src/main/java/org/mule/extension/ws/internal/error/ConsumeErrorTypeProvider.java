@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.internal.error;
 
+import static java.util.Collections.unmodifiableSet;
+import static java.util.stream.Collectors.toSet;
+import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
@@ -14,7 +17,6 @@ import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
 import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
-import com.google.common.collect.ImmutableSet;
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypeProvider;
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
@@ -33,6 +35,7 @@ public class ConsumeErrorTypeProvider implements ErrorTypeProvider {
    */
   @Override
   public Set<ErrorTypeDefinition> getErrorTypes() {
-    return ImmutableSet.of(BAD_REQUEST, BAD_RESPONSE, ENCODING, INVALID_WSDL, SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT);
+    return unmodifiableSet(of(BAD_REQUEST, BAD_RESPONSE, ENCODING, INVALID_WSDL, SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT)
+        .collect(toSet()));
   }
 }
