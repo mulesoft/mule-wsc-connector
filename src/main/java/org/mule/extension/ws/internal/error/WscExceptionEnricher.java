@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.internal.error;
 
+import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
@@ -39,14 +40,14 @@ public class WscExceptionEnricher extends ExceptionHandler {
 
 
   private Map<Class<?>, WscError> ERRORS_MAPPING =
-      of(
-         new SimpleEntry<>(BadResponseException.class, BAD_RESPONSE),
-         new SimpleEntry<>(BadRequestException.class, BAD_REQUEST),
-         new SimpleEntry<>(DispatcherException.class, CANNOT_DISPATCH),
-         new SimpleEntry<>(DispatcherTimeoutException.class, TIMEOUT),
-         new SimpleEntry<>(InvalidWsdlException.class, INVALID_WSDL),
-         new SimpleEntry<>(EncodingException.class, ENCODING))
-             .collect(toMap(Entry::getKey, Entry::getValue));
+      unmodifiableMap(of(
+                         new SimpleEntry<>(BadResponseException.class, BAD_RESPONSE),
+                         new SimpleEntry<>(BadRequestException.class, BAD_REQUEST),
+                         new SimpleEntry<>(DispatcherException.class, CANNOT_DISPATCH),
+                         new SimpleEntry<>(DispatcherTimeoutException.class, TIMEOUT),
+                         new SimpleEntry<>(InvalidWsdlException.class, INVALID_WSDL),
+                         new SimpleEntry<>(EncodingException.class, ENCODING))
+                             .collect(toMap(Entry::getKey, Entry::getValue)));
 
   /**
    * {@inheritDoc}
