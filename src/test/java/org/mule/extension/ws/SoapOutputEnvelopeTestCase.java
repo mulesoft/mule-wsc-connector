@@ -9,6 +9,8 @@ package org.mule.extension.ws;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Collections.emptyMap;
 import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Stream.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Matchers.anyObject;
@@ -17,8 +19,8 @@ import static org.mockito.Mockito.when;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.junit.Test;
 
@@ -52,21 +54,18 @@ public class SoapOutputEnvelopeTestCase {
   @Test
   public void toStringFullPayload() {
     InputStream body = new ByteArrayInputStream("<xml>ABC</xml>".getBytes(UTF_8));
-    Map<String, String> hs = unmodifiableMap(new TreeMap<String, String>() {
 
-      {
-        put("header1", "<header1>content</header1>");
-        put("header2", "<header2>content</header2>");
-      }
-    });
+    Map<String, String> hs = unmodifiableMap(of(new SimpleEntry<>("header1", "<header1>content</header1>"),
+                                                new SimpleEntry<>("header2", "<header2>content</header2>"))
+                                                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
+
     ByteArrayInputStream dummyContent = new ByteArrayInputStream(new byte[] {});
-    Map<String, SoapAttachment> as = unmodifiableMap(new TreeMap() {
+    Map<String, SoapAttachment> as =
+        unmodifiableMap(of(
+                           new SimpleEntry<>("attachment1", new SoapAttachment(dummyContent, "text/json")),
+                           new SimpleEntry<>("attachment2", new SoapAttachment(dummyContent, "text/json")))
+                               .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
 
-      {
-        put("attachment1", new SoapAttachment(dummyContent, "text/json"));
-        put("attachment2", new SoapAttachment(dummyContent, "text/json"));
-      }
-    });
     DefaultSoapResponse response = new DefaultSoapResponse(body, hs, emptyMap(), emptyMap(), as, "text/xml");
     String result = new SoapOutputEnvelope(response, streamingHelper).toString();
     assertThat(result, is("{\n"

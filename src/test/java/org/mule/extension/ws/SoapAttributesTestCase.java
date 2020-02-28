@@ -7,10 +7,13 @@
 package org.mule.extension.ws;
 
 import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.*;
+import static java.util.stream.Stream.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import java.util.TreeMap;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
 
 import org.junit.Test;
 
@@ -20,22 +23,14 @@ public class SoapAttributesTestCase {
 
   @Test
   public void toStringAttributes() {
+
     String result = new SoapAttributes(
-                                       unmodifiableMap(new TreeMap<String, String>() {
-
-                                         {
-                                           put("Header1", "Value1");
-                                           put("Header2", "Value2");
-                                         }
-                                       }),
-                                       unmodifiableMap(new TreeMap<String, String>() {
-
-                                         {
-                                           put("statusCode", "200");
-                                           put("reasonPhrase", "OK");
-                                         }
-                                       }))
-                                           .toString();
+                                       unmodifiableMap(of(new SimpleEntry<>("Header1", "Value1"),
+                                                          new SimpleEntry<>("Header2", "Value2"))
+                                                              .collect(toMap(Entry::getKey, Entry::getValue))),
+                                       unmodifiableMap(of(new SimpleEntry<>("statusCode", "200"),
+                                                          new SimpleEntry<>("reasonPhrase", "OK"))
+                                                              .collect(toMap(Entry::getKey, Entry::getValue)))).toString();
 
     assertThat(result, is("{\n"
         + "  additionalTransportData = [\n"
