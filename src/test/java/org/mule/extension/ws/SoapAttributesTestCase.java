@@ -7,8 +7,8 @@
 package org.mule.extension.ws;
 
 import static java.util.Collections.unmodifiableMap;
-import static java.util.stream.Collectors.*;
-import static java.util.stream.Stream.*;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Stream.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
