@@ -6,11 +6,14 @@
  */
 package org.mule.extension.ws;
 
+import static java.util.Collections.unmodifiableMap;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.TreeMap;
+
 import org.junit.Test;
+
 import org.mule.extension.ws.api.SoapAttributes;
 
 public class SoapAttributesTestCase {
@@ -18,13 +21,26 @@ public class SoapAttributesTestCase {
   @Test
   public void toStringAttributes() {
     String result = new SoapAttributes(
-                                       ImmutableMap.of("Header1", "Value1", "Header2", "Value2"),
-                                       ImmutableMap.of("statusCode", "200", "reasonPhrase", "OK"))
+                                       unmodifiableMap(new TreeMap<String, String>() {
+
+                                         {
+                                           put("Header1", "Value1");
+                                           put("Header2", "Value2");
+                                         }
+                                       }),
+                                       unmodifiableMap(new TreeMap<String, String>() {
+
+                                         {
+                                           put("statusCode", "200");
+                                           put("reasonPhrase", "OK");
+                                         }
+                                       }))
                                            .toString();
+
     assertThat(result, is("{\n"
         + "  additionalTransportData = [\n"
-        + "    statusCode:200,\n"
-        + "    reasonPhrase:OK\n"
+        + "    reasonPhrase:OK,\n"
+        + "    statusCode:200\n"
         + "  ]\n"
         + "  protocolHeaders = [\n"
         + "    Header1:Value1,\n"

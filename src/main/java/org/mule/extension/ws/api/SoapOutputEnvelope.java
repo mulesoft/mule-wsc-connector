@@ -7,11 +7,12 @@
 package org.mule.extension.ws.api;
 
 import static java.nio.charset.Charset.forName;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toMap;
 import static org.mule.runtime.api.metadata.DataType.builder;
 import static org.mule.runtime.api.metadata.MediaType.APPLICATION_XML;
 
-import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
 import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.TypedValue;
@@ -52,18 +53,22 @@ public class SoapOutputEnvelope {
   }
 
   private Map<String, TypedValue<String>> wrapHeaders(Map<String, String> headers) {
-    ImmutableMap.Builder<String, TypedValue<String>> wrapped = ImmutableMap.builder();
-    headers.forEach((k, v) -> wrapped.put(k, new TypedValue(v, builder().mediaType(APPLICATION_XML).build())));
-    return wrapped.build();
+    Map<String, TypedValue<String>> wrapped = headers
+        .entrySet()
+        .stream()
+        .collect(toMap(Map.Entry::getKey, e -> new TypedValue(e.getValue(), builder().mediaType(APPLICATION_XML).build())));
+    return unmodifiableMap(wrapped);
   }
 
   private Map<String, TypedValue<InputStream>> wrapAttachments(Map<String, SoapAttachment> attachments, StreamingHelper helper) {
-    ImmutableMap.Builder<String, TypedValue<InputStream>> wrapped = ImmutableMap.builder();
-    attachments.forEach((k, v) -> {
-      DataType dataType = builder().type(InputStream.class).mediaType(v.getContentType()).build();
-      wrapped.put(k, new TypedValue(helper.resolveCursorProvider(v.getContent()), dataType));
-    });
-    return wrapped.build();
+    Map<String, TypedValue<InputStream>> wrapped = attachments
+        .entrySet()
+        .stream()
+        .collect(toMap(Map.Entry::getKey, e -> {
+          DataType dataType = builder().type(InputStream.class).mediaType(e.getValue().getContentType()).build();
+          return new TypedValue(helper.resolveCursorProvider(e.getValue().getContent()), dataType);
+        }));
+    return unmodifiableMap(wrapped);
   }
 
   /**
