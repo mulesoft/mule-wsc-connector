@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.junit.Test;
 
@@ -55,16 +56,16 @@ public class SoapOutputEnvelopeTestCase {
   public void toStringFullPayload() {
     InputStream body = new ByteArrayInputStream("<xml>ABC</xml>".getBytes(UTF_8));
 
-    Map<String, String> hs = unmodifiableMap(of(new SimpleEntry<>("header1", "<header1>content</header1>"),
-                                                new SimpleEntry<>("header2", "<header2>content</header2>"))
-                                                    .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
+    Map<String, String> hs = unmodifiableMap(new TreeMap(of(new SimpleEntry<>("header1", "<header1>content</header1>"),
+                                                            new SimpleEntry<>("header2", "<header2>content</header2>"))
+                                                                .collect(toMap(Map.Entry::getKey, Map.Entry::getValue))));
 
     ByteArrayInputStream dummyContent = new ByteArrayInputStream(new byte[] {});
     Map<String, SoapAttachment> as =
-        unmodifiableMap(of(
-                           new SimpleEntry<>("attachment1", new SoapAttachment(dummyContent, "text/json")),
-                           new SimpleEntry<>("attachment2", new SoapAttachment(dummyContent, "text/json")))
-                               .collect(toMap(Map.Entry::getKey, Map.Entry::getValue)));
+        unmodifiableMap(new TreeMap(of(
+                                       new SimpleEntry<>("attachment1", new SoapAttachment(dummyContent, "text/json")),
+                                       new SimpleEntry<>("attachment2", new SoapAttachment(dummyContent, "text/json")))
+                                           .collect(toMap(Map.Entry::getKey, Map.Entry::getValue))));
 
     DefaultSoapResponse response = new DefaultSoapResponse(body, hs, emptyMap(), emptyMap(), as, "text/xml");
     String result = new SoapOutputEnvelope(response, streamingHelper).toString();

@@ -14,6 +14,7 @@ import static org.hamcrest.core.Is.is;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.junit.Test;
 
@@ -25,12 +26,13 @@ public class SoapAttributesTestCase {
   public void toStringAttributes() {
 
     String result = new SoapAttributes(
-                                       unmodifiableMap(of(new SimpleEntry<>("Header1", "Value1"),
-                                                          new SimpleEntry<>("Header2", "Value2"))
-                                                              .collect(toMap(Entry::getKey, Entry::getValue))),
-                                       unmodifiableMap(of(new SimpleEntry<>("statusCode", "200"),
-                                                          new SimpleEntry<>("reasonPhrase", "OK"))
-                                                              .collect(toMap(Entry::getKey, Entry::getValue)))).toString();
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
+                                                                      new SimpleEntry<>("Header2", "Value2"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
+                                                                      new SimpleEntry<>("reasonPhrase", "OK"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))))
+                                                                              .toString();
 
     assertThat(result, is("{\n"
         + "  additionalTransportData = [\n"
