@@ -6,6 +6,9 @@
  */
 package org.mule.extension.ws.internal.error;
 
+import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
@@ -13,7 +16,10 @@ import static org.mule.extension.ws.internal.error.WscError.ENCODING;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.exception.ExceptionHandler;
@@ -24,8 +30,6 @@ import org.mule.soap.api.exception.InvalidWsdlException;
 import org.mule.soap.api.exception.SoapFaultException;
 import org.mule.soap.api.transport.DispatcherException;
 
-import java.util.Map;
-
 /**
  * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a
  * Soap Fault is returned by the server we wrap that exception in an {@link SoapFaultMessageAwareException}.
@@ -34,21 +38,23 @@ import java.util.Map;
  */
 public class WscExceptionEnricher extends ExceptionHandler {
 
+
   private Map<Class<?>, WscError> ERRORS_MAPPING =
-      ImmutableMap.<Class<?>, WscError>builder()
-          .put(BadResponseException.class, BAD_RESPONSE)
-          .put(BadRequestException.class, BAD_REQUEST)
-          .put(DispatcherException.class, CANNOT_DISPATCH)
-          .put(DispatcherTimeoutException.class, TIMEOUT)
-          .put(InvalidWsdlException.class, INVALID_WSDL)
-          .put(EncodingException.class, ENCODING)
-          .build();
+      unmodifiableMap(of(
+                         new SimpleEntry<>(BadResponseException.class, BAD_RESPONSE),
+                         new SimpleEntry<>(BadRequestException.class, BAD_REQUEST),
+                         new SimpleEntry<>(DispatcherException.class, CANNOT_DISPATCH),
+                         new SimpleEntry<>(DispatcherTimeoutException.class, TIMEOUT),
+                         new SimpleEntry<>(InvalidWsdlException.class, INVALID_WSDL),
+                         new SimpleEntry<>(EncodingException.class, ENCODING))
+                             .collect(toMap(Entry::getKey, Entry::getValue)));
 
   /**
    * {@inheritDoc}
    */
   @Override
   public Exception enrichException(Exception e) {
+
     if (e instanceof ModuleException) {
       return e;
     }
