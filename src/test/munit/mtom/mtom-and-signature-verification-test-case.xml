@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:wss="http://www.mulesoft.org/schema/mule/wss"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+          http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+          http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+          http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+          http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+          http://www.mulesoft.org/schema/mule/wss http://www.mulesoft.org/schema/mule/wss/current/mule-wss.xsd">
+
+    <munit:config name="mtom-and-signature-verification-test-case.xml"/>
+
+    <!-- Configs -->
+    <wsc:config name="sign-config">
+        <wsc:connection wsdlLocation="http://localhost:${WS_SOAP11_PORT}/SOAP11/?wsdl"
+                        service="TestService"
+                        port="TestPort"
+                        mtomEnabled="true"
+                        address="http://localhost:8081/validateSignature/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
+                </wsc:sign-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <http:listener-config name="HTTP_Listener_config" >
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+
+    <wss:incoming-config name="WSS_Incoming">
+        <wss:verify-signature-config >
+            <wss:truststore-config path="security/trustStore" password="mulepassword" />
+        </wss:verify-signature-config>
+    </wss:incoming-config>
+
+    <!-- Tests -->
+    <munit:test name="signRequestWithMTOMEnabled"
+                description="Signing message with an attachment with MTOM enable and verify the server is be able to verify the signature"
+                ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:enable-flow-sources >
+            <munit:enable-flow-source value="validateSignatureFlow"/>
+        </munit:enable-flow-sources>
+        <munit:execution>
+            <set-variable variableName="text" value="signedRequest" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="sign-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <logger level="ERROR" message="#[payload]"/>
+        </munit:validation>
+    </munit:test>
+
+    <flow name="validateSignatureFlow">
+        <http:listener config-ref="HTTP_Listener_config" path="/validateSignature"/>
+        <set-variable value="#[payload]" variableName="savePayload"/>
+        <wss:process version="SOAP_11" config-ref="WSS_Incoming"/>
+        <set-payload value="#[vars.savePayload]"/>
+    </flow>
+
+</mule>

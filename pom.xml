@@ -35,6 +35,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
+        <mule.wss.module.version>0.8.3</mule.wss.module.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
@@ -164,6 +165,13 @@
             <groupId>org.jeasy</groupId>
             <artifactId>easy-random-core</artifactId>
             <version>4.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.modules</groupId>
+            <artifactId>mule-wss-module</artifactId>
+            <version>${mule.wss.module.version}</version>
+            <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
 
