@@ -21,7 +21,7 @@
                         service="TestService"
                         port="TestPort"
                         mtomEnabled="true"
-                        address="http://localhost:8081/validateSignature/">
+                        address="http://localhost:${http.port}/validateSignature/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
@@ -32,7 +32,7 @@
     </wsc:config>
 
     <http:listener-config name="HTTP_Listener_config" >
-        <http:listener-connection host="0.0.0.0" port="8081" />
+        <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
 
     <wss:incoming-config name="WSS_Incoming">
