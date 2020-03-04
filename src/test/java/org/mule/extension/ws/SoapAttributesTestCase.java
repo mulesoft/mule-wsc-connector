@@ -6,25 +6,38 @@
  */
 package org.mule.extension.ws;
 
+import static java.util.Collections.unmodifiableMap;
+import static java.util.stream.Collectors.toMap;
+import static java.util.stream.Stream.of;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-import com.google.common.collect.ImmutableMap;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
+import java.util.TreeMap;
+
 import org.junit.Test;
+
 import org.mule.extension.ws.api.SoapAttributes;
 
 public class SoapAttributesTestCase {
 
   @Test
   public void toStringAttributes() {
+
     String result = new SoapAttributes(
-                                       ImmutableMap.of("Header1", "Value1", "Header2", "Value2"),
-                                       ImmutableMap.of("statusCode", "200", "reasonPhrase", "OK"))
-                                           .toString();
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
+                                                                      new SimpleEntry<>("Header2", "Value2"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
+                                                                      new SimpleEntry<>("reasonPhrase", "OK"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))))
+                                                                              .toString();
+
     assertThat(result, is("{\n"
         + "  additionalTransportData = [\n"
-        + "    statusCode:200,\n"
-        + "    reasonPhrase:OK\n"
+        + "    reasonPhrase:OK,\n"
+        + "    statusCode:200\n"
         + "  ]\n"
         + "  protocolHeaders = [\n"
         + "    Header1:Value1,\n"

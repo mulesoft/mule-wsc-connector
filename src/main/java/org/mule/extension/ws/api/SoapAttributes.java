@@ -6,15 +6,13 @@
  */
 package org.mule.extension.ws.api;
 
-import static com.google.common.collect.ImmutableMap.copyOf;
-import static com.google.common.collect.ImmutableMap.of;
+import static java.util.Collections.EMPTY_MAP;
+import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.joining;
 
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import java.util.Map;
-
-import org.mulesoft.common.ext.Diff;
 
 /**
  * The attributes returned by the consume operation, it carries the protocol specific headers (i.e. HTTP headers) and
@@ -39,8 +37,8 @@ public class SoapAttributes {
   private final Map<String, String> additionalTransportData;
 
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
-    this.protocolHeaders = protocolHeaders != null ? copyOf(protocolHeaders) : of();
-    this.additionalTransportData = additionalTransportData != null ? copyOf(additionalTransportData) : of();
+    this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
+    this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
   }
 
   /**

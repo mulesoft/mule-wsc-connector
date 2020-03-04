@@ -35,12 +35,13 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
+        <mule.wss.module.version>0.8.3</mule.wss.module.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.0.2</mavenResourcesVersion>
-        <munit.version>2.2.3</munit.version>
+        <munit.version>2.2.4</munit.version>
         <mtf.tools.version>1.0.0</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.0.0</munit.extensions.maven.plugin.version>
 
@@ -89,11 +90,6 @@
         </dependency>
 
         <!-- Common Dependencies -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -169,6 +165,13 @@
             <groupId>org.jeasy</groupId>
             <artifactId>easy-random-core</artifactId>
             <version>4.1.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.mulesoft.modules</groupId>
+            <artifactId>mule-wss-module</artifactId>
+            <version>${mule.wss.module.version}</version>
+            <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
 
