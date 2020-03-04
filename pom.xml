@@ -276,6 +276,9 @@
                         <WS_SOAP11_SSL_PORT>${soap.host.port.ssl}</WS_SOAP11_SSL_PORT>
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
                     </environmentVariables>
+                    <dynamicPorts>
+                        <dynamicPort>http.port</dynamicPort>
+                    </dynamicPorts>
                 </configuration>
                 <dependencies>
                     <dependency>

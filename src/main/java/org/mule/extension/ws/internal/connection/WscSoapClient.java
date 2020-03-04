@@ -8,14 +8,12 @@ package org.mule.extension.ws.internal.connection;
 
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
-import org.mule.soap.api.exception.InvalidWsdlException;
-import org.mule.wsdl.parser.exception.WsdlGettingException;
-import org.mule.wsdl.parser.exception.WsdlParsingException;
-
 /**
  * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
  *
@@ -25,12 +23,12 @@ public class WscSoapClient {
 
   private final CustomTransportConfiguration transportConfiguration;
   private final WsdlConnectionInfo info;
-  private final ThrowingSupplier<SoapClient, Exception> clientSupplier;
+  private final CheckedSupplier<SoapClient> clientSupplier;
   private SoapClient delegate;
   private ExtensionsClient extensionsClient;
 
   public WscSoapClient(WsdlConnectionInfo info,
-                       ThrowingSupplier<SoapClient, Exception> clientSupplier,
+                       CheckedSupplier<SoapClient> clientSupplier,
                        CustomTransportConfiguration transportConfiguration,
                        ExtensionsClient extensionsClient) {
     this.info = info;
@@ -43,10 +41,8 @@ public class WscSoapClient {
     if (delegate == null) {
       try {
         delegate = clientSupplier.get();
-      } catch (WsdlGettingException e) {
-        throw new ConnectionException("Error getting a wsdl:" + e.getMessage(), e);
-      } catch (WsdlParsingException e) {
-        throw new InvalidWsdlException("Error parsing wsdl:" + e.getMessage(), e);
+      } catch (ModuleException e) {
+        throw e;
       } catch (Exception e) {
         // Throws connection exception in any other case for backward compatibility
         throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
