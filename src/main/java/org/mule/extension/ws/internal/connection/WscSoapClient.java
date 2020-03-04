@@ -14,6 +14,7 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
+
 /**
  * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
  *
