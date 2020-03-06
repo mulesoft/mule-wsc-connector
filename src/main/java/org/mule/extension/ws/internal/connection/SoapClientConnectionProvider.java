@@ -132,6 +132,8 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
           try {
             return SOAP_CLIENT_FACTORY.create(getConfiguration());
           } catch (Exception e) {
+            // wsdl parser is in kotlin and does not export the exception type.
+            // So the exception type is unknown in compile time.
             if (e instanceof WsdlParsingException) {
               throw new ModuleException(WscError.INVALID_WSDL, e);
             }
