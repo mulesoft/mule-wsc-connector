@@ -8,12 +8,12 @@ package org.mule.extension.ws.internal.connection;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
+import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
-import org.mule.extension.ws.internal.error.WscError;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
 import org.mule.extension.ws.internal.value.WsdlValueProvider;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -135,7 +135,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
             // wsdl parser is in kotlin and does not export the exception type.
             // So the exception type is unknown in compile time.
             if (e instanceof WsdlParsingException) {
-              throw new ModuleException(WscError.INVALID_WSDL, e);
+              throw new ModuleException(INVALID_WSDL, e);
             }
             throw e;
           }
