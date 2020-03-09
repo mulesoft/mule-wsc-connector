@@ -3,12 +3,13 @@
       xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
       xmlns:http="http://www.mulesoft.org/schema/mule/http"
       xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
       xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
       http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
-
     <!-- Configs -->
     <munit:config name="invalid-wsdl-config">
         <munit:parameterizations>
@@ -30,25 +31,25 @@
             </munit:parameterization>
         </munit:parameterizations>
     </munit:config>
-
     <wsc:config name="Web_Service_Consumer_Bad_Path">
         <wsc:connection wsdlLocation="http://localhost:${http.port}/wsdl/invalid.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
         </wsc:connection>
     </wsc:config>
-
     <wsc:config name="Web_Service_Consumer_Bad_Format">
         <wsc:connection wsdlLocation="/wsdl/bad-wsdl.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
         </wsc:connection>
     </wsc:config>
-
-    <http:listener-config name="HTTP_Listener_config"  >
+    <http:listener-config name="HTTP_Listener_config" >
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
 
     <!-- Tests -->
     <munit:test name="CantGetWsdl" description="Trying to consume without a wsdl valid path" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:enable-flow-sources >
+            <munit:enable-flow-source value="returns404"/>
+        </munit:enable-flow-sources>
         <munit:execution>
             <try>
                 <wsc:consume config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
@@ -65,13 +66,20 @@
                     </wsc:message>
                 </wsc:consume>
                 <error-handler>
-                    <mule:on-error-continue enableNotifications="true" type="WSC:CONNECTIVITY">
+                    <mule:on-error-continue enableNotifications="true">
+                        <set-payload value="#[error.description]"/>
                     </mule:on-error-continue>
                 </error-handler>
             </try>
         </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that
+                    expression="#[payload]"
+                    is="#[MunitTools::startsWith('Error trying to acquire a new connection:org.mule.wsdl.parser.exception.WsdlGettingException: Error Getting the resource ')]"/>
+        </munit:validation>
     </munit:test>
-    <munit:test name="BadWsdl" description="Trying to consumempe a bad formatted wsdl">
+
+    <munit:test name="BadWsdl" description="Trying to consume a bad formatted wsdl"  ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <try>
                 <wsc:consume config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
@@ -89,19 +97,24 @@
                 </wsc:consume>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:INVALID_WSDL">
+                        <set-payload value="#[error.description]"/>
                     </mule:on-error-continue>
                 </error-handler>
             </try>
         </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that
+                    expression="#[payload]"
+                    is="#[MunitTools::startsWith('Error processing WSDL file [/wsdl/bad-wsdl.wsdl]: faultCode=PARSER_ERROR')]"/>
+        </munit:validation>
     </munit:test>
 
     <flow name="returns404"  >
-        <http:listener config-ref="HTTP_Listener_config" path="/wsdl">
-            <http:response statusCode="404" />
-            <http:error-response statusCode="404">
-            </http:error-response>
+        <http:listener config-ref="HTTP_Listener_config" path="/*">
+            <http:response statusCode="404"/>
+            <http:error-response statusCode="404"/>
         </http:listener>
-        <logger level="INFO"  />
+        <logger level="INFO"/>
     </flow>
 
 </mule>
