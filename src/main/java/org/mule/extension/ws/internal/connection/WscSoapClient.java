@@ -25,7 +25,7 @@ public class WscSoapClient {
   private final CustomTransportConfiguration transportConfiguration;
   private final WsdlConnectionInfo info;
   private final CheckedSupplier<SoapClient> clientSupplier;
-  private SoapClient delegate;
+  private volatile SoapClient delegate;
   private ExtensionsClient extensionsClient;
 
   public WscSoapClient(WsdlConnectionInfo info,
@@ -40,13 +40,17 @@ public class WscSoapClient {
 
   public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
     if (delegate == null) {
-      try {
-        delegate = clientSupplier.get();
-      } catch (ModuleException e) {
-        throw e;
-      } catch (Exception e) {
-        // Throws connection exception in any other case for backward compatibility
-        throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
+      synchronized (this) {
+        if (delegate == null) {
+          try {
+            delegate = clientSupplier.get();
+          } catch (ModuleException e) {
+            throw e;
+          } catch (Exception e) {
+            // Throws connection exception in any other case for backward compatibility
+            throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
+          }
+        }
       }
     }
     return delegate.consume(request, transportConfiguration.buildDispatcher(client));
