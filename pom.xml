@@ -20,14 +20,14 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.7</commons.lang.version>
+        <commons.lang.version>3.9</commons.lang.version>
         <guava.version>25.1-jre</guava.version>
 
-        <mule.http.connector.version>1.5.6</mule.http.connector.version>
-        <soap.engine.version>1.4.1</soap.engine.version>
-        <wsdl.parser.version>1.3.5</wsdl.parser.version>
+        <mule.http.connector.version>1.5.12</mule.http.connector.version>
+        <soap.engine.version>1.5.0-SNAPSHOT</soap.engine.version>
+        <wsdl.parser.version>1.4.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
-        <javax.jaxws-api.version>2.3.0</javax.jaxws-api.version>
+        <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
 
@@ -47,7 +47,7 @@
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
-        <docker.maven.plugin.version>0.30.0</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.31.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
@@ -164,7 +164,7 @@
         <dependency>
             <groupId>org.jeasy</groupId>
             <artifactId>easy-random-core</artifactId>
-            <version>4.0.0</version>
+            <version>4.1.0</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -367,12 +367,12 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
-                        <version>1.7.24</version>
+                        <version>1.7.29</version>
                     </dependency>
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>jcl-over-slf4j</artifactId>
-                        <version>1.7.24</version>
+                        <version>1.7.29</version>
                     </dependency>
                 </dependencies>
                 <executions>
