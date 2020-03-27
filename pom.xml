@@ -24,8 +24,8 @@
         <guava.version>25.1-jre</guava.version>
 
         <mule.http.connector.version>1.5.12</mule.http.connector.version>
-        <soap.engine.version>1.5.0-SNAPSHOT</soap.engine.version>
-        <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
+        <soap.engine.version>1.4.1</soap.engine.version>
+        <wsdl.parser.version>1.4.0</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
