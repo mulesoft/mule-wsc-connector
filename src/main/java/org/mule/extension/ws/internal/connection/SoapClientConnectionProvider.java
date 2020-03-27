@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal.connection;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
+import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
@@ -20,6 +21,7 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.lifecycle.Lifecycle;
+import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
@@ -31,13 +33,16 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.connectivity.NoConnectivityTest;
+import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.http.api.HttpService;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.runtime.http.api.client.HttpClientConfiguration;
 import org.mule.soap.api.SoapWebServiceConfiguration;
+import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.client.SoapClientFactory;
 import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
+import org.mule.wsdl.parser.exception.WsdlParsingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,7 +125,23 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         DefaultHttpTransportConfiguration transport = (DefaultHttpTransportConfiguration) customTransportConfiguration;
         this.customTransportConfiguration = new DefaultHttpTransportConfigurationImpl(client, transport.getTimeout());
       }
-      return new WscSoapClient(info, () -> SOAP_CLIENT_FACTORY.create(getConfiguration()), customTransportConfiguration,
+      CheckedSupplier<SoapClient> supplier = new CheckedSupplier<SoapClient>() {
+
+        @Override
+        public SoapClient getChecked() throws Throwable {
+          try {
+            return SOAP_CLIENT_FACTORY.create(getConfiguration());
+          } catch (Exception e) {
+            // wsdl parser is in kotlin and does not export the exception type.
+            // So the exception type is unknown in compile time.
+            if (e instanceof WsdlParsingException) {
+              throw new ModuleException(INVALID_WSDL, e);
+            }
+            throw e;
+          }
+        }
+      };
+      return new WscSoapClient(info, supplier, customTransportConfiguration,
                                extensionsClient);
     } catch (Exception e) {
       throw new ConnectionException(e.getMessage(), e);
