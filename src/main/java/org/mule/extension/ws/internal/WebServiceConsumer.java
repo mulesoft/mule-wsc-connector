@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 
+import org.mule.extension.ws.api.AddressingConfiguration;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
@@ -19,6 +20,8 @@ import org.mule.runtime.extension.api.annotation.SubTypeMapping;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
+import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 
 /**
  * Web Service Consumer extension used to consume SOAP web services.
@@ -35,4 +38,12 @@ import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 public class WebServiceConsumer {
 
   public static final String NAME = "Web Service Consumer";
+
+  @ParameterGroup(name = "wsa", showInDsl = true)
+  @DisplayName("Web Service Addressing")
+  private AddressingConfiguration wsAddressing;
+
+  public AddressingConfiguration getWSAddressing() {
+    return this.wsAddressing;
+  }
 }
