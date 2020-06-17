@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="addressing-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="DefaultTransport_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="DefaultTransport_SOAP11_200408">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-200408-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="DefaultTransport_SOAP11_200508">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-200508-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+<!--            <munit:parameterization name="Addressing_200508_SOAP11">-->
+<!--                <munit:parameters>-->
+<!--                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>-->
+<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>-->
+<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
+<!--                    <munit:parameter propertyName="config" value="addressing-200508-config"/>-->
+<!--                </munit:parameters>-->
+<!--            </munit:parameterization>-->
+<!--            <munit:parameterization name="DefaultAddressing_SOAP12">-->
+<!--                <munit:parameters>-->
+<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
+<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
+<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
+<!--                    <munit:parameter propertyName="config" value="addressing-config"/>-->
+<!--                </munit:parameters>-->
+<!--            </munit:parameterization>-->
+<!--            <munit:parameterization name="Addressing_200408_SOAP12">-->
+<!--                <munit:parameters>-->
+<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
+<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
+<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
+<!--                    <munit:parameter propertyName="config" value="addressing-200408-config"/>-->
+<!--                </munit:parameters>-->
+<!--            </munit:parameterization>-->
+<!--            <munit:parameterization name="Addressing_200508_SOAP12">-->
+<!--                <munit:parameters>-->
+<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
+<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
+<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
+<!--                    <munit:parameter propertyName="config" value="addressing-200508-config"/>-->
+<!--                </munit:parameters>-->
+<!--            </munit:parameterization>-->
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Tests -->
+    <munit:test name="wsaHeaders" description="Consumes an operation with wsa headers" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="noParamsWithHeader">
+                <wsc:message >
+                    <wsc:body ><![CDATA[#[null]]]></wsc:body>
+                </wsc:message>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.noParamsWithHeaderResponse.text]" expected="#['Action.To.MessageId.RelatesTo.RelationshipType.From.ReplyTo.FaultTo']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="wsaKeepUserHeaders" description="Consumes an operation with wsa headers but preserve headers settled by user" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="noParamsWithHeader">
+                <wsc:message >
+                    <wsc:body ><![CDATA[#[null]]]></wsc:body>
+                    <wsc:headers>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns wsa http://www.w3.org/2005/08/addressing
+                        ---
+                        "headers": {
+                            wsa#Action: "CustomAction",
+                            wsa#To: "CustomTo",
+                            wsa#MessageID: "CustomMessageId",
+                            wsa#RelatesTo @(RelationshipType:"CustomRelationshipType"): "CustomRelatesTo",
+                            wsa#From: {
+                                wsa#Address: "CustomFrom"
+                            },
+                            wsa#ReplyTo: {
+                                wsa#Address: "CustomReplyTo"
+                            },
+                            wsa#FaultTo: {
+                                wsa#Address: "CustomFaultTo"
+                            }
+                        }]
+                    </wsc:headers>
+                </wsc:message>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.noParamsWithHeaderResponse.text]" expected="#['CustomAction.CustomTo.CustomMessageId.CustomRelatesTo.CustomRelationshipType.CustomFrom.CustomReplyTo.CustomFaultTo']"/>
+        </munit:validation>
+    </munit:test>
+
+</mule>

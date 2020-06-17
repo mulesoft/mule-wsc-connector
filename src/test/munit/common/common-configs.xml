@@ -43,4 +43,29 @@
             </wsc:custom-transport-configuration>
         </wsc:connection>
     </wsc:config>
+
+    <wsc:config name="addressing-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa useWsa="true"/>
+    </wsc:config>
+
+    <wsc:config name="addressing-200408-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa useWsa="true" wsaVersion="WSA200408" />
+    </wsc:config>
+
+    <wsc:config name="addressing-200508-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa useWsa="true" wsaVersion="WSA200508" />
+    </wsc:config>
+
 </mule>
