@@ -84,7 +84,7 @@ public class AddressingPropertiesBuilder {
     }
     checkNotNull(to, "'To' cannot be null");
 
-    if (Strings.isNullOrEmpty(action)) {
+    if (Strings.isNullOrEmpty(action) && !Strings.isNullOrEmpty(info.getAddress()) && !Strings.isNullOrEmpty(info.getPort())) {
       action = info.getAddress() + "/" + info.getPort() + "/" + operation + "Request";
     }
     checkNotNull(action, "'Action' cannot be null");
