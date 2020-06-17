@@ -60,13 +60,13 @@ public class AddressingSettings {
   @DisplayName("From")
   private String wsaFrom;
 
-  //  @ConfigOverride
-  //  @Parameter
-  //  @Placement(tab = ADVANCED_TAB, order = 7)
-  //  @Optional
-  //  @Expression(NOT_SUPPORTED)
-  //  @DisplayName("Reply to")
-  //  private String wsaReplyTo;
+  @ConfigOverride
+  @Parameter
+  @Placement(tab = ADVANCED_TAB, order = 7)
+  @Optional
+  @Expression(NOT_SUPPORTED)
+  @DisplayName("Reply to")
+  private String wsaReplyTo;
 
   @ConfigOverride
   @Parameter
@@ -135,9 +135,9 @@ public class AddressingSettings {
     return wsaFrom;
   }
 
-  //  public String getWsaReplyTo() {
-  //    return wsaReplyTo;
-  //  }
+  public String getWsaReplyTo() {
+    return wsaReplyTo;
+  }
 
   public String getWsaFaultTo() {
     return wsaFaultTo;

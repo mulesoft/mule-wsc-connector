@@ -9,12 +9,16 @@ package org.mule.extension.ws.internal;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import static org.mule.runtime.http.api.HttpHeaders.Names.CONTENT_TYPE;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.api.TransportConfiguration;
+import org.mule.extension.ws.api.addressing.AddressingSettings;
+import org.mule.extension.ws.internal.addressing.AddressingHeadersResolverFactory;
+import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
+import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
@@ -30,6 +34,7 @@ import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
 import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
+import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
@@ -83,10 +88,16 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
+                                                            @Config WebServiceConsumer connector,
                                                             StreamingHelper streamingHelper,
-                                                            ExtensionsClient client)
+                                                            ExtensionsClient client,
+                                                            @ParameterGroup(name = "Addressing",
+                                                                showInDsl = true) AddressingSettings addressingSettings)
       throws ConnectionException {
-    SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders()).build();
+    SoapRequest request =
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(),
+                       getAddressingProperties(addressingSettings, connection.getInfo(), operation))
+                           .build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(response, streamingHelper))
@@ -94,7 +105,8 @@ public class ConsumeOperation {
         .build();
   }
 
-  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
+  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
+                                            AddressingProperties addressingProperties) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
@@ -105,14 +117,22 @@ public class ConsumeOperation {
 
     requestBuilder.transportHeaders(transportHeaders);
 
-    InputStream headers = message.getHeaders();
-    if (headers != null) {
-      requestBuilder.soapHeaders((Map<String, String>) evaluateHeaders(headers));
-    }
+    requestBuilder.soapHeaders(getSoapHeaders(message.getHeaders(), addressingProperties));
 
     requestBuilder.content(message.getBody().getValue());
 
     return requestBuilder;
+  }
+
+  private Map<String, String> getSoapHeaders(InputStream headers, AddressingProperties addressingProperties) {
+    HashMap<String, String> soapHeaders = new HashMap<>();
+    if (addressingProperties.isRequired()) {
+      soapHeaders.putAll(getAddressingHeaders(addressingProperties));
+    }
+    if (headers != null) {
+      soapHeaders.putAll((Map<String, String>) evaluateHeaders(headers));
+    }
+    return soapHeaders;
   }
 
   private Map<String, SoapAttachment> toSoapAttachments(Map<String, TypedValue<?>> attachments) {
@@ -155,5 +175,24 @@ public class ConsumeOperation {
                                 BAD_REQUEST);
     }
     return expressionResult;
+  }
+
+  private Map<String, String> getAddressingHeaders(AddressingProperties properties) {
+    return new AddressingHeadersResolverFactory(expressionExecutor).create(properties).resolve(properties);
+  }
+
+  private AddressingProperties getAddressingProperties(AddressingSettings settings, WsdlConnectionInfo info, String operation) {
+    if (!settings.isUseWsa())
+      return AddressingProperties.disabled();
+    return new AddressingPropertiesBuilder(info, operation)
+        .mustUnderstand(settings.isWsaMustUnderstand())
+        .withNamespace(settings.getWsaVersion().getNamespaceUri())
+        .withAction(settings.getWsaAction())
+        .withTo(settings.getWsaTo())
+        .withFrom(settings.getWsaFrom())
+        .withMessageID(settings.getWsaMessageID())
+        .withReplyTo(settings.getWsaReplyTo(), settings.getWsaFaultTo())
+        .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType())
+        .build();
   }
 }
