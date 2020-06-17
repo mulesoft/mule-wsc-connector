@@ -11,7 +11,7 @@
 
     <munit:config name="addressing-test-cases">
         <munit:parameterizations>
-            <munit:parameterization name="DefaultTransport_SOAP11">
+            <munit:parameterization name="WSA_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
@@ -19,7 +19,7 @@
                     <munit:parameter propertyName="config" value="addressing-config"/>
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="DefaultTransport_SOAP11_200408">
+            <munit:parameterization name="WSA_200408_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
@@ -27,7 +27,7 @@
                     <munit:parameter propertyName="config" value="addressing-200408-config"/>
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="DefaultTransport_SOAP11_200508">
+            <munit:parameterization name="WSA_200508_SOAP11">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
@@ -35,38 +35,30 @@
                     <munit:parameter propertyName="config" value="addressing-200508-config"/>
                 </munit:parameters>
             </munit:parameterization>
-<!--            <munit:parameterization name="Addressing_200508_SOAP11">-->
-<!--                <munit:parameters>-->
-<!--                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>-->
-<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>-->
-<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
-<!--                    <munit:parameter propertyName="config" value="addressing-200508-config"/>-->
-<!--                </munit:parameters>-->
-<!--            </munit:parameterization>-->
-<!--            <munit:parameterization name="DefaultAddressing_SOAP12">-->
-<!--                <munit:parameters>-->
-<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
-<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
-<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
-<!--                    <munit:parameter propertyName="config" value="addressing-config"/>-->
-<!--                </munit:parameters>-->
-<!--            </munit:parameterization>-->
-<!--            <munit:parameterization name="Addressing_200408_SOAP12">-->
-<!--                <munit:parameters>-->
-<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
-<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
-<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
-<!--                    <munit:parameter propertyName="config" value="addressing-200408-config"/>-->
-<!--                </munit:parameters>-->
-<!--            </munit:parameterization>-->
-<!--            <munit:parameterization name="Addressing_200508_SOAP12">-->
-<!--                <munit:parameters>-->
-<!--                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>-->
-<!--                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>-->
-<!--                    <munit:parameter propertyName="mtomEnabled" value="false"/>-->
-<!--                    <munit:parameter propertyName="config" value="addressing-200508-config"/>-->
-<!--                </munit:parameters>-->
-<!--            </munit:parameterization>-->
+            <munit:parameterization name="WSA_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="WSA_200408_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-200408-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="WSA_200508_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="addressing-200508-config"/>
+                </munit:parameters>
+            </munit:parameterization>
         </munit:parameterizations>
     </munit:config>
 
