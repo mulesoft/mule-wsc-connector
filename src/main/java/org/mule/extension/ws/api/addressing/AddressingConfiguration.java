@@ -4,9 +4,8 @@
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
-package org.mule.extension.ws.api;
+package org.mule.extension.ws.api.addressing;
 
-import org.mule.extension.ws.api.addressing.AddressingVersion;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -73,21 +72,7 @@ public class AddressingConfiguration {
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Reply to")
-  private String wsaReplyTo;
-
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 8)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Fault to")
-  private String wsaFaultTo;
-
-  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
-  @Parameter
-  @Optional
-  @Placement(tab = ADDRESSING_TAB, order = 9)
-  @Expression(NOT_SUPPORTED)
-  private String wsaHttpListenerConfig;
+  private AddressingEndpoints wsaEndpoints;
 
   @Override
   public boolean equals(Object o) {
@@ -104,13 +89,11 @@ public class AddressingConfiguration {
         && Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
         && Objects.equals(wsaVersion, that.wsaVersion)
         && Objects.equals(wsaFrom, that.wsaFrom)
-        && Objects.equals(wsaReplyTo, that.wsaReplyTo)
-        && Objects.equals(wsaFaultTo, that.wsaFaultTo)
-        && Objects.equals(wsaHttpListenerConfig, that.wsaHttpListenerConfig);
+        && Objects.equals(wsaEndpoints, that.wsaEndpoints);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(useWsa, wsaMustUnderstand, wsaVersion, wsaFrom, wsaReplyTo, wsaFaultTo, wsaHttpListenerConfig);
+    return Objects.hash(useWsa, wsaMustUnderstand, wsaVersion, wsaFrom);
   }
 }

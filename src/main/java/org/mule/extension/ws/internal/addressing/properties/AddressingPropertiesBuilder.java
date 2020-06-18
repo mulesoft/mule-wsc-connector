@@ -70,9 +70,9 @@ public class AddressingPropertiesBuilder {
     return this;
   }
 
-  public AddressingPropertiesBuilder withReplyTo(String replyTo, String faultTo) {
-    this.replyTo = replyTo;
-    this.faultTo = faultTo;
+  public AddressingPropertiesBuilder withReplyTo(String base, String replyTo, String faultTo) {
+    this.replyTo = buildPath(base, replyTo);
+    this.faultTo = buildPath(base, faultTo);
     return this;
   }
 
@@ -100,5 +100,12 @@ public class AddressingPropertiesBuilder {
                                     !Strings.isNullOrEmpty(faultTo) ? new EndpointReferenceType(new URIType(faultTo)) : null,
                                     !Strings.isNullOrEmpty(relatesTo) ? new RelatesToType(relatesTo, relationshipType)
                                         : null);
+  }
+
+  private String buildPath(String base, String path) {
+    if (path == null) {
+      return null;
+    }
+    return base + (path.startsWith("/") ? path : "/" + path);
   }
 }

@@ -35,6 +35,11 @@ public class AddressingPropertiesBuilderTestCase {
   private static final String OPERATION = "OPERATION";
   private static final String PORT = "PORT";
   private static final String TO = "TO";
+  private static final String BASEPATH = "BASEPATH";
+  private static final String REPLYTO = "REPLYTO";
+  private static final String REPLYTO_WITH_SLASH = "/REPLYTO";
+  private static final String FAULTTO = "FAULTTO";
+  private static final String FAULTTO_WITH_SLASH = "/FAULTTO";
 
   private WsdlConnectionInfo wsdlInfo;
   private AddressingPropertiesBuilder builder;
@@ -100,6 +105,58 @@ public class AddressingPropertiesBuilderTestCase {
 
     assertThat(sut.getMessageID().isPresent(), is(true));
     assertThat(sut.getMessageID().get().getValue(), isUuid());
+  }
+
+  @Test
+  public void testReplyToParameter() {
+    AddressingProperties sut = builder
+            .withNamespace(NAMESPACE)
+            .withAction(ACTION)
+            .withTo(TO)
+            .withReplyTo(BASEPATH, REPLYTO, null)
+            .build();
+
+    assertThat(sut.getReplyTo().isPresent(), is(true));
+    assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + "/" + REPLYTO));
+  }
+
+  @Test
+  public void testReplyToParameterWithSlash() {
+    AddressingProperties sut = builder
+            .withNamespace(NAMESPACE)
+            .withAction(ACTION)
+            .withTo(TO)
+            .withReplyTo(BASEPATH, REPLYTO_WITH_SLASH, null)
+            .build();
+
+    assertThat(sut.getReplyTo().isPresent(), is(true));
+    assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + REPLYTO_WITH_SLASH));
+  }
+
+  @Test
+  public void testFaultToParameter() {
+    AddressingProperties sut = builder
+            .withNamespace(NAMESPACE)
+            .withAction(ACTION)
+            .withTo(TO)
+            .withReplyTo(BASEPATH, null, FAULTTO)
+            .build();
+
+    assertThat(sut.getFaultTo().isPresent(), is(true));
+    assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + "/" + FAULTTO));
+  }
+
+  @Test
+  public void testFaultToParameterWithSlash() {
+    AddressingProperties sut = builder
+            .withNamespace(NAMESPACE)
+            .withAction(ACTION)
+            .withTo(TO)
+            .withReplyTo(BASEPATH, null, FAULTTO_WITH_SLASH)
+            .build();
+
+    assertThat(sut.getFaultTo().isPresent(), is(true));
+    assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + FAULTTO_WITH_SLASH));
   }
 
   @Test

@@ -41,6 +41,8 @@ import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
+import org.mule.runtime.http.api.HttpService;
+import org.mule.runtime.http.api.server.HttpServer;
 import org.mule.soap.api.message.SoapAttachment;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapRequestBuilder;
@@ -65,6 +67,9 @@ import javax.inject.Inject;
 public class ConsumeOperation {
 
   private static final DataType XML_STREAM = DataType.builder().type(InputStream.class).mediaType(XML).build();
+
+  @Inject
+  private HttpService httpService;
 
   @Inject
   private MuleExpressionLanguage expressionExecutor;
@@ -184,15 +189,29 @@ public class ConsumeOperation {
   private AddressingProperties getAddressingProperties(AddressingSettings settings, WsdlConnectionInfo info, String operation) {
     if (!settings.isUseWsa())
       return AddressingProperties.disabled();
-    return new AddressingPropertiesBuilder(info, operation)
+    AddressingPropertiesBuilder builder = new AddressingPropertiesBuilder(info, operation)
         .mustUnderstand(settings.isWsaMustUnderstand())
         .withNamespace(settings.getWsaVersion().getNamespaceUri())
         .withAction(settings.getWsaAction())
         .withTo(settings.getWsaTo())
         .withFrom(settings.getWsaFrom())
         .withMessageID(settings.getWsaMessageID())
-        .withReplyTo(settings.getWsaReplyTo(), settings.getWsaFaultTo())
-        .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType())
-        .build();
+        .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType());
+    if (settings.getWsaEndpoints() != null) {
+      builder.withReplyTo(getHttpServerBasepath(settings.getWsaEndpoints().getWsaHttpListenerConfig())
+              , settings.getWsaEndpoints().getWsaReplyTo(), settings.getWsaEndpoints().getWsaFaultTo());
+    }
+    return builder.build();
+  }
+
+  private String getHttpServerBasepath(String httpListenerConfig) {
+    try {
+      HttpServer server = httpService.getServerFactory().lookup(httpListenerConfig);
+      return server.getProtocol().getScheme() + "://" + server.getServerAddress().getIp() + ":"
+              + server.getServerAddress().getPort();
+    } catch (Exception e) {
+      throw new ModuleException("Invalid http listener config configured for WSA endpoints",
+                                BAD_REQUEST);
+    }
   }
 }

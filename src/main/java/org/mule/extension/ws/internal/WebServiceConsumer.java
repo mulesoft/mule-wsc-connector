@@ -8,7 +8,7 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 
-import org.mule.extension.ws.api.AddressingConfiguration;
+import org.mule.extension.ws.api.addressing.AddressingConfiguration;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;

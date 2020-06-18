@@ -66,54 +66,38 @@ public class AddressingSettings {
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Reply to")
-  private String wsaReplyTo;
+  private AddressingEndpoints wsaEndpoints;
 
-  @ConfigOverride
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 8)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Fault to")
-  private String wsaFaultTo;
-
-  @ConfigOverride
-  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
-  @Parameter
-  @Optional
-  @Placement(tab = ADVANCED_TAB, order = 9)
-  @Expression(NOT_SUPPORTED)
-  private String wsaHttpListenerConfig;
-
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 10)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Action")
   private String wsaAction;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 11)
+  @Placement(tab = ADVANCED_TAB, order = 9)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("To")
   private String wsaTo;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 12)
+  @Placement(tab = ADVANCED_TAB, order = 10)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Message ID")
   private String wsaMessageID;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 13)
+  @Placement(tab = ADVANCED_TAB, order = 11)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
   private String wsaRelatesTo;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 14)
+  @Placement(tab = ADVANCED_TAB, order = 12)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
@@ -135,16 +119,8 @@ public class AddressingSettings {
     return wsaFrom;
   }
 
-  public String getWsaReplyTo() {
-    return wsaReplyTo;
-  }
-
-  public String getWsaFaultTo() {
-    return wsaFaultTo;
-  }
-
-  public String getWsaHttpListenerConfig() {
-    return wsaHttpListenerConfig;
+  public AddressingEndpoints getWsaEndpoints() {
+    return wsaEndpoints;
   }
 
   public String getWsaAction() {
