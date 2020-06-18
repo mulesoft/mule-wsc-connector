@@ -198,8 +198,8 @@ public class ConsumeOperation {
         .withMessageID(settings.getWsaMessageID())
         .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType());
     if (settings.getWsaEndpoints() != null) {
-      builder.withReplyTo(getHttpServerBasepath(settings.getWsaEndpoints().getWsaHttpListenerConfig())
-              , settings.getWsaEndpoints().getWsaReplyTo(), settings.getWsaEndpoints().getWsaFaultTo());
+      builder.withReplyTo(getHttpServerBasepath(settings.getWsaEndpoints().getWsaHttpListenerConfig()),
+                          settings.getWsaEndpoints().getWsaReplyTo(), settings.getWsaEndpoints().getWsaFaultTo());
     }
     return builder.build();
   }
@@ -208,7 +208,7 @@ public class ConsumeOperation {
     try {
       HttpServer server = httpService.getServerFactory().lookup(httpListenerConfig);
       return server.getProtocol().getScheme() + "://" + server.getServerAddress().getIp() + ":"
-              + server.getServerAddress().getPort();
+          + server.getServerAddress().getPort();
     } catch (Exception e) {
       throw new ModuleException("Invalid http listener config configured for WSA endpoints",
                                 BAD_REQUEST);
