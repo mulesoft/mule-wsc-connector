@@ -8,7 +8,6 @@ package org.mule.extension.ws.internal.metadata;
 
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyPart;
-import org.mule.runtime.extension.api.annotation.param.ConfigOverride;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
@@ -23,10 +22,9 @@ public class ConsumeKey {
   @MetadataKeyPart(order = 1)
   private String operation;
 
-  @ConfigOverride
   @Parameter
   @MetadataKeyPart(order = 2, providedByKeyResolver = false)
-  @Placement(tab = ADVANCED_TAB, order = 8)
+  @Placement(tab = ADVANCED_TAB, order = 1)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Reply to")
@@ -36,7 +34,7 @@ public class ConsumeKey {
     return operation;
   }
 
-  public String getWsaReplyTo() {
+  public String getReplyTo() {
     return wsaReplyTo;
   }
 }

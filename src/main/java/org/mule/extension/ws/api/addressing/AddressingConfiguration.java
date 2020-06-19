@@ -29,18 +29,6 @@ public class AddressingConfiguration {
   public static final String ADDRESSING_TAB = "Addressing";
 
   /**
-   * Indicates if it wants to use WSA on every consume operation.
-   * <p>
-   * Defaults to {@code false}
-   */
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 0)
-  @Optional(defaultValue = "false")
-  @Expression(NOT_SUPPORTED)
-  @Summary("Indicates if it wants to use WSA on every consume operation.")
-  private boolean useWsa;
-
-  /**
    * Whether mustUnderstand attribute in {@code wsa:To} header is true or false.
    * <p>
    * Defaults to {@code false}
@@ -75,20 +63,6 @@ public class AddressingConfiguration {
   @DisplayName("HTTP Listener")
   private String wsaHttpListenerConfig;
 
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 8)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Reply to")
-  private String wsaReplyTo;
-
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 9)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Fault to")
-  private String wsaFaultTo;
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -100,17 +74,14 @@ public class AddressingConfiguration {
     }
 
     AddressingConfiguration that = (AddressingConfiguration) o;
-    return Objects.equals(useWsa, that.useWsa)
-        && Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
+    return Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
         && Objects.equals(wsaVersion, that.wsaVersion)
         && Objects.equals(wsaFrom, that.wsaFrom)
-        && Objects.equals(wsaHttpListenerConfig, that.wsaHttpListenerConfig)
-        && Objects.equals(wsaReplyTo, that.wsaReplyTo)
-        && Objects.equals(wsaFaultTo, that.wsaFaultTo);
+        && Objects.equals(wsaHttpListenerConfig, that.wsaHttpListenerConfig);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(useWsa, wsaMustUnderstand, wsaVersion, wsaFrom, wsaHttpListenerConfig, wsaReplyTo, wsaFaultTo);
+    return Objects.hash(wsaMustUnderstand, wsaVersion, wsaFrom, wsaHttpListenerConfig);
   }
 }

@@ -6,100 +6,88 @@
  */
 package org.mule.extension.ws.internal.addressing.properties;
 
-import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
+import org.mule.runtime.core.api.util.UUID;
 
-import java.util.UUID;
+import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Strings;
 
 public class AddressingPropertiesBuilder {
 
-  private final WsdlConnectionInfo info;
-  private final String operation;
-
-  private String messageId;
   private boolean mustUnderstand;
   private String namespaceURI;
-  private String to;
-  private String action;
-  private String relatesTo;
-  private String from;
-  private String replyTo;
-  private String faultTo;
-  private String relationshipType;
-
-  public AddressingPropertiesBuilder(WsdlConnectionInfo info, String operation) {
-    this.info = info;
-    this.operation = operation;
-  }
+  private URIType to, action, messageId;
+  private EndpointReferenceType from, replyTo, faultTo;
+  private RelatesToType relatesTo;
 
   public AddressingPropertiesBuilder mustUnderstand(boolean mustUnderstand) {
     this.mustUnderstand = mustUnderstand;
     return this;
   }
 
-  public AddressingPropertiesBuilder withNamespace(String namespaceURI) {
+  public AddressingPropertiesBuilder namespaceURI(String namespaceURI) {
     this.namespaceURI = namespaceURI;
     return this;
   }
 
-  public AddressingPropertiesBuilder withTo(String to) {
-    this.to = to;
+  public AddressingPropertiesBuilder to(String to) {
+    this.to = getURIType(to);
     return this;
   }
 
-  public AddressingPropertiesBuilder withAction(String action) {
-    this.action = action;
+  public AddressingPropertiesBuilder action(String action) {
+    this.action = getURIType(action);
     return this;
   }
 
-  public AddressingPropertiesBuilder withRelatesTo(String relatesTo, String relationshipType) {
-    this.relatesTo = relatesTo;
-    this.relationshipType = relationshipType;
+  public AddressingPropertiesBuilder relatesTo(String relatesTo, String relationshipType) {
+    this.relatesTo = getRelatesTo(relatesTo, relationshipType);
     return this;
   }
 
-  public AddressingPropertiesBuilder withMessageID(String messageID) {
-    this.messageId = messageID;
+  public AddressingPropertiesBuilder messageID(String messageID) {
+    this.messageId = getURIType(messageID);
     return this;
   }
 
-  public AddressingPropertiesBuilder withFrom(String from) {
-    this.from = from;
+  public AddressingPropertiesBuilder from(String from) {
+    this.from = getEndpointReferenceType(from);
     return this;
   }
 
-  public AddressingPropertiesBuilder withReplyTo(String base, String replyTo, String faultTo) {
-    this.replyTo = buildPath(base, replyTo);
-    this.faultTo = buildPath(base, faultTo);
+  public AddressingPropertiesBuilder replyTo(String base, String replyTo, String faultTo) {
+    this.replyTo = getEndpointReferenceType(buildPath(base, replyTo));
+    this.faultTo = getEndpointReferenceType(buildPath(base, faultTo));
     return this;
   }
 
   public AddressingProperties build() {
+    if (Objects.isNull(to) && Objects.isNull(action) && Objects.isNull(from) && Objects.isNull(messageId)
+        && Objects.isNull(replyTo) && Objects.isNull(faultTo) && Objects.isNull(relatesTo)) {
+      return AddressingProperties.disabled();
+    }
     checkNotNull(namespaceURI, "Namespace URI cannot be null");
-
-    if (Strings.isNullOrEmpty(to)) {
-      to = info.getAddress();
-    }
     checkNotNull(to, "'To' cannot be null");
-
-    if (Strings.isNullOrEmpty(action) && !Strings.isNullOrEmpty(info.getAddress()) && !Strings.isNullOrEmpty(info.getPort())) {
-      action = info.getAddress() + "/" + info.getPort() + "/" + operation + "Request";
-    }
     checkNotNull(action, "'Action' cannot be null");
 
-    if (Strings.isNullOrEmpty(messageId)) {
-      messageId = UUID.randomUUID().toString();
+    if (Objects.isNull(messageId)) {
+      messageId = new URIType(UUID.getUUID());
     }
 
-    return new AddressingProperties(namespaceURI, mustUnderstand, new URIType(to), new URIType(action),
-                                    !Strings.isNullOrEmpty(from) ? new EndpointReferenceType(new URIType(from)) : null,
-                                    !Strings.isNullOrEmpty(messageId) ? new URIType(messageId) : null,
-                                    !Strings.isNullOrEmpty(replyTo) ? new EndpointReferenceType(new URIType(replyTo)) : null,
-                                    !Strings.isNullOrEmpty(faultTo) ? new EndpointReferenceType(new URIType(faultTo)) : null,
-                                    !Strings.isNullOrEmpty(relatesTo) ? new RelatesToType(relatesTo, relationshipType)
-                                        : null);
+    return new AddressingProperties(namespaceURI, mustUnderstand, to, action, from, messageId, replyTo, faultTo, relatesTo);
+  }
+
+  private URIType getURIType(String value) {
+    return !Strings.isNullOrEmpty(value) ? new URIType(value) : null;
+  }
+
+  private EndpointReferenceType getEndpointReferenceType(String value) {
+    return !Strings.isNullOrEmpty(value) ? new EndpointReferenceType(new URIType(value)) : null;
+  }
+
+  private RelatesToType getRelatesTo(String value, String type) {
+    return !Strings.isNullOrEmpty(value) ? new RelatesToType(value, type) : null;
   }
 
   private String buildPath(String base, String path) {

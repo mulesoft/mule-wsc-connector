@@ -7,7 +7,6 @@
 package org.mule.extension.ws.internal;
 
 import com.google.common.base.Strings;
-import static org.mule.extension.ws.api.addressing.AddressingConfiguration.ADDRESSING_TAB;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
@@ -21,7 +20,6 @@ import org.mule.extension.ws.internal.addressing.AddressingHeadersResolverFactor
 import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
 import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
-import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeKey;
@@ -108,7 +106,7 @@ public class ConsumeOperation {
       throws ConnectionException {
     SoapRequest request =
         getSoapRequest(key.getOperation(), message, transportConfig.getTransportHeaders(),
-                       getAddressingProperties(addressingSettings, connection.getInfo(), key))
+                       getAddressingProperties(addressingSettings, key))
                            .build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
@@ -193,23 +191,18 @@ public class ConsumeOperation {
     return new AddressingHeadersResolverFactory(expressionExecutor).create(properties).resolve(properties);
   }
 
-  private AddressingProperties getAddressingProperties(AddressingSettings settings, WsdlConnectionInfo info, ConsumeKey key) {
-    if (!settings.isUseWsa())
-      return AddressingProperties.disabled();
-    AddressingPropertiesBuilder builder = new AddressingPropertiesBuilder(info, key.getOperation())
-        .mustUnderstand(settings.isWsaMustUnderstand())
-        .withNamespace(settings.getWsaVersion().getNamespaceUri())
-        .withAction(settings.getWsaAction())
-        .withTo(settings.getWsaTo())
-        .withFrom(settings.getWsaFrom())
-        .withMessageID(settings.getWsaMessageID())
-        .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType());
-
-    if (!Strings.isNullOrEmpty(key.getWsaReplyTo())) {
-      builder.withReplyTo(getHttpServerBasepath(settings.getWsaHttpListenerConfig()),
-                          key.getWsaReplyTo(), settings.getWsaFaultTo());
-    }
-    return builder.build();
+  private AddressingProperties getAddressingProperties(AddressingSettings settings, ConsumeKey key) {
+    return new AddressingPropertiesBuilder()
+        .mustUnderstand(settings.isMustUnderstand())
+        .namespaceURI(settings.getVersion().getNamespaceUri())
+        .action(settings.getAction())
+        .to(settings.getTo())
+        .from(settings.getFrom())
+        .messageID(settings.getMessageID())
+        .relatesTo(settings.getRelatesTo(), settings.getRelationshipType())
+        .replyTo(getHttpServerBasepath(settings.getHttpListenerConfig()),
+                 key.getReplyTo(), settings.getFaultTo())
+        .build();
   }
 
   private String getHttpServerBasepath(String httpListenerConfig) {
@@ -222,7 +215,7 @@ public class ConsumeOperation {
       return server.getProtocol().getScheme() + "://" + server.getServerAddress().getIp() + ":"
           + server.getServerAddress().getPort();
     } catch (Exception e) {
-      throw new ModuleException("Invalid http listener config configured for WSA endpoints",
+      throw new ModuleException("Invalid http listener config configured for WSA",
                                 BAD_REQUEST);
     }
   }

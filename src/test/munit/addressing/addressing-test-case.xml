@@ -65,13 +65,11 @@
     <!-- Tests -->
     <munit:test name="wsaHeaders" description="Consumes an operation with wsa headers" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
-            <wsc:consume config-ref="${config}" operation="noParamsWithHeader">
+            <wsc:consume config-ref="${config}" operation="noParamsWithHeader" wsaReplyTo="ReplyTo">
                 <wsc:message >
                     <wsc:body ><![CDATA[#[null]]]></wsc:body>
                 </wsc:message>
-                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From">
-                    <wsc:wsa-endpoints wsaHttpListenerConfig="WSA_HTTP_Listener_config" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
-                </wsc:addressing>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaHttpListenerConfig="WSA_HTTP_Listener_config" wsaFaultTo="FaultTo" />
             </wsc:consume>
         </munit:execution>
         <munit:validation>
@@ -81,7 +79,7 @@
 
     <munit:test name="wsaKeepUserHeaders" description="Consumes an operation with wsa headers but preserve headers settled by user" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
-            <wsc:consume config-ref="${config}" operation="noParamsWithHeader">
+            <wsc:consume config-ref="${config}" operation="noParamsWithHeader" wsaReplyTo="ReplyTo">
                 <wsc:message >
                     <wsc:body ><![CDATA[#[null]]]></wsc:body>
                     <wsc:headers>
@@ -107,9 +105,7 @@
                         }]
                     </wsc:headers>
                 </wsc:message>
-                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From">
-                    <wsc:wsa-endpoints wsaHttpListenerConfig="WSA_HTTP_Listener_config" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
-                </wsc:addressing>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaHttpListenerConfig="WSA_HTTP_Listener_config" wsaFaultTo="FaultTo" />
             </wsc:consume>
         </munit:execution>
         <munit:validation>

@@ -46,7 +46,7 @@ public class ConsumeOutputResolver implements OutputTypeResolver<ConsumeKey> {
   @Override
   public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
       throws ConnectionException, MetadataResolvingException {
-    if (!Strings.isNullOrEmpty(key.getWsaReplyTo())) {
+    if (!Strings.isNullOrEmpty(key.getReplyTo())) {
       return context.getTypeBuilder().nullType().build();
     }
 

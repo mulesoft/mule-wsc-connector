@@ -23,8 +23,8 @@ public class AddressingHeadersResolver {
   public Map<String, String> resolve(AddressingProperties properties) {
     ImmutableMap.Builder<String, String> headers = ImmutableMap.builder();
     if (properties.isRequired()) {
-      headers.put(encoder.encodeActionHeader(properties.getAction(), false));
-      headers.put(encoder.encodeToHeader(properties.getTo(), properties.isMustUnderstand()));
+      properties.getAction().ifPresent(x -> headers.put(encoder.encodeActionHeader(x, false)));
+      properties.getTo().ifPresent(x -> headers.put(encoder.encodeToHeader(x, properties.isMustUnderstand())));
       properties.getMessageID().ifPresent(x -> headers.put(encoder.encodeMessageIDHeader(x, false)));
       properties.getFrom().ifPresent(x -> headers.put(encoder.encodeFromHeader(x, false)));
       properties.getReplyTo().ifPresent(x -> headers.put(encoder.encodeReplyToHeader(x, false)));

@@ -67,12 +67,12 @@ public class AddressingProperties {
     return namespaceURI;
   }
 
-  public URIType getTo() {
-    return to;
+  public Optional<URIType> getTo() {
+    return ofNullable(to);
   }
 
-  public URIType getAction() {
-    return action;
+  public Optional<URIType> getAction() {
+    return ofNullable(action);
   }
 
   public Optional<EndpointReferenceType> getFrom() {

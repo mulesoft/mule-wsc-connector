@@ -29,11 +29,8 @@ import static org.mockito.Mockito.when;
 
 public class AddressingPropertiesBuilderTestCase {
 
-  private static final String ADDRESS = "ADDRESS";
   private static final String NAMESPACE = "NAMESPACE";
   private static final String ACTION = "ACTION";
-  private static final String OPERATION = "OPERATION";
-  private static final String PORT = "PORT";
   private static final String TO = "TO";
   private static final String BASEPATH = "BASEPATH";
   private static final String REPLYTO = "REPLYTO";
@@ -41,7 +38,6 @@ public class AddressingPropertiesBuilderTestCase {
   private static final String FAULTTO = "FAULTTO";
   private static final String FAULTTO_WITH_SLASH = "/FAULTTO";
 
-  private WsdlConnectionInfo wsdlInfo;
   private AddressingPropertiesBuilder builder;
 
   @Rule
@@ -49,58 +45,30 @@ public class AddressingPropertiesBuilderTestCase {
 
   @Before
   public void before() {
-    wsdlInfo = mock(WsdlConnectionInfo.class);
-    builder = new AddressingPropertiesBuilder(wsdlInfo, OPERATION);
+    builder = new AddressingPropertiesBuilder();
   }
 
   @Test
   public void testBasicScenario() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .withTo(TO)
+        .namespaceURI(NAMESPACE)
+        .action(ACTION)
+        .to(TO)
         .build();
 
     assertThat(sut.getNamespaceURI(), is(NAMESPACE));
-    assertThat(sut.getAction(), notNullValue());
-    assertThat(sut.getAction().getValue(), is(ACTION));
-    assertThat(sut.getTo(), notNullValue());
-    assertThat(sut.getTo().getValue(), is(TO));
-  }
-
-  @Test
-  public void testImplicitToParameter() {
-    when(wsdlInfo.getAddress()).thenReturn(ADDRESS);
-
-    AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .build();
-
-    assertThat(sut.getTo(), notNullValue());
-    assertThat(sut.getTo().getValue(), is(ADDRESS));
-  }
-
-  @Test
-  public void testImplicitActionParameter() {
-    when(wsdlInfo.getAddress()).thenReturn(ADDRESS);
-    when(wsdlInfo.getPort()).thenReturn(PORT);
-
-    AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withTo(TO)
-        .build();
-
-    assertThat(sut.getAction(), notNullValue());
-    assertThat(sut.getAction().getValue(), is(ADDRESS + "/" + PORT + "/" + OPERATION + "Request"));
+    assertThat(sut.getAction().isPresent(), is(true));
+    assertThat(sut.getAction().get().getValue(), is(ACTION));
+    assertThat(sut.getTo().isPresent(), is(true));
+    assertThat(sut.getTo().get().getValue(), is(TO));
   }
 
   @Test
   public void testImplicitMessageIDParameter() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withTo(TO)
-        .withAction(ACTION)
+        .namespaceURI(NAMESPACE)
+        .to(TO)
+        .action(ACTION)
         .build();
 
     assertThat(sut.getMessageID().isPresent(), is(true));
@@ -110,10 +78,10 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void testReplyToParameter() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .withTo(TO)
-        .withReplyTo(BASEPATH, REPLYTO, null)
+        .namespaceURI(NAMESPACE)
+        .action(ACTION)
+        .to(TO)
+        .replyTo(BASEPATH, REPLYTO, null)
         .build();
 
     assertThat(sut.getReplyTo().isPresent(), is(true));
@@ -123,10 +91,10 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void testReplyToParameterWithSlash() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .withTo(TO)
-        .withReplyTo(BASEPATH, REPLYTO_WITH_SLASH, null)
+        .namespaceURI(NAMESPACE)
+        .action(ACTION)
+        .to(TO)
+        .replyTo(BASEPATH, REPLYTO_WITH_SLASH, null)
         .build();
 
     assertThat(sut.getReplyTo().isPresent(), is(true));
@@ -136,10 +104,10 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void testFaultToParameter() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .withTo(TO)
-        .withReplyTo(BASEPATH, null, FAULTTO)
+        .namespaceURI(NAMESPACE)
+        .action(ACTION)
+        .to(TO)
+        .replyTo(BASEPATH, null, FAULTTO)
         .build();
 
     assertThat(sut.getFaultTo().isPresent(), is(true));
@@ -149,10 +117,10 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void testFaultToParameterWithSlash() {
     AddressingProperties sut = builder
-        .withNamespace(NAMESPACE)
-        .withAction(ACTION)
-        .withTo(TO)
-        .withReplyTo(BASEPATH, null, FAULTTO_WITH_SLASH)
+        .namespaceURI(NAMESPACE)
+        .action(ACTION)
+        .to(TO)
+        .replyTo(BASEPATH, null, FAULTTO_WITH_SLASH)
         .build();
 
     assertThat(sut.getFaultTo().isPresent(), is(true));
@@ -168,13 +136,13 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void failWithNoTo() {
     expectedException.expectMessage("'To' cannot be null");
-    builder.withNamespace(NAMESPACE).build();
+    builder.namespaceURI(NAMESPACE).build();
   }
 
   @Test
   public void failWithNoAction() {
     expectedException.expectMessage("'Action' cannot be null");
-    builder.withNamespace(NAMESPACE).withTo(TO).build();
+    builder.namespaceURI(NAMESPACE).to(TO).build();
   }
 
   private Matcher isUuid() {

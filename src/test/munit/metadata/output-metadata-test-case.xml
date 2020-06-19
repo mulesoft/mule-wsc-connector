@@ -30,12 +30,11 @@
 
     <wsc:config name="dilbert-wsc">
         <wsc:connection wsdlLocation="wsdl/test-wsdl/document.wsdl" service="Dilbert" port="DilbertSoap" address="http://www.gcomputer.net/webservices/dilbert.asmx" />
-        <wsc:wsa wsaReplyTo="Value" />
     </wsc:config>
 
     <mtf:tooling-test name="getOutputBodyMetadataFromWsdlOnRelativePath" >
         <mtf:get-output-metadata>
-            <wsc:consume operation="TodaysDilbert" wsaReplyTo="" config-ref="dilbert-wsc"/>
+            <wsc:consume operation="TodaysDilbert" config-ref="dilbert-wsc"/>
         </mtf:get-output-metadata>
         <mtf:validation>
             <munit-tools:assert-equals actual="#[sizeOf(payload.fields[0].model.fields[0].model.fields)]" expected="#[2]" />
@@ -145,6 +144,15 @@
             <set-variable variableName="attachmentsFields" value="#[vars.attributesFields[0].model.fields]"/>
             <munit-tools:assert-equals actual="#[sizeOf(vars.attachmentsFields)]" expected="#[1]" />
             <munit-tools:assert-equals actual="#[vars.attachmentsFields[0].model.'type']" expected="Binary" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getNullOutputMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:consume operation="TodaysDilbert" wsaReplyTo="/ReplyTo" config-ref="dilbert-wsc"/>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <munit-tools:assert-equals actual="#[payload.'type']" expected="Null" />
         </mtf:validation>
     </mtf:tooling-test>
 </mule>
