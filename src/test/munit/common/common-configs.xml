@@ -12,7 +12,7 @@
         <http:request-connection protocol="HTTP"/>
     </http:request-config>
 
-    <http:listener-config name="HTTP_Listener_config" >
+    <http:listener-config name="WSA_HTTP_Listener_config" >
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
 
