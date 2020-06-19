@@ -6,9 +6,12 @@
  */
 package org.mule.extension.ws.internal;
 
+import com.google.common.base.Strings;
+import static org.mule.extension.ws.api.addressing.AddressingConfiguration.ADDRESSING_TAB;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
+import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
@@ -21,6 +24,7 @@ import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
+import org.mule.extension.ws.internal.metadata.ConsumeKey;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
 import org.mule.runtime.api.connection.ConnectionException;
@@ -37,6 +41,7 @@ import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
 import org.mule.runtime.extension.api.annotation.param.Config;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.operation.Result;
@@ -88,7 +93,8 @@ public class ConsumeOperation {
   @Throws(ConsumeErrorTypeProvider.class)
   @OutputResolver(output = ConsumeOutputResolver.class)
   public Result<SoapOutputEnvelope, SoapAttributes> consume(@Connection WscSoapClient connection,
-                                                            @MetadataKeyId(OperationKeysResolver.class) String operation,
+                                                            @ParameterGroup(
+                                                                name = "Consume") @MetadataKeyId(OperationKeysResolver.class) ConsumeKey key,
                                                             @ParameterGroup(name = "Message",
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
@@ -97,11 +103,12 @@ public class ConsumeOperation {
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client,
                                                             @ParameterGroup(name = "Addressing",
-                                                                showInDsl = true) AddressingSettings addressingSettings)
+                                                                showInDsl = true) @Placement(
+                                                                    tab = ADVANCED_TAB) AddressingSettings addressingSettings)
       throws ConnectionException {
     SoapRequest request =
-        getSoapRequest(operation, message, transportConfig.getTransportHeaders(),
-                       getAddressingProperties(addressingSettings, connection.getInfo(), operation))
+        getSoapRequest(key.getOperation(), message, transportConfig.getTransportHeaders(),
+                       getAddressingProperties(addressingSettings, connection.getInfo(), key))
                            .build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
@@ -186,10 +193,10 @@ public class ConsumeOperation {
     return new AddressingHeadersResolverFactory(expressionExecutor).create(properties).resolve(properties);
   }
 
-  private AddressingProperties getAddressingProperties(AddressingSettings settings, WsdlConnectionInfo info, String operation) {
+  private AddressingProperties getAddressingProperties(AddressingSettings settings, WsdlConnectionInfo info, ConsumeKey key) {
     if (!settings.isUseWsa())
       return AddressingProperties.disabled();
-    AddressingPropertiesBuilder builder = new AddressingPropertiesBuilder(info, operation)
+    AddressingPropertiesBuilder builder = new AddressingPropertiesBuilder(info, key.getOperation())
         .mustUnderstand(settings.isWsaMustUnderstand())
         .withNamespace(settings.getWsaVersion().getNamespaceUri())
         .withAction(settings.getWsaAction())
@@ -197,14 +204,19 @@ public class ConsumeOperation {
         .withFrom(settings.getWsaFrom())
         .withMessageID(settings.getWsaMessageID())
         .withRelatesTo(settings.getWsaRelatesTo(), settings.getWsaRelationshipType());
-    if (settings.getWsaEndpoints() != null) {
-      builder.withReplyTo(getHttpServerBasepath(settings.getWsaEndpoints().getWsaHttpListenerConfig()),
-                          settings.getWsaEndpoints().getWsaReplyTo(), settings.getWsaEndpoints().getWsaFaultTo());
+
+    if (!Strings.isNullOrEmpty(key.getWsaReplyTo())) {
+      builder.withReplyTo(getHttpServerBasepath(settings.getWsaHttpListenerConfig()),
+                          key.getWsaReplyTo(), settings.getWsaFaultTo());
     }
     return builder.build();
   }
 
   private String getHttpServerBasepath(String httpListenerConfig) {
+    if (Strings.isNullOrEmpty(httpListenerConfig)) {
+      return "";
+    }
+
     try {
       HttpServer server = httpService.getServerFactory().lookup(httpListenerConfig);
       return server.getProtocol().getScheme() + "://" + server.getServerAddress().getIp() + ":"

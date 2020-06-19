@@ -19,7 +19,7 @@ import org.mule.wsdl.parser.model.operation.OperationModel;
  *
  * @since 1.0
  */
-public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
+public class SoapHeadersTypeResolver implements InputTypeResolver<ConsumeKey> {
 
   @Override
   public String getCategoryName() {
@@ -32,9 +32,10 @@ public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
   }
 
   @Override
-  public MetadataType getInputMetadata(MetadataContext context, String operation)
+  public MetadataType getInputMetadata(MetadataContext context, ConsumeKey key)
       throws ConnectionException, MetadataResolvingException {
-    OperationModel operationModel = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
+    OperationModel operationModel =
+        MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, key.getOperation());
     return operationModel.getInputType().getHeaders();
   }
 }

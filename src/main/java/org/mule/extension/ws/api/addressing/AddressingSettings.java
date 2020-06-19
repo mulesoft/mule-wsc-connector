@@ -15,8 +15,8 @@ import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.annotation.param.reference.ConfigReference;
 
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
+import static org.mule.extension.ws.api.addressing.AddressingConfiguration.ADDRESSING_TAB;
+import static org.mule.runtime.api.meta.ExpressionSupport.*;
 import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 public class AddressingSettings {
@@ -26,7 +26,7 @@ public class AddressingSettings {
    */
   @ConfigOverride
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 0)
+  @Placement(order = 0)
   @Optional
   @Expression(NOT_SUPPORTED)
   @Summary("Indicates if it wants to use WSA on every consume operation.")
@@ -37,7 +37,7 @@ public class AddressingSettings {
    */
   @ConfigOverride
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 1)
+  @Placement(order = 1)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Must understand")
@@ -46,7 +46,7 @@ public class AddressingSettings {
 
   @ConfigOverride
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 2)
+  @Placement(order = 2)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Version")
@@ -54,50 +54,59 @@ public class AddressingSettings {
 
   @ConfigOverride
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 6)
+  @Placement(order = 6)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("From")
   private String wsaFrom;
 
   @ConfigOverride
+  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 7)
+  @Placement(order = 7)
   @Optional
   @Expression(NOT_SUPPORTED)
-  @DisplayName("Reply to")
-  private AddressingEndpoints wsaEndpoints;
+  @DisplayName("HTTP Listener")
+  private String wsaHttpListenerConfig;
+
+  @ConfigOverride
+  @Parameter
+  @Placement(order = 9)
+  @Optional
+  @Expression(NOT_SUPPORTED)
+  @DisplayName("Fault to")
+  private String wsaFaultTo;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 8)
+  @Placement(order = 10)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Action")
   private String wsaAction;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 9)
+  @Placement(order = 11)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("To")
   private String wsaTo;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 10)
+  @Placement(order = 12)
   @Optional
-  @Expression(SUPPORTED)
+  @Expression(REQUIRED)
   @DisplayName("Message ID")
   private String wsaMessageID;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 11)
+  @Placement(order = 12)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
   private String wsaRelatesTo;
 
   @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 12)
+  @Placement(order = 14)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
@@ -119,8 +128,12 @@ public class AddressingSettings {
     return wsaFrom;
   }
 
-  public AddressingEndpoints getWsaEndpoints() {
-    return wsaEndpoints;
+  public String getWsaHttpListenerConfig() {
+    return wsaHttpListenerConfig;
+  }
+
+  public String getWsaFaultTo() {
+    return wsaFaultTo;
   }
 
   public String getWsaAction() {

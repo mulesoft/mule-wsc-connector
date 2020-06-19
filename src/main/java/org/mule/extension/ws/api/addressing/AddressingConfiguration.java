@@ -67,12 +67,27 @@ public class AddressingConfiguration {
   @DisplayName("From")
   private String wsaFrom;
 
+  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
   @Parameter
   @Placement(tab = ADDRESSING_TAB, order = 7)
   @Optional
   @Expression(NOT_SUPPORTED)
+  @DisplayName("HTTP Listener")
+  private String wsaHttpListenerConfig;
+
+  @Parameter
+  @Placement(tab = ADDRESSING_TAB, order = 8)
+  @Optional
+  @Expression(NOT_SUPPORTED)
   @DisplayName("Reply to")
-  private AddressingEndpoints wsaEndpoints;
+  private String wsaReplyTo;
+
+  @Parameter
+  @Placement(tab = ADDRESSING_TAB, order = 9)
+  @Optional
+  @Expression(NOT_SUPPORTED)
+  @DisplayName("Fault to")
+  private String wsaFaultTo;
 
   @Override
   public boolean equals(Object o) {
@@ -89,11 +104,13 @@ public class AddressingConfiguration {
         && Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
         && Objects.equals(wsaVersion, that.wsaVersion)
         && Objects.equals(wsaFrom, that.wsaFrom)
-        && Objects.equals(wsaEndpoints, that.wsaEndpoints);
+        && Objects.equals(wsaHttpListenerConfig, that.wsaHttpListenerConfig)
+        && Objects.equals(wsaReplyTo, that.wsaReplyTo)
+        && Objects.equals(wsaFaultTo, that.wsaFaultTo);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(useWsa, wsaMustUnderstand, wsaVersion, wsaFrom);
+    return Objects.hash(useWsa, wsaMustUnderstand, wsaVersion, wsaFrom, wsaHttpListenerConfig, wsaReplyTo, wsaFaultTo);
   }
 }

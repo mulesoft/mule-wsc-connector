@@ -30,11 +30,12 @@
 
     <wsc:config name="dilbert-wsc">
         <wsc:connection wsdlLocation="wsdl/test-wsdl/document.wsdl" service="Dilbert" port="DilbertSoap" address="http://www.gcomputer.net/webservices/dilbert.asmx" />
+        <wsc:wsa wsaReplyTo="Value" />
     </wsc:config>
 
     <mtf:tooling-test name="getOutputBodyMetadataFromWsdlOnRelativePath" >
         <mtf:get-output-metadata>
-            <wsc:consume operation="TodaysDilbert" config-ref="dilbert-wsc"/>
+            <wsc:consume operation="TodaysDilbert" wsaReplyTo="" config-ref="dilbert-wsc"/>
         </mtf:get-output-metadata>
         <mtf:validation>
             <munit-tools:assert-equals actual="#[sizeOf(payload.fields[0].model.fields[0].model.fields)]" expected="#[2]" />

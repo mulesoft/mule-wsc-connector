@@ -17,12 +17,14 @@ import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
 import org.mule.wsdl.parser.model.operation.Type;
 
+import com.google.common.base.Strings;
+
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
  *
  * @since 1.0
  */
-public class ConsumeOutputResolver implements OutputTypeResolver<String> {
+public class ConsumeOutputResolver implements OutputTypeResolver<ConsumeKey> {
 
   public static final String BODY = "body";
   public static final String HEADERS = "headers";
@@ -42,9 +44,14 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, String operation)
+  public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
       throws ConnectionException, MetadataResolvingException {
-    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
+    if (!Strings.isNullOrEmpty(key.getWsaReplyTo())) {
+      return context.getTypeBuilder().nullType().build();
+    }
+
+    Type outputType =
+        MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, key.getOperation()).getOutputType();
     MetadataType body = outputType.getBody();
     MetadataType headers = outputType.getHeaders();
     MetadataType attachments = outputType.getAttachments();
