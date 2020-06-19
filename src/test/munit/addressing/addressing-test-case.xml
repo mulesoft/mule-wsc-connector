@@ -69,7 +69,9 @@
                 <wsc:message >
                     <wsc:body ><![CDATA[#[null]]]></wsc:body>
                 </wsc:message>
-                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From">
+                    <wsc:wsa-endpoints wsaHttpListenerConfig="HTTP_Listener_config" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+                </wsc:addressing>
             </wsc:consume>
         </munit:execution>
         <munit:validation>
@@ -105,7 +107,9 @@
                         }]
                     </wsc:headers>
                 </wsc:message>
-                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaRelationshipType="RelationshipType" wsaFrom="From">
+                    <wsc:wsa-endpoints wsaHttpListenerConfig="HTTP_Listener_config" wsaReplyTo="ReplyTo" wsaFaultTo="FaultTo"/>
+                </wsc:addressing>
             </wsc:consume>
         </munit:execution>
         <munit:validation>
