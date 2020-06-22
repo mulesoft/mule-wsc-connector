@@ -12,11 +12,16 @@ import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 
+/**
+ * Handles how to resolve {@link AddressingProperties} into a {@link Map<String, String>} of xml headers.
+ *
+ * @since 2.0
+ */
 public class AddressingHeadersResolver {
 
-  private final HeadersVersionEncoder encoder;
+  private final HeadersEncoder encoder;
 
-  public AddressingHeadersResolver(HeadersVersionEncoder encoder) {
+  public AddressingHeadersResolver(HeadersEncoder encoder) {
     this.encoder = encoder;
   }
 

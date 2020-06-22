@@ -13,6 +13,11 @@ import java.util.Objects;
 import static com.google.common.base.Preconditions.checkNotNull;
 import com.google.common.base.Strings;
 
+/**
+ * Builder of {@link AddressingProperties}
+ *
+ * @since 2.0
+ */
 public class AddressingPropertiesBuilder {
 
   private boolean mustUnderstand;

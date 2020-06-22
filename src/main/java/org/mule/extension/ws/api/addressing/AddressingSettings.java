@@ -23,6 +23,11 @@ import static org.mule.runtime.api.meta.ExpressionSupport.REQUIRED;
 import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
 import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
+/**
+ * Web Service Addressing Settings
+ *
+ * @since 2.0
+ */
 public class AddressingSettings {
 
   /**
@@ -37,6 +42,9 @@ public class AddressingSettings {
   @Summary("Value of the mustUnderstand attribute in WS-Addressing To header.")
   private boolean wsaMustUnderstand;
 
+  /**
+   * WS-Addressing version.
+   */
   @ConfigOverride
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 2)
@@ -45,6 +53,9 @@ public class AddressingSettings {
   @DisplayName("Version")
   private AddressingVersion wsaVersion;
 
+  /**
+   * Reference of the endpoint where the message originated from.
+   */
   @ConfigOverride
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 3)
@@ -53,6 +64,9 @@ public class AddressingSettings {
   @DisplayName("From")
   private String wsaFrom;
 
+  /**
+   * An identifier that uniquely identifies the semantics implied by this message.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 4)
   @Optional
@@ -61,6 +75,9 @@ public class AddressingSettings {
   @OfValues(AddressingActionValueProvider.class)
   private String wsaAction;
 
+  /**
+   * The address of the intended receiver of this message.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 5)
   @Optional
@@ -69,6 +86,9 @@ public class AddressingSettings {
   @OfValues(AddressingToValueProvider.class)
   private String wsaTo;
 
+  /**
+   * An identifier that uniquely identifies this message in time and space.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 6)
   @Optional
@@ -76,6 +96,9 @@ public class AddressingSettings {
   @DisplayName("Message ID")
   private String wsaMessageID;
 
+  /**
+   * A message ID that this message is related to.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 7)
   @Optional
@@ -83,6 +106,9 @@ public class AddressingSettings {
   @DisplayName("Relates to")
   private String wsaRelatesTo;
 
+  /**
+   * The type of relationship between this message and the one related to.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 8)
   @Optional
@@ -90,6 +116,9 @@ public class AddressingSettings {
   @DisplayName("Relationsship type")
   private String wsaRelationshipType;
 
+  /**
+   * The address of the intended receiver for faults related to this message.
+   */
   @Parameter
   @Placement(tab = ADVANCED_TAB, order = 9)
   @Optional

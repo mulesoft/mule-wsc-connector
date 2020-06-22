@@ -15,12 +15,17 @@ import javax.xml.namespace.QName;
 import static java.util.AbstractMap.SimpleImmutableEntry;
 import static java.util.Map.Entry;
 
-public class DefaultHeadersVersionEncoder implements HeadersVersionEncoder {
+/**
+ * Default implementation of {@link HeadersEncoder}
+ *
+ * @since 2.0
+ */
+public class DefaultHeadersEncoder implements HeadersEncoder {
 
   private final AddressingQNameResolver resolver;
-  private final AddressingXmlTransformer transformer;
+  private final AddressingTransformer transformer;
 
-  public DefaultHeadersVersionEncoder(AddressingQNameResolver resolver, AddressingXmlTransformer transformer) {
+  public DefaultHeadersEncoder(AddressingQNameResolver resolver, AddressingTransformer transformer) {
     this.resolver = resolver;
     this.transformer = transformer;
   }
@@ -28,50 +33,50 @@ public class DefaultHeadersVersionEncoder implements HeadersVersionEncoder {
   @Override
   public Entry<String, String> encodeMessageIDHeader(URIType messageID, boolean mustUnderstand) {
     QName qname = resolver.getMessageIDQName();
-    String xml = transformer.transformToXml(messageID, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(messageID, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeToHeader(URIType to, boolean mustUnderstand) {
     QName qname = resolver.getToQName();
-    String xml = transformer.transformToXml(to, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(to, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeActionHeader(URIType action, boolean mustUnderstand) {
     QName qname = resolver.getActionQName();
-    String xml = transformer.transformToXml(action, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(action, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeFromHeader(EndpointReferenceType from, boolean mustUnderstand) {
     QName qname = resolver.getFromQName();
-    String xml = transformer.transformToXml(from, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(from, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeReplyToHeader(EndpointReferenceType replyTo, boolean mustUnderstand) {
     QName qname = resolver.getReplyToQName();
-    String xml = transformer.transformToXml(replyTo, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(replyTo, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeFaultToHeader(EndpointReferenceType faultTo, boolean mustUnderstand) {
     QName qname = resolver.getFaultToQName();
-    String xml = transformer.transformToXml(faultTo, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(faultTo, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   @Override
   public Entry<String, String> encodeRelatesToHeader(RelatesToType relatesTo, boolean mustUnderstand) {
     QName qname = resolver.getRelatesToQName();
-    String xml = transformer.transformToXml(relatesTo, qname, mustUnderstand);
-    return entry(qname.getLocalPart(), xml);
+    String value = transformer.transform(relatesTo, qname, mustUnderstand);
+    return entry(qname.getLocalPart(), value);
   }
 
   private Entry<String, String> entry(String key, String value) {

@@ -11,6 +11,11 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.util.Optional.ofNullable;
 
+/**
+ * Model of Relates To
+ *
+ * @since 2.0
+ */
 public class RelatesToType {
 
   private final String value;

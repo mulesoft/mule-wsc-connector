@@ -8,6 +8,11 @@ package org.mule.extension.ws.internal.addressing.properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+/**
+ * Model of Endpoint Reference
+ *
+ * @since 2.0
+ */
 public class EndpointReferenceType {
 
   private final URIType address;

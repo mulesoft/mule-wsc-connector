@@ -7,6 +7,7 @@
 package org.mule.extension.ws.internal.addressing.value;
 
 import org.mule.extension.ws.internal.connection.WscSoapClient;
+import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
@@ -16,6 +17,11 @@ import org.mule.runtime.extension.api.values.ValueResolvingException;
 
 import java.util.Set;
 
+/**
+ * {@link ValueProvider} implementation which provides possible values for the {@code wsa:Action} header
+ *
+ * @since 2.0
+ */
 public class AddressingActionValueProvider implements ValueProvider {
 
   @Connection

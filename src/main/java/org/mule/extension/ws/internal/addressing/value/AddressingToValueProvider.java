@@ -16,6 +16,11 @@ import org.mule.runtime.extension.api.values.ValueResolvingException;
 
 import java.util.Set;
 
+/**
+ * {@link ValueProvider} implementation which provides possible values for the {@code wsa:To} header
+ *
+ * @since 2.0
+ */
 public class AddressingToValueProvider implements ValueProvider {
 
   @Connection

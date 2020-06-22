@@ -8,6 +8,11 @@ package org.mule.extension.ws.internal.addressing;
 
 import javax.xml.namespace.QName;
 
+/**
+ * Provide WS-Addressing headers QNames
+ *
+ * @since 2.0
+ */
 public interface AddressingQNameResolver {
 
   QName getMessageIDQName();

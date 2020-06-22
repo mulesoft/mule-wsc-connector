@@ -39,6 +39,11 @@ public class WebServiceConsumer {
 
   public static final String NAME = "Web Service Consumer";
 
+  /**
+   * Web Service Addressing configuration
+   *
+   * @since 2.0
+   */
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
   private AddressingConfiguration wsAddressing;

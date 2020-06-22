@@ -7,9 +7,9 @@
 package org.mule.extension.ws.api.addressing;
 
 /**
- * The possible SOAP versions of a SOAP service.
+ * The possible WSA versions of a SOAP service.
  *
- * @since 1.1
+ * @since 2.0
  */
 public enum AddressingVersion {
 

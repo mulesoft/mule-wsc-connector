@@ -9,6 +9,11 @@ package org.mule.extension.ws.internal.addressing;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
 import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
 
+/**
+ * Factory for creating {@link AddressingHeadersResolver} instances.
+ *
+ * @since 2.0
+ */
 public class AddressingHeadersResolverFactory {
 
   private final MuleExpressionLanguage expressionExecutor;
@@ -23,7 +28,7 @@ public class AddressingHeadersResolverFactory {
         ? new OldAddressingQNameResolver()
         : new DefaultAddressingQNameResolver();
 
-    return new AddressingHeadersResolver(new DefaultHeadersVersionEncoder(resolver,
-                                                                          new DefaultAddressingXmlTransformer(expressionExecutor)));
+    return new AddressingHeadersResolver(new DefaultHeadersEncoder(resolver,
+                                                                   new AddressingXmlTransformer(expressionExecutor)));
   }
 }

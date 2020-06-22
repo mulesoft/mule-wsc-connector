@@ -10,6 +10,11 @@ import java.util.Optional;
 
 import static java.util.Optional.ofNullable;
 
+/**
+ * Model of Message Addressing Properties
+ *
+ * @since 2.0
+ */
 public class AddressingProperties {
 
   private final boolean required;

@@ -6,8 +6,15 @@
  */
 package org.mule.extension.ws.internal.addressing;
 
+import org.mule.extension.ws.api.addressing.AddressingVersion;
+
 import javax.xml.namespace.QName;
 
+/**
+ * Provide WS-Addressing headers QNames of {@link AddressingVersion} 2005-08
+ *
+ * @since 2.0
+ */
 public class DefaultAddressingQNameResolver implements AddressingQNameResolver {
 
   public static final String WSA_NAMESPACE_NAME =

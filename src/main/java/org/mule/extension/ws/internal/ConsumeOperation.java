@@ -88,7 +88,8 @@ public class ConsumeOperation {
    * Consumes an operation from a SOAP Web Service.
    *
    * @param connection the connection resolved to execute the operation.
-   * @param operation  the name of the web service operation that aims to invoke.
+   * @param key        the {@link ConsumeKey} which includes the name of the web service operation
+   *                   that aims to invoke and optionally the intended receiver for replies to this message
    * @param message    the constructed SOAP message to perform the request.
    */
   @OnException(WscExceptionEnricher.class)

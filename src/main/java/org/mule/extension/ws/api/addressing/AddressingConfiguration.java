@@ -20,13 +20,13 @@ import java.util.Objects;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
 /**
- * This class serves as {@link ParameterGroup} for configuring Web Service Security.
+ * This class serves as {@link ParameterGroup} for configuring Web Service Addressing.
  *
- * @since 1.0
+ * @since 2.0
  */
 public class AddressingConfiguration {
 
-  public static final String ADDRESSING_TAB = "Addressing";
+  private static final String ADDRESSING_TAB = "Addressing";
 
   /**
    * Whether mustUnderstand attribute in {@code wsa:To} header is true or false.
@@ -41,6 +41,11 @@ public class AddressingConfiguration {
   @Summary("Value of the mustUnderstand attribute in WS-Addressing header.")
   private boolean wsaMustUnderstand;
 
+  /**
+   * WS-Addressing version.
+   * <p>
+   * Defaults to {@code WSA 2005-08}
+   */
   @Parameter
   @Placement(tab = ADDRESSING_TAB, order = 2)
   @Optional(defaultValue = "WSA200508")
@@ -48,8 +53,11 @@ public class AddressingConfiguration {
   @DisplayName("Version")
   private AddressingVersion wsaVersion;
 
+  /**
+   * Reference of the endpoint where the message originated from.
+   */
   @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 6)
+  @Placement(tab = ADDRESSING_TAB, order = 3)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("From")
@@ -57,7 +65,7 @@ public class AddressingConfiguration {
 
   @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
   @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 7)
+  @Placement(tab = ADDRESSING_TAB, order = 4)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("HTTP Listener")

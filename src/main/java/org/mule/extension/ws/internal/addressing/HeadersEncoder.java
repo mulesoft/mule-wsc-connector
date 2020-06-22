@@ -6,13 +6,20 @@
  */
 package org.mule.extension.ws.internal.addressing;
 
+import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
 import org.mule.extension.ws.internal.addressing.properties.EndpointReferenceType;
 import org.mule.extension.ws.internal.addressing.properties.RelatesToType;
 import org.mule.extension.ws.internal.addressing.properties.URIType;
 
 import static java.util.Map.Entry;
 
-public interface HeadersVersionEncoder {
+/**
+ * Encodes {@link AddressingProperties} model's types into a pair of
+ * key-value of type {@link Entry<String, String>}
+ *
+ * @since 2.0
+ */
+public interface HeadersEncoder {
 
   Entry<String, String> encodeMessageIDHeader(URIType messageID, boolean mustUnderstand);
 
