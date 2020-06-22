@@ -42,8 +42,4 @@ public class WebServiceConsumer {
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
   private AddressingConfiguration wsAddressing;
-
-  public AddressingConfiguration getWSAddressing() {
-    return this.wsAddressing;
-  }
 }

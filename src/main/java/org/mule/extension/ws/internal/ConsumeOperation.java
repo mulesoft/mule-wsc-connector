@@ -101,7 +101,6 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
-                                                            @Config WebServiceConsumer connector,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client,
                                                             @ParameterGroup(name = "Addressing",
