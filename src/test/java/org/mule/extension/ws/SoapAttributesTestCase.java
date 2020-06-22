@@ -42,7 +42,34 @@ public class SoapAttributesTestCase {
         + "  protocolHeaders = [\n"
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"
-        + "  ]"
-        + "\n}"));
+        + "  ]\n"
+        + "  messageID = null\n"
+        + "}\n"));
+  }
+
+  @Test
+  public void toStringAttributesWithMessageID() {
+
+    String result = new SoapAttributes(
+            unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
+                    new SimpleEntry<>("Header2", "Value2"))
+                    .collect(toMap(Entry::getKey, Entry::getValue)))),
+            unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
+                    new SimpleEntry<>("reasonPhrase", "OK"))
+                    .collect(toMap(Entry::getKey, Entry::getValue)))),
+            "MessageID")
+            .toString();
+
+    assertThat(result, is("{\n"
+            + "  additionalTransportData = [\n"
+            + "    reasonPhrase:OK,\n"
+            + "    statusCode:200\n"
+            + "  ]\n"
+            + "  protocolHeaders = [\n"
+            + "    Header1:Value1,\n"
+            + "    Header2:Value2\n"
+            + "  ]\n"
+            + "  messageID = MessageID\n"
+            + "}\n"));
   }
 }

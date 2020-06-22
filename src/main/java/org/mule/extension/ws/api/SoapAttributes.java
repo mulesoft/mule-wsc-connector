@@ -88,11 +88,11 @@ public class SoapAttributes {
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
-        "  ],\n" +
+        "  ]\n" +
         "  protocolHeaders = [\n" +
         "    " + headersAsString + "\n" +
-        "  ],\n" +
-        "  messageID = " + messageId +
-        "}";
+        "  ]\n" +
+        "  messageID = " + messageId + "\n" +
+        "}\n";
   }
 }
