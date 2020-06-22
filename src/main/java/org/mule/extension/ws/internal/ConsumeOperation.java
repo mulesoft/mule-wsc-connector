@@ -137,13 +137,11 @@ public class ConsumeOperation {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
     Result<SoapOutputEnvelope, SoapAttributes> result =
         consume(connection, operation, message, transportConfig, streamingHelper, client, headers);
-    Result.Builder<SoapOutputEnvelope, SoapAttributes> builder = Result.<SoapOutputEnvelope, SoapAttributes>builder()
+    return Result.<SoapOutputEnvelope, SoapAttributes>builder()
+            .output(result.getOutput())
         .attributes(new SoapAttributes(result.getAttributes().get().getProtocolHeaders(),
                                        result.getAttributes().get().getProtocolHeaders(),
-                                       addressing.getMessageID().get().getValue()));
-    if (!addressing.getReplyTo().isPresent())
-      builder.output(result.getOutput());
-    return builder.build();
+                                       addressing.getMessageID().get().getValue())).build();
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
