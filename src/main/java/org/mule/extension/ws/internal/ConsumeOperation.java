@@ -138,10 +138,11 @@ public class ConsumeOperation {
     Result<SoapOutputEnvelope, SoapAttributes> result =
         consume(connection, operation, message, transportConfig, streamingHelper, client, headers);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
-            .output(result.getOutput())
+        .output(result.getOutput())
         .attributes(new SoapAttributes(result.getAttributes().get().getProtocolHeaders(),
                                        result.getAttributes().get().getProtocolHeaders(),
-                                       addressing.getMessageID().get().getValue())).build();
+                                       addressing.getMessageID().get().getValue()))
+        .build();
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
