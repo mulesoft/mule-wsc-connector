@@ -36,9 +36,20 @@ public class SoapAttributes {
   @Parameter
   private final Map<String, String> additionalTransportData;
 
+  /**
+   * WS-A MessageID related
+   */
+  @Parameter
+  private final String messageId;
+
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
+    this(protocolHeaders, additionalTransportData, null);
+  }
+
+  public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData, String messageId) {
     this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
     this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
+    this.messageId = messageId;
   }
 
   /**
@@ -53,6 +64,13 @@ public class SoapAttributes {
    */
   public Map<String, String> getAdditionalTransportData() {
     return additionalTransportData;
+  }
+
+  /**
+   * @return WS-A MessageID related.
+   */
+  public String getMessageId() {
+    return messageId;
   }
 
   @Override
@@ -70,10 +88,11 @@ public class SoapAttributes {
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
-        "  ]\n" +
+        "  ],\n" +
         "  protocolHeaders = [\n" +
         "    " + headersAsString + "\n" +
-        "  ]\n" +
+        "  ],\n" +
+        "  messageID = " + messageId +
         "}";
   }
 }
