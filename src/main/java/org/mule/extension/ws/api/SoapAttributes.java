@@ -37,19 +37,20 @@ public class SoapAttributes {
   private final Map<String, String> additionalTransportData;
 
   /**
-   * WS-A MessageID related
+   * Addressing data
    */
   @Parameter
-  private final String messageId;
+  private final Map<String, String> addressing;
 
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
     this(protocolHeaders, additionalTransportData, null);
   }
 
-  public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData, String messageId) {
+  public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData,
+                        Map<String, String> addressing) {
     this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
     this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
-    this.messageId = messageId;
+    this.addressing = unmodifiableMap(addressing != null ? addressing : EMPTY_MAP);
   }
 
   /**
@@ -67,10 +68,10 @@ public class SoapAttributes {
   }
 
   /**
-   * @return WS-A MessageID related.
+   * @return a set of additional addressing data
    */
-  public String getMessageId() {
-    return messageId;
+  public Map<String, String> getAddressing() {
+    return addressing;
   }
 
   @Override
@@ -85,6 +86,11 @@ public class SoapAttributes {
         .map(e -> e.getKey() + ":" + e.getValue())
         .collect(joining(",\n    "));
 
+    String addressingDataAsString = addressing.entrySet()
+        .stream()
+        .map(e -> e.getKey() + ":" + e.getValue())
+        .collect(joining(",\n    "));
+
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
@@ -92,7 +98,9 @@ public class SoapAttributes {
         "  protocolHeaders = [\n" +
         "    " + headersAsString + "\n" +
         "  ]\n" +
-        "  messageID = " + messageId + "\n" +
+        "  addressing = [\n" +
+        "    " + addressingDataAsString + "\n" +
+        "  ]\n" +
         "}\n";
   }
 }

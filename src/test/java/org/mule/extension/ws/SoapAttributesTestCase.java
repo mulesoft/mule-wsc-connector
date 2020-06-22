@@ -43,7 +43,9 @@ public class SoapAttributesTestCase {
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"
         + "  ]\n"
-        + "  messageID = null\n"
+        + "  addressing = [\n"
+        + "    \n"
+        + "  ]\n"
         + "}\n"));
   }
 
@@ -51,25 +53,28 @@ public class SoapAttributesTestCase {
   public void toStringAttributesWithMessageID() {
 
     String result = new SoapAttributes(
-            unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
-                    new SimpleEntry<>("Header2", "Value2"))
-                    .collect(toMap(Entry::getKey, Entry::getValue)))),
-            unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
-                    new SimpleEntry<>("reasonPhrase", "OK"))
-                    .collect(toMap(Entry::getKey, Entry::getValue)))),
-            "MessageID")
-            .toString();
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
+                                                                      new SimpleEntry<>("Header2", "Value2"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
+                                                                      new SimpleEntry<>("reasonPhrase", "OK"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("MessageID", "12345"))
+                                           .collect(toMap(Entry::getKey, Entry::getValue)))))
+                                               .toString();
 
     assertThat(result, is("{\n"
-            + "  additionalTransportData = [\n"
-            + "    reasonPhrase:OK,\n"
-            + "    statusCode:200\n"
-            + "  ]\n"
-            + "  protocolHeaders = [\n"
-            + "    Header1:Value1,\n"
-            + "    Header2:Value2\n"
-            + "  ]\n"
-            + "  messageID = MessageID\n"
-            + "}\n"));
+        + "  additionalTransportData = [\n"
+        + "    reasonPhrase:OK,\n"
+        + "    statusCode:200\n"
+        + "  ]\n"
+        + "  protocolHeaders = [\n"
+        + "    Header1:Value1,\n"
+        + "    Header2:Value2\n"
+        + "  ]\n"
+        + "  addressing = [\n"
+        + "    MessageID:12345\n"
+        + "  ]\n"
+        + "}\n"));
   }
 }

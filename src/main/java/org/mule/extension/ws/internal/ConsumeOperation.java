@@ -7,6 +7,7 @@
 package org.mule.extension.ws.internal;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
@@ -141,7 +142,8 @@ public class ConsumeOperation {
         .output(result.getOutput())
         .attributes(new SoapAttributes(result.getAttributes().get().getProtocolHeaders(),
                                        result.getAttributes().get().getProtocolHeaders(),
-                                       addressing.getMessageID().get().getValue()))
+                                       ImmutableMap.<String, String>builder()
+                                           .put("MessageID", addressing.getMessageID().get().getValue()).build()))
         .build();
   }
 

@@ -97,7 +97,7 @@
         </mtf:get-attributes-metadata>
         <mtf:validation>
             <set-variable variableName="attributeFields" value="#[payload.fields]" />
-            <munit-tools:assert-equals actual="#[sizeOf(vars.attributeFields)]" expected="#[2]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attributeFields)]" expected="#[3]" />
             <foreach collection="#[vars.attributeFields]" counterVariableName="index">
                 <munit-tools:assert-equals actual="#[payload.model.'type']" expected="Object" />
                 <munit-tools:assert-that expression="#[payload.model.open]" is="#[MunitTools::notNullValue()]"/>
