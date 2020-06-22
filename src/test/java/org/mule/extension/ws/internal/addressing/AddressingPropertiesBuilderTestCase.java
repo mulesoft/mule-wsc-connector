@@ -49,6 +49,12 @@ public class AddressingPropertiesBuilderTestCase {
   }
 
   @Test
+  public void testMinimumScenario() {
+    AddressingProperties sut = builder.build();
+    assertThat(sut.isRequired(), is(false));
+  }
+
+  @Test
   public void testBasicScenario() {
     AddressingProperties sut = builder
         .namespaceURI(NAMESPACE)
@@ -56,6 +62,7 @@ public class AddressingPropertiesBuilderTestCase {
         .to(TO)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getNamespaceURI(), is(NAMESPACE));
     assertThat(sut.getAction().isPresent(), is(true));
     assertThat(sut.getAction().get().getValue(), is(ACTION));
@@ -71,6 +78,7 @@ public class AddressingPropertiesBuilderTestCase {
         .action(ACTION)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getMessageID().isPresent(), is(true));
     assertThat(sut.getMessageID().get().getValue(), isUuid());
   }
@@ -84,6 +92,7 @@ public class AddressingPropertiesBuilderTestCase {
         .replyTo(BASEPATH, REPLYTO, null)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getReplyTo().isPresent(), is(true));
     assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + "/" + REPLYTO));
   }
@@ -97,6 +106,7 @@ public class AddressingPropertiesBuilderTestCase {
         .replyTo(BASEPATH, REPLYTO_WITH_SLASH, null)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getReplyTo().isPresent(), is(true));
     assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + REPLYTO_WITH_SLASH));
   }
@@ -110,6 +120,7 @@ public class AddressingPropertiesBuilderTestCase {
         .replyTo(BASEPATH, null, FAULTTO)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getFaultTo().isPresent(), is(true));
     assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + "/" + FAULTTO));
   }
@@ -123,6 +134,7 @@ public class AddressingPropertiesBuilderTestCase {
         .replyTo(BASEPATH, null, FAULTTO_WITH_SLASH)
         .build();
 
+    assertThat(sut.isRequired(), is(true));
     assertThat(sut.getFaultTo().isPresent(), is(true));
     assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + FAULTTO_WITH_SLASH));
   }
@@ -130,13 +142,13 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void failWithNoNamespace() {
     expectedException.expectMessage("Namespace URI cannot be null");
-    builder.build();
+    builder.action(ACTION).build();
   }
 
   @Test
   public void failWithNoTo() {
     expectedException.expectMessage("'To' cannot be null");
-    builder.namespaceURI(NAMESPACE).build();
+    builder.namespaceURI(NAMESPACE).action(ACTION).build();
   }
 
   @Test
