@@ -105,8 +105,7 @@ public class ConsumeOperation {
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client,
                                                             @ParameterGroup(name = "Addressing",
-                                                                showInDsl = true) @Placement(
-                                                                    tab = ADVANCED_TAB) AddressingSettings addressingSettings)
+                                                                showInDsl = true) AddressingSettings addressingSettings)
       throws ConnectionException {
     AddressingProperties addressing = getAddressingProperties(addressingSettings, key);
     if (addressing.isRequired()) {

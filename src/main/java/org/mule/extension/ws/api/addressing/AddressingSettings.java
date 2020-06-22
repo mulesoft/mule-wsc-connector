@@ -21,6 +21,7 @@ import org.mule.runtime.extension.api.annotation.values.OfValues;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.api.meta.ExpressionSupport.REQUIRED;
 import static org.mule.runtime.api.meta.ExpressionSupport.SUPPORTED;
+import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 public class AddressingSettings {
 
@@ -29,7 +30,7 @@ public class AddressingSettings {
    */
   @ConfigOverride
   @Parameter
-  @Placement(order = 1)
+  @Placement(tab = ADVANCED_TAB, order = 1)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Must understand")
@@ -38,7 +39,7 @@ public class AddressingSettings {
 
   @ConfigOverride
   @Parameter
-  @Placement(order = 2)
+  @Placement(tab = ADVANCED_TAB, order = 2)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Version")
@@ -46,14 +47,14 @@ public class AddressingSettings {
 
   @ConfigOverride
   @Parameter
-  @Placement(order = 3)
+  @Placement(tab = ADVANCED_TAB, order = 3)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("From")
   private String wsaFrom;
 
   @Parameter
-  @Placement(order = 4)
+  @Placement(tab = ADVANCED_TAB, order = 4)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Action")
@@ -61,7 +62,7 @@ public class AddressingSettings {
   private String wsaAction;
 
   @Parameter
-  @Placement(order = 5)
+  @Placement(tab = ADVANCED_TAB, order = 5)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("To")
@@ -69,28 +70,28 @@ public class AddressingSettings {
   private String wsaTo;
 
   @Parameter
-  @Placement(order = 6)
+  @Placement(tab = ADVANCED_TAB, order = 6)
   @Optional
   @Expression(REQUIRED)
   @DisplayName("Message ID")
   private String wsaMessageID;
 
   @Parameter
-  @Placement(order = 7)
+  @Placement(tab = ADVANCED_TAB, order = 7)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
   private String wsaRelatesTo;
 
   @Parameter
-  @Placement(order = 8)
+  @Placement(tab = ADVANCED_TAB, order = 8)
   @Optional
   @Expression(SUPPORTED)
   @DisplayName("Relationsship type")
   private String wsaRelationshipType;
 
   @Parameter
-  @Placement(order = 9)
+  @Placement(tab = ADVANCED_TAB, order = 9)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Fault to")
@@ -99,7 +100,7 @@ public class AddressingSettings {
   @ConfigOverride
   @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
   @Parameter
-  @Placement(order = 10)
+  @Placement(tab = ADVANCED_TAB, order = 10)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("HTTP Listener")
