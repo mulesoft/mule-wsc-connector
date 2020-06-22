@@ -23,6 +23,6 @@ public class AddressingToValueProvider implements ValueProvider {
 
   @Override
   public Set<Value> resolve() throws ValueResolvingException {
-    return ValueBuilder.getValuesFor("", client.getInfo().getAddress());
+    return ValueBuilder.getValuesFor(client.getInfo().getAddress());
   }
 }

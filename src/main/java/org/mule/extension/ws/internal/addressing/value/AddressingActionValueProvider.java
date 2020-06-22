@@ -27,6 +27,6 @@ public class AddressingActionValueProvider implements ValueProvider {
   @Override
   public Set<Value> resolve() throws ValueResolvingException {
     return ValueBuilder
-        .getValuesFor("", client.getInfo().getAddress() + "/" + client.getInfo().getPort() + "/" + operation + "Request");
+        .getValuesFor(client.getInfo().getAddress() + "/" + client.getInfo().getPort() + "/" + operation + "Request");
   }
 }
