@@ -24,9 +24,9 @@ public class AddressingHeadersResolverFactory {
 
   public AddressingHeadersResolver create(AddressingProperties properties) {
 
-    AddressingQNameResolver resolver = properties.getNamespaceURI() == OldAddressingQNameResolver.WSA_NAMESPACE_NAME
-        ? new OldAddressingQNameResolver()
-        : new DefaultAddressingQNameResolver();
+    AddressingQNameResolver resolver = Addressing200408QNameResolver.WSA_NAMESPACE_NAME.equals(properties.getNamespaceURI())
+        ? new Addressing200408QNameResolver()
+        : new Addressing200508QNameResolver();
 
     return new AddressingHeadersResolver(new DefaultHeadersEncoder(resolver,
                                                                    new AddressingXmlTransformer(expressionExecutor)));

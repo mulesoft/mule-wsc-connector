@@ -28,8 +28,4 @@ public interface AddressingQNameResolver {
   QName getFaultToQName();
 
   QName getRelatesToQName();
-
-  QName getRelationshipTypeQName();
-
-  QName getAddressQName();
 }
