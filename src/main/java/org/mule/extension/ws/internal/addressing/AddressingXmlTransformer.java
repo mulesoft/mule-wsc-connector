@@ -27,7 +27,7 @@ import static org.mule.runtime.api.metadata.DataType.STRING;
  */
 public class AddressingXmlTransformer implements AddressingTransformer {
 
-  private final String simpleExpression = "%dw 2.0\n" +
+  private final static String SIMPLE_EXPRESSION = "%dw 2.0\n" +
       "fun element(ns0: Namespace, tag: String, mustUnderstand: Boolean, obj: Any) = \n" +
       "if (mustUnderstand)\n" +
       "{ ns0#\"$(tag)\" @(mustUnderstand:true): obj }\n" +
@@ -39,7 +39,7 @@ public class AddressingXmlTransformer implements AddressingTransformer {
       "---\n" +
       "element(wsa, tagName, mustUnderstand, value)";
 
-  private final String endpointReferenceExpression = "%dw 2.0\n" +
+  private final static String ENDPOINT_REFERENCE_EXPRESSION = "%dw 2.0\n" +
       "fun element(ns0: Namespace, tag: String, mustUnderstand: Boolean, obj: Any) = \n" +
       "if (mustUnderstand)\n" +
       "{ ns0#\"$(tag)\" @(mustUnderstand:true): obj }\n" +
@@ -51,7 +51,7 @@ public class AddressingXmlTransformer implements AddressingTransformer {
       "---\n" +
       "element(wsa, tagName, mustUnderstand, element(wsa, \"Address\", false, address))";
 
-  private final String relatesToWithRelationshipExpression = "%dw 2.0\n" +
+  private final static String RELATES_TO_WITH_RELATIONSHIP_EXPRESSION = "%dw 2.0\n" +
       "fun element(ns0: Namespace, tag: String, mustUnderstand: Boolean, relationship: String, obj: Any) = \n" +
       "if (mustUnderstand)\n" +
       "{ ns0#\"$(tag)\" @(mustUnderstand:true, RelationshipType:relationship) : obj }\n" +
@@ -74,7 +74,7 @@ public class AddressingXmlTransformer implements AddressingTransformer {
     BindingContext context = getDefaultBindingContext(qname, mustUnderstand)
         .addBinding("address", new TypedValue(endpoint.getAddress().getValue(), STRING))
         .build();
-    return execute(endpointReferenceExpression, context);
+    return execute(ENDPOINT_REFERENCE_EXPRESSION, context);
   }
 
   @Override
@@ -84,23 +84,22 @@ public class AddressingXmlTransformer implements AddressingTransformer {
 
   @Override
   public String transform(RelatesToType relatesTo, QName qname, boolean mustUnderstand) {
-    if (!relatesTo.getRelationShip().isPresent()) {
+    if (relatesTo.getRelationShip().isPresent()) {
+      BindingContext context = getDefaultBindingContext(qname, mustUnderstand)
+          .addBinding("value", new TypedValue(relatesTo.getValue(), STRING))
+          .addBinding("relationship", new TypedValue(relatesTo.getRelationShip().get(), STRING))
+          .build();
+      return expressionExecutor.evaluate(RELATES_TO_WITH_RELATIONSHIP_EXPRESSION, context).getValue().toString();
+    } else {
       return transform(relatesTo.getValue(), qname, mustUnderstand);
     }
-
-    BindingContext context = getDefaultBindingContext(qname, mustUnderstand)
-        .addBinding("value", new TypedValue(relatesTo.getValue(), STRING))
-        .addBinding("relationship", new TypedValue(relatesTo.getRelationShip().get(), STRING))
-        .build();
-
-    return expressionExecutor.evaluate(relatesToWithRelationshipExpression, context).getValue().toString();
   }
 
   public String transform(String value, QName qname, boolean mustUnderstand) {
     BindingContext context = getDefaultBindingContext(qname, mustUnderstand)
         .addBinding("value", new TypedValue(value, STRING))
         .build();
-    return execute(simpleExpression, context);
+    return execute(SIMPLE_EXPRESSION, context);
   }
 
   private BindingContext.Builder getDefaultBindingContext(QName qname, boolean mustUnderstand) {

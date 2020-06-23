@@ -9,7 +9,6 @@ package org.mule.extension.ws.internal.addressing.value;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Connection;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.values.ValueBuilder;
 import org.mule.runtime.extension.api.values.ValueProvider;
 import org.mule.runtime.extension.api.values.ValueResolvingException;

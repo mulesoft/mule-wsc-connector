@@ -105,20 +105,15 @@ public class ConsumeOperation {
     if (addressing.isRequired()) {
       return consumeWithAddressing(connection, key.getOperation(), message, transportConfig, streamingHelper, client, addressing);
     }
-    return consume(connection, key.getOperation(), message, transportConfig, streamingHelper, client, null);
+    return consume(connection, key.getOperation(), message, transportConfig, streamingHelper, client);
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> consume(WscSoapClient connection, String operation,
                                                              SoapMessageBuilder message, TransportConfiguration transportConfig,
-                                                             StreamingHelper streamingHelper, ExtensionsClient client,
-                                                             Map<String, String> addressingHeaders)
+                                                             StreamingHelper streamingHelper, ExtensionsClient client)
       throws ConnectionException {
-    SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressingHeaders).build();
-    SoapResponse response = connection.consume(request, client);
-    return Result.<SoapOutputEnvelope, SoapAttributes>builder()
-        .output(new SoapOutputEnvelope(response, streamingHelper))
-        .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData()))
-        .build();
+    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, null);
+    return createResult(response, streamingHelper);
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> consumeWithAddressing(WscSoapClient connection, String operation,
@@ -129,15 +124,32 @@ public class ConsumeOperation {
                                                                            AddressingProperties addressing)
       throws ConnectionException {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
-    Result<SoapOutputEnvelope, SoapAttributes> result =
-        consume(connection, operation, message, transportConfig, streamingHelper, client, headers);
+    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
+
+    ImmutableMap.Builder addressingAttributes = ImmutableMap.<String, String>builder();
+    addressing.getMessageID().ifPresent(x -> addressingAttributes.put("MessageID", x.getValue()));
+
+    return createResult(response, streamingHelper, addressingAttributes.build());
+  }
+
+  private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper) {
+    return createResult(response, streamingHelper, null);
+  }
+
+  private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper,
+                                                                  Map<String, String> addressing) {
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
-        .output(result.getOutput())
-        .attributes(new SoapAttributes(result.getAttributes().get().getProtocolHeaders(),
-                                       result.getAttributes().get().getProtocolHeaders(),
-                                       ImmutableMap.<String, String>builder()
-                                           .put("MessageID", addressing.getMessageID().get().getValue()).build()))
+        .output(new SoapOutputEnvelope(response, streamingHelper))
+        .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData(), addressing))
         .build();
+  }
+
+  private SoapResponse doConsume(WscSoapClient connection, String operation, SoapMessageBuilder message,
+                                 TransportConfiguration transportConfig, ExtensionsClient client,
+                                 Map<String, String> addressingHeaders)
+      throws ConnectionException {
+    SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressingHeaders).build();
+    return connection.consume(request, client);
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,

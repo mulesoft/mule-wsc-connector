@@ -22,8 +22,12 @@ public class AddressingPropertiesBuilder {
 
   private boolean mustUnderstand;
   private String namespaceURI;
-  private URIType to, action, messageId;
-  private EndpointReferenceType from, replyTo, faultTo;
+  private URIType to;
+  private URIType action;
+  private URIType messageId;
+  private EndpointReferenceType from;
+  private EndpointReferenceType replyTo;
+  private EndpointReferenceType faultTo;
   private RelatesToType relatesTo;
 
   public AddressingPropertiesBuilder mustUnderstand(boolean mustUnderstand) {
