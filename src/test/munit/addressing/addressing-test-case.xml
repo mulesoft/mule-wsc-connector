@@ -64,6 +64,10 @@
 
     <!-- Tests -->
     <munit:test name="wsaHeaders" description="Consumes an operation with wsa headers" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:enable-flow-sources >
+            <!-- TODO: remove this after fix MULE-18513 -->
+            <munit:enable-flow-source value="init-wsa-http-listener"/>
+        </munit:enable-flow-sources>
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="noParamsWithHeader" wsaReplyTo="ReplyTo">
                 <wsc:message >
@@ -78,6 +82,10 @@
     </munit:test>
 
     <munit:test name="wsaKeepUserHeaders" description="Consumes an operation with wsa headers but preserve headers settled by user" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:enable-flow-sources >
+            <!-- TODO: remove this after fix MULE-18513 -->
+            <munit:enable-flow-source value="init-wsa-http-listener"/>
+        </munit:enable-flow-sources>
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="noParamsWithHeader" wsaReplyTo="ReplyTo">
                 <wsc:message >
