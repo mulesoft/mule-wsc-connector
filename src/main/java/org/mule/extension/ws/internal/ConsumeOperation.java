@@ -96,10 +96,10 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
-                                                            StreamingHelper streamingHelper,
-                                                            ExtensionsClient client,
                                                             @ParameterGroup(name = "Addressing",
-                                                                showInDsl = true) AddressingSettings addressingSettings)
+                                                                showInDsl = true) AddressingSettings addressingSettings,
+                                                            StreamingHelper streamingHelper,
+                                                            ExtensionsClient client)
       throws ConnectionException {
     AddressingProperties addressing = getAddressingProperties(addressingSettings, key);
     if (addressing.isRequired()) {
@@ -127,7 +127,7 @@ public class ConsumeOperation {
     SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
 
     ImmutableMap.Builder addressingAttributes = ImmutableMap.<String, String>builder();
-    addressing.getMessageID().ifPresent(x -> addressingAttributes.put("MessageID", x.getValue()));
+    addressing.getMessageID().ifPresent(messageID -> addressingAttributes.put("MessageID", messageID.getValue()));
 
     return createResult(response, streamingHelper, addressingAttributes.build());
   }
