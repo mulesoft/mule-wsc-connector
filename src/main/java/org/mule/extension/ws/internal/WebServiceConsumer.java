@@ -26,7 +26,7 @@ import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
  * @since 1.0
  */
 @ErrorTypes(WscError.class)
-@Operations(ConsumeOperation.class)
+@Operations({ConsumeOperation.class, HandleReplyOperation.class})
 @ConnectionProviders(SoapClientConnectionProvider.class)
 @SubTypeMapping(baseType = CustomTransportConfiguration.class,
     subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})

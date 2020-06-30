@@ -14,6 +14,7 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
+import org.mule.soap.api.transport.TransportResponse;
 
 /**
  * Connection object that wraps a {@link SoapClient} with additional information required to resolve metadata.
@@ -39,6 +40,16 @@ public class WscSoapClient {
   }
 
   public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
+    lazyClientInitialization();
+    return delegate.consume(request, transportConfiguration.buildDispatcher(client));
+  }
+
+  public SoapResponse handleReply(String operation, TransportResponse response) throws ConnectionException {
+    lazyClientInitialization();
+    return delegate.handleReply(operation, response);
+  }
+
+  private void lazyClientInitialization() throws ConnectionException {
     if (delegate == null) {
       synchronized (this) {
         if (delegate == null) {
@@ -53,7 +64,6 @@ public class WscSoapClient {
         }
       }
     }
-    return delegate.consume(request, transportConfiguration.buildDispatcher(client));
   }
 
   public CustomTransportConfiguration getTransportConfiguration() {
