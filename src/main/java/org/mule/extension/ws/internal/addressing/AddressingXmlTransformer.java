@@ -14,6 +14,8 @@ import org.mule.extension.ws.internal.addressing.properties.RelatesToType;
 import org.mule.extension.ws.internal.addressing.properties.URIType;
 import org.mule.runtime.api.metadata.TypedValue;
 
+import java.util.Optional;
+
 import javax.xml.namespace.QName;
 
 import static org.mule.runtime.api.metadata.DataType.BOOLEAN;
@@ -84,10 +86,11 @@ public class AddressingXmlTransformer implements AddressingTransformer {
 
   @Override
   public String transform(RelatesToType relatesTo, QName qname, boolean mustUnderstand) {
-    if (relatesTo.getRelationShip().isPresent()) {
+    Optional<String> relationship = relatesTo.getRelationship();
+    if (relationship.isPresent()) {
       BindingContext context = getDefaultBindingContext(qname, mustUnderstand)
           .addBinding("value", new TypedValue(relatesTo.getValue(), STRING))
-          .addBinding("relationship", new TypedValue(relatesTo.getRelationShip().get(), STRING))
+          .addBinding("relationship", new TypedValue(relationship.get(), STRING))
           .build();
       return expressionExecutor.evaluate(RELATES_TO_WITH_RELATIONSHIP_EXPRESSION, context).getValue().toString();
     } else {

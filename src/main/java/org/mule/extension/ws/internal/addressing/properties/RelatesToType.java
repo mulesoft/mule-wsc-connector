@@ -19,19 +19,19 @@ import static java.util.Optional.ofNullable;
 public class RelatesToType {
 
   private final String value;
-  private final String relationShip;
+  private final String relationship;
 
-  public RelatesToType(String value, String relationShip) {
+  public RelatesToType(String value, String relationship) {
     checkNotNull(value, "Value cannot be null");
     this.value = value;
-    this.relationShip = relationShip;
+    this.relationship = relationship;
   }
 
   public String getValue() {
     return value;
   }
 
-  public Optional<String> getRelationShip() {
-    return ofNullable(relationShip);
+  public Optional<String> getRelationship() {
+    return ofNullable(relationship);
   }
 }
