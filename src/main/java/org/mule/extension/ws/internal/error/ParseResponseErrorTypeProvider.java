@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.error;
 
-import org.mule.extension.ws.internal.HandleReplyOperation;
+import org.mule.extension.ws.internal.ParseResponseOperation;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypeProvider;
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 
@@ -18,14 +18,14 @@ import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.*;
 
 /**
- * {@link ErrorTypeProvider} implementation for the {@link HandleReplyOperation}.
+ * {@link ErrorTypeProvider} implementation for the {@link ParseResponseOperation}.
  *
  * @since 2.0
  */
-public class HandleReplyErrorTypeProvider implements ErrorTypeProvider {
+public class ParseResponseErrorTypeProvider implements ErrorTypeProvider {
 
   /**
-   * @return all the error types that can be thrown by the {@link HandleReplyOperation}.
+   * @return all the error types that can be thrown by the {@link ParseResponseOperation}.
    */
   @Override
   public Set<ErrorTypeDefinition> getErrorTypes() {

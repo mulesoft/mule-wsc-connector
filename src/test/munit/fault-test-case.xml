@@ -104,7 +104,7 @@
     <munit:test name="failReplyAndCheckErrorMessage" description="Handle reply to an operation that throws a SOAP Fault and expects a Soap Fault Exception">
         <munit:execution>
             <try>
-                <wsc:handle-reply config-ref="${config}" operation="fail">
+                <wsc:parse-response config-ref="${config}" operation="fail">
                     <wsc:response contentType="text/xml">
                         <wsc:body>
                             <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -118,7 +118,7 @@
                                     </soapenv:Envelope>]]>
                         </wsc:body>
                     </wsc:response>
-                </wsc:handle-reply>
+                </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:SOAP_FAULT">
                         <set-payload value="#[error.errorMessage.payload.detail]"/>
@@ -131,10 +131,10 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="handleReplyWithInvalidContentType" description="Handle reply to an operation that the content type is no correct">
+    <munit:test name="parseResponseWithInvalidContentType" description="Parse response of an operation that the content type is no correct">
         <munit:execution>
             <try>
-                <wsc:handle-reply config-ref="${config}" operation="fail">
+                <wsc:parse-response config-ref="${config}" operation="fail">
                     <wsc:response contentType="text/xml">
                         <wsc:body>
                             <![CDATA[------=_Part_21_1210100687.1593035795882
@@ -161,7 +161,7 @@
                                 ------=_Part_21_1210100687.1593035795882--]]>
                         </wsc:body>
                     </wsc:response>
-                </wsc:handle-reply>
+                </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:BAD_RESPONSE">
                         <set-payload value="#[error.detailedDescription]"/>
@@ -174,10 +174,10 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="handleReplyWithInvalidMultipartContentType" description="Handle reply to an operation that the content type is no correct">
+    <munit:test name="parseResponseWithInvalidMultipartContentType" description="Parse response of an operation that the content type is no correct">
         <munit:execution>
             <try>
-                <wsc:handle-reply config-ref="${config}" operation="fail">
+                <wsc:parse-response config-ref="${config}" operation="fail">
                     <wsc:response contentType="multipart/related">
                         <wsc:body>
                             <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
@@ -191,7 +191,7 @@
                                     </soapenv:Envelope>]]>
                         </wsc:body>
                     </wsc:response>
-                </wsc:handle-reply>
+                </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:BAD_RESPONSE">
                         <set-payload value="#[error.detailedDescription]"/>

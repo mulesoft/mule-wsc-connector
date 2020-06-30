@@ -25,8 +25,8 @@ public class WscSoapClient {
 
   private final CustomTransportConfiguration transportConfiguration;
   private final WsdlConnectionInfo info;
-  private final CheckedSupplier<SoapClient> clientSupplier;
-  private volatile SoapClient delegate;
+  private final LazySoapClient lazyClient;
+
   private ExtensionsClient extensionsClient;
 
   public WscSoapClient(WsdlConnectionInfo info,
@@ -34,36 +34,17 @@ public class WscSoapClient {
                        CustomTransportConfiguration transportConfiguration,
                        ExtensionsClient extensionsClient) {
     this.info = info;
-    this.clientSupplier = clientSupplier;
+    this.lazyClient = new LazySoapClient(clientSupplier);
     this.transportConfiguration = transportConfiguration;
     this.extensionsClient = extensionsClient;
   }
 
   public SoapResponse consume(SoapRequest request, ExtensionsClient client) throws ConnectionException {
-    lazyClientInitialization();
-    return delegate.consume(request, transportConfiguration.buildDispatcher(client));
+    return lazyClient.get().consume(request, transportConfiguration.buildDispatcher(client));
   }
 
-  public SoapResponse handleReply(String operation, TransportResponse response) throws ConnectionException {
-    lazyClientInitialization();
-    return delegate.handleReply(operation, response);
-  }
-
-  private void lazyClientInitialization() throws ConnectionException {
-    if (delegate == null) {
-      synchronized (this) {
-        if (delegate == null) {
-          try {
-            delegate = clientSupplier.get();
-          } catch (ModuleException e) {
-            throw e;
-          } catch (Exception e) {
-            // Throws connection exception in any other case for backward compatibility
-            throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
-          }
-        }
-      }
-    }
+  public SoapResponse parseResponse(String operation, TransportResponse response) throws ConnectionException {
+    return lazyClient.get().parseResponse(operation, response);
   }
 
   public CustomTransportConfiguration getTransportConfiguration() {
@@ -79,8 +60,45 @@ public class WscSoapClient {
   }
 
   public void destroy() {
-    if (delegate != null) {
-      delegate.destroy();
+    lazyClient.clear();
+  }
+
+  private class LazySoapClient {
+
+    private final CheckedSupplier<SoapClient> clientSupplier;
+    private volatile SoapClient delegate;
+
+    public LazySoapClient(CheckedSupplier<SoapClient> supplier) {
+      clientSupplier = supplier;
+    }
+
+    public SoapClient get() throws ConnectionException {
+      if (delegate == null) {
+        synchronized (this) {
+          if (delegate == null) {
+            try {
+              delegate = clientSupplier.get();
+            } catch (ModuleException e) {
+              throw e;
+            } catch (Exception e) {
+              // Throws connection exception in any other case for backward compatibility
+              throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
+            }
+          }
+        }
+      }
+      return delegate;
+    }
+
+    public void clear() {
+      if (delegate != null) {
+        synchronized (this) {
+          if (delegate != null) {
+            delegate.destroy();
+            delegate = null;
+          }
+        }
+      }
     }
   }
 }

@@ -9,7 +9,7 @@ package org.mule.extension.ws.internal;
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
-import org.mule.extension.ws.internal.error.HandleReplyErrorTypeProvider;
+import org.mule.extension.ws.internal.error.ParseResponseErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
@@ -25,31 +25,31 @@ import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
 import org.mule.soap.api.message.SoapResponse;
 
 /**
- * The {@link HandleReplyOperation}  handles how to convert a raw response into a SOAP one.
+ * The {@link ParseResponseOperation} knows how to convert a raw response into a SOAP one.
  * <p>
- * The handle reply operation expects an XML response and optionally a set of transport headers and additional data.
+ * The parse response operation expects a response and optionally a set of transport headers and additional data.
  * <p>
  *
  * @since 2.0
  */
-public class HandleReplyOperation {
+public class ParseResponseOperation {
 
   /**
-   * Handles a response of an operation from a SOAP Web Service.
+   * Parses a response of an operation from a SOAP Web Service.
    *
    * @param connection the connection resolved to handle the response.
    * @param operation  the name of the web service operation that the response is related to.
    */
   @OnException(WscExceptionEnricher.class)
-  @Throws(HandleReplyErrorTypeProvider.class)
+  @Throws(ParseResponseErrorTypeProvider.class)
   @OutputResolver(output = ConsumeOutputResolver.class)
-  public Result<SoapOutputEnvelope, SoapAttributes> handleReply(@Connection WscSoapClient connection,
-                                                                @MetadataKeyId(OperationKeysResolver.class) String operation,
-                                                                @ParameterGroup(name = "Response",
-                                                                    showInDsl = true) SoapResponseBuilder response,
-                                                                StreamingHelper streamingHelper)
+  public Result<SoapOutputEnvelope, SoapAttributes> parseResponse(@Connection WscSoapClient connection,
+                                                                  @MetadataKeyId(OperationKeysResolver.class) String operation,
+                                                                  @ParameterGroup(name = "Response",
+                                                                      showInDsl = true) Response response,
+                                                                  StreamingHelper streamingHelper)
       throws ConnectionException {
-    SoapResponse soapResponse = connection.handleReply(operation, response.toTransportResponse());
+    SoapResponse soapResponse = connection.parseResponse(operation, response.getTransportResponse());
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(soapResponse, streamingHelper))
         .attributes(new SoapAttributes(soapResponse.getTransportHeaders(), soapResponse.getTransportAdditionalData()))

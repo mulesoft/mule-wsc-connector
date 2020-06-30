@@ -109,13 +109,13 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="handleReplyCantGetWsdl" description="Trying to habdle replies without a wsdl valid path" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="parseResponseWithInvalidWsdl" description="Trying to parse a response without a wsdl valid path" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:enable-flow-sources >
             <munit:enable-flow-source value="returns404"/>
         </munit:enable-flow-sources>
         <munit:execution>
             <try>
-                <wsc:handle-reply config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
+                <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
                     <wsc:response contentType="text/xml">
                         <wsc:body><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
@@ -126,7 +126,7 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></wsc:body>
                     </wsc:response>
-                </wsc:handle-reply>
+                </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true">
                         <set-payload value="#[error.description]"/>
@@ -141,10 +141,10 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="handleReplyBadWsdl" description="Trying to handle replies with a bad formatted wsdl"  ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="parseResponseWithBadWsdl" description="Trying to parse a response with a bad formatted wsdl"  ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <try>
-                <wsc:handle-reply config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
+                <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
                     <wsc:response contentType="text/xml">
                         <wsc:body><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
@@ -155,7 +155,7 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></wsc:body>
                     </wsc:response>
-                </wsc:handle-reply>
+                </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:INVALID_WSDL">
                         <set-payload value="#[error.description]"/>

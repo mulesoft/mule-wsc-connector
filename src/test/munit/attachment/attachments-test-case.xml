@@ -156,12 +156,12 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="replyWithAttachment" description="Handle reply which contains an attachment" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="parseResponseWithAttachment" description="Parse response which contains an attachment" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <set-variable variableName="mtomEnabled" value="${mtomEnabled}" />
             <choice>
                 <when expression="#[vars.mtomEnabled == 'true']">
-                    <wsc:handle-reply config-ref="${config}" operation="downloadAttachment">
+                    <wsc:parse-response config-ref="${config}" operation="downloadAttachment">
                         <wsc:response contentType='multipart/related; type="application/xop+xml"; start="&lt;rootpart@soapui.org&gt;"; start-info="text/xml"; boundary="----=_Part_21_1210100687.1593035795882"' >
                             <wsc:body ><![CDATA[------=_Part_21_1210100687.1593035795882
 Content-Type: application/xop+xml; charset=UTF-8; type="text/xml"
@@ -185,10 +185,10 @@ Content-Disposition: attachment; name="attachment.txt"
 Simple Attachment Content
 ------=_Part_21_1210100687.1593035795882--]]></wsc:body>
                         </wsc:response>
-                    </wsc:handle-reply>
+                    </wsc:parse-response>
                 </when>
                 <otherwise >
-                    <wsc:handle-reply config-ref="${config}" operation="downloadAttachment">
+                    <wsc:parse-response config-ref="${config}" operation="downloadAttachment">
                         <wsc:response contentType='multipart/related; type="text/xml"; start="&lt;rootpart@soapui.org&gt;"; boundary="----=_Part_1_736085595.1593528925587"' >
                             <wsc:body ><![CDATA[------=_Part_1_736085595.1593528925587
 Content-Type: text/xml; charset=UTF-8
@@ -205,7 +205,7 @@ Content-ID: <rootpart@soapui.org>
 </soapenv:Envelope>
 ------=_Part_1_736085595.1593528925587--]]></wsc:body>
                         </wsc:response>
-                    </wsc:handle-reply>
+                    </wsc:parse-response>
                 </otherwise>
             </choice>
             <set-payload value="#[output text/plain --- payload.attachments['${attachmentName}']]" />

@@ -8,8 +8,6 @@ package org.mule.extension.ws.internal;
 
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.param.Content;
-import org.mule.runtime.extension.api.annotation.param.NullSafe;
-import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.transport.TransportResponse;
@@ -20,11 +18,11 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 
 /**
- * Component that specifies how to create a proper SOAP response using the {@link WebServiceConsumer}.
+ * Model for a Response
  *
  * @since 2.0
  */
-public class SoapResponseBuilder {
+public class Response {
 
   /**
    * The body of the response
@@ -41,19 +39,8 @@ public class SoapResponseBuilder {
   @Summary("The content type of the response")
   private String contentType;
 
-  /**
-   * The transport headers of the response.
-   */
-  @Parameter
-  @Optional
-  @NullSafe
-  @Summary("The transport headers of the SOAP response.")
-  private Map<String, String> transportHeaders;
-
-  public TransportResponse toTransportResponse() {
-
+  public TransportResponse getTransportResponse() {
     Map<String, String> headers = ImmutableMap.<String, String>builder()
-        .putAll(transportHeaders)
         .put("Content-Type", contentType)
         .build();
     return new TransportResponse(body.getValue(), headers);
