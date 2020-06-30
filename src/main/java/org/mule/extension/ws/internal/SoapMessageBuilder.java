@@ -40,7 +40,7 @@ public class SoapMessageBuilder {
   private TypedValue<InputStream> body;
 
   /**
-   * If false, each connection will be closed after the first request is completed.
+   * If true, the XML initial declaration will be appended to the request's body.
    */
   @Parameter
   @Optional(defaultValue = "false")
