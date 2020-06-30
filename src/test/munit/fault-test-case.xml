@@ -100,4 +100,107 @@
             <munit-tools:assert-equals actual="#[payload]" expected="#['Error consuming the operation [fail], the request body is not a valid XML']"/>
         </munit:validation>
     </munit:test>
+
+    <munit:test name="failReplyAndCheckErrorMessage" description="Handle reply to an operation that throws a SOAP Fault and expects a Soap Fault Exception">
+        <munit:execution>
+            <try>
+                <wsc:handle-reply config-ref="${config}" operation="fail">
+                    <wsc:response contentType="text/xml">
+                        <wsc:body>
+                            <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                                       <soapenv:Body>
+                                          <soapenv:Fault>
+                                             <faultcode>Server</faultcode>
+                                             <faultstring>Internal Server Error</faultstring>
+                                             <detail><text>Fail Message</text></detail>
+                                          </soapenv:Fault>
+                                       </soapenv:Body>
+                                    </soapenv:Envelope>]]>
+                        </wsc:body>
+                    </wsc:response>
+                </wsc:handle-reply>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:SOAP_FAULT">
+                        <set-payload value="#[error.errorMessage.payload.detail]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]" expected="#['&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;detail&gt;&lt;text&gt;Fail Message&lt;/text&gt;&lt;/detail&gt;']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="handleReplyWithInvalidContentType" description="Handle reply to an operation that the content type is no correct">
+        <munit:execution>
+            <try>
+                <wsc:handle-reply config-ref="${config}" operation="fail">
+                    <wsc:response contentType="text/xml">
+                        <wsc:body>
+                            <![CDATA[------=_Part_21_1210100687.1593035795882
+                                Content-Type: application/xop+xml; charset=UTF-8; type="text/xml"
+                                Content-Transfer-Encoding: 8bit
+                                Content-ID: <rootpart@soapui.org>
+
+                                <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                                   <soapenv:Header xmlns:wsa="http://www.w3.org/2005/08/addressing"><wsa:Action>downloadAttachment</wsa:Action><wsa:RelatesTo RelationshipType="http://www.w3.org/2005/08/addressing/reply">uuid:7a8228a1-0beb-409e-8fe7-92833e19a972</wsa:RelatesTo><wsa:To>http://localhost:8081/some</wsa:To></soapenv:Header>
+                                   <soapenv:Body>
+                                      <ser:downloadAttachmentResponse>
+                                         <attachment><inc:Include href="cid:1271018540948" xmlns:inc="http://www.w3.org/2004/08/xop/include"/></attachment>
+                                      </ser:downloadAttachmentResponse>
+                                   </soapenv:Body>
+                                </soapenv:Envelope>
+                                ------=_Part_21_1210100687.1593035795882
+                                Content-Type: text/plain; charset=us-ascii
+                                Content-Transfer-Encoding: 7bit
+                                Content-ID: <attachment.txt>
+                                Content-Disposition: attachment; name="attachment.txt"
+
+                                Simple Attachment Content
+
+                                ------=_Part_21_1210100687.1593035795882--]]>
+                        </wsc:body>
+                    </wsc:response>
+                </wsc:handle-reply>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:BAD_RESPONSE">
+                        <set-payload value="#[error.detailedDescription]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]" expected="#['Error processing the response of the operation [fail], check if the content-type is correct.']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="handleReplyWithInvalidMultipartContentType" description="Handle reply to an operation that the content type is no correct">
+        <munit:execution>
+            <try>
+                <wsc:handle-reply config-ref="${config}" operation="fail">
+                    <wsc:response contentType="multipart/related">
+                        <wsc:body>
+                            <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                                       <soapenv:Body>
+                                          <soapenv:Fault>
+                                             <faultcode>Server</faultcode>
+                                             <faultstring>Internal Server Error</faultstring>
+                                             <detail><text>Fail Message</text></detail>
+                                          </soapenv:Fault>
+                                       </soapenv:Body>
+                                    </soapenv:Envelope>]]>
+                        </wsc:body>
+                    </wsc:response>
+                </wsc:handle-reply>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:BAD_RESPONSE">
+                        <set-payload value="#[error.detailedDescription]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]" expected="#['Error processing the response of the operation [fail], check if the content-type is correct.']"/>
+        </munit:validation>
+    </munit:test>
 </mule>
