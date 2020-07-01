@@ -125,11 +125,8 @@ public class ConsumeOperation {
       throws ConnectionException {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
     SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
-
-    ImmutableMap.Builder addressingAttributes = ImmutableMap.<String, String>builder();
-    addressing.getMessageID().ifPresent(messageID -> addressingAttributes.put("MessageID", messageID.getValue()));
-
-    return createResult(response, streamingHelper, addressingAttributes.build());
+    Map<String, String> addressingAttributes = getAddressingAttributes(addressing);
+    return createResult(response, streamingHelper, addressingAttributes);
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper) {
@@ -251,5 +248,11 @@ public class ConsumeOperation {
       throw new ModuleException("Invalid http listener config configured for WSA",
                                 BAD_REQUEST, e);
     }
+  }
+
+  private Map<String, String> getAddressingAttributes(AddressingProperties properties) {
+    Map<String, String> attributes = new HashMap<>();
+    properties.getMessageID().ifPresent(messageID -> attributes.put("MessageID", messageID.getValue()));
+    return attributes;
   }
 }
