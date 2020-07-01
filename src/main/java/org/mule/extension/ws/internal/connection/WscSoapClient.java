@@ -8,6 +8,7 @@ package org.mule.extension.ws.internal.connection;
 
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.api.util.LazyValue;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.exception.ModuleException;
@@ -60,44 +61,31 @@ public class WscSoapClient {
   }
 
   public void destroy() {
-    lazyClient.clear();
+    lazyClient.destroy();
   }
 
   private class LazySoapClient {
 
-    private final CheckedSupplier<SoapClient> clientSupplier;
-    private volatile SoapClient delegate;
+    private LazyValue<SoapClient> lazyClient;
 
     public LazySoapClient(CheckedSupplier<SoapClient> supplier) {
-      clientSupplier = supplier;
+      this.lazyClient = new LazyValue<>(supplier);
     }
 
     public SoapClient get() throws ConnectionException {
-      if (delegate == null) {
-        synchronized (this) {
-          if (delegate == null) {
-            try {
-              delegate = clientSupplier.get();
-            } catch (ModuleException e) {
-              throw e;
-            } catch (Exception e) {
-              // Throws connection exception in any other case for backward compatibility
-              throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
-            }
-          }
-        }
+      try {
+        return lazyClient.get();
+      } catch (ModuleException e) {
+        throw e;
+      } catch (Exception e) {
+        // Throws connection exception in any other case for backward compatibility
+        throw new ConnectionException("Error trying to acquire a new connection:" + e.getMessage(), e);
       }
-      return delegate;
     }
 
-    public void clear() {
-      if (delegate != null) {
-        synchronized (this) {
-          if (delegate != null) {
-            delegate.destroy();
-            delegate = null;
-          }
-        }
+    public void destroy() {
+      if (lazyClient.isComputed()) {
+        lazyClient.get().destroy();
       }
     }
   }

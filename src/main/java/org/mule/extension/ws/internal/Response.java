@@ -13,6 +13,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.soap.api.transport.TransportResponse;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -32,17 +33,13 @@ public class Response {
   @Summary("The body of the SOAP response.")
   private TypedValue<InputStream> body;
 
-  /**
-   * The content type of the response
-   */
-  @Parameter
-  @Summary("The content type of the response")
-  private String contentType;
-
   public TransportResponse getTransportResponse() {
-    Map<String, String> headers = ImmutableMap.<String, String>builder()
-        .put("Content-Type", contentType)
-        .build();
+    Map<String, String> headers = new HashMap() {
+
+      {
+        put("Content-Type", body.getDataType().getMediaType().toRfcString());
+      }
+    };
     return new TransportResponse(body.getValue(), headers);
   }
 }
