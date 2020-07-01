@@ -16,8 +16,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.ImmutableMap;
-
 /**
  * Model for a Response
  *
