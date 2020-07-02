@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.addressing.properties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Model of Relates To
@@ -18,7 +18,7 @@ public class URIType {
   private final String value;
 
   public URIType(String value) {
-    checkNotNull(value, "Value cannot be null.");
+    requireNonNull(value, "Value cannot be null.");
     this.value = value;
   }
 

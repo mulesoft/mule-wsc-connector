@@ -6,12 +6,12 @@
  */
 package org.mule.extension.ws.internal.addressing.properties;
 
+import static org.mule.extension.ws.internal.utils.StringUtils.isNullOrEmpty;
+import static java.util.Objects.requireNonNull;
+
 import org.mule.runtime.core.api.util.UUID;
 
 import java.util.Objects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
-import com.google.common.base.Strings;
 
 /**
  * Builder of {@link AddressingProperties}
@@ -76,9 +76,9 @@ public class AddressingPropertiesBuilder {
         && Objects.isNull(replyTo) && Objects.isNull(faultTo) && Objects.isNull(relatesTo)) {
       return AddressingProperties.disabled();
     }
-    checkNotNull(namespaceURI, "Namespace URI cannot be null");
-    checkNotNull(to, "'To' cannot be null");
-    checkNotNull(action, "'Action' cannot be null");
+    requireNonNull(namespaceURI, "Namespace URI cannot be null");
+    requireNonNull(to, "'To' cannot be null");
+    requireNonNull(action, "'Action' cannot be null");
 
     if (Objects.isNull(messageId)) {
       messageId = new URIType(UUID.getUUID());
@@ -88,15 +88,15 @@ public class AddressingPropertiesBuilder {
   }
 
   private URIType getURIType(String value) {
-    return !Strings.isNullOrEmpty(value) ? new URIType(value) : null;
+    return !isNullOrEmpty(value) ? new URIType(value) : null;
   }
 
   private EndpointReferenceType getEndpointReferenceType(String value) {
-    return !Strings.isNullOrEmpty(value) ? new EndpointReferenceType(new URIType(value)) : null;
+    return !isNullOrEmpty(value) ? new EndpointReferenceType(new URIType(value)) : null;
   }
 
   private RelatesToType getRelatesTo(String value, String type) {
-    return !Strings.isNullOrEmpty(value) ? new RelatesToType(value, type) : null;
+    return !isNullOrEmpty(value) ? new RelatesToType(value, type) : null;
   }
 
   private String buildPath(String base, String path) {

@@ -8,7 +8,7 @@ package org.mule.extension.ws.internal.addressing.properties;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static java.util.Optional.ofNullable;
 
 /**
@@ -22,8 +22,7 @@ public class RelatesToType {
   private final String relationship;
 
   public RelatesToType(String value, String relationship) {
-    checkNotNull(value, "Value cannot be null");
-    this.value = value;
+    this.value = requireNonNull(value, "Value cannot be null");
     this.relationship = relationship;
   }
 

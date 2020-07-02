@@ -6,9 +6,8 @@
  */
 package org.mule.extension.ws.internal;
 
-import com.google.common.base.Strings;
-import com.google.common.collect.ImmutableMap;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
+import static org.mule.extension.ws.internal.utils.StringUtils.isNullOrEmpty;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
 
@@ -236,7 +235,7 @@ public class ConsumeOperation {
   }
 
   private String getHttpServerBasepath(String httpListenerConfig) {
-    if (Strings.isNullOrEmpty(httpListenerConfig)) {
+    if (isNullOrEmpty(httpListenerConfig)) {
       return "";
     }
 

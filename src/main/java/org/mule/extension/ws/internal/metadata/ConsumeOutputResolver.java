@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.extension.ws.internal.utils.StringUtils.isNullOrEmpty;
+
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.metadata.api.builder.ObjectTypeBuilder;
@@ -16,8 +18,6 @@ import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
 import org.mule.wsdl.parser.model.operation.Type;
-
-import com.google.common.base.Strings;
 
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
@@ -46,7 +46,7 @@ public class ConsumeOutputResolver implements OutputTypeResolver<ConsumeKey> {
   @Override
   public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
       throws ConnectionException, MetadataResolvingException {
-    if (!Strings.isNullOrEmpty(key.getReplyTo())) {
+    if (!isNullOrEmpty(key.getReplyTo())) {
       return context.getTypeBuilder().nullType().build();
     }
 

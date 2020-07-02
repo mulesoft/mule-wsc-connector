@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.addressing.properties;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 /**
  * Model of Endpoint Reference
@@ -18,7 +18,7 @@ public class EndpointReferenceType {
   private final URIType address;
 
   public EndpointReferenceType(URIType address) {
-    checkNotNull(address, "Address cannot be null");
+    requireNonNull(address, "Address cannot be null");
     this.address = address;
   }
 
