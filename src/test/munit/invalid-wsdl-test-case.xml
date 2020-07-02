@@ -116,16 +116,14 @@
         <munit:execution>
             <try>
                 <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
-                    <wsc:response>
-                        <wsc:body><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:echoResponse>
          <text>test response</text>
       </ser:echoResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]></wsc:body>
-                    </wsc:response>
+</soapenv:Envelope>]]></wsc:response>
                 </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true">
@@ -145,16 +143,14 @@
         <munit:execution>
             <try>
                 <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
-                    <wsc:response>
-                        <wsc:body><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:echoResponse>
          <text>test response</text>
       </ser:echoResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]></wsc:body>
-                    </wsc:response>
+</soapenv:Envelope>]]></wsc:response>
                 </wsc:parse-response>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:INVALID_WSDL">

@@ -105,9 +105,7 @@
         <munit:execution>
             <try>
                 <wsc:parse-response config-ref="${config}" operation="fail">
-                    <wsc:response>
-                        <wsc:body>
-                            <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
                                        <soapenv:Body>
                                           <soapenv:Fault>
                                              <faultcode>Server</faultcode>
@@ -116,7 +114,6 @@
                                           </soapenv:Fault>
                                        </soapenv:Body>
                                     </soapenv:Envelope>]]>
-                        </wsc:body>
                     </wsc:response>
                 </wsc:parse-response>
                 <error-handler>

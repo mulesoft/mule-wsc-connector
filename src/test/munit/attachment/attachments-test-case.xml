@@ -174,9 +174,7 @@
 
         <munit:execution>
             <wsc:parse-response config-ref="${config}" operation="downloadAttachment">
-                <wsc:response>
-                    <wsc:body>#[vars.content]</wsc:body>
-                </wsc:response>
+                <wsc:response>#[vars.content]</wsc:response>
             </wsc:parse-response>
             <set-payload value="#[output text/plain --- payload.attachments['${attachmentName}']]" />
         </munit:execution>

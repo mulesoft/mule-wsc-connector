@@ -14,15 +14,24 @@ import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
 import org.mule.runtime.api.connection.ConnectionException;
+import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
 import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
 import org.mule.runtime.extension.api.annotation.param.Connection;
+import org.mule.runtime.extension.api.annotation.param.Content;
+import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
 import org.mule.soap.api.message.SoapResponse;
+import org.mule.soap.api.transport.TransportResponse;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * The {@link ParseResponseOperation} knows how to convert a raw response into a SOAP one.
@@ -45,14 +54,19 @@ public class ParseResponseOperation {
   @OutputResolver(output = ConsumeOutputResolver.class)
   public Result<SoapOutputEnvelope, SoapAttributes> parseResponse(@Connection WscSoapClient connection,
                                                                   @MetadataKeyId(OperationKeysResolver.class) String operation,
-                                                                  @ParameterGroup(name = "Response",
-                                                                      showInDsl = true) Response response,
+                                                                  @Content TypedValue<InputStream> response,
                                                                   StreamingHelper streamingHelper)
       throws ConnectionException {
-    SoapResponse soapResponse = connection.parseResponse(operation, response.getTransportResponse());
+    SoapResponse soapResponse = connection.parseResponse(operation, getTransportResponse(response));
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(soapResponse, streamingHelper))
         .attributes(new SoapAttributes(soapResponse.getTransportHeaders(), soapResponse.getTransportAdditionalData()))
         .build();
+  }
+
+  private TransportResponse getTransportResponse(TypedValue<InputStream> response) {
+    Map<String, String> headers = new HashMap();
+    headers.put("Content-Type", response.getDataType().getMediaType().toRfcString());
+    return new TransportResponse(response.getValue(), headers);
   }
 }

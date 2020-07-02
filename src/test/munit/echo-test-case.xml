@@ -244,16 +244,14 @@
     <munit:test name="replyEchoOperation" description="Handle reply of an operation that expects a simple type and returns a simple type" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:parse-response config-ref="${config}" operation="echo">
-                <wsc:response>
-                    <wsc:body><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
       <ser:echoResponse>
          <text>test response</text>
       </ser:echoResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]></wsc:body>
-                </wsc:response>
+</soapenv:Envelope>]]></wsc:response>
             </wsc:parse-response>
         </munit:execution>
         <munit:validation>
@@ -264,9 +262,7 @@
     <munit:test name="replyEchoWithHeadersOperation" description="Handle reply of an operation that expects an input and a set of headers and returns a simple type and a set of header" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:parse-response config-ref="${config}" operation="echoWithHeaders">
-                <wsc:response>
-                    <wsc:body>
-                        <![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header>
       <ser:headerInOut>Header In Out Value INOUT</ser:headerInOut>
       <ser:headerOut>Header In Value OUT</ser:headerOut>
@@ -276,9 +272,7 @@
          <text>test response</text>
       </ser:echoWithHeadersResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]>
-                    </wsc:body>
-                </wsc:response>
+</soapenv:Envelope>]]></wsc:response>
             </wsc:parse-response>
         </munit:execution>
         <munit:validation>
@@ -292,9 +286,7 @@
     <munit:test name="replyEchoAccountOperation" description="Handle reply of an operation that expects 2 parameters (a simple one and a complex one) and returns a complex type" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:parse-response config-ref="${config}" operation="echoAccount">
-                <wsc:response>
-                    <wsc:body>
-                        <![CDATA[
+                <wsc:response><![CDATA[
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -309,9 +301,7 @@
          </account>
       </ser:echoAccountResponse>
    </soapenv:Body>
-</soapenv:Envelope>]]>
-                    </wsc:body>
-                </wsc:response>
+</soapenv:Envelope>]]></wsc:response>
             </wsc:parse-response>
         </munit:execution>
         <munit:validation>
