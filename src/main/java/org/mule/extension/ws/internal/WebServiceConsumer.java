@@ -8,12 +8,18 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 
+<<<<<<< HEAD
 import org.mule.extension.ws.api.addressing.AddressingConfiguration;
+=======
+import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConfiguration;
+>>>>>>> First commit
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.internal.error.WscError;
+import org.mule.runtime.api.lifecycle.Initialisable;
+import org.mule.runtime.api.lifecycle.InitialisationException;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.SubTypeMapping;
@@ -35,7 +41,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
     subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
 @Extension(name = NAME)
 @Xml(prefix = "wsc")
-public class WebServiceConsumer {
+public class WebServiceConsumer implements Initialisable {
 
   public static final String NAME = "Web Service Consumer";
 
@@ -47,4 +53,22 @@ public class WebServiceConsumer {
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
   private AddressingConfiguration wsAddressing;
+  
+  /**
+   * Web Service Reliable Messaging configuration
+   *
+   * @since 2.0
+   */
+  @ParameterGroup(name = "wsrm", showInDsl = true)
+  @DisplayName("Web Service Reliable Messaging")
+  private ReliableMessagingConfiguration reliableMessaging;
+
+  public ReliableMessagingConfiguration getReliableMessaging() {
+    return reliableMessaging;
+  }
+
+  @Override
+  public void initialise() throws InitialisationException {
+    reliableMessaging.initialise();
+  }
 }
