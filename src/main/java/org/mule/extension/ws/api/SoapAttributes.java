@@ -10,6 +10,7 @@ import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.joining;
 
+import org.mule.extension.ws.api.addressing.AddressingAttributes;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import java.util.Map;
@@ -40,17 +41,17 @@ public class SoapAttributes {
    * Addressing data
    */
   @Parameter
-  private final Map<String, String> addressing;
+  private final AddressingAttributes addressing;
 
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
     this(protocolHeaders, additionalTransportData, null);
   }
 
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData,
-                        Map<String, String> addressing) {
+                        AddressingAttributes addressing) {
     this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
     this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
-    this.addressing = unmodifiableMap(addressing != null ? addressing : EMPTY_MAP);
+    this.addressing = addressing != null ? addressing : new AddressingAttributes();
   }
 
   /**
@@ -69,8 +70,10 @@ public class SoapAttributes {
 
   /**
    * @return a set of additional addressing data
+   *
+   * @since 2.0
    */
-  public Map<String, String> getAddressing() {
+  public AddressingAttributes getAddressing() {
     return addressing;
   }
 
@@ -86,11 +89,6 @@ public class SoapAttributes {
         .map(e -> e.getKey() + ":" + e.getValue())
         .collect(joining(",\n    "));
 
-    String addressingDataAsString = addressing.entrySet()
-        .stream()
-        .map(e -> e.getKey() + ":" + e.getValue())
-        .collect(joining(",\n    "));
-
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
@@ -99,7 +97,7 @@ public class SoapAttributes {
         "    " + headersAsString + "\n" +
         "  ]\n" +
         "  addressing = [\n" +
-        "    " + addressingDataAsString + "\n" +
+        "    messageId:" + addressing.getMessageId() + "\n" +
         "  ]\n" +
         "}\n";
   }

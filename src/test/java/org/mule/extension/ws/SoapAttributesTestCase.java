@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import org.junit.Test;
 
 import org.mule.extension.ws.api.SoapAttributes;
+import org.mule.extension.ws.api.addressing.AddressingAttributes;
 
 public class SoapAttributesTestCase {
 
@@ -44,7 +45,7 @@ public class SoapAttributesTestCase {
         + "    Header2:Value2\n"
         + "  ]\n"
         + "  addressing = [\n"
-        + "    \n"
+        + "    messageId:null\n"
         + "  ]\n"
         + "}\n"));
   }
@@ -52,6 +53,8 @@ public class SoapAttributesTestCase {
   @Test
   public void toStringAttributesWithMessageID() {
 
+    AddressingAttributes addressing = new AddressingAttributes();
+    addressing.setMessageId("12345");
     String result = new SoapAttributes(
                                        unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
                                                                       new SimpleEntry<>("Header2", "Value2"))
@@ -59,9 +62,8 @@ public class SoapAttributesTestCase {
                                        unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
                                                                       new SimpleEntry<>("reasonPhrase", "OK"))
                                                                           .collect(toMap(Entry::getKey, Entry::getValue)))),
-                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("MessageID", "12345"))
-                                           .collect(toMap(Entry::getKey, Entry::getValue)))))
-                                               .toString();
+                                       addressing)
+                                           .toString();
 
     assertThat(result, is("{\n"
         + "  additionalTransportData = [\n"
@@ -73,7 +75,7 @@ public class SoapAttributesTestCase {
         + "    Header2:Value2\n"
         + "  ]\n"
         + "  addressing = [\n"
-        + "    MessageID:12345\n"
+        + "    messageId:12345\n"
         + "  ]\n"
         + "}\n"));
   }

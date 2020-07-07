@@ -98,10 +98,15 @@
         <mtf:validation>
             <set-variable variableName="attributeFields" value="#[payload.fields]" />
             <munit-tools:assert-equals actual="#[sizeOf(vars.attributeFields)]" expected="#[3]" />
-            <foreach collection="#[vars.attributeFields]" counterVariableName="index">
-                <munit-tools:assert-equals actual="#[payload.model.'type']" expected="Object" />
-                <munit-tools:assert-that expression="#[payload.model.open]" is="#[MunitTools::notNullValue()]"/>
-            </foreach>
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[0].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[0].model.open]" is="#[MunitTools::notNullValue()]"/>
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[1].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[1].model.open]" is="#[MunitTools::notNullValue()]"/>
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[2].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[2].model.fields]" is="#[MunitTools::notNullValue()]"/>
         </mtf:validation>
     </mtf:tooling-test>
 

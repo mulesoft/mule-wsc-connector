@@ -14,6 +14,7 @@ import static org.mule.runtime.api.metadata.MediaType.XML;
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.api.TransportConfiguration;
+import org.mule.extension.ws.api.addressing.AddressingAttributes;
 import org.mule.extension.ws.api.addressing.AddressingSettings;
 import org.mule.extension.ws.internal.addressing.AddressingHeadersResolverFactory;
 import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
@@ -124,7 +125,10 @@ public class ConsumeOperation {
       throws ConnectionException {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
     SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
-    Map<String, String> addressingAttributes = getAddressingAttributes(addressing);
+
+    AddressingAttributes addressingAttributes = new AddressingAttributes();
+    addressing.getMessageID().ifPresent(messageID -> addressingAttributes.setMessageId(messageID.getValue()));
+
     return createResult(response, streamingHelper, addressingAttributes);
   }
 
@@ -133,7 +137,7 @@ public class ConsumeOperation {
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper,
-                                                                  Map<String, String> addressing) {
+                                                                  AddressingAttributes addressing) {
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(response, streamingHelper))
         .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData(), addressing))
@@ -247,11 +251,5 @@ public class ConsumeOperation {
       throw new ModuleException("Invalid http listener config configured for WSA",
                                 BAD_REQUEST, e);
     }
-  }
-
-  private Map<String, String> getAddressingAttributes(AddressingProperties properties) {
-    Map<String, String> attributes = new HashMap<>();
-    properties.getMessageID().ifPresent(messageID -> attributes.put("MessageID", messageID.getValue()));
-    return attributes;
   }
 }
