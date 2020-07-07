@@ -44,17 +44,13 @@ public class SoapAttributesTestCase {
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"
         + "  ]\n"
-        + "  addressing = [\n"
-        + "    messageId:null\n"
-        + "  ]\n"
         + "}\n"));
   }
 
   @Test
   public void toStringAttributesWithMessageID() {
 
-    AddressingAttributes addressing = new AddressingAttributes();
-    addressing.setMessageId("12345");
+    AddressingAttributes addressing = new AddressingAttributes("12345");
     String result = new SoapAttributes(
                                        unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
                                                                       new SimpleEntry<>("Header2", "Value2"))
@@ -74,9 +70,9 @@ public class SoapAttributesTestCase {
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"
         + "  ]\n"
-        + "  addressing = [\n"
+        + "  addressing = {\n"
         + "    messageId:12345\n"
-        + "  ]\n"
+        + "  }\n"
         + "}\n"));
   }
 }

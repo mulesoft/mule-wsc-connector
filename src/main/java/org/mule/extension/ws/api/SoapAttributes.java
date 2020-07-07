@@ -11,6 +11,7 @@ import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.joining;
 
 import org.mule.extension.ws.api.addressing.AddressingAttributes;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import java.util.Map;
@@ -41,6 +42,7 @@ public class SoapAttributes {
    * Addressing data
    */
   @Parameter
+  @Optional
   private final AddressingAttributes addressing;
 
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
@@ -51,7 +53,7 @@ public class SoapAttributes {
                         AddressingAttributes addressing) {
     this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
     this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
-    this.addressing = addressing != null ? addressing : new AddressingAttributes();
+    this.addressing = addressing;
   }
 
   /**
@@ -89,6 +91,14 @@ public class SoapAttributes {
         .map(e -> e.getKey() + ":" + e.getValue())
         .collect(joining(",\n    "));
 
+    String addressingDataAsString = "";
+    if (addressing != null) {
+      addressingDataAsString =
+          "  addressing = {\n" +
+              "    messageId:" + addressing.getMessageId() + "\n" +
+              "  }\n";
+    }
+
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
@@ -96,9 +106,7 @@ public class SoapAttributes {
         "  protocolHeaders = [\n" +
         "    " + headersAsString + "\n" +
         "  ]\n" +
-        "  addressing = [\n" +
-        "    messageId:" + addressing.getMessageId() + "\n" +
-        "  ]\n" +
+        addressingDataAsString +
         "}\n";
   }
 }

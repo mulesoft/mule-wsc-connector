@@ -15,15 +15,15 @@ import java.io.Serializable;
  */
 public class AddressingAttributes implements Serializable {
 
+  private static final long serialVersionUID = -8764523411117212867L;
+
   private String messageId;
 
-  public AddressingAttributes() {}
+  public AddressingAttributes(String messageId) {
+    this.messageId = messageId;
+  }
 
   public String getMessageId() {
     return messageId;
-  }
-
-  public void setMessageId(String messageId) {
-    this.messageId = messageId;
   }
 }

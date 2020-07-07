@@ -19,6 +19,7 @@ import org.mule.extension.ws.api.addressing.AddressingSettings;
 import org.mule.extension.ws.internal.addressing.AddressingHeadersResolverFactory;
 import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
 import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
+import org.mule.extension.ws.internal.addressing.properties.URIType;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
@@ -125,10 +126,7 @@ public class ConsumeOperation {
       throws ConnectionException {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
     SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
-
-    AddressingAttributes addressingAttributes = new AddressingAttributes();
-    addressing.getMessageID().ifPresent(messageID -> addressingAttributes.setMessageId(messageID.getValue()));
-
+    AddressingAttributes addressingAttributes = getAddressingAttributes(addressing);
     return createResult(response, streamingHelper, addressingAttributes);
   }
 
@@ -251,5 +249,12 @@ public class ConsumeOperation {
       throw new ModuleException("Invalid http listener config configured for WSA",
                                 BAD_REQUEST, e);
     }
+  }
+
+  private AddressingAttributes getAddressingAttributes(AddressingProperties properties) {
+    Optional<URIType> messageId = properties.getMessageID();
+    if (messageId.isPresent())
+      return new AddressingAttributes(messageId.get().getValue());
+    return null;
   }
 }
