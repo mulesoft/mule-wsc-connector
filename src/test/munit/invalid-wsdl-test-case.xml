@@ -109,6 +109,63 @@
         </munit:validation>
     </munit:test>
 
+    <munit:test name="parseResponseWithInvalidWsdl" description="Trying to parse a response without a wsdl valid path" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:enable-flow-sources >
+            <munit:enable-flow-source value="returns404"/>
+        </munit:enable-flow-sources>
+        <munit:execution>
+            <try>
+                <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Path" operation="someOperation">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoResponse>
+         <text>test response</text>
+      </ser:echoResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></wsc:response>
+                </wsc:parse-response>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true">
+                        <set-payload value="#[error.description]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that
+                    expression="#[payload]"
+                    is="#[MunitTools::startsWith('Error trying to acquire a new connection:org.mule.wsdl.parser.exception.WsdlGettingException: Error Getting the resource ')]"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="parseResponseWithBadWsdl" description="Trying to parse a response with a bad formatted wsdl"  ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <try>
+                <wsc:parse-response config-ref="Web_Service_Consumer_Bad_Format" operation="someOperation">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoResponse>
+         <text>test response</text>
+      </ser:echoResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></wsc:response>
+                </wsc:parse-response>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:INVALID_WSDL">
+                        <set-payload value="#[error.description]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that
+                    expression="#[payload]"
+                    is="#[MunitTools::startsWith('Error processing WSDL file [/wsdl/bad-wsdl.wsdl]: faultCode=PARSER_ERROR')]"/>
+        </munit:validation>
+    </munit:test>
+
     <flow name="returns404"  >
         <http:listener config-ref="HTTP_Listener_config" path="/*">
             <http:response statusCode="404"/>
