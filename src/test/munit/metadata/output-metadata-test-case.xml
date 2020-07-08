@@ -160,4 +160,104 @@
             <munit-tools:assert-equals actual="#[payload.'type']" expected="Null" />
         </mtf:validation>
     </mtf:tooling-test>
+
+    <mtf:tooling-test name="geEchoResponseOutputBodyMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:parse-response operation="echo" config-ref="default-config"/>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="operationFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationFields)]" expected="#[1]" />
+
+            <set-variable variableName="echo" value="#[vars.operationFields[0].model.fields[0]]" />
+            <munit-tools:assert-that expression="#[vars.echo.key.name]" is="#[MunitTools::containsString('{http://service.soap.service.mule.org/}echoResponse')]" />
+
+            <set-variable variableName="echoFields" value="#[vars.echo.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.echoFields)]" expected="#[1]" />
+
+            <set-variable variableName="textField" value="#[vars.echoFields[0]]" />
+            <munit-tools:assert-equals actual="#[vars.textField.key.name]" expected="text" />
+            <munit-tools:assert-equals actual="#[vars.textField.model.'type']" expected="String" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getResposeOutputBodyMetadataFromWsdlOnRelativePath" >
+        <mtf:get-output-metadata>
+            <wsc:parse-response operation="TodaysDilbert" config-ref="dilbert-wsc"/>
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <munit-tools:assert-equals actual="#[sizeOf(payload.fields[0].model.fields[0].model.fields)]" expected="#[2]" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoAccountResponseOutputBodyMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:parse-response config-ref="default-config" operation="echoAccount" />
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="operationFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.operationFields)]" expected="#[1]" />
+
+            <set-variable variableName="echo" value="#[vars.operationFields[0].model.fields[0]]" />
+            <set-variable variableName="echoFields" value="#[vars.echo.model.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.echoFields)]" expected="#[1]" />
+
+            <set-variable variableName="accountField" value="#[vars.echoFields[0]]" />
+            <munit-tools:assert-equals actual="#[vars.accountField.key.name]" expected="account" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.accountField.model.fields)]" expected="#[4]" />
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoHeadersResponseOutputMetadata" >
+        <mtf:get-attributes-metadata>
+            <wsc:parse-response config-ref="default-config" operation="echo" />
+        </mtf:get-attributes-metadata>
+        <mtf:validation>
+            <set-variable variableName="attributeFields" value="#[payload.fields]" />
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attributeFields)]" expected="#[3]" />
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[0].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[0].model.open]" is="#[MunitTools::notNullValue()]"/>
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[1].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[1].model.open]" is="#[MunitTools::notNullValue()]"/>
+
+            <munit-tools:assert-equals actual="#[vars.attributeFields[2].model.'type']" expected="Object" />
+            <munit-tools:assert-that expression="#[vars.attributeFields[2].model.fields]" is="#[MunitTools::notNullValue()]"/>
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getEchoWithHeadersResponseOutputAttributesMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:parse-response config-ref="default-config" operation="echoWithHeaders" />
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="headersField" value="#[(payload.fields filter (element, index) -> (element.key.name contains 'headers')).model.fields ]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headersField)]" expected="#[1]" />
+
+            <set-variable variableName="headers" value="#[vars.headersField[0].model.fields[0]]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.headers)]" expected="#[2]" />
+
+            <set-variable variableName="headersNames" value="#[['headerOut', 'headerInOut']]"/>
+            <foreach collection="#[vars.headers]" counterVariableName="index">
+                <munit-tools:assert-that expression="#[vars.headersNames]" is="#[MunitTools::hasItem(payload.key.name)]"/>
+                <munit-tools:assert-equals actual="#[payload.model.fields[0].model.'type']" expected="String" />
+            </foreach>
+        </mtf:validation>
+    </mtf:tooling-test>
+
+    <mtf:tooling-test name="getDownloadAttachmentResponseOutputMetadata" >
+        <mtf:get-output-metadata>
+            <wsc:parse-response config-ref="default-config" operation="downloadAttachment" />
+        </mtf:get-output-metadata>
+        <mtf:validation>
+            <set-variable variableName="attributesFields" value="#[payload.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attributesFields)]" expected="#[1]" />
+            <munit-tools:assert-equals actual="#[vars.attributesFields[0].key.name]" expected="attachments" />
+
+            <set-variable variableName="attachmentsFields" value="#[vars.attributesFields[0].model.fields]"/>
+            <munit-tools:assert-equals actual="#[sizeOf(vars.attachmentsFields)]" expected="#[1]" />
+            <munit-tools:assert-equals actual="#[vars.attachmentsFields[0].model.'type']" expected="Binary" />
+        </mtf:validation>
+    </mtf:tooling-test>
 </mule>

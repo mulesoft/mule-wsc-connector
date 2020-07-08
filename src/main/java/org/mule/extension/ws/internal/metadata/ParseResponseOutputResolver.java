@@ -6,9 +6,7 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import static org.mule.extension.ws.internal.utils.StringUtils.isNullOrEmpty;
-
-import org.mule.extension.ws.internal.ConsumeOperation;
+import org.mule.extension.ws.internal.ParseResponseOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
@@ -17,11 +15,11 @@ import org.mule.runtime.api.metadata.MetadataResolvingException;
 import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
 
 /**
- * Resolves the metadata for output payload of the {@link ConsumeOperation}.
+ * Resolves the metadata for output payload of the {@link ParseResponseOperation}.
  *
- * @since 1.0
+ * @since 2.0
  */
-public class ConsumeOutputResolver extends AbstractOutputResolver implements OutputTypeResolver<ConsumeKey> {
+public class ParseResponseOutputResolver extends AbstractOutputResolver implements OutputTypeResolver<String> {
 
   @Override
   public String getCategoryName() {
@@ -30,18 +28,15 @@ public class ConsumeOutputResolver extends AbstractOutputResolver implements Out
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + "OutputResolver";
+    return WebServiceConsumer.NAME + "ResponseOutputResolver";
   }
 
   /**
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
+  public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    if (!isNullOrEmpty(key.getReplyTo())) {
-      return context.getTypeBuilder().nullType().build();
-    }
-    return getOperationOutputType(context, key.getOperation());
+    return getOperationOutputType(context, operation);
   }
 }
