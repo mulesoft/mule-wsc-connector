@@ -1,0 +1,28 @@
+HTTP/1.1 200 OK
+Content-Type: multipart/related; type="application/xop+xml"; start="<rootpart@soapui.org>"; start-info="text/xml"; boundary="----=_Part_0_1806686720.1593636971443"
+Content-Length: 866
+MIME-Version: 1.0
+Server: Jetty(6.1.26)
+
+
+------=_Part_0_1806686720.1593636971443
+Content-Type: application/xop+xml; charset=UTF-8; type="text/xml"
+Content-Transfer-Encoding: 8bit
+Content-ID: <rootpart@soapui.org>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:downloadAttachmentResponse>
+         <attachment><inc:Include href="cid:1271018540948" xmlns:inc="http://www.w3.org/2004/08/xop/include"/></attachment>
+      </ser:downloadAttachmentResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+------=_Part_0_1806686720.1593636971443
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Content-ID: <attachment.txt>
+Content-Disposition: attachment; name="attachment.txt"
+
+Simple Attachment Content
+------=_Part_0_1806686720.1593636971443--
