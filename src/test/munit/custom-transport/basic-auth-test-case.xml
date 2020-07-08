@@ -108,7 +108,7 @@
         </munit:execution>
     </munit:test>
 
-    <munit:test name="requestWithUnauthorizedConfiguration" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="requestWithUnauthorizedConfigurationOld" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2') or Munit::muleVersionNewerThan('4.3.0')]">
         <munit:execution>
             <flow-ref name="buildOneWayRequest" />
             <wsc:consume config-ref="unauthorized-local-wsdl" operation="oneWay">
@@ -119,7 +119,31 @@
         </munit:execution>
     </munit:test>
 
-    <munit:test name="requestWithUnauthorizedRemoteConfiguration" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="requestWithUnauthorizedRemoteConfigurationOld" expectedErrorType="HTTP:UNAUTHORIZED" description="Make a HTTP request using Basic Authentication with invalid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2') or Munit::muleVersionNewerThan('4.3.0')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="unauthorized-remote-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <!--This test is added due to SE-13673-->
+    <munit:test name="requestWithUnauthorizedConfiguration" expectedErrorType="WSC:CANNOT_DISPATCH" description="Make a HTTP request using Basic Authentication with invalid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.4.0-SNAPSHOT')]">
+        <munit:execution>
+            <flow-ref name="buildOneWayRequest" />
+            <wsc:consume config-ref="unauthorized-local-wsdl" operation="oneWay">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <!--This test is added due to SE-13673-->
+    <munit:test name="requestWithUnauthorizedRemoteConfiguration" expectedErrorType="WSC:CANNOT_DISPATCH" description="Make a HTTP request using Basic Authentication with invalid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.4.0-SNAPSHOT')]">
         <munit:execution>
             <flow-ref name="buildOneWayRequest" />
             <wsc:consume config-ref="unauthorized-remote-wsdl" operation="oneWay">
