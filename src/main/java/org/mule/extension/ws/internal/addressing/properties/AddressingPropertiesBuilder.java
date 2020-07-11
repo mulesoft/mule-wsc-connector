@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.addressing.properties;
 
-import static org.mule.extension.ws.internal.utils.StringUtils.isNullOrEmpty;
+import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 import static java.util.Objects.requireNonNull;
 
 import org.mule.runtime.core.api.util.UUID;
@@ -88,15 +88,15 @@ public class AddressingPropertiesBuilder {
   }
 
   private URIType getURIType(String value) {
-    return !isNullOrEmpty(value) ? new URIType(value) : null;
+    return !isBlank(value) ? new URIType(value) : null;
   }
 
   private EndpointReferenceType getEndpointReferenceType(String value) {
-    return !isNullOrEmpty(value) ? new EndpointReferenceType(new URIType(value)) : null;
+    return !isBlank(value) ? new EndpointReferenceType(new URIType(value)) : null;
   }
 
   private RelatesToType getRelatesTo(String value, String type) {
-    return !isNullOrEmpty(value) ? new RelatesToType(value, type) : null;
+    return !isBlank(value) ? new RelatesToType(value, type) : null;
   }
 
   private String buildPath(String base, String path) {

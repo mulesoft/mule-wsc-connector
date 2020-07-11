@@ -12,6 +12,7 @@ import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
+import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
 import org.mule.wsdl.parser.model.operation.Type;
 
 /**
@@ -19,7 +20,7 @@ import org.mule.wsdl.parser.model.operation.Type;
  *
  * @since 2.0
  */
-public abstract class AbstractOutputResolver {
+public abstract class AbstractOutputResolver<T> implements OutputTypeResolver<T> {
 
   public static final String BODY = "body";
   public static final String HEADERS = "headers";

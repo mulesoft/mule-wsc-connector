@@ -12,14 +12,13 @@ import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
-import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
 
 /**
  * Resolves the metadata for output payload of the {@link ParseResponseOperation}.
  *
  * @since 2.0
  */
-public class ParseResponseOutputResolver extends AbstractOutputResolver implements OutputTypeResolver<String> {
+public class ParseResponseOutputResolver extends AbstractOutputResolver<String> {
 
   @Override
   public String getCategoryName() {
