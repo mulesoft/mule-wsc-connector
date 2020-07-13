@@ -48,18 +48,6 @@ public class ReliableMessagingConfiguration implements Initialisable {
   private static final ReliableMessagingVersion DEFAULT_VERSION = ReliableMessagingVersion.WSRM_12_WSA_200508;
 
   /**
-   * WS-Addressing version.
-   * <p>
-   * Defaults to {@code WSA 2005-08}
-   */
-  @Parameter
-  @Placement(tab = RELIABLE_MESSAGING_TAB, order = 0)
-  @Optional(defaultValue = "WSA200508")
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("WSA Version")
-  private AddressingVersion wsaVersion;
-
-  /**
    * WS-ReliableMessaging version.
    */
   @Parameter
@@ -171,13 +159,11 @@ public class ReliableMessagingConfiguration implements Initialisable {
     if (wsrmVersion == null) {
       return DEFAULT_VERSION;
     } else {
-      java.util.Optional<ReliableMessagingVersion> rmVersion =
-          Arrays.stream(ReliableMessagingVersion.values()).filter(version -> version.name().equals(wsrmVersion)).findFirst();
-      if (rmVersion.isPresent()) {
-        return rmVersion.get();
-      } else {
-        throw new InitialisationException(createStaticMessage("Invalid WSRM version configured [%s].", wsrmVersion), this);
-      }
+      return Arrays.stream(ReliableMessagingVersion.values())
+          .filter(version -> version.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
+                                                                                                                           createStaticMessage("Invalid WSRM version configured [%s].",
+                                                                                                                                               wsrmVersion),
+                                                                                                                           this));
     }
   }
 }

@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.internal.reliablemessaging.value;
 
-import org.mule.extension.ws.api.reliablemessaging.AddressingVersion;
+import org.mule.extension.ws.api.addressing.AddressingVersion;
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion;
 import org.mule.runtime.api.value.Value;
 import org.mule.runtime.extension.api.annotation.param.Optional;

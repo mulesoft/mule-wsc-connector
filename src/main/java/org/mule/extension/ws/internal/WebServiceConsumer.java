@@ -8,11 +8,8 @@ package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
 
-<<<<<<< HEAD
 import org.mule.extension.ws.api.addressing.AddressingConfiguration;
-=======
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConfiguration;
->>>>>>> First commit
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
@@ -53,7 +50,7 @@ public class WebServiceConsumer implements Initialisable {
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
   private AddressingConfiguration wsAddressing;
-  
+
   /**
    * Web Service Reliable Messaging configuration
    *
@@ -62,10 +59,6 @@ public class WebServiceConsumer implements Initialisable {
   @ParameterGroup(name = "wsrm", showInDsl = true)
   @DisplayName("Web Service Reliable Messaging")
   private ReliableMessagingConfiguration reliableMessaging;
-
-  public ReliableMessagingConfiguration getReliableMessaging() {
-    return reliableMessaging;
-  }
 
   @Override
   public void initialise() throws InitialisationException {

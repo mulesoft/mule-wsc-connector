@@ -6,8 +6,8 @@
  */
 package org.mule.extension.ws.api.reliablemessaging;
 
-import static org.mule.extension.ws.api.reliablemessaging.AddressingVersion.WSA200408;
-import static org.mule.extension.ws.api.reliablemessaging.AddressingVersion.WSA200508;
+import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200408;
+import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200508;
 
 public enum ReliableMessagingVersion {
 

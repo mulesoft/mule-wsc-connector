@@ -54,7 +54,7 @@
                                 soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
                                 mtomEnabled="${mtomEnabled}">
                 </wsc:connection>
-                <wsc:wsrm wsaVersion="${wsaVersion}" />
+                <wsc:wsa wsaVersion="${wsaVersion}" />
             </wsc:config>
         </mtf:get-values>
         <mtf:validation>
