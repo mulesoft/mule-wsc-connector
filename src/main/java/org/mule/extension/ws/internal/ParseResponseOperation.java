@@ -11,8 +11,8 @@ import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.error.ParseResponseErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
-import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
+import org.mule.extension.ws.internal.metadata.ParseResponseOutputResolver;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.extension.api.annotation.OnException;
@@ -21,9 +21,6 @@ import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
 import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.Content;
-import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
-import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
 import org.mule.soap.api.message.SoapResponse;
@@ -51,7 +48,7 @@ public class ParseResponseOperation {
    */
   @OnException(WscExceptionEnricher.class)
   @Throws(ParseResponseErrorTypeProvider.class)
-  @OutputResolver(output = ConsumeOutputResolver.class)
+  @OutputResolver(output = ParseResponseOutputResolver.class)
   public Result<SoapOutputEnvelope, SoapAttributes> parseResponse(@Connection WscSoapClient connection,
                                                                   @MetadataKeyId(OperationKeysResolver.class) String operation,
                                                                   @Content TypedValue<InputStream> response,
