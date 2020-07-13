@@ -52,7 +52,7 @@ public class PathUtilsTestCase {
   public void fullPathTest() {
     Path path = PathUtils.getFullPath(PATH_WITH_START_SLASH, PATH_WITH_START_SLASH);
     Path expected = new Path(PATH_WITH_START_SLASH, PATH_WITH_START_SLASH);
-    assertThat(path, is(expected));
+    assertThat(path.getAbsolutePath(null), is(expected.getAbsolutePath(null)));
   }
 
   @Test
@@ -113,6 +113,12 @@ public class PathUtilsTestCase {
   public void resolveServerPathTest() {
     String path = PathUtils.resolveServerPath(server);
     assertThat(path, is(SERVER_PATH));
+  }
+
+  @Test
+  public void invalidResolveServerPathTest() {
+    expectedException.expectMessage("server cannot be null");
+    PathUtils.resolveServerPath(null);
   }
 
   @Test

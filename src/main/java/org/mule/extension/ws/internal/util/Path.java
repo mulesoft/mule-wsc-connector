@@ -35,19 +35,4 @@ public class Path {
   public String getAbsolutePath(HttpServer server) {
     return server == null ? resolvedPath : resolveAbsolutePath(server, resolvedPath);
   }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    Path path = (Path) o;
-    return Objects.equals(resolvedPath, path.resolvedPath);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(resolvedPath);
-  }
 }
