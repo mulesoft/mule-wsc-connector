@@ -38,8 +38,10 @@ public class Path {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
+    if (this == o)
+      return true;
+    if (o == null || getClass() != o.getClass())
+      return false;
     Path path = (Path) o;
     return Objects.equals(resolvedPath, path.resolvedPath);
   }
