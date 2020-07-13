@@ -116,7 +116,7 @@ public class ReliableMessagingConfiguration implements Initialisable {
       return false;
     ReliableMessagingConfiguration that = (ReliableMessagingConfiguration) o;
     return wsrmSequenceTtl == that.wsrmSequenceTtl &&
-        wsrmVersion == that.wsrmVersion &&
+        Objects.equals(wsrmVersion, that.wsrmVersion) &&
         Objects.equals(wsrmHttpListenerConfig, that.wsrmHttpListenerConfig) &&
         Objects.equals(wsrmAcksTo, that.wsrmAcksTo) &&
         wsrmSequenceTtlTimeUnit == that.wsrmSequenceTtlTimeUnit &&
@@ -160,10 +160,10 @@ public class ReliableMessagingConfiguration implements Initialisable {
       return DEFAULT_VERSION;
     } else {
       return Arrays.stream(ReliableMessagingVersion.values())
-          .filter(version -> version.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
-                                                                                                                           createStaticMessage("Invalid WSRM version configured [%s].",
-                                                                                                                                               wsrmVersion),
-                                                                                                                           this));
+          .filter(v -> v.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
+                                                                                                               createStaticMessage("Invalid WSRM version configured [%s].",
+                                                                                                                                   wsrmVersion),
+                                                                                                               this));
     }
   }
 }

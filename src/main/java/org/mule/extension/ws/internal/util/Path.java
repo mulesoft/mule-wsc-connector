@@ -8,6 +8,8 @@ package org.mule.extension.ws.internal.util;
 
 import org.mule.runtime.http.api.server.HttpServer;
 
+import java.util.Objects;
+
 import static org.mule.extension.ws.internal.util.PathUtils.resolveAbsolutePath;
 import static org.mule.extension.ws.internal.util.PathUtils.resolveFullPath;
 
@@ -32,5 +34,18 @@ public class Path {
 
   public String getAbsolutePath(HttpServer server) {
     return server == null ? resolvedPath : resolveAbsolutePath(server, resolvedPath);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Path path = (Path) o;
+    return Objects.equals(resolvedPath, path.resolvedPath);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(resolvedPath);
   }
 }
