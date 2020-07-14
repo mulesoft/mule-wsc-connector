@@ -6,6 +6,7 @@
  */
 package org.mule.extension.ws.api.reliablemessaging;
 
+import org.mule.extension.ws.api.addressing.AddressingVersion;
 import org.mule.extension.ws.internal.reliablemessaging.value.ReliableMessagingVersionValueProvider;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
@@ -38,7 +39,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
  *
  * @since 2.0
  */
-public class ReliableMessagingConfiguration implements Initialisable {
+public class ReliableMessagingConfiguration {
 
   private static final String RELIABLE_MESSAGING_TAB = "Reliable Messaging";
   private static final String DEFAULT_OS_NAME = "DEFAULT_WSRM_OS_NAME";
@@ -52,14 +53,14 @@ public class ReliableMessagingConfiguration implements Initialisable {
    */
   @Parameter
   @Placement(tab = RELIABLE_MESSAGING_TAB, order = 1)
-  @OfValues(ReliableMessagingVersionValueProvider.class)
+  @OfValues(value = ReliableMessagingVersionValueProvider.class, open = false)
   @Optional
   @Expression(NOT_SUPPORTED)
   @DisplayName("Version")
   private String wsrmVersion;
 
   /**
-   * The time in seconds before the sequence expires.
+   * The time before the sequence expires.
    */
   @Parameter
   @Placement(tab = RELIABLE_MESSAGING_TAB, order = 2)
@@ -128,9 +129,32 @@ public class ReliableMessagingConfiguration implements Initialisable {
     return Objects.hash(wsrmVersion, wsrmHttpListenerConfig, wsrmAcksTo, wsrmSequenceTtl, wsrmSequenceTtlTimeUnit, wsrmStore);
   }
 
-  @Override
-  public void initialise() throws InitialisationException {
-    version = initVersion();
+  public void doInitialise(AddressingVersion wsaVersion, Initialisable initialisable) throws InitialisationException {
+    if (wsaVersion == null) {
+      throw new InitialisationException(createStaticMessage("WSA version cannot be null."), initialisable);
+    }
+
+    if (wsrmVersion == null) {
+      version = Arrays.stream(ReliableMessagingVersion.values()).filter(v -> v.getAddressingVersion().equals(wsaVersion))
+          .findFirst().orElseThrow(() -> new InitialisationException(
+                                                                     createStaticMessage("There is no WSRM version related to the selected WSA version [%s].",
+                                                                                         wsaVersion.name()),
+                                                                     initialisable));
+    } else {
+      ReliableMessagingVersion rmVersion = Arrays.stream(ReliableMessagingVersion.values())
+          .filter(v -> v.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
+                                                                                                               createStaticMessage("Invalid WSRM version configured [%s].",
+                                                                                                                                   wsrmVersion),
+                                                                                                               initialisable));
+      if (rmVersion.getAddressingVersion() != wsaVersion) {
+        throw new InitialisationException(
+                                          createStaticMessage("Invalid WSRM version configured [%s] for the selected WSA version [%s].",
+                                                              wsrmVersion, wsaVersion.name()),
+                                          initialisable);
+      }
+
+      version = rmVersion;
+    }
   }
 
   public ReliableMessagingVersion getVersion() {
@@ -153,17 +177,5 @@ public class ReliableMessagingConfiguration implements Initialisable {
       return manager.getOrCreateObjectStore(DEFAULT_OS_NAME, DEFAULT_OS_SETTINGS);
     }
     return wsrmStore;
-  }
-
-  private ReliableMessagingVersion initVersion() throws InitialisationException {
-    if (wsrmVersion == null) {
-      return DEFAULT_VERSION;
-    } else {
-      return Arrays.stream(ReliableMessagingVersion.values())
-          .filter(v -> v.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
-                                                                                                               createStaticMessage("Invalid WSRM version configured [%s].",
-                                                                                                                                   wsrmVersion),
-                                                                                                               this));
-    }
   }
 }

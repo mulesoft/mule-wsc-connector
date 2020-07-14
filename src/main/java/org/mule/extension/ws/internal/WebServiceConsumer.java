@@ -62,6 +62,6 @@ public class WebServiceConsumer implements Initialisable {
 
   @Override
   public void initialise() throws InitialisationException {
-    reliableMessaging.initialise();
+    reliableMessaging.doInitialise(wsAddressing.getWsaVersion(), this);
   }
 }
