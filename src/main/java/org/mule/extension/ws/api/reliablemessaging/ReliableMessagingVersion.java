@@ -6,6 +6,8 @@
  */
 package org.mule.extension.ws.api.reliablemessaging;
 
+import org.mule.extension.ws.api.addressing.AddressingVersion;
+
 import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200408;
 import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200508;
 
@@ -14,15 +16,15 @@ public enum ReliableMessagingVersion {
   WSRM_10_WSA_200408(WSA200408, "1.0"), WSRM_11_WSA_200408(WSA200408, "1.1"), WSRM_11_WSA_200508(WSA200508,
       "1.1"), WSRM_12_WSA_200508(WSA200508, "1.2");
 
-  private final Object addressingVersion;
+  private final AddressingVersion addressingVersion;
   private final String version;
 
-  ReliableMessagingVersion(Object addressingVersion, String version) {
+  ReliableMessagingVersion(AddressingVersion addressingVersion, String version) {
     this.addressingVersion = addressingVersion;
     this.version = version;
   }
 
-  public Object getAddressingVersion() {
+  public AddressingVersion getAddressingVersion() {
     return addressingVersion;
   }
 
