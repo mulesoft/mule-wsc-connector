@@ -33,16 +33,6 @@
                     <munit:parameter propertyName="expectedOutput" value='["WSRM_11_WSA_200508", "WSRM_12_WSA_200508"]'/>
                 </munit:parameters>
             </munit:parameterization>
-            <munit:parameterization name="WSA_NONE">
-                <munit:parameters>
-                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
-                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
-                    <munit:parameter propertyName="mtomEnabled" value="false"/>
-                    <munit:parameter propertyName="config" value="default-config"/>
-                    <munit:parameter propertyName="wsaVersion" value=""/>
-                    <munit:parameter propertyName="expectedOutput" value='[]'/>
-                </munit:parameters>
-            </munit:parameterization>
         </munit:parameterizations>
     </munit:config>
 

@@ -13,10 +13,8 @@ import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200508;
 
 public enum ReliableMessagingVersion {
 
-  WSRM_12_WSA_200508(WSA200508, "1.2"),
-  WSRM_11_WSA_200508(WSA200508, "1.1"),
-  WSRM_11_WSA_200408(WSA200408, "1.1"),
-  WSRM_10_WSA_200408(WSA200408, "1.0");
+  WSRM_12_WSA_200508(WSA200508, "1.2"), WSRM_11_WSA_200508(WSA200508, "1.1"), WSRM_11_WSA_200408(WSA200408,
+      "1.1"), WSRM_10_WSA_200408(WSA200408, "1.0");
 
   private final AddressingVersion addressingVersion;
   private final String version;

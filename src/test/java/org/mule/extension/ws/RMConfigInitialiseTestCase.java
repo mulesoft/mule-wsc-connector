@@ -38,8 +38,8 @@ public class RMConfigInitialiseTestCase {
   @Before
   public void before() {
     parameters = new EasyRandomParameters()
-            .collectionSizeRange(1, 3)
-            .excludeField(field -> field.getName().equals("wsrmStore"));
+        .collectionSizeRange(1, 3)
+        .excludeField(field -> field.getName().equals("wsrmStore"));
     initialisable = mock(Initialisable.class);
   }
 
@@ -85,7 +85,8 @@ public class RMConfigInitialiseTestCase {
     ReliableMessagingVersion wsrmVersion = WSRM_12_WSA_200508;
 
     expectedException.expect(InitialisationException.class);
-    expectedException.expectMessage("Invalid WSRM version configured [" + wsrmVersion.name() + "] for the selected WSA version [" + wsaVersion.name() + "].");
+    expectedException.expectMessage("Invalid WSRM version configured [" + wsrmVersion.name() + "] for the selected WSA version ["
+        + wsaVersion.name() + "].");
 
     EasyRandom factory = new EasyRandom(parameters.randomize(String.class, () -> wsrmVersion.name()));
     ReliableMessagingConfiguration config = factory.nextObject(ReliableMessagingConfiguration.class);
