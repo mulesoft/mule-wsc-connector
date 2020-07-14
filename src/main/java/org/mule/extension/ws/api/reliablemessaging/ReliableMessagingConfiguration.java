@@ -46,7 +46,6 @@ public class ReliableMessagingConfiguration {
   private static final long DEFAULT_OS_TTL = MINUTES.toMillis(5);
   private static final ObjectStoreSettings DEFAULT_OS_SETTINGS =
       ObjectStoreSettings.builder().persistent(false).entryTtl(DEFAULT_OS_TTL).build();
-  private static final ReliableMessagingVersion DEFAULT_VERSION = ReliableMessagingVersion.WSRM_12_WSA_200508;
 
   /**
    * WS-ReliableMessaging version.

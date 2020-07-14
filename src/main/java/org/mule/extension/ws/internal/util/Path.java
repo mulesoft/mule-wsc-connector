@@ -8,8 +8,6 @@ package org.mule.extension.ws.internal.util;
 
 import org.mule.runtime.http.api.server.HttpServer;
 
-import java.util.Objects;
-
 import static org.mule.extension.ws.internal.util.PathUtils.resolveAbsolutePath;
 import static org.mule.extension.ws.internal.util.PathUtils.resolveFullPath;
 
