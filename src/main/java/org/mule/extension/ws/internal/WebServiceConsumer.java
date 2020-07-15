@@ -17,6 +17,7 @@ import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
 import org.mule.extension.ws.internal.error.WscError;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
+import org.mule.runtime.extension.api.annotation.Export;
 import org.mule.runtime.extension.api.annotation.Extension;
 import org.mule.runtime.extension.api.annotation.Operations;
 import org.mule.runtime.extension.api.annotation.SubTypeMapping;
@@ -38,6 +39,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
     subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
 @Extension(name = NAME)
 @Xml(prefix = "wsc")
+@Export(classes = ReliableMessagingConfiguration.class)
 public class WebServiceConsumer implements Initialisable {
 
   public static final String NAME = "Web Service Consumer";
