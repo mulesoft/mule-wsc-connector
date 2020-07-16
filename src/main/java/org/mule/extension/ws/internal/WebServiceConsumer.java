@@ -51,7 +51,7 @@ public class WebServiceConsumer implements Initialisable {
    */
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
-  private AddressingConfiguration wsAddressing;
+  private AddressingConfiguration addressing;
 
   /**
    * Web Service Reliable Messaging configuration
@@ -62,8 +62,12 @@ public class WebServiceConsumer implements Initialisable {
   @DisplayName("Web Service Reliable Messaging")
   private ReliableMessagingConfiguration reliableMessaging;
 
+  public AddressingConfiguration getAddressing() {
+    return addressing;
+  }
+
   @Override
   public void initialise() throws InitialisationException {
-    reliableMessaging.doInitialise(wsAddressing.getWsaVersion(), this);
+    reliableMessaging.doInitialise(this);
   }
 }

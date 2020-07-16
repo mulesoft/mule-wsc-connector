@@ -7,6 +7,7 @@
 package org.mule.extension.ws.api.reliablemessaging;
 
 import org.mule.extension.ws.api.addressing.AddressingVersion;
+import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.extension.ws.internal.reliablemessaging.value.ReliableMessagingVersionValueProvider;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
@@ -128,9 +129,10 @@ public class ReliableMessagingConfiguration {
     return Objects.hash(wsrmVersion, wsrmHttpListenerConfig, wsrmAcksTo, wsrmSequenceTtl, wsrmSequenceTtlTimeUnit, wsrmStore);
   }
 
-  public void doInitialise(AddressingVersion wsaVersion, Initialisable initialisable) throws InitialisationException {
+  public void doInitialise(WebServiceConsumer connector) throws InitialisationException {
+    AddressingVersion wsaVersion = connector.getAddressing().getWsaVersion();
     if (wsaVersion == null) {
-      throw new InitialisationException(createStaticMessage("WSA version cannot be null."), initialisable);
+      throw new InitialisationException(createStaticMessage("WSA version cannot be null."), connector);
     }
 
     if (wsrmVersion == null) {
@@ -138,18 +140,18 @@ public class ReliableMessagingConfiguration {
           .findFirst().orElseThrow(() -> new InitialisationException(
                                                                      createStaticMessage("There is no WSRM version related to the selected WSA version [%s].",
                                                                                          wsaVersion.name()),
-                                                                     initialisable));
+                                                                     connector));
     } else {
       ReliableMessagingVersion rmVersion = Arrays.stream(ReliableMessagingVersion.values())
           .filter(v -> v.name().equals(wsrmVersion)).findFirst().orElseThrow(() -> new InitialisationException(
                                                                                                                createStaticMessage("Invalid WSRM version configured [%s].",
                                                                                                                                    wsrmVersion),
-                                                                                                               initialisable));
+                                                                                                               connector));
       if (rmVersion.getAddressingVersion() != wsaVersion) {
         throw new InitialisationException(
                                           createStaticMessage("Invalid WSRM version configured [%s] for the selected WSA version [%s].",
                                                               wsrmVersion, wsaVersion.name()),
-                                          initialisable);
+                                          connector);
       }
 
       version = rmVersion;
