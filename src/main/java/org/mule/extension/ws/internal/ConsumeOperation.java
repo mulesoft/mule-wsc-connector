@@ -238,7 +238,7 @@ public class ConsumeOperation {
         .build();
   }
 
-    private String getHttpServerBasepath(String httpListenerConfig) {
+  private String getHttpServerBasepath(String httpListenerConfig) {
     if (isBlank(httpListenerConfig)) {
       return "";
     }
