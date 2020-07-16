@@ -19,6 +19,7 @@ import java.util.TreeMap;
 import org.junit.Test;
 
 import org.mule.extension.ws.api.SoapAttributes;
+import org.mule.extension.ws.api.addressing.AddressingAttributes;
 
 public class SoapAttributesTestCase {
 
@@ -42,7 +43,36 @@ public class SoapAttributesTestCase {
         + "  protocolHeaders = [\n"
         + "    Header1:Value1,\n"
         + "    Header2:Value2\n"
-        + "  ]"
-        + "\n}"));
+        + "  ]\n"
+        + "}\n"));
+  }
+
+  @Test
+  public void toStringAttributesWithMessageID() {
+
+    AddressingAttributes addressing = new AddressingAttributes("12345");
+    String result = new SoapAttributes(
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("Header1", "Value1"),
+                                                                      new SimpleEntry<>("Header2", "Value2"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       unmodifiableMap(new TreeMap(of(new SimpleEntry<>("statusCode", "200"),
+                                                                      new SimpleEntry<>("reasonPhrase", "OK"))
+                                                                          .collect(toMap(Entry::getKey, Entry::getValue)))),
+                                       addressing)
+                                           .toString();
+
+    assertThat(result, is("{\n"
+        + "  additionalTransportData = [\n"
+        + "    reasonPhrase:OK,\n"
+        + "    statusCode:200\n"
+        + "  ]\n"
+        + "  protocolHeaders = [\n"
+        + "    Header1:Value1,\n"
+        + "    Header2:Value2\n"
+        + "  ]\n"
+        + "  addressing = {\n"
+        + "    messageId:12345\n"
+        + "  }\n"
+        + "}\n"));
   }
 }

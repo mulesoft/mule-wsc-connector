@@ -993,7 +993,7 @@
         <con:mockOperation name="noParamsWithHeader" id="605aefa1-e1c0-4334-ace3-34c636ab366c" interface="TestServiceSoapBinding" operation="noParamsWithHeader">
             <con:settings/>
             <con:defaultResponse>Response 1</con:defaultResponse>
-            <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
+            <con:dispatchStyle>QUERY_MATCH</con:dispatchStyle>
             <con:response name="Response 1" id="be6b7e9e-5e6d-4c6e-86dd-f7166dc86dd0" httpResponseStatus="200" encoding="UTF-8">
                 <con:settings/>
                 <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
@@ -1006,7 +1006,34 @@
 </soapenv:Envelope>]]></con:responseContent>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="noParamsWithHeader"/>
             </con:response>
-            <con:dispatchConfig/>
+            <con:response name="WsaHeaders" id="facac982-720f-48e2-a417-fd533f567b7a" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:noParamsWithHeaderResponse>
+         <!--Optional:-->
+         <text>Action.To.MessageId.RelatesTo.RelationshipType.From.ReplyTo.FaultTo</text>
+      </ser:noParamsWithHeaderResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="noParamsWithHeader"/></con:response><con:response name="WsaCustomHeaders" id="0b6dfc1a-e27b-4a20-a242-b154fd9a854c" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:noParamsWithHeaderResponse>
+         <!--Optional:-->
+         <text>CustomAction.CustomTo.CustomMessageId.CustomRelatesTo.CustomRelationshipType.CustomFrom.CustomReplyTo.CustomFaultTo</text>
+      </ser:noParamsWithHeaderResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="noParamsWithHeader"/></con:response><con:response name="WsaHeaders200408" id="74ca5220-5b06-4f74-b49c-1d1f3441488f" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:noParamsWithHeaderResponse>
+         <!--Optional:-->
+         <text>Action.To.MessageId.RelatesTo.RelationshipType.From.ReplyTo.FaultTo</text>
+      </ser:noParamsWithHeaderResponse>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="noParamsWithHeader"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:query><con:name>WsaHeaders</con:name><con:query>declare namespace wsa='http://www.w3.org/2005/08/addressing';
+concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, ".", //wsa:RelatesTo/@RelationshipType,".",//wsa:From/wsa:Address,".",//wsa:ReplyTo/wsa:Address,".",//wsa:FaultTo/wsa:Address)</con:query><con:match>Action.To.MessageId.RelatesTo.RelationshipType.From.http://0.0.0.0:8081/ReplyTo.http://0.0.0.0:8081/FaultTo</con:match><con:response>WsaHeaders</con:response></con:query><con:query><con:name>WsaCustomHeaders</con:name><con:query>declare namespace wsa='http://www.w3.org/2005/08/addressing';
+concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, ".", //wsa:RelatesTo/@RelationshipType,".",//wsa:From/wsa:Address,".",//wsa:ReplyTo/wsa:Address,".",//wsa:FaultTo/wsa:Address)</con:query><con:match>CustomAction.CustomTo.CustomMessageId.CustomRelatesTo.CustomRelationshipType.CustomFrom.CustomReplyTo.CustomFaultTo</con:match><con:response>WsaCustomHeaders</con:response></con:query><con:query><con:name>WsaHeaders200408</con:name><con:query>declare namespace wsa='http://schemas.xmlsoap.org/ws/2004/08/addressing'
+concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, ".", //wsa:RelatesTo/@RelationshipType,".",//wsa:From/wsa:Address,".",//wsa:ReplyTo/wsa:Address,".",//wsa:FaultTo/wsa:Address)</con:query><con:match>Action.To.MessageId.RelatesTo.RelationshipType.From.http://0.0.0.0:8081/ReplyTo.http://0.0.0.0:8081/FaultTo</con:match><con:response>WsaHeaders200408</con:response></con:query></con:dispatchConfig>
         </con:mockOperation>
         <con:mockOperation name="oneWay" id="28c453e9-44a3-42d6-bb0d-2792bc6b98b6" interface="TestServiceSoapBinding" operation="oneWay">
             <con:settings/>

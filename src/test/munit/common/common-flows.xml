@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
       xmlns="http://www.mulesoft.org/schema/mule/core"
-      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
     <flow name="buildEchoRequest">
         <set-payload value="#[
                             %dw 2.0
@@ -20,5 +23,12 @@
                             ns con http://service.soap.service.mule.org/
                             ---
                             con#oneWay: {}]"/>
+    </flow>
+
+
+    <!-- TODO: remove this after fix MULE-18513 -->
+    <flow name="init-wsa-http-listener">
+        <http:listener config-ref="WSA_HTTP_Listener_config" path="/" />
+        <set-payload value="some-value"/>
     </flow>
 </mule>
