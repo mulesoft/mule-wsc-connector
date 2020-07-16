@@ -6,27 +6,21 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import static org.mule.runtime.core.api.util.StringUtils.isBlank;
+
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
-import org.mule.metadata.api.builder.ObjectTypeBuilder;
 import org.mule.metadata.api.model.MetadataType;
-import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
-import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
-import org.mule.wsdl.parser.model.operation.Type;
 
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
  *
  * @since 1.0
  */
-public class ConsumeOutputResolver implements OutputTypeResolver<String> {
-
-  public static final String BODY = "body";
-  public static final String HEADERS = "headers";
-  public static final String ATTACHMENTS = "attachments";
+public class ConsumeOutputResolver extends AbstractOutputResolver<ConsumeKey> {
 
   @Override
   public String getCategoryName() {
@@ -42,33 +36,11 @@ public class ConsumeOutputResolver implements OutputTypeResolver<String> {
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, String operation)
+  public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
       throws ConnectionException, MetadataResolvingException {
-    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
-    MetadataType body = outputType.getBody();
-    MetadataType headers = outputType.getHeaders();
-    MetadataType attachments = outputType.getAttachments();
-
-    if (isNullType(body) && isNullType(headers) && isNullType(attachments)) {
+    if (!isBlank(key.getReplyTo())) {
       return context.getTypeBuilder().nullType().build();
     }
-
-    ObjectTypeBuilder output = context.getTypeBuilder().objectType();
-    addIfNotNullType(output, BODY, body);
-    addIfNotNullType(output, HEADERS, headers);
-    addIfNotNullType(output, ATTACHMENTS, attachments);
-
-    return output.build();
+    return getOperationOutputType(context, key.getOperation());
   }
-
-  private void addIfNotNullType(ObjectTypeBuilder typeBuilder, String fieldName, MetadataType fieldType) {
-    if (!isNullType(fieldType)) {
-      typeBuilder.addField().key(fieldName).value(fieldType);
-    }
-  }
-
-  private boolean isNullType(MetadataType metadataType) {
-    return metadataType instanceof NullType;
-  }
-
 }

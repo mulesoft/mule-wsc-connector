@@ -10,6 +10,8 @@ import static java.util.Collections.EMPTY_MAP;
 import static java.util.Collections.unmodifiableMap;
 import static java.util.stream.Collectors.joining;
 
+import org.mule.extension.ws.api.addressing.AddressingAttributes;
+import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 
 import java.util.Map;
@@ -36,9 +38,22 @@ public class SoapAttributes {
   @Parameter
   private final Map<String, String> additionalTransportData;
 
+  /**
+   * Addressing data
+   */
+  @Parameter
+  @Optional
+  private final AddressingAttributes addressing;
+
   public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData) {
+    this(protocolHeaders, additionalTransportData, null);
+  }
+
+  public SoapAttributes(Map<String, String> protocolHeaders, Map<String, String> additionalTransportData,
+                        AddressingAttributes addressing) {
     this.protocolHeaders = unmodifiableMap(protocolHeaders != null ? protocolHeaders : EMPTY_MAP);
     this.additionalTransportData = unmodifiableMap(additionalTransportData != null ? additionalTransportData : EMPTY_MAP);
+    this.addressing = addressing;
   }
 
   /**
@@ -55,6 +70,15 @@ public class SoapAttributes {
     return additionalTransportData;
   }
 
+  /**
+   * @return a set of additional addressing data
+   *
+   * @since 2.0
+   */
+  public AddressingAttributes getAddressing() {
+    return addressing;
+  }
+
   @Override
   public String toString() {
     String headersAsString = protocolHeaders.entrySet()
@@ -67,6 +91,14 @@ public class SoapAttributes {
         .map(e -> e.getKey() + ":" + e.getValue())
         .collect(joining(",\n    "));
 
+    String addressingDataAsString = "";
+    if (addressing != null) {
+      addressingDataAsString =
+          "  addressing = {\n" +
+              "    messageId:" + addressing.getMessageId() + "\n" +
+              "  }\n";
+    }
+
     return "{\n" +
         "  additionalTransportData = [\n" +
         "    " + transportDataAsString + "\n" +
@@ -74,6 +106,7 @@ public class SoapAttributes {
         "  protocolHeaders = [\n" +
         "    " + headersAsString + "\n" +
         "  ]\n" +
-        "}";
+        addressingDataAsString +
+        "}\n";
   }
 }

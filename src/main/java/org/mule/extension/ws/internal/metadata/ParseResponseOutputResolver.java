@@ -6,20 +6,19 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
+import org.mule.extension.ws.internal.ParseResponseOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.metadata.api.model.MetadataType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
-import org.mule.runtime.api.metadata.resolving.InputTypeResolver;
-import org.mule.wsdl.parser.model.operation.OperationModel;
 
 /**
- * {@link InputTypeResolver} implementation to resolve metadata for the message body of a particular operation.
+ * Resolves the metadata for output payload of the {@link ParseResponseOperation}.
  *
- * @since 1.0
+ * @since 2.0
  */
-public class SoapBodyTypeResolver implements InputTypeResolver<ConsumeKey> {
+public class ParseResponseOutputResolver extends AbstractOutputResolver<String> {
 
   @Override
   public String getCategoryName() {
@@ -28,14 +27,15 @@ public class SoapBodyTypeResolver implements InputTypeResolver<ConsumeKey> {
 
   @Override
   public String getResolverName() {
-    return WebServiceConsumer.NAME + "BodyResolver";
+    return WebServiceConsumer.NAME + "ResponseOutputResolver";
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @Override
-  public MetadataType getInputMetadata(MetadataContext context, ConsumeKey key)
+  public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    OperationModel operationModel =
-        MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, key.getOperation());
-    return operationModel.getInputType().getBody();
+    return getOperationOutputType(context, operation);
   }
 }

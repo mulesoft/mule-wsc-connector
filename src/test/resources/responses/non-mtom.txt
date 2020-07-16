@@ -1,0 +1,14 @@
+------=_Part_1_736085595.1593528925587
+Content-Type: text/xml; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+Content-ID: <rootpart@soapui.org>
+
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:downloadAttachmentResponse>
+         <attachment>U2ltcGxlIEF0dGFjaG1lbnQgQ29udGVudAo=</attachment>
+      </ser:downloadAttachmentResponse>
+   </soapenv:Body>
+</soapenv:Envelope>
+------=_Part_1_736085595.1593528925587--

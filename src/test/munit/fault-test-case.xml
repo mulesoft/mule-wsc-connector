@@ -100,4 +100,32 @@
             <munit-tools:assert-equals actual="#[payload]" expected="#['Error consuming the operation [fail], the request body is not a valid XML']"/>
         </munit:validation>
     </munit:test>
+
+    <munit:test name="failReplyAndCheckErrorMessage" description="Handle reply to an operation that throws a SOAP Fault and expects a Soap Fault Exception">
+        <munit:execution>
+            <try>
+                <wsc:parse-response config-ref="${config}" operation="fail">
+                    <wsc:response><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+                                       <soapenv:Body>
+                                          <soapenv:Fault>
+                                             <faultcode>Server</faultcode>
+                                             <faultstring>Internal Server Error</faultstring>
+                                             <detail><text>Fail Message</text></detail>
+                                          </soapenv:Fault>
+                                       </soapenv:Body>
+                                    </soapenv:Envelope>]]>
+                    </wsc:response>
+                </wsc:parse-response>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:SOAP_FAULT">
+                        <set-payload value="#[error.errorMessage.payload.detail]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]" expected="#['&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;detail&gt;&lt;text&gt;Fail Message&lt;/text&gt;&lt;/detail&gt;']"/>
+        </munit:validation>
+    </munit:test>
+
 </mule>

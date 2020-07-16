@@ -12,6 +12,10 @@
         <http:request-connection protocol="HTTP"/>
     </http:request-config>
 
+    <http:listener-config name="WSA_HTTP_Listener_config" >
+        <http:listener-connection host="0.0.0.0" port="8081" />
+    </http:listener-config>
+
     <wsc:config name="default-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
@@ -43,4 +47,29 @@
             </wsc:custom-transport-configuration>
         </wsc:connection>
     </wsc:config>
+
+    <wsc:config name="addressing-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa />
+    </wsc:config>
+
+    <wsc:config name="addressing-200408-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa wsaVersion="WSA200408" />
+    </wsc:config>
+
+    <wsc:config name="addressing-200508-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa wsaVersion="WSA200508" />
+    </wsc:config>
+
 </mule>
