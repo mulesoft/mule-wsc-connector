@@ -92,4 +92,8 @@ public class AddressingConfiguration {
   public int hashCode() {
     return Objects.hash(wsaMustUnderstand, wsaVersion, wsaFrom, wsaHttpListenerConfig);
   }
+
+  public AddressingVersion getWsaVersion() {
+    return wsaVersion;
+  }
 }
