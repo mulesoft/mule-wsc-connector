@@ -239,6 +239,35 @@
         </munit:validation>
     </munit:test>
 
+    <munit:test name="echoOperationWithInitialXMLDeclaration" description="Consumes an operation and verifies that the initial XML declaration is present in the request's payload" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <set-variable variableName="text" value="returnPayload" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="${config}" operation="echo">
+                <wsc:message useXMLInitialDeclaration="true">
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['true']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="echoOperationWithoutInitialXMLDeclaration" description="Consumes an operation and verifies that the initial XML declaration is not present in the request's payload" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <set-variable variableName="text" value="returnPayload" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="${config}" operation="echo">
+                <wsc:message useXMLInitialDeclaration="false">
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['false']"/>
+        </munit:validation>
+    </munit:test>
 
     <!-- Handle reply tests  -->
     <munit:test name="replyEchoOperation" description="Handle reply of an operation that expects a simple type and returns a simple type" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
