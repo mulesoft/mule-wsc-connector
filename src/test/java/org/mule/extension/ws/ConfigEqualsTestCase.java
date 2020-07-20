@@ -14,6 +14,9 @@ import static org.junit.Assert.assertTrue;
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.Test;
+
+import org.mule.extension.ws.api.addressing.AddressingConfiguration;
+import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConfiguration;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
@@ -72,6 +75,43 @@ public class ConfigEqualsTestCase {
       assertFalse(customTransport.hashCode() == anotherCustomTransport.hashCode());
       assertNotEquals(clonedCustomTransport, anotherClonedCustomTransport);
       assertFalse(clonedCustomTransport.hashCode() == anotherClonedCustomTransport.hashCode());
+
+    }
+  }
+
+  @Test
+  public void testAddressingEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    EasyRandom factory = new EasyRandom(parameters);
+    EasyRandom factory2 = new EasyRandom(parameters);
+
+    for (int i = 0; i < 1000; i++) {
+
+      AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
+      AddressingConfiguration clonedAddressingConfiguration = factory2.nextObject(AddressingConfiguration.class);
+
+      assertEquals(addressingConfiguration, clonedAddressingConfiguration);
+      assertTrue(addressingConfiguration.hashCode() == clonedAddressingConfiguration.hashCode());
+
+    }
+  }
+
+  @Test
+  public void testReliableMessagingEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
+    EasyRandom factory = new EasyRandom(parameters);
+    EasyRandom factory2 = new EasyRandom(parameters);
+
+    for (int i = 0; i < 1000; i++) {
+
+      ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
+      ReliableMessagingConfiguration clonedReliableMessaging = factory2.nextObject(ReliableMessagingConfiguration.class);
+
+      assertEquals(reliableMessaging, clonedReliableMessaging);
+      assertTrue(reliableMessaging.hashCode() == clonedReliableMessaging.hashCode());
 
     }
   }

@@ -8,7 +8,6 @@ package org.mule.extension.ws.internal.addressing;
 
 import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
 import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
-import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 
 import java.util.UUID;
 
@@ -16,7 +15,6 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import static org.hamcrest.core.Is.is;
-import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.junit.Before;
@@ -24,8 +22,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import org.junit.rules.ExpectedException;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class AddressingPropertiesBuilderTestCase {
 
