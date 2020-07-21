@@ -20,7 +20,7 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.10</commons.lang.version>
+        <commons.lang.version>3.11</commons.lang.version>
 
         <mule.http.connector.version>1.5.12</mule.http.connector.version>
         <soap.engine.version>1.5.0-SNAPSHOT</soap.engine.version>
@@ -373,7 +373,7 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
-                        <version>1.7.29</version>
+                        <version>1.7.30</version>
                     </dependency>
                     <dependency>
                         <groupId>org.slf4j</groupId>
