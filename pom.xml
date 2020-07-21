@@ -23,7 +23,7 @@
         <commons.lang.version>3.11</commons.lang.version>
 
         <mule.http.connector.version>1.5.12</mule.http.connector.version>
-        <soap.engine.version>1.5.0-SNAPSHOT</soap.engine.version>
+        <soap.engine.version>1.6.0-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
@@ -34,7 +34,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
-        <mule.wss.module.version>0.8.3</mule.wss.module.version>
+        <mule.wss.module.version>0.8.4</mule.wss.module.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
