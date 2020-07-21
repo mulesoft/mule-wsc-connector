@@ -34,7 +34,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
-        <mule.wss.module.version>0.8.3</mule.wss.module.version>
+        <mule.wss.module.version>0.8.4</mule.wss.module.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
