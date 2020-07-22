@@ -16,12 +16,15 @@ import org.mule.runtime.extension.api.annotation.param.Content;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 import java.io.InputStream;
 import java.util.Map;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
+import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 /**
  * Component that specifies how to create a proper SOAP request using the {@link WebServiceConsumer}.
@@ -38,15 +41,6 @@ public class SoapMessageBuilder {
   @TypeResolver(SoapBodyTypeResolver.class)
   @Summary("The XML body to include in the SOAP message, with all the required parameters.")
   private TypedValue<InputStream> body;
-
-  /**
-   * If true, the XML initial declaration will be appended to the request's body.
-   */
-  @Parameter
-  @Optional(defaultValue = "false")
-  @Expression(NOT_SUPPORTED)
-  @Summary("The XML body will be appended with the initial declaration.")
-  private boolean useXMLInitialDeclaration;
 
   /**
    * The XML headers to include in the SOAP message.
@@ -68,6 +62,17 @@ public class SoapMessageBuilder {
   @TypeResolver(SoapAttachmentsTypeResolver.class)
   @Summary("The attachments to include in the SOAP request.")
   private Map<String, TypedValue<?>> attachments;
+
+  /**
+   * If true, the XML Prolog statement will be appended to the request's body.
+   */
+  @Parameter
+  @Placement(tab = ADVANCED_TAB, order = 1)
+  @Optional(defaultValue = "false")
+  @Expression(NOT_SUPPORTED)
+  @DisplayName("Force XML Prolog into body")
+  @Summary("The XML Prolog statement will be appended to the request's body")
+  private boolean useXMLInitialDeclaration;
 
   public TypedValue<InputStream> getBody() {
     return body;
