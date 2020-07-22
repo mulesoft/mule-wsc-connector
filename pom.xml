@@ -22,7 +22,7 @@
     <properties>
         <commons.lang.version>3.11</commons.lang.version>
 
-        <mule.http.connector.version>1.5.12</mule.http.connector.version>
+        <mule.http.connector.version>1.5.19</mule.http.connector.version>
         <soap.engine.version>1.6.0-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
@@ -378,7 +378,7 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>jcl-over-slf4j</artifactId>
-                        <version>1.7.29</version>
+                        <version>1.7.30</version>
                     </dependency>
                 </dependencies>
                 <executions>
