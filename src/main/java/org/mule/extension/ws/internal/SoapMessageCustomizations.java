@@ -32,10 +32,10 @@ public class SoapMessageCustomizations {
   @Expression(NOT_SUPPORTED)
   @DisplayName("Force XML Prolog into body")
   @Summary("The XML Prolog statement will be appended to the request's body")
-  private boolean useXMLInitialDeclaration;
+  private boolean forceXMLProlog;
 
-  public boolean isUseXMLInitialDeclaration() {
-    return useXMLInitialDeclaration;
+  public boolean isForceXMLProlog() {
+    return forceXMLProlog;
   }
 
 }

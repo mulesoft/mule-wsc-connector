@@ -175,7 +175,7 @@ public class ConsumeOperation {
 
     requestBuilder.content(message.getBody().getValue());
 
-    requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isUseXMLInitialDeclaration());
+    requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isForceXMLProlog());
 
     return requestBuilder;
   }
