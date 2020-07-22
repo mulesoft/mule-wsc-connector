@@ -9,7 +9,6 @@ package org.mule.extension.ws.internal;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import static org.mule.runtime.http.api.HttpHeaders.Names.CONTENT_TYPE;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
@@ -83,10 +82,13 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
+                                                            @ParameterGroup(
+                                                                name = "Message Customizations") SoapMessageCustomizations soapMessageCustomizations,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
-    SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders()).build();
+    SoapRequest request =
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), soapMessageCustomizations).build();
     SoapResponse response = connection.consume(request, client);
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(response, streamingHelper))
@@ -94,7 +96,8 @@ public class ConsumeOperation {
         .build();
   }
 
-  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders) {
+  private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
+                                            SoapMessageCustomizations soapMessageCustomizations) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
@@ -112,7 +115,7 @@ public class ConsumeOperation {
 
     requestBuilder.content(message.getBody().getValue());
 
-    requestBuilder.useXMLInitialDeclaration(message.isUseXMLInitialDeclaration());
+    requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isForceXMLProlog());
 
     return requestBuilder;
   }
