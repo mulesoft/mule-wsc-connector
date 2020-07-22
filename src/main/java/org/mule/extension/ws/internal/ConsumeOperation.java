@@ -93,7 +93,8 @@ public class ConsumeOperation {
   public Result<SoapOutputEnvelope, SoapAttributes> consume(@Connection WscSoapClient connection,
                                                             @ParameterGroup(
                                                                 name = "Consume") @MetadataKeyId(OperationKeysResolver.class) ConsumeKey key,
-                                                            @ParameterGroup(name = "Message") SoapMessageBuilder message,
+                                                            @ParameterGroup(name = "Message",
+                                                                showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             @ParameterGroup(name = "Addressing",
