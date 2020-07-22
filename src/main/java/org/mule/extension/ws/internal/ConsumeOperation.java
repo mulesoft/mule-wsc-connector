@@ -98,21 +98,25 @@ public class ConsumeOperation {
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             @ParameterGroup(name = "Addressing",
                                                                 showInDsl = true) AddressingSettings addressingSettings,
+                                                            @ParameterGroup(
+                                                                name = "Message Customizations") SoapMessageCustomizations soapMessageCustomizations,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
     AddressingProperties addressing = getAddressingProperties(addressingSettings, key);
     if (addressing.isRequired()) {
-      return consumeWithAddressing(connection, key.getOperation(), message, transportConfig, streamingHelper, client, addressing);
+      return consumeWithAddressing(connection, key.getOperation(), message, transportConfig, streamingHelper, client, addressing,
+                                   soapMessageCustomizations);
     }
-    return consume(connection, key.getOperation(), message, transportConfig, streamingHelper, client);
+    return consume(connection, key.getOperation(), message, transportConfig, streamingHelper, client, soapMessageCustomizations);
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> consume(WscSoapClient connection, String operation,
                                                              SoapMessageBuilder message, TransportConfiguration transportConfig,
-                                                             StreamingHelper streamingHelper, ExtensionsClient client)
+                                                             StreamingHelper streamingHelper, ExtensionsClient client,
+                                                             SoapMessageCustomizations soapMessageCustomizations)
       throws ConnectionException {
-    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, null);
+    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, null, soapMessageCustomizations);
     return createResult(response, streamingHelper);
   }
 
@@ -121,10 +125,12 @@ public class ConsumeOperation {
                                                                            TransportConfiguration transportConfig,
                                                                            StreamingHelper streamingHelper,
                                                                            ExtensionsClient client,
-                                                                           AddressingProperties addressing)
+                                                                           AddressingProperties addressing,
+                                                                           SoapMessageCustomizations soapMessageCustomizations)
       throws ConnectionException {
     Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
-    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, headers);
+    SoapResponse response =
+        doConsume(connection, operation, message, transportConfig, client, headers, soapMessageCustomizations);
     AddressingAttributes addressingAttributes = getAddressingAttributes(addressing);
     return createResult(response, streamingHelper, addressingAttributes);
   }
@@ -143,14 +149,17 @@ public class ConsumeOperation {
 
   private SoapResponse doConsume(WscSoapClient connection, String operation, SoapMessageBuilder message,
                                  TransportConfiguration transportConfig, ExtensionsClient client,
-                                 Map<String, String> addressingHeaders)
+                                 Map<String, String> addressingHeaders, SoapMessageCustomizations soapMessageCustomizations)
       throws ConnectionException {
-    SoapRequest request = getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressingHeaders).build();
+    SoapRequest request =
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressingHeaders, soapMessageCustomizations)
+            .build();
     return connection.consume(request, client);
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
-                                            Map<String, String> addressingHeaders) {
+                                            Map<String, String> addressingHeaders,
+                                            SoapMessageCustomizations soapMessageCustomizations) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
@@ -165,7 +174,7 @@ public class ConsumeOperation {
 
     requestBuilder.content(message.getBody().getValue());
 
-    requestBuilder.useXMLInitialDeclaration(message.isUseXMLInitialDeclaration());
+    requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isUseXMLInitialDeclaration());
 
     return requestBuilder;
   }
