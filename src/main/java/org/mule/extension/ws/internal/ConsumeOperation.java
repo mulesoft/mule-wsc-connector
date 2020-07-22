@@ -166,6 +166,8 @@ public class ConsumeOperation {
 
     requestBuilder.content(message.getBody().getValue());
 
+    requestBuilder.useXMLInitialDeclaration(message.isUseXMLInitialDeclaration());
+
     return requestBuilder;
   }
 
