@@ -63,23 +63,8 @@ public class SoapMessageBuilder {
   @Summary("The attachments to include in the SOAP request.")
   private Map<String, TypedValue<?>> attachments;
 
-  /**
-   * If true, the XML Prolog statement will be appended to the request's body.
-   */
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 1)
-  @Optional(defaultValue = "false")
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Force XML Prolog into body")
-  @Summary("The XML Prolog statement will be appended to the request's body")
-  private boolean useXMLInitialDeclaration;
-
   public TypedValue<InputStream> getBody() {
     return body;
-  }
-
-  public boolean isUseXMLInitialDeclaration() {
-    return useXMLInitialDeclaration;
   }
 
   public InputStream getHeaders() {
