@@ -69,4 +69,3 @@ public class SoapMessageBuilder {
     return attachments;
   }
 }
-
