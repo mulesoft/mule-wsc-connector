@@ -82,8 +82,8 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
-                                                            @ParameterGroup(
-                                                                name = "Message Customizations") SoapMessageCustomizations soapMessageCustomizations,
+                                                            @ParameterGroup(name = "Message Customizations",
+                                                                showInDsl = true) SoapMessageCustomizations soapMessageCustomizations,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
