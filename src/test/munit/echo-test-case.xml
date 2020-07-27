@@ -243,10 +243,11 @@
         <munit:execution>
             <set-variable variableName="text" value="returnPayload" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="${config}" operation="echo" forceXMLProlog="true">
+            <wsc:consume config-ref="${config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
+                <wsc:message-customizations forceXMLProlog="true" />
             </wsc:consume>
         </munit:execution>
         <munit:validation>
@@ -258,10 +259,11 @@
         <munit:execution>
             <set-variable variableName="text" value="returnPayload" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="${config}" operation="echo" forceXMLProlog="false">
+            <wsc:consume config-ref="${config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
+                <wsc:message-customizations forceXMLProlog="false" />
             </wsc:consume>
         </munit:execution>
         <munit:validation>
