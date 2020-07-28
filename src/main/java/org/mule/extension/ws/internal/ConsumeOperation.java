@@ -99,8 +99,8 @@ public class ConsumeOperation {
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
                                                             @ParameterGroup(name = "Addressing",
                                                                 showInDsl = true) AddressingSettings addressingSettings,
-                                                            @ParameterGroup(
-                                                                name = "Message Customizations") SoapMessageCustomizations soapMessageCustomizations,
+                                                            @ParameterGroup(name = "Message Customizations",
+                                                                showInDsl = true) SoapMessageCustomizations soapMessageCustomizations,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
