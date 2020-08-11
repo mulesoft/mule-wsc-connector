@@ -13,7 +13,6 @@ import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.annotation.param.reference.ConfigReference;
 
 import java.util.Objects;
 
@@ -63,14 +62,6 @@ public class AddressingConfiguration {
   @DisplayName("From")
   private String wsaFrom;
 
-  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 4)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("HTTP Listener")
-  private String wsaHttpListenerConfig;
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -84,13 +75,12 @@ public class AddressingConfiguration {
     AddressingConfiguration that = (AddressingConfiguration) o;
     return Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
         && Objects.equals(wsaVersion, that.wsaVersion)
-        && Objects.equals(wsaFrom, that.wsaFrom)
-        && Objects.equals(wsaHttpListenerConfig, that.wsaHttpListenerConfig);
+        && Objects.equals(wsaFrom, that.wsaFrom);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(wsaMustUnderstand, wsaVersion, wsaFrom, wsaHttpListenerConfig);
+    return Objects.hash(wsaMustUnderstand, wsaVersion, wsaFrom);
   }
 
   public AddressingVersion getWsaVersion() {

@@ -15,7 +15,6 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
-import org.mule.runtime.extension.api.annotation.param.reference.ConfigReference;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
@@ -106,35 +105,6 @@ public class AddressingSettings {
   @DisplayName("Relates to")
   private String wsaRelatesTo;
 
-  /**
-   * The type of relationship between this message and the one related to.
-   */
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 8)
-  @Optional
-  @Expression(SUPPORTED)
-  @DisplayName("Relationsship type")
-  private String wsaRelationshipType;
-
-  /**
-   * The address of the intended receiver for faults related to this message.
-   */
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 9)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Fault to")
-  private String wsaFaultTo;
-
-  @ConfigOverride
-  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 10)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("HTTP Listener")
-  private String wsaHttpListenerConfig;
-
   public boolean isMustUnderstand() {
     return wsaMustUnderstand;
   }
@@ -145,14 +115,6 @@ public class AddressingSettings {
 
   public String getFrom() {
     return wsaFrom;
-  }
-
-  public String getHttpListenerConfig() {
-    return wsaHttpListenerConfig;
-  }
-
-  public String getFaultTo() {
-    return wsaFaultTo;
   }
 
   public String getAction() {
@@ -169,9 +131,5 @@ public class AddressingSettings {
 
   public String getRelatesTo() {
     return wsaRelatesTo;
-  }
-
-  public String getRelationshipType() {
-    return wsaRelationshipType;
   }
 }

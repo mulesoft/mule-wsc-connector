@@ -9,21 +9,16 @@ package org.mule.extension.ws.internal;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.api.TransportConfiguration;
 import org.mule.extension.ws.api.addressing.AddressingAttributes;
 import org.mule.extension.ws.api.addressing.AddressingSettings;
-import org.mule.extension.ws.internal.addressing.AddressingHeadersResolverFactory;
-import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
-import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
-import org.mule.extension.ws.internal.addressing.properties.URIType;
+import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesImpl;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
-import org.mule.extension.ws.internal.metadata.ConsumeKey;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
 import org.mule.runtime.api.connection.ConnectionException;
@@ -44,7 +39,6 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
 import org.mule.runtime.http.api.HttpService;
-import org.mule.runtime.http.api.server.HttpServer;
 import org.mule.soap.api.message.SoapAttachment;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapRequestBuilder;
@@ -83,16 +77,14 @@ public class ConsumeOperation {
    * Consumes an operation from a SOAP Web Service.
    *
    * @param connection the connection resolved to execute the operation.
-   * @param key        the {@link ConsumeKey} which includes the name of the web service operation
-   *                   that aims to invoke and optionally the intended receiver for replies to this message
+   * @param operation  the name of the web service operation that aims to invoke.
    * @param message    the constructed SOAP message to perform the request.
    */
   @OnException(WscExceptionEnricher.class)
   @Throws(ConsumeErrorTypeProvider.class)
   @OutputResolver(output = ConsumeOutputResolver.class)
   public Result<SoapOutputEnvelope, SoapAttributes> consume(@Connection WscSoapClient connection,
-                                                            @ParameterGroup(
-                                                                name = "Consume") @MetadataKeyId(OperationKeysResolver.class) ConsumeKey key,
+                                                            @MetadataKeyId(OperationKeysResolver.class) String operation,
                                                             @ParameterGroup(name = "Message",
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
@@ -104,40 +96,13 @@ public class ConsumeOperation {
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
-    AddressingProperties addressing = getAddressingProperties(addressingSettings, key);
-    if (addressing.isRequired()) {
-      return consumeWithAddressing(connection, key.getOperation(), message, transportConfig, streamingHelper, client, addressing,
-                                   soapMessageCustomizations);
-    }
-    return consume(connection, key.getOperation(), message, transportConfig, streamingHelper, client, soapMessageCustomizations);
-  }
-
-  private Result<SoapOutputEnvelope, SoapAttributes> consume(WscSoapClient connection, String operation,
-                                                             SoapMessageBuilder message, TransportConfiguration transportConfig,
-                                                             StreamingHelper streamingHelper, ExtensionsClient client,
-                                                             SoapMessageCustomizations soapMessageCustomizations)
-      throws ConnectionException {
-    SoapResponse response = doConsume(connection, operation, message, transportConfig, client, null, soapMessageCustomizations);
-    return createResult(response, streamingHelper);
-  }
-
-  private Result<SoapOutputEnvelope, SoapAttributes> consumeWithAddressing(WscSoapClient connection, String operation,
-                                                                           SoapMessageBuilder message,
-                                                                           TransportConfiguration transportConfig,
-                                                                           StreamingHelper streamingHelper,
-                                                                           ExtensionsClient client,
-                                                                           AddressingProperties addressing,
-                                                                           SoapMessageCustomizations soapMessageCustomizations)
-      throws ConnectionException {
-    Map<String, String> headers = new AddressingHeadersResolverFactory(expressionExecutor).create(addressing).resolve(addressing);
-    SoapResponse response =
-        doConsume(connection, operation, message, transportConfig, client, headers, soapMessageCustomizations);
+    AddressingPropertiesImpl addressing = getAddressingProperties(addressingSettings);
+    SoapRequest request =
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressing, soapMessageCustomizations)
+            .build();
+    SoapResponse response = connection.consume(request, client);
     AddressingAttributes addressingAttributes = getAddressingAttributes(addressing);
     return createResult(response, streamingHelper, addressingAttributes);
-  }
-
-  private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper) {
-    return createResult(response, streamingHelper, null);
   }
 
   private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper,
@@ -148,18 +113,8 @@ public class ConsumeOperation {
         .build();
   }
 
-  private SoapResponse doConsume(WscSoapClient connection, String operation, SoapMessageBuilder message,
-                                 TransportConfiguration transportConfig, ExtensionsClient client,
-                                 Map<String, String> addressingHeaders, SoapMessageCustomizations soapMessageCustomizations)
-      throws ConnectionException {
-    SoapRequest request =
-        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressingHeaders, soapMessageCustomizations)
-            .build();
-    return connection.consume(request, client);
-  }
-
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
-                                            Map<String, String> addressingHeaders,
+                                            AddressingPropertiesImpl addressingProperties,
                                             SoapMessageCustomizations soapMessageCustomizations) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
@@ -171,20 +126,21 @@ public class ConsumeOperation {
 
     requestBuilder.transportHeaders(transportHeaders);
 
-    requestBuilder.soapHeaders(getSoapHeaders(message.getHeaders(), addressingHeaders));
+    requestBuilder.soapHeaders(getSoapHeaders(message.getHeaders()));
 
     requestBuilder.content(message.getBody().getValue());
 
     requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isForceXMLProlog());
 
+    if (addressingProperties.isRequired()) {
+      requestBuilder.addressingProperties(addressingProperties);
+    }
+
     return requestBuilder;
   }
 
-  private Map<String, String> getSoapHeaders(InputStream headers, Map<String, String> addressingHeaders) {
+  private Map<String, String> getSoapHeaders(InputStream headers) {
     HashMap<String, String> soapHeaders = new HashMap<>();
-    if (addressingHeaders != null) {
-      soapHeaders.putAll(addressingHeaders);
-    }
     if (headers != null) {
       soapHeaders.putAll((Map<String, String>) evaluateHeaders(headers));
     }
@@ -233,39 +189,21 @@ public class ConsumeOperation {
     return expressionResult;
   }
 
-  private AddressingProperties getAddressingProperties(AddressingSettings settings, ConsumeKey key) {
-    return new AddressingPropertiesBuilder()
-        .mustUnderstand(settings.isMustUnderstand())
-        .namespaceURI(settings.getVersion().getNamespaceUri())
+  private AddressingPropertiesImpl getAddressingProperties(AddressingSettings settings) {
+    return AddressingPropertiesImpl.builder()
+        .namespace(settings.getVersion().getNamespaceUri())
         .action(settings.getAction())
         .to(settings.getTo())
         .from(settings.getFrom())
-        .messageID(settings.getMessageID())
-        .relatesTo(settings.getRelatesTo(), settings.getRelationshipType())
-        .replyTo(getHttpServerBasepath(settings.getHttpListenerConfig()),
-                 key.getReplyTo(), settings.getFaultTo())
+        .messageId(settings.getMessageID())
+        .relatesTo(settings.getRelatesTo())
         .build();
   }
 
-  private String getHttpServerBasepath(String httpListenerConfig) {
-    if (isBlank(httpListenerConfig)) {
-      return "";
-    }
-
-    try {
-      HttpServer server = httpService.getServerFactory().lookup(httpListenerConfig);
-      return server.getProtocol().getScheme() + "://" + server.getServerAddress().getIp() + ":"
-          + server.getServerAddress().getPort();
-    } catch (Exception e) {
-      throw new ModuleException("Invalid http listener config configured for WSA",
-                                BAD_REQUEST, e);
-    }
-  }
-
-  private AddressingAttributes getAddressingAttributes(AddressingProperties properties) {
-    Optional<URIType> messageId = properties.getMessageID();
+  private AddressingAttributes getAddressingAttributes(AddressingPropertiesImpl properties) {
+    Optional<String> messageId = properties.getMessageId();
     if (messageId.isPresent())
-      return new AddressingAttributes(messageId.get().getValue());
+      return new AddressingAttributes(messageId.get());
     return null;
   }
 }

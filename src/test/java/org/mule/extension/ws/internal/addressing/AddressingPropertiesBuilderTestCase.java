@@ -6,8 +6,7 @@
  */
 package org.mule.extension.ws.internal.addressing;
 
-import org.mule.extension.ws.internal.addressing.properties.AddressingProperties;
-import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesBuilder;
+import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesImpl;
 
 import java.util.UUID;
 
@@ -28,111 +27,93 @@ public class AddressingPropertiesBuilderTestCase {
   private static final String NAMESPACE = "NAMESPACE";
   private static final String ACTION = "ACTION";
   private static final String TO = "TO";
-  private static final String BASEPATH = "BASEPATH";
-  private static final String REPLYTO = "REPLYTO";
-  private static final String REPLYTO_WITH_SLASH = "/REPLYTO";
-  private static final String FAULTTO = "FAULTTO";
-  private static final String FAULTTO_WITH_SLASH = "/FAULTTO";
+  private static final String MESSAGE_ID = "MESSAGE_ID";
+  private static final String FROM = "FROM";
+  private static final String RELATES_TO = "RELATES_TO";
 
-  private AddressingPropertiesBuilder builder;
+  private AddressingPropertiesImpl.AddressingPropertiesBuilder builder;
 
   @Rule
   public ExpectedException expectedException = ExpectedException.none();
 
   @Before
   public void before() {
-    builder = new AddressingPropertiesBuilder();
+    builder = AddressingPropertiesImpl.builder();
   }
 
   @Test
   public void testMinimumScenario() {
-    AddressingProperties sut = builder.build();
+    AddressingPropertiesImpl sut = builder.build();
     assertThat(sut.isRequired(), is(false));
   }
 
   @Test
   public void testBasicScenario() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
+    AddressingPropertiesImpl sut = builder
+        .namespace(NAMESPACE)
         .action(ACTION)
         .to(TO)
         .build();
 
     assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getNamespaceURI(), is(NAMESPACE));
-    assertThat(sut.getAction().isPresent(), is(true));
-    assertThat(sut.getAction().get().getValue(), is(ACTION));
-    assertThat(sut.getTo().isPresent(), is(true));
-    assertThat(sut.getTo().get().getValue(), is(TO));
+    assertThat(sut.getNamespace(), is(NAMESPACE));
+    assertThat(sut.getAction(), is(ACTION));
+    assertThat(sut.getTo(), is(TO));
   }
 
   @Test
   public void testImplicitMessageIDParameter() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
+    AddressingPropertiesImpl sut = builder
+        .namespace(NAMESPACE)
         .to(TO)
         .action(ACTION)
         .build();
 
     assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getMessageID().isPresent(), is(true));
-    assertThat(sut.getMessageID().get().getValue(), isUuid());
+    assertThat(sut.getMessageId().isPresent(), is(true));
+    assertThat(sut.getMessageId().get(), isUuid());
   }
 
   @Test
-  public void testReplyToParameter() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
-        .action(ACTION)
+  public void testExplicitMessageIDParameter() {
+    AddressingPropertiesImpl sut = builder
+        .namespace(NAMESPACE)
         .to(TO)
-        .replyTo(BASEPATH, REPLYTO, null)
+        .action(ACTION)
+        .messageId(MESSAGE_ID)
         .build();
 
     assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getReplyTo().isPresent(), is(true));
-    assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + "/" + REPLYTO));
+    assertThat(sut.getMessageId().isPresent(), is(true));
+    assertThat(sut.getMessageId().get(), is(MESSAGE_ID));
   }
 
   @Test
-  public void testReplyToParameterWithSlash() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
-        .action(ACTION)
+  public void testExplicitFromParameter() {
+    AddressingPropertiesImpl sut = builder
+        .namespace(NAMESPACE)
         .to(TO)
-        .replyTo(BASEPATH, REPLYTO_WITH_SLASH, null)
+        .action(ACTION)
+        .from(FROM)
         .build();
 
     assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getReplyTo().isPresent(), is(true));
-    assertThat(sut.getReplyTo().get().getAddress().getValue(), is(BASEPATH + REPLYTO_WITH_SLASH));
+    assertThat(sut.getFrom().isPresent(), is(true));
+    assertThat(sut.getFrom().get(), is(FROM));
   }
 
   @Test
-  public void testFaultToParameter() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
-        .action(ACTION)
+  public void testExplicitRelatesToParameter() {
+    AddressingPropertiesImpl sut = builder
+        .namespace(NAMESPACE)
         .to(TO)
-        .replyTo(BASEPATH, null, FAULTTO)
+        .action(ACTION)
+        .relatesTo(RELATES_TO)
         .build();
 
     assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getFaultTo().isPresent(), is(true));
-    assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + "/" + FAULTTO));
-  }
-
-  @Test
-  public void testFaultToParameterWithSlash() {
-    AddressingProperties sut = builder
-        .namespaceURI(NAMESPACE)
-        .action(ACTION)
-        .to(TO)
-        .replyTo(BASEPATH, null, FAULTTO_WITH_SLASH)
-        .build();
-
-    assertThat(sut.isRequired(), is(true));
-    assertThat(sut.getFaultTo().isPresent(), is(true));
-    assertThat(sut.getFaultTo().get().getAddress().getValue(), is(BASEPATH + FAULTTO_WITH_SLASH));
+    assertThat(sut.getRelatesTo().isPresent(), is(true));
+    assertThat(sut.getRelatesTo().get(), is(RELATES_TO));
   }
 
   @Test
@@ -144,13 +125,13 @@ public class AddressingPropertiesBuilderTestCase {
   @Test
   public void failWithNoTo() {
     expectedException.expectMessage("'To' cannot be null");
-    builder.namespaceURI(NAMESPACE).action(ACTION).build();
+    builder.namespace(NAMESPACE).action(ACTION).build();
   }
 
   @Test
   public void failWithNoAction() {
     expectedException.expectMessage("'Action' cannot be null");
-    builder.namespaceURI(NAMESPACE).to(TO).build();
+    builder.namespace(NAMESPACE).to(TO).build();
   }
 
   private Matcher isUuid() {
