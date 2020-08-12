@@ -201,9 +201,6 @@ public class ConsumeOperation {
   }
 
   private AddressingAttributes getAddressingAttributes(AddressingPropertiesImpl properties) {
-    Optional<String> messageId = properties.getMessageId();
-    if (messageId.isPresent())
-      return new AddressingAttributes(messageId.get());
-    return null;
+    return properties.getMessageId().map(messageId -> new AddressingAttributes(messageId)).orElse(null);
   }
 }
