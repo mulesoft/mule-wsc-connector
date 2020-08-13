@@ -152,15 +152,6 @@
         </mtf:validation>
     </mtf:tooling-test>
 
-    <mtf:tooling-test name="getNullOutputMetadata" >
-        <mtf:get-output-metadata>
-            <wsc:consume operation="TodaysDilbert" wsaReplyTo="/ReplyTo" config-ref="dilbert-wsc"/>
-        </mtf:get-output-metadata>
-        <mtf:validation>
-            <munit-tools:assert-equals actual="#[payload.'type']" expected="Null" />
-        </mtf:validation>
-    </mtf:tooling-test>
-
     <mtf:tooling-test name="geEchoResponseOutputBodyMetadata" >
         <mtf:get-output-metadata>
             <wsc:parse-response operation="echo" config-ref="default-config"/>

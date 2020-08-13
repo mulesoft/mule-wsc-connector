@@ -284,6 +284,7 @@
                         <WS_SOAP11_PORT>${soap.host.port}</WS_SOAP11_PORT>
                         <WS_SOAP11_SSL_PORT>${soap.host.port.ssl}</WS_SOAP11_SSL_PORT>
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
+                        <WS_SERVER_PORT>${soap.server.port}</WS_SERVER_PORT>
                     </environmentVariables>
                     <dynamicPorts>
                         <dynamicPort>http.port</dynamicPort>
@@ -366,6 +367,18 @@
                                 <containerNamePattern>%n-%i-%t</containerNamePattern>
                             </run>
                         </image>
+                        <image>
+                            <alias>mule-wsc-connector-test-server</alias>
+                            <run>
+                                <cmd>-it</cmd>
+                                <ports>
+                                    <port>soap.server.port:8080</port>
+                                </ports>
+                                <!--Workaround for avoiding name collisions with zombie containers left from failed executions-->
+                                <!--or parallel executions on same agent-->
+                                <containerNamePattern>%n-%i-%t</containerNamePattern>
+                            </run>
+                        </image>
                     </images>
                     <verbose>true</verbose>
                 </configuration>
@@ -438,6 +451,10 @@
                                     <alias>ws-simple-soap12</alias>
                                     <name>artifacts.msap.io/mulesoft-onprem/windows-soapui-for-wsc</name>
                                 </image>
+                                <image>
+                                    <alias>mule-wsc-connector-test-server</alias>
+                                    <name>mulesoftutils/mule-wsc-connector-test-server</name>
+                                </image>
                             </images>
                         </configuration>
                     </plugin>
@@ -474,6 +491,10 @@
                                         <contextDir>${project.build.testOutputDirectory}</contextDir>
                                         <dockerFile>${project.build.testOutputDirectory}/Dockerfile</dockerFile>
                                     </build>
+                                </image>
+                                <image>
+                                    <alias>mule-wsc-connector-test-server</alias>
+                                    <name>mulesoftutils/mule-wsc-connector-test-server</name>
                                 </image>
                             </images>
                         </configuration>

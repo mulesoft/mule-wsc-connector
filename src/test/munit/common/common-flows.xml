@@ -25,10 +25,4 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
                             con#oneWay: {}]"/>
     </flow>
 
-
-    <!-- TODO: remove this after fix MULE-18513 -->
-    <flow name="init-wsa-http-listener">
-        <http:listener config-ref="WSA_HTTP_Listener_config" path="/" />
-        <set-payload value="some-value"/>
-    </flow>
 </mule>

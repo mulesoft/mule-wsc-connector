@@ -6,8 +6,6 @@
  */
 package org.mule.extension.ws.internal.metadata;
 
-import static org.mule.runtime.core.api.util.StringUtils.isBlank;
-
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
 import org.mule.metadata.api.model.MetadataType;
@@ -20,7 +18,7 @@ import org.mule.runtime.api.metadata.MetadataResolvingException;
  *
  * @since 1.0
  */
-public class ConsumeOutputResolver extends AbstractOutputResolver<ConsumeKey> {
+public class ConsumeOutputResolver extends AbstractOutputResolver<String> {
 
   @Override
   public String getCategoryName() {
@@ -36,11 +34,8 @@ public class ConsumeOutputResolver extends AbstractOutputResolver<ConsumeKey> {
    * {@inheritDoc}
    */
   @Override
-  public MetadataType getOutputType(MetadataContext context, ConsumeKey key)
+  public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    if (!isBlank(key.getReplyTo())) {
-      return context.getTypeBuilder().nullType().build();
-    }
-    return getOperationOutputType(context, key.getOperation());
+    return getOperationOutputType(context, operation);
   }
 }

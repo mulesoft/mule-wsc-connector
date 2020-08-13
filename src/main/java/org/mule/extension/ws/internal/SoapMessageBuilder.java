@@ -10,21 +10,15 @@ import org.mule.extension.ws.internal.metadata.SoapAttachmentsTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapBodyTypeResolver;
 import org.mule.extension.ws.internal.metadata.SoapHeadersTypeResolver;
 import org.mule.runtime.api.metadata.TypedValue;
-import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.metadata.TypeResolver;
 import org.mule.runtime.extension.api.annotation.param.Content;
 import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
-import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
-import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 import java.io.InputStream;
 import java.util.Map;
-
-import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
-import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 /**
  * Component that specifies how to create a proper SOAP request using the {@link WebServiceConsumer}.

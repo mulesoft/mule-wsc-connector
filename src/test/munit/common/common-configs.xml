@@ -49,24 +49,24 @@
     </wsc:config>
 
     <wsc:config name="addressing-config">
-        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld"
                         mtomEnabled="${mtomEnabled}">
         </wsc:connection>
         <wsc:wsa />
     </wsc:config>
 
     <wsc:config name="addressing-200408-config">
-        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld"
                         mtomEnabled="${mtomEnabled}">
         </wsc:connection>
         <wsc:wsa wsaVersion="WSA200408" />
     </wsc:config>
 
     <wsc:config name="addressing-200508-config">
-        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/"
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/wsa/helloWorld"
                         mtomEnabled="${mtomEnabled}">
         </wsc:connection>
         <wsc:wsa wsaVersion="WSA200508" />
