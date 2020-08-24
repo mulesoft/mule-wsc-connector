@@ -9,6 +9,7 @@ package org.mule.extension.ws.internal.error;
 import static java.util.Collections.unmodifiableSet;
 import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.of;
+import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
 import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
 import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
@@ -20,18 +21,18 @@ import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 import java.util.Set;
 
 /**
- * {@link ErrorTypeProvider} implementation for the {@link ReliableMessagingOperations}.
+ * {@link ErrorTypeProvider} implementation for the {@link ReliableMessagingOperations} terminate rm sequence operation.
  *
  * @since 2.0
  */
-public class ReliableMessagingErrorTypeProvider implements ErrorTypeProvider {
+public class TerminateRMSequenceErrorTypeProvider implements ErrorTypeProvider {
 
   /**
-   * @return all the error types that can be thrown by the {@link ReliableMessagingOperations}.
+   * @return all the error types that can be thrown by the {@link ReliableMessagingOperations} terminate rm sequence operation.
    */
   @Override
   public Set<ErrorTypeDefinition> getErrorTypes() {
-    return unmodifiableSet(of(SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT)
+    return unmodifiableSet(of(BAD_REQUEST, SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT)
         .collect(toSet()));
   }
 }

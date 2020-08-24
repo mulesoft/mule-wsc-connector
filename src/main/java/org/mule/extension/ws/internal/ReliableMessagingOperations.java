@@ -8,7 +8,8 @@ package org.mule.extension.ws.internal;
 
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
-import org.mule.extension.ws.internal.error.ReliableMessagingErrorTypeProvider;
+import org.mule.extension.ws.internal.error.CreateSequenceErrorTypeProvider;
+import org.mule.extension.ws.internal.error.TerminateRMSequenceErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.extension.api.annotation.OnException;
@@ -25,8 +26,6 @@ import org.mule.soap.api.rm.TerminateSequenceRequest;
  *
  * @since 2.0
  */
-@Throws(ReliableMessagingErrorTypeProvider.class)
-@OnException(WscExceptionEnricher.class)
 public class ReliableMessagingOperations {
 
   /**
@@ -35,6 +34,8 @@ public class ReliableMessagingOperations {
    * @param connection the connection resolved to execute the operation.
    * @return the created sequence identifier
    */
+  @Throws(CreateSequenceErrorTypeProvider.class)
+  @OnException(WscExceptionEnricher.class)
   @MediaType(MediaType.TEXT_PLAIN)
   public String createRMSequence(@Connection WscSoapClient connection, @Config WebServiceConsumer config, ExtensionsClient client)
       throws ConnectionException {
@@ -53,6 +54,8 @@ public class ReliableMessagingOperations {
    * @param connection the connection resolved to execute the operation.
    * @param sequence the target sequence identifier
    */
+  @Throws(TerminateRMSequenceErrorTypeProvider.class)
+  @OnException(WscExceptionEnricher.class)
   public void terminateRMSequence(@Connection WscSoapClient connection, String sequence, ExtensionsClient client)
       throws ConnectionException {
     TerminateSequenceRequest request = TerminateSequenceRequest.builder().sequenceIdentifier(sequence).build();
