@@ -13,15 +13,21 @@ import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200508;
 
 public enum ReliableMessagingVersion {
 
-  WSRM_12_WSA_200508(WSA200508, "1.2"), WSRM_11_WSA_200508(WSA200508, "1.1"), WSRM_11_WSA_200408(WSA200408,
-      "1.1"), WSRM_10_WSA_200408(WSA200408, "1.0");
+  WSRM_11_WSA_200508(WSA200508, "1.1", "http://docs.oasis-open.org/ws-rx/wsrm/200702"), WSRM_10_WSA_200508(
+      WSA200508,
+      "1.0", "http://schemas.xmlsoap.org/ws/2005/02/rm"), WSRM_10_WSA_200408(WSA200408,
+          "1.0",
+          "http://schemas.xmlsoap.org/ws/2005/02/rm");
+
 
   private final AddressingVersion addressingVersion;
   private final String version;
+  private final String namespaceUri;
 
-  ReliableMessagingVersion(AddressingVersion addressingVersion, String version) {
+  ReliableMessagingVersion(AddressingVersion addressingVersion, String version, String namespaceUri) {
     this.addressingVersion = addressingVersion;
     this.version = version;
+    this.namespaceUri = namespaceUri;
   }
 
   public AddressingVersion getAddressingVersion() {
@@ -30,5 +36,9 @@ public enum ReliableMessagingVersion {
 
   public String getVersion() {
     return version;
+  }
+
+  public String getNamespaceUri() {
+    return namespaceUri;
   }
 }

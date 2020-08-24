@@ -10,27 +10,17 @@ import org.mule.extension.ws.api.addressing.AddressingVersion;
 import org.mule.extension.ws.internal.reliablemessaging.value.ReliableMessagingVersionValueProvider;
 import org.mule.runtime.api.lifecycle.Initialisable;
 import org.mule.runtime.api.lifecycle.InitialisationException;
-import org.mule.runtime.api.store.ObjectStore;
-import org.mule.runtime.api.store.ObjectStoreManager;
-import org.mule.runtime.api.store.ObjectStoreSettings;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
-import org.mule.runtime.extension.api.annotation.param.reference.ConfigReference;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
-import org.mule.runtime.http.api.server.HttpServer;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.Optional.empty;
-import static java.util.Optional.of;
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static org.mule.extension.ws.internal.util.PathUtils.getFullPath;
-import static org.mule.extension.ws.internal.util.PathUtils.sanitizePathWithStartSlash;
 import static org.mule.runtime.api.i18n.I18nMessageFactory.createStaticMessage;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 
@@ -42,10 +32,6 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 public class ReliableMessagingConfiguration {
 
   private static final String RELIABLE_MESSAGING_TAB = "Reliable Messaging";
-  private static final String DEFAULT_OS_NAME = "DEFAULT_WSRM_OS_NAME";
-  private static final long DEFAULT_OS_TTL = MINUTES.toMillis(5);
-  private static final ObjectStoreSettings DEFAULT_OS_SETTINGS =
-      ObjectStoreSettings.builder().persistent(false).entryTtl(DEFAULT_OS_TTL).build();
 
   /**
    * WS-ReliableMessaging version.
@@ -78,34 +64,6 @@ public class ReliableMessagingConfiguration {
   @DisplayName("Sequence TTL Time Unit")
   private TimeUnit wsrmSequenceTtlTimeUnit;
 
-  /**
-   * Endpoint reference where it's wanted to receive ack messages.
-   */
-  @Parameter
-  @Placement(tab = RELIABLE_MESSAGING_TAB, order = 4)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Acks To")
-  private String wsrmAcksTo;
-
-  @ConfigReference(namespace = "HTTP", name = "LISTENER_CONFIG")
-  @Parameter
-  @Placement(tab = RELIABLE_MESSAGING_TAB, order = 5)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("HTTP Listener")
-  private String wsrmHttpListenerConfig;
-
-  /**
-   * The store of the WSRM sequence's data
-   */
-  @Parameter
-  @Placement(tab = RELIABLE_MESSAGING_TAB, order = 6)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Store")
-  private ObjectStore wsrmStore;
-
   private ReliableMessagingVersion version;
 
   @Override
@@ -117,15 +75,12 @@ public class ReliableMessagingConfiguration {
     ReliableMessagingConfiguration that = (ReliableMessagingConfiguration) o;
     return wsrmSequenceTtl == that.wsrmSequenceTtl &&
         Objects.equals(wsrmVersion, that.wsrmVersion) &&
-        Objects.equals(wsrmHttpListenerConfig, that.wsrmHttpListenerConfig) &&
-        Objects.equals(wsrmAcksTo, that.wsrmAcksTo) &&
-        wsrmSequenceTtlTimeUnit == that.wsrmSequenceTtlTimeUnit &&
-        Objects.equals(wsrmStore, that.wsrmStore);
+        wsrmSequenceTtlTimeUnit == that.wsrmSequenceTtlTimeUnit;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(wsrmVersion, wsrmHttpListenerConfig, wsrmAcksTo, wsrmSequenceTtl, wsrmSequenceTtlTimeUnit, wsrmStore);
+    return Objects.hash(wsrmVersion, wsrmSequenceTtl, wsrmSequenceTtlTimeUnit);
   }
 
   public void doInitialise(AddressingVersion wsaVersion, Initialisable initialisable) throws InitialisationException {
@@ -162,19 +117,5 @@ public class ReliableMessagingConfiguration {
 
   public Long getSequenceTtl() {
     return this.wsrmSequenceTtlTimeUnit.toMillis(wsrmSequenceTtl);
-  }
-
-  public java.util.Optional<String> getAckTo(HttpServer server) {
-    if (wsrmAcksTo == null) {
-      return empty();
-    }
-    return of(getFullPath(sanitizePathWithStartSlash(wsrmAcksTo), "/").getAbsolutePath(server));
-  }
-
-  public ObjectStore getObjectStore(ObjectStoreManager manager) {
-    if (wsrmStore == null) {
-      return manager.getOrCreateObjectStore(DEFAULT_OS_NAME, DEFAULT_OS_SETTINGS);
-    }
-    return wsrmStore;
   }
 }

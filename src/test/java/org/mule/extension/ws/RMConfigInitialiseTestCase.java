@@ -11,8 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200408;
 import static org.mule.extension.ws.api.addressing.AddressingVersion.WSA200508;
 import static org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion.WSRM_10_WSA_200408;
-import static org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion.WSRM_11_WSA_200408;
-import static org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion.WSRM_12_WSA_200508;
+import static org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion.WSRM_11_WSA_200508;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -58,7 +57,7 @@ public class RMConfigInitialiseTestCase {
     EasyRandom factory = new EasyRandom(parameters.randomize(String.class, () -> null));
     ReliableMessagingConfiguration config = factory.nextObject(ReliableMessagingConfiguration.class);
     config.doInitialise(WSA200408, initialisable);
-    assertEquals(WSRM_11_WSA_200408, config.getVersion());
+    assertEquals(WSRM_10_WSA_200408, config.getVersion());
   }
 
   @Test
@@ -66,7 +65,7 @@ public class RMConfigInitialiseTestCase {
     EasyRandom factory = new EasyRandom(parameters.randomize(String.class, () -> null));
     ReliableMessagingConfiguration config = factory.nextObject(ReliableMessagingConfiguration.class);
     config.doInitialise(WSA200508, initialisable);
-    assertEquals(WSRM_12_WSA_200508, config.getVersion());
+    assertEquals(WSRM_11_WSA_200508, config.getVersion());
   }
 
   @Test
@@ -82,7 +81,7 @@ public class RMConfigInitialiseTestCase {
   @Test
   public void failConfigInitWithInvalidPairOfWsaWsrmVersionsTest() throws InitialisationException {
     AddressingVersion wsaVersion = WSA200408;
-    ReliableMessagingVersion wsrmVersion = WSRM_12_WSA_200508;
+    ReliableMessagingVersion wsrmVersion = WSRM_11_WSA_200508;
 
     expectedException.expect(InitialisationException.class);
     expectedException.expectMessage("Invalid WSRM version configured [" + wsrmVersion.name() + "] for the selected WSA version ["

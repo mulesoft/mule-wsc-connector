@@ -101,7 +101,6 @@ public class ConfigEqualsTestCase {
   public void testReliableMessagingEquals() {
     EasyRandomParameters parameters = new EasyRandomParameters();
     parameters.collectionSizeRange(1, 3);
-    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
     EasyRandom factory = new EasyRandom(parameters);
     EasyRandom factory2 = new EasyRandom(parameters);
 
@@ -110,10 +109,23 @@ public class ConfigEqualsTestCase {
       ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
       ReliableMessagingConfiguration clonedReliableMessaging = factory2.nextObject(ReliableMessagingConfiguration.class);
 
+      assertEquals(reliableMessaging, reliableMessaging);
+      assertEquals(clonedReliableMessaging, clonedReliableMessaging);
       assertEquals(reliableMessaging, clonedReliableMessaging);
       assertTrue(reliableMessaging.hashCode() == clonedReliableMessaging.hashCode());
 
     }
+  }
+
+  @Test
+  public void testReliableMessagingNotEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    EasyRandom factory = new EasyRandom(parameters);
+
+    ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
+    assertFalse(reliableMessaging.equals(null));
+    assertFalse(reliableMessaging.equals(new Object()));
   }
 
 }
