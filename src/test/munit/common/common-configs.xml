@@ -72,4 +72,40 @@
         <wsc:wsa wsaVersion="WSA200508" />
     </wsc:config>
 
+    <wsc:config name="rm-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm />
+    </wsc:config>
+
+    <wsc:config name="rm-11-addressing-200508-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm wsrmVersion="WSRM_11_WSA_200508" />
+    </wsc:config>
+
+    <wsc:config name="rm-10-addressing-200508-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm wsrmVersion="WSRM_10_WSA_200508" />
+    </wsc:config>
+
+    <wsc:config name="rm-10-addressing-200408-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa wsaVersion="WSA200408" />
+        <wsc:wsrm wsrmVersion="WSRM_10_WSA_200408" />
+    </wsc:config>
+
 </mule>

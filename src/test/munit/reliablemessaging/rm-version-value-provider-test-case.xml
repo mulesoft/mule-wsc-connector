@@ -20,7 +20,7 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config"/>
                     <munit:parameter propertyName="wsaVersion" value="WSA200408"/>
-                    <munit:parameter propertyName="expectedOutput" value='["WSRM_10_WSA_200408", "WSRM_11_WSA_200408"]'/>
+                    <munit:parameter propertyName="expectedOutput" value='["WSRM_10_WSA_200408"]'/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_200508">
@@ -30,7 +30,7 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config"/>
                     <munit:parameter propertyName="wsaVersion" value="WSA200508"/>
-                    <munit:parameter propertyName="expectedOutput" value='["WSRM_11_WSA_200508", "WSRM_12_WSA_200508"]'/>
+                    <munit:parameter propertyName="expectedOutput" value='["WSRM_10_WSA_200508", "WSRM_11_WSA_200508"]'/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>

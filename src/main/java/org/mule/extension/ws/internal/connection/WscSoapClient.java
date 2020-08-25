@@ -15,6 +15,8 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
+import org.mule.soap.api.rm.CreateSequenceRequest;
+import org.mule.soap.api.rm.TerminateSequenceRequest;
 import org.mule.soap.api.transport.TransportResponse;
 
 /**
@@ -46,6 +48,14 @@ public class WscSoapClient {
 
   public SoapResponse parseResponse(String operation, TransportResponse response) throws ConnectionException {
     return lazyClient.get().parseResponse(operation, response);
+  }
+
+  public String createSequence(CreateSequenceRequest request, ExtensionsClient client) throws ConnectionException {
+    return lazyClient.get().createSequence(request, transportConfiguration.buildDispatcher(client));
+  }
+
+  public void terminateSequence(TerminateSequenceRequest request, ExtensionsClient client) throws ConnectionException {
+    lazyClient.get().terminateSequence(request, transportConfiguration.buildDispatcher(client));
   }
 
   public CustomTransportConfiguration getTransportConfiguration() {
