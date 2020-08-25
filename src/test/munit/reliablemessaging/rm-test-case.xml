@@ -98,4 +98,106 @@
         </munit:validation>
     </munit:test>
 
+    <munit:test name="rmExecuteOperationTest" description="Executes operation using WSRM" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:create-rm-sequence config-ref="${config}" target="sequence" />
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence]" target="response">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:terminate-rm-sequence config-ref="${config}" sequence="#[vars.sequence]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[vars.response.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence)]" />
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="rmExecuteMultipleOperationsTest" description="Executes multiple operations using same WSRM sequence" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:create-rm-sequence config-ref="${config}" target="sequence" />
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence]" target="response1">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence]" target="response2">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:terminate-rm-sequence config-ref="${config}" sequence="#[vars.sequence]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[vars.response1.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response1.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence)]" />
+
+            <munit-tools:assert-that expression="#[vars.response2.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('2')]" />
+            <munit-tools:assert-that expression="#[vars.response2.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence)]" />
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="rmExecuteMultipleOperationsUsingDifferentSequencesTest" description="Executes multiple operations using different WSRM sequences" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:create-rm-sequence config-ref="${config}" target="sequence1" />
+            <wsc:create-rm-sequence config-ref="${config}" target="sequence2" />
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence1]" target="response1">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence2]" target="response2">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence1]" target="response3">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence2]" target="response4">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <wsc:terminate-rm-sequence config-ref="${config}" sequence="#[vars.sequence1]" />
+            <wsc:terminate-rm-sequence config-ref="${config}" sequence="#[vars.sequence2]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[vars.response1.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response1.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence1)]" />
+            <munit-tools:assert-that expression="#[vars.response3.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('2')]" />
+            <munit-tools:assert-that expression="#[vars.response3.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence1)]" />
+
+            <munit-tools:assert-that expression="#[vars.response2.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response2.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence2)]" />
+            <munit-tools:assert-that expression="#[vars.response4.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('2')]" />
+            <munit-tools:assert-that expression="#[vars.response4.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence2)]" />
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="failExecutingOperationWithInvalidSequenceTest" description="Fails trying to execute an operation with an invalid WSRM sequence" expectedErrorType="WSC:BAD_REQUEST" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#['SARASA']">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
+    <munit:test name="failExecutingOperationAfterSequenceTerminationTest" description="Fails trying to execute an operation with a terminated WSRM sequence" expectedErrorType="WSC:BAD_REQUEST" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:create-rm-sequence config-ref="${config}" target="sequence" />
+            <wsc:terminate-rm-sequence config-ref="${config}" sequence="#[vars.sequence]" />
+            <wsc:consume config-ref="${config}" operation="sayHi" wsrmSequenceId="#[vars.sequence]">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
 </mule>
