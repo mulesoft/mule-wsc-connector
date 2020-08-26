@@ -7,8 +7,11 @@
 package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
+import static org.mule.runtime.api.meta.ExpressionSupport.REQUIRED;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
+import static org.mule.runtime.core.api.util.StringUtils.isBlank;
+import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
@@ -21,6 +24,7 @@ import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
+import org.mule.extension.ws.internal.reliablemessaging.ReliableMessagingPropertiesImpl;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
@@ -28,12 +32,15 @@ import org.mule.runtime.api.metadata.DataType;
 import org.mule.runtime.api.metadata.MediaType;
 import org.mule.runtime.api.metadata.TypedValue;
 import org.mule.runtime.api.transformation.TransformationService;
+import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.OnException;
 import org.mule.runtime.extension.api.annotation.error.Throws;
 import org.mule.runtime.extension.api.annotation.metadata.MetadataKeyId;
 import org.mule.runtime.extension.api.annotation.metadata.OutputResolver;
 import org.mule.runtime.extension.api.annotation.param.Connection;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.operation.Result;
@@ -93,13 +100,16 @@ public class ConsumeOperation {
                                                                 showInDsl = true) AddressingSettings addressingSettings,
                                                             @ParameterGroup(name = "Message Customizations",
                                                                 showInDsl = true) SoapMessageCustomizations soapMessageCustomizations,
+                                                            @Placement(
+                                                                tab = ADVANCED_TAB) @org.mule.runtime.extension.api.annotation.param.Optional @Expression(REQUIRED) @DisplayName("Sequence identifier") String wsrmSequenceId,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
     AddressingPropertiesImpl addressing = getAddressingProperties(addressingSettings);
     SoapRequest request =
-        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressing, soapMessageCustomizations)
-            .build();
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressing, soapMessageCustomizations,
+                       wsrmSequenceId)
+                           .build();
     SoapResponse response = connection.consume(request, client);
     AddressingAttributes addressingAttributes = getAddressingAttributes(addressing);
     return createResult(response, streamingHelper, addressingAttributes);
@@ -115,7 +125,7 @@ public class ConsumeOperation {
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
                                             AddressingPropertiesImpl addressingProperties,
-                                            SoapMessageCustomizations soapMessageCustomizations) {
+                                            SoapMessageCustomizations soapMessageCustomizations, String sequenceId) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
@@ -134,6 +144,10 @@ public class ConsumeOperation {
 
     if (addressingProperties.isRequired()) {
       requestBuilder.addressingProperties(addressingProperties);
+    }
+
+    if (!isBlank(sequenceId)) {
+      requestBuilder.reliableMessagingProperties(new ReliableMessagingPropertiesImpl(sequenceId));
     }
 
     return requestBuilder;
