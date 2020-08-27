@@ -30,7 +30,8 @@ public class ConfigEqualsTestCase {
     EasyRandomParameters parameters = new EasyRandomParameters();
     parameters.collectionSizeRange(1, 3);
     parameters.excludeField(field -> field.getName().equals("httpService") || field.getName().toLowerCase().contains("client")
-        || field.getName().equals("customTransportConfiguration"));
+        || field.getName().equals("customTransportConfiguration") || field.getName().equals("wsrmStore")
+        || field.getName().equals("lockFactory"));
     EasyRandom factory = new EasyRandom(parameters);
     EasyRandom factory2 = new EasyRandom(parameters);
 
