@@ -12,7 +12,7 @@ import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
-import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingSettings;
+import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConnectionSettings;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
@@ -119,7 +119,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   private CustomTransportConfiguration customTransportConfiguration;
 
   @ParameterGroup(name = "Web Service Reliable Messaging")
-  private ReliableMessagingSettings reliableMessaging;
+  private ReliableMessagingConnectionSettings reliableMessaging;
 
   @DefaultEncoding
   private String defaultEncoding;

@@ -28,19 +28,6 @@ public class AddressingConfiguration {
   private static final String ADDRESSING_TAB = "Addressing";
 
   /**
-   * Whether mustUnderstand attribute in {@code wsa:To} header is true or false.
-   * <p>
-   * Defaults to {@code false}
-   */
-  @Parameter
-  @Placement(tab = ADDRESSING_TAB, order = 1)
-  @Optional(defaultValue = "false")
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Must understand")
-  @Summary("Value of the mustUnderstand attribute in WS-Addressing header.")
-  private boolean wsaMustUnderstand;
-
-  /**
    * WS-Addressing version.
    * <p>
    * Defaults to {@code WSA 2005-08}
@@ -73,14 +60,13 @@ public class AddressingConfiguration {
     }
 
     AddressingConfiguration that = (AddressingConfiguration) o;
-    return Objects.equals(wsaMustUnderstand, that.wsaMustUnderstand)
-        && Objects.equals(wsaVersion, that.wsaVersion)
+    return Objects.equals(wsaVersion, that.wsaVersion)
         && Objects.equals(wsaFrom, that.wsaFrom);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(wsaMustUnderstand, wsaVersion, wsaFrom);
+    return Objects.hash(wsaVersion, wsaFrom);
   }
 
   public AddressingVersion getWsaVersion() {
