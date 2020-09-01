@@ -2,10 +2,12 @@
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
       xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:os="http://www.mulesoft.org/schema/mule/os"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
-      http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+      http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+      http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 
     <!-- Configs -->
     <http:request-config name="simple-requester" >
@@ -15,6 +17,8 @@
     <http:listener-config name="WSA_HTTP_Listener_config" >
         <http:listener-connection host="0.0.0.0" port="8081" />
     </http:listener-config>
+
+    <os:object-store name="RM_Store" />
 
     <wsc:config name="default-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
@@ -103,6 +107,42 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
                         mtomEnabled="${mtomEnabled}">
+        </wsc:connection>
+        <wsc:wsa wsaVersion="WSA200408" />
+        <wsc:wsrm wsrmVersion="WSRM_10_WSA_200408" />
+    </wsc:config>
+
+    <wsc:config name="rm-with-store-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}" wsrmStore="RM_Store">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm />
+    </wsc:config>
+
+    <wsc:config name="rm-11-addressing-200508-with-store-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}" wsrmStore="RM_Store">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm wsrmVersion="WSRM_11_WSA_200508" />
+    </wsc:config>
+
+    <wsc:config name="rm-10-addressing-200508-with-store-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}" wsrmStore="RM_Store">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm wsrmVersion="WSRM_10_WSA_200508" />
+    </wsc:config>
+
+    <wsc:config name="rm-10-addressing-200408-with-store-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}" wsrmStore="RM_Store">
         </wsc:connection>
         <wsc:wsa wsaVersion="WSA200408" />
         <wsc:wsrm wsrmVersion="WSRM_10_WSA_200408" />

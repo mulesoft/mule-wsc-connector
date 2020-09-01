@@ -15,6 +15,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.param.reference.ObjectStoreReference;
 
 import java.util.Objects;
 
@@ -34,6 +35,7 @@ public class ReliableMessagingConnectionSettings {
   @Placement(tab = RELIABLE_MESSAGING_TAB, order = 6)
   @Optional
   @Expression(NOT_SUPPORTED)
+  @ObjectStoreReference
   @DisplayName("Store")
   private ObjectStore wsrmStore;
 
