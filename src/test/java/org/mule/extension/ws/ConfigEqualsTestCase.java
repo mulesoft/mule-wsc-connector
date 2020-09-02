@@ -17,6 +17,7 @@ import org.junit.Test;
 
 import org.mule.extension.ws.api.addressing.AddressingConfiguration;
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConfiguration;
+import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConnectionSettings;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
@@ -92,10 +93,23 @@ public class ConfigEqualsTestCase {
       AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
       AddressingConfiguration clonedAddressingConfiguration = factory2.nextObject(AddressingConfiguration.class);
 
+      assertEquals(addressingConfiguration, addressingConfiguration);
+      assertEquals(clonedAddressingConfiguration, clonedAddressingConfiguration);
       assertEquals(addressingConfiguration, clonedAddressingConfiguration);
       assertTrue(addressingConfiguration.hashCode() == clonedAddressingConfiguration.hashCode());
 
     }
+  }
+
+  @Test
+  public void testAddressingNotEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    EasyRandom factory = new EasyRandom(parameters);
+
+    AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
+    assertFalse(addressingConfiguration.equals(null));
+    assertFalse(addressingConfiguration.equals(new Object()));
   }
 
   @Test
@@ -125,6 +139,40 @@ public class ConfigEqualsTestCase {
     EasyRandom factory = new EasyRandom(parameters);
 
     ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
+    assertFalse(reliableMessaging.equals(null));
+    assertFalse(reliableMessaging.equals(new Object()));
+  }
+
+  @Test
+  public void testReliableMessagingConnectionSettingsEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
+    EasyRandom factory = new EasyRandom(parameters);
+    EasyRandom factory2 = new EasyRandom(parameters);
+
+    for (int i = 0; i < 1000; i++) {
+
+      ReliableMessagingConnectionSettings reliableMessaging = factory.nextObject(ReliableMessagingConnectionSettings.class);
+      ReliableMessagingConnectionSettings clonedReliableMessaging =
+          factory2.nextObject(ReliableMessagingConnectionSettings.class);
+
+      assertEquals(reliableMessaging, reliableMessaging);
+      assertEquals(clonedReliableMessaging, clonedReliableMessaging);
+      assertEquals(reliableMessaging, clonedReliableMessaging);
+      assertTrue(reliableMessaging.hashCode() == clonedReliableMessaging.hashCode());
+
+    }
+  }
+
+  @Test
+  public void testReliableMessagingConnectionSettingsNotEquals() {
+    EasyRandomParameters parameters = new EasyRandomParameters();
+    parameters.collectionSizeRange(1, 3);
+    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
+    EasyRandom factory = new EasyRandom(parameters);
+
+    ReliableMessagingConnectionSettings reliableMessaging = factory.nextObject(ReliableMessagingConnectionSettings.class);
     assertFalse(reliableMessaging.equals(null));
     assertFalse(reliableMessaging.equals(new Object()));
   }
