@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toSet;
 import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
 import static org.mule.extension.ws.internal.error.WscError.SOAP_FAULT;
+import static org.mule.extension.ws.internal.error.WscError.RM_STORE;
 import static org.mule.extension.ws.internal.error.WscError.TIMEOUT;
 
 import org.mule.extension.ws.internal.ReliableMessagingOperations;
@@ -31,7 +32,7 @@ public class CreateSequenceErrorTypeProvider implements ErrorTypeProvider {
    */
   @Override
   public Set<ErrorTypeDefinition> getErrorTypes() {
-    return unmodifiableSet(of(SOAP_FAULT, CANNOT_DISPATCH, TIMEOUT)
+    return unmodifiableSet(of(SOAP_FAULT, CANNOT_DISPATCH, RM_STORE, TIMEOUT)
         .collect(toSet()));
   }
 }
