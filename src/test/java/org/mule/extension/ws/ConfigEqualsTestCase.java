@@ -6,6 +6,11 @@
  */
 package org.mule.extension.ws;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -22,7 +27,6 @@ import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
-
 
 public class ConfigEqualsTestCase {
 
@@ -139,8 +143,8 @@ public class ConfigEqualsTestCase {
     EasyRandom factory = new EasyRandom(parameters);
 
     ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
-    assertFalse(reliableMessaging.equals(null));
-    assertFalse(reliableMessaging.equals(new Object()));
+    assertThat(reliableMessaging, is(notNullValue()));
+    assertThat(reliableMessaging, not(equalTo(new Object())));
   }
 
   @Test
@@ -173,8 +177,8 @@ public class ConfigEqualsTestCase {
     EasyRandom factory = new EasyRandom(parameters);
 
     ReliableMessagingConnectionSettings reliableMessaging = factory.nextObject(ReliableMessagingConnectionSettings.class);
-    assertFalse(reliableMessaging.equals(null));
-    assertFalse(reliableMessaging.equals(new Object()));
+    assertThat(reliableMessaging, is(notNullValue()));
+    assertThat(reliableMessaging, not(equalTo(new Object())));
   }
 
 }

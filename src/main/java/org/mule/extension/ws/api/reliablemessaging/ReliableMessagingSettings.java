@@ -13,6 +13,7 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.REQUIRED;
 import static org.mule.runtime.extension.api.annotation.param.display.Placement.ADVANCED_TAB;
@@ -29,6 +30,7 @@ public class ReliableMessagingSettings {
   @Optional
   @Expression(REQUIRED)
   @DisplayName("Sequence identifier")
+  @Summary("The WS reliable messaging sequence identifier.")
   private String wsrmSequence;
 
   public String getSequence() {
