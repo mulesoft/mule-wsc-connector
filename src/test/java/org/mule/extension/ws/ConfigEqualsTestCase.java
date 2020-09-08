@@ -6,15 +6,11 @@
  */
 package org.mule.extension.ws;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsEqual.equalTo;
+import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
@@ -47,14 +43,14 @@ public class ConfigEqualsTestCase {
       SoapClientConnectionProvider clonedServiceSecurity = factory2.nextObject(SoapClientConnectionProvider.class);
       SoapClientConnectionProvider anotherClonedServiceSecurity = factory2.nextObject(SoapClientConnectionProvider.class);
 
-      assertEquals(serviceSecurity, clonedServiceSecurity);
-      assertTrue(serviceSecurity.hashCode() == clonedServiceSecurity.hashCode());
-      assertEquals(anotherServiceSecurity, anotherClonedServiceSecurity);
-      assertTrue(anotherServiceSecurity.hashCode() == anotherClonedServiceSecurity.hashCode());
-      assertNotEquals(serviceSecurity, anotherServiceSecurity);
-      assertFalse(serviceSecurity.hashCode() == anotherServiceSecurity.hashCode());
-      assertNotEquals(clonedServiceSecurity, anotherClonedServiceSecurity);
-      assertFalse(clonedServiceSecurity.hashCode() == anotherClonedServiceSecurity.hashCode());
+      assertThat(serviceSecurity, is(clonedServiceSecurity));
+      assertThat(serviceSecurity.hashCode(), is(clonedServiceSecurity.hashCode()));
+      assertThat(anotherServiceSecurity, is(anotherClonedServiceSecurity));
+      assertThat(anotherServiceSecurity.hashCode(), is(anotherClonedServiceSecurity.hashCode()));
+      assertThat(serviceSecurity, not(anotherServiceSecurity));
+      assertThat(serviceSecurity.hashCode(), not(anotherServiceSecurity.hashCode()));
+      assertThat(clonedServiceSecurity, not(anotherClonedServiceSecurity));
+      assertThat(clonedServiceSecurity.hashCode(), not(anotherClonedServiceSecurity.hashCode()));
 
     }
   }
@@ -73,14 +69,14 @@ public class ConfigEqualsTestCase {
       CustomTransportConfiguration clonedCustomTransport = factory2.nextObject(CustomHttpTransportConfiguration.class);
       CustomTransportConfiguration anotherClonedCustomTransport = factory2.nextObject(DefaultHttpTransportConfiguration.class);
 
-      assertEquals(customTransport, clonedCustomTransport);
-      assertTrue(customTransport.hashCode() == clonedCustomTransport.hashCode());
-      assertEquals(anotherCustomTransport, anotherClonedCustomTransport);
-      assertTrue(anotherCustomTransport.hashCode() == anotherClonedCustomTransport.hashCode());
-      assertNotEquals(customTransport, anotherCustomTransport);
-      assertFalse(customTransport.hashCode() == anotherCustomTransport.hashCode());
-      assertNotEquals(clonedCustomTransport, anotherClonedCustomTransport);
-      assertFalse(clonedCustomTransport.hashCode() == anotherClonedCustomTransport.hashCode());
+      assertThat(customTransport, is(clonedCustomTransport));
+      assertThat(customTransport.hashCode(), is(clonedCustomTransport.hashCode()));
+      assertThat(anotherCustomTransport, is(anotherClonedCustomTransport));
+      assertThat(anotherCustomTransport.hashCode(), is(anotherClonedCustomTransport.hashCode()));
+      assertThat(customTransport, not(anotherCustomTransport));
+      assertThat(customTransport.hashCode(), not(anotherCustomTransport.hashCode()));
+      assertThat(clonedCustomTransport, not(anotherClonedCustomTransport));
+      assertThat(clonedCustomTransport.hashCode(), not(anotherClonedCustomTransport.hashCode()));
 
     }
   }
@@ -97,11 +93,10 @@ public class ConfigEqualsTestCase {
       AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
       AddressingConfiguration clonedAddressingConfiguration = factory2.nextObject(AddressingConfiguration.class);
 
-      assertEquals(addressingConfiguration, addressingConfiguration);
-      assertEquals(clonedAddressingConfiguration, clonedAddressingConfiguration);
-      assertEquals(addressingConfiguration, clonedAddressingConfiguration);
-      assertTrue(addressingConfiguration.hashCode() == clonedAddressingConfiguration.hashCode());
-
+      assertThat(addressingConfiguration, is(addressingConfiguration));
+      assertThat(clonedAddressingConfiguration, is(clonedAddressingConfiguration));
+      assertThat(addressingConfiguration, is(clonedAddressingConfiguration));
+      assertThat(addressingConfiguration.hashCode(), is(clonedAddressingConfiguration.hashCode()));
     }
   }
 
@@ -112,8 +107,8 @@ public class ConfigEqualsTestCase {
     EasyRandom factory = new EasyRandom(parameters);
 
     AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
-    assertFalse(addressingConfiguration.equals(null));
-    assertFalse(addressingConfiguration.equals(new Object()));
+    assertThat(addressingConfiguration, is(notNullValue()));
+    assertThat(addressingConfiguration, not(equalTo(new Object())));
   }
 
   @Test
@@ -128,10 +123,10 @@ public class ConfigEqualsTestCase {
       ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
       ReliableMessagingConfiguration clonedReliableMessaging = factory2.nextObject(ReliableMessagingConfiguration.class);
 
-      assertEquals(reliableMessaging, reliableMessaging);
-      assertEquals(clonedReliableMessaging, clonedReliableMessaging);
-      assertEquals(reliableMessaging, clonedReliableMessaging);
-      assertTrue(reliableMessaging.hashCode() == clonedReliableMessaging.hashCode());
+      assertThat(reliableMessaging, is(reliableMessaging));
+      assertThat(clonedReliableMessaging, is(clonedReliableMessaging));
+      assertThat(reliableMessaging, is(clonedReliableMessaging));
+      assertThat(reliableMessaging.hashCode(), is(clonedReliableMessaging.hashCode()));
 
     }
   }
@@ -161,11 +156,10 @@ public class ConfigEqualsTestCase {
       ReliableMessagingConnectionSettings clonedReliableMessaging =
           factory2.nextObject(ReliableMessagingConnectionSettings.class);
 
-      assertEquals(reliableMessaging, reliableMessaging);
-      assertEquals(clonedReliableMessaging, clonedReliableMessaging);
-      assertEquals(reliableMessaging, clonedReliableMessaging);
-      assertTrue(reliableMessaging.hashCode() == clonedReliableMessaging.hashCode());
-
+      assertThat(reliableMessaging, is(reliableMessaging));
+      assertThat(clonedReliableMessaging, is(clonedReliableMessaging));
+      assertThat(reliableMessaging, is(clonedReliableMessaging));
+      assertThat(reliableMessaging.hashCode(), is(clonedReliableMessaging.hashCode()));
     }
   }
 
