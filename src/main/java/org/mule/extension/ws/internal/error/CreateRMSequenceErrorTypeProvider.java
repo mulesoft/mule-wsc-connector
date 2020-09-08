@@ -25,7 +25,7 @@ import java.util.Set;
  *
  * @since 2.0
  */
-public class CreateSequenceErrorTypeProvider implements ErrorTypeProvider {
+public class CreateRMSequenceErrorTypeProvider implements ErrorTypeProvider {
 
   /**
    * @return all the error types that can be thrown by the {@link ReliableMessagingOperations} create rm sequence operation.

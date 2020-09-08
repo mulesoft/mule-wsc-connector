@@ -8,7 +8,7 @@ package org.mule.extension.ws.internal;
 
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingVersion;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
-import org.mule.extension.ws.internal.error.CreateSequenceErrorTypeProvider;
+import org.mule.extension.ws.internal.error.CreateRMSequenceErrorTypeProvider;
 import org.mule.extension.ws.internal.error.TerminateRMSequenceErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.runtime.api.connection.ConnectionException;
@@ -34,7 +34,7 @@ public class ReliableMessagingOperations {
    * @param connection the connection resolved to execute the operation.
    * @return the created sequence identifier
    */
-  @Throws(CreateSequenceErrorTypeProvider.class)
+  @Throws(CreateRMSequenceErrorTypeProvider.class)
   @OnException(WscExceptionEnricher.class)
   @MediaType(MediaType.TEXT_PLAIN)
   public String createRMSequence(@Connection WscSoapClient connection, @Config WebServiceConsumer config, ExtensionsClient client)
