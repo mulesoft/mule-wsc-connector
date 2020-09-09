@@ -41,6 +41,11 @@ public enum WscError implements ErrorTypeDefinition<WscError> {
   CANNOT_DISPATCH,
 
   /**
+   * Error thrown when something went wrong while using the RM store.
+   */
+  RM_STORE,
+
+  /**
    * Error thrown when a SOAP FAULT was returned by the server
    */
   SOAP_FAULT,

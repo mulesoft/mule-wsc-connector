@@ -14,7 +14,6 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
-import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
 
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
@@ -28,18 +27,6 @@ import static org.mule.runtime.extension.api.annotation.param.display.Placement.
  * @since 2.0
  */
 public class AddressingSettings {
-
-  /**
-   * Whether mustUnderstand attribute in {@code wsa:To} header is true or false.
-   */
-  @ConfigOverride
-  @Parameter
-  @Placement(tab = ADVANCED_TAB, order = 1)
-  @Optional
-  @Expression(NOT_SUPPORTED)
-  @DisplayName("Must understand")
-  @Summary("Value of the mustUnderstand attribute in WS-Addressing To header.")
-  private boolean wsaMustUnderstand;
 
   /**
    * WS-Addressing version.
@@ -104,10 +91,6 @@ public class AddressingSettings {
   @Expression(SUPPORTED)
   @DisplayName("Relates to")
   private String wsaRelatesTo;
-
-  public boolean isMustUnderstand() {
-    return wsaMustUnderstand;
-  }
 
   public AddressingVersion getVersion() {
     return wsaVersion;

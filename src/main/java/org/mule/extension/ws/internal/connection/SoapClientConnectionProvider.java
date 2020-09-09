@@ -12,6 +12,7 @@ import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
+import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConnectionSettings;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
@@ -21,6 +22,8 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.lifecycle.Lifecycle;
+import org.mule.runtime.api.lock.LockFactory;
+import org.mule.runtime.api.store.ObjectStore;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
@@ -40,6 +43,7 @@ import org.mule.runtime.http.api.client.HttpClientConfiguration;
 import org.mule.soap.api.SoapWebServiceConfiguration;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.client.SoapClientFactory;
+import org.mule.soap.api.rm.ReliableMessagingConfiguration;
 import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.exception.WsdlParsingException;
@@ -64,6 +68,9 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
 
   @Inject
   private ExtensionsClient extensionsClient;
+
+  @Inject
+  private LockFactory lockFactory;
 
   private HttpClient client;
 
@@ -110,6 +117,9 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @DisplayName("Transport Configuration")
   @NullSafe(defaultImplementingType = DefaultHttpTransportConfiguration.class)
   private CustomTransportConfiguration customTransportConfiguration;
+
+  @ParameterGroup(name = "Web Service Reliable Messaging")
+  private ReliableMessagingConnectionSettings reliableMessaging;
 
   @DefaultEncoding
   private String defaultEncoding;
@@ -187,6 +197,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         .withSecurities(wsSecurity.strategiesList())
         .withResourceLocator(locator)
         .withVersion(soapVersion.getVersion())
+        .withReliableMessaging(getReliableMessagingConfig())
         .build();
   }
 
@@ -227,12 +238,21 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         Objects.equals(wsSecurity, that.wsSecurity) &&
         soapVersion == that.soapVersion &&
         Objects.equals(encoding, that.encoding) &&
-        Objects.equals(customTransportConfiguration, that.customTransportConfiguration);
+        Objects.equals(customTransportConfiguration, that.customTransportConfiguration) &&
+        Objects.equals(reliableMessaging, that.reliableMessaging);
   }
 
   @Override
   public int hashCode() {
     return Objects.hash(httpService, extensionsClient, client, info, wsSecurity, soapVersion,
-                        mtomEnabled, encoding, customTransportConfiguration);
+                        mtomEnabled, encoding, customTransportConfiguration, reliableMessaging);
+  }
+
+  private ReliableMessagingConfiguration getReliableMessagingConfig() {
+    ObjectStore os = reliableMessaging.getObjectStore();
+    if (os == null) {
+      return null;
+    }
+    return ReliableMessagingConfiguration.builder().store(os).lockFactory(lockFactory).build();
   }
 }
