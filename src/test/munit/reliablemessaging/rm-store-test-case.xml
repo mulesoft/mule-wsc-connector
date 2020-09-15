@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="rm-store-test-case.xml"/>
+
+    <munit:test name="rmExecuteMultipleOperationsUsingDifferentSequencesTest" description="Executes multiple operations using different WSRM sequences" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:create-rm-sequence config-ref="rm-with-store-config" target="sequence1" />
+            <wsc:create-rm-sequence config-ref="rm-with-store-config-2" target="sequence2" />
+            <wsc:consume config-ref="rm-with-store-config" operation="sayHi" target="response1">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+                <wsc:reliable-messaging wsrmSequence="#[vars.sequence1]"/>
+            </wsc:consume>
+            <wsc:consume config-ref="rm-with-store-config-2" operation="sayHi" target="response2">
+                <wsc:message>
+                    <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
+                </wsc:message>
+                <wsc:reliable-messaging wsrmSequence="#[vars.sequence2]"/>
+            </wsc:consume>
+            <wsc:terminate-rm-sequence config-ref="rm-with-store-config-2" sequence="#[vars.sequence1]" />
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression="#[vars.response1.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response1.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence1)]" />
+
+            <munit-tools:assert-that expression="#[vars.response2.headers.Sequence.Sequence.MessageNumber]" is="#[MunitTools::equalTo('1')]" />
+            <munit-tools:assert-that expression="#[vars.response2.headers.SequenceAcknowledgement.SequenceAcknowledgement.Identifier]" is="#[MunitTools::equalTo(vars.sequence2)]" />
+        </munit:validation>
+    </munit:test>
+
+</mule>

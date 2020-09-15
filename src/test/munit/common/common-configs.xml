@@ -121,6 +121,15 @@
         <wsc:wsrm />
     </wsc:config>
 
+    <wsc:config name="rm-with-store-config-2">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
+                        mtomEnabled="${mtomEnabled}" wsrmStore="RM_Store">
+        </wsc:connection>
+        <wsc:wsa />
+        <wsc:wsrm />
+    </wsc:config>
+
     <wsc:config name="rm-11-addressing-200508-with-store-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld?wsdl" service="HelloWorldService" port="HelloWorldPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/rm/helloWorld"
