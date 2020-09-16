@@ -13,7 +13,7 @@ import static org.mule.runtime.api.util.Preconditions.checkArgument;
 /**
  * Utility methods
  *
- * @since 2.0
+ * @since 1.7
  */
 public final class PathUtils {
 

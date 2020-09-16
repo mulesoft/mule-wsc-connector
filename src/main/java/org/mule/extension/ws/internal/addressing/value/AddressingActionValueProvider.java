@@ -19,7 +19,7 @@ import java.util.Set;
 /**
  * {@link ValueProvider} implementation which provides possible values for the {@code wsa:Action} header
  *
- * @since 2.0
+ * @since 1.7
  */
 public class AddressingActionValueProvider implements ValueProvider {
 

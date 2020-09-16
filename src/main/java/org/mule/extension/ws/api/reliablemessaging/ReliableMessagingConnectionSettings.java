@@ -24,7 +24,7 @@ import java.util.Objects;
 /**
  * This class serves as {@link ParameterGroup} for configuring Web Service Reliable Messaging connection.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingConnectionSettings {
 

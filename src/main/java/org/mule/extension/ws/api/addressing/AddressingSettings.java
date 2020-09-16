@@ -24,7 +24,7 @@ import static org.mule.runtime.extension.api.annotation.param.display.Placement.
 /**
  * Web Service Addressing Settings
  *
- * @since 2.0
+ * @since 1.7
  */
 public class AddressingSettings {
 
