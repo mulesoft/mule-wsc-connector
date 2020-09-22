@@ -23,7 +23,7 @@ import java.util.Set;
 /**
  * {@link ErrorTypeProvider} implementation for the {@link ReliableMessagingOperations} create rm sequence operation.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class CreateRMSequenceErrorTypeProvider implements ErrorTypeProvider {
 

@@ -73,7 +73,7 @@ public class SoapAttributes {
   /**
    * @return a set of additional addressing data
    *
-   * @since 2.0
+   * @since 1.7
    */
   public AddressingAttributes getAddressing() {
     return addressing;

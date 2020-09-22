@@ -21,7 +21,7 @@ import static org.mule.runtime.extension.api.annotation.param.display.Placement.
 /**
  * This class serves as {@link ParameterGroup} for using Web Service Reliable Messaging at {@link ConsumeOperation}.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingSettings {
 

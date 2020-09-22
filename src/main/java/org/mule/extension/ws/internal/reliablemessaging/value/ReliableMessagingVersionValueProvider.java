@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * {@link ValueProvider} implementation which provides the possible and supported values for the
  * {@link ReliableMessagingVersion} parameter.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingVersionValueProvider implements ValueProvider {
 

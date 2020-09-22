@@ -24,7 +24,7 @@ import org.mule.soap.api.rm.TerminateSequenceRequest;
 /**
  * Reliable messaging protocol operations
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingOperations {
 
