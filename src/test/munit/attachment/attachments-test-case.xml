@@ -2,14 +2,12 @@
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
       xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
-      xmlns:file="http://www.mulesoft.org/schema/mule/file"
       xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
       http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
-      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
-      http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
     <munit:config name="attachments-test-cases">
         <munit:parameterizations>
@@ -20,7 +18,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
-                    <munit:parameter propertyName="responseFile" value="mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP11">
@@ -30,7 +27,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
-                    <munit:parameter propertyName="responseFile" value="mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabled_SOAP11">
@@ -40,7 +36,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
-                    <munit:parameter propertyName="responseFile" value="non-mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP11">
@@ -50,7 +45,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
-                    <munit:parameter propertyName="responseFile" value="non-mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMEnabled_SOAP12">
@@ -60,7 +54,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
-                    <munit:parameter propertyName="responseFile" value="mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMEnabledWithCustomTransport_SOAP12">
@@ -70,7 +63,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="true"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment.txt" />
-                    <munit:parameter propertyName="responseFile" value="mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabled_SOAP12">
@@ -80,7 +72,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="default-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
-                    <munit:parameter propertyName="responseFile" value="non-mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="MTOMDisabledWithCustomTransport_SOAP12">
@@ -90,7 +81,6 @@
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="custom-transport-config" />
                     <munit:parameter propertyName="attachmentName" value="attachment" />
-                    <munit:parameter propertyName="responseFile" value="non-mtom.txt" />
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
@@ -163,23 +153,6 @@
         </munit:execution>
         <munit:validation>
             <munit-tools:assert-equals actual="#[sizeOf(payload.attachments)]" expected="#[0]"/>
-        </munit:validation>
-    </munit:test>
-
-    <munit:test name="parseResponseWithAttachment" description="Parse response which contains an attachment" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
-
-        <munit:behavior>
-            <file:read path="#['${app.home}/responses/${responseFile}']" target="content" outputMimeType="multipart/related" />
-        </munit:behavior>
-
-        <munit:execution>
-            <wsc:parse-response config-ref="${config}" operation="downloadAttachment">
-                <wsc:response>#[vars.content]</wsc:response>
-            </wsc:parse-response>
-            <set-payload value="#[output text/plain --- payload.attachments['${attachmentName}']]" />
-        </munit:execution>
-        <munit:validation>
-            <munit-tools:assert-equals actual="#[payload]" expected="#['Simple Attachment Content\n']"/>
         </munit:validation>
     </munit:test>
 </mule>

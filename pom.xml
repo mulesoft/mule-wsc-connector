@@ -177,19 +177,11 @@
         </dependency>
         <dependency>
             <groupId>org.mule.connectors</groupId>
-            <artifactId>mule-file-connector</artifactId>
-            <version>${mule.file.connector.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mule.connectors</groupId>
             <artifactId>mule-objectstore-connector</artifactId>
             <version>${mule.objectstore.connector.version}</version>
             <classifier>mule-plugin</classifier>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <distributionManagement>
