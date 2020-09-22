@@ -33,7 +33,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
  * @since 1.0
  */
 @ErrorTypes(WscError.class)
-@Operations({ConsumeOperation.class, ParseResponseOperation.class, ReliableMessagingOperations.class})
+@Operations({ConsumeOperation.class, ReliableMessagingOperations.class})
 @ConnectionProviders(SoapClientConnectionProvider.class)
 @SubTypeMapping(baseType = CustomTransportConfiguration.class,
     subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
