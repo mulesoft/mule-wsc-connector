@@ -22,7 +22,7 @@
     <properties>
         <commons.lang.version>3.11</commons.lang.version>
 
-        <mule.http.connector.version>1.5.20</mule.http.connector.version>
+        <mule.http.connector.version>1.5.21</mule.http.connector.version>
         <soap.engine.version>1.6.0-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
@@ -42,13 +42,13 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.0.2</mavenResourcesVersion>
-        <munit.version>2.3.1-SNAPSHOT</munit.version>
+        <munit.version>2.3.1</munit.version>
         <mtf.tools.version>1.0.0</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.0.0</munit.extensions.maven.plugin.version>
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
-        <docker.maven.plugin.version>0.33.0</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.34.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
