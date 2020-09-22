@@ -36,7 +36,7 @@ import java.util.Map;
  * The parse response operation expects a response and optionally a set of transport headers and additional data.
  * <p>
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ParseResponseOperation {
 

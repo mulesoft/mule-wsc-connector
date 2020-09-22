@@ -14,7 +14,7 @@ import static org.mule.extension.ws.internal.util.PathUtils.resolveFullPath;
 /**
  * Represent a path
  *
- * @since 2.0
+ * @since 1.7
  */
 public class Path {
 

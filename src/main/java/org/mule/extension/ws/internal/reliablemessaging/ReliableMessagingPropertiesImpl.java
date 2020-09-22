@@ -11,7 +11,7 @@ import org.mule.soap.api.message.ReliableMessagingProperties;
 /**
  * Model of Reliable Messaging Properties
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingPropertiesImpl implements ReliableMessagingProperties {
 

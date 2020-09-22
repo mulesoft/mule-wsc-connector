@@ -20,7 +20,7 @@ import static org.mule.extension.ws.internal.error.WscError.*;
 /**
  * {@link ErrorTypeProvider} implementation for the {@link ParseResponseOperation}.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ParseResponseErrorTypeProvider implements ErrorTypeProvider {
 

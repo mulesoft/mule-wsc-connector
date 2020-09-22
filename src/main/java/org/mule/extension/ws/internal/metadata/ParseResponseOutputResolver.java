@@ -16,7 +16,7 @@ import org.mule.runtime.api.metadata.MetadataResolvingException;
 /**
  * Resolves the metadata for output payload of the {@link ParseResponseOperation}.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ParseResponseOutputResolver extends AbstractOutputResolver<String> {
 

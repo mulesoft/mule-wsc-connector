@@ -18,7 +18,7 @@ import org.mule.wsdl.parser.model.operation.Type;
 /**
  * Resolves the metadata for output payload of an operation.
  *
- * @since 2.0
+ * @since 1.7
  */
 public abstract class AbstractOutputResolver<T> implements OutputTypeResolver<T> {
 

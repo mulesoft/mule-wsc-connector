@@ -18,7 +18,7 @@ import static java.util.Optional.ofNullable;
 /**
  * Model of Message Addressing Properties
  *
- * @since 2.0
+ * @since 1.7
  */
 public class AddressingPropertiesImpl implements AddressingProperties {
 
