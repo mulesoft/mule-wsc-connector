@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * {@link ValueProvider} implementation which provides possible values for the {@code wsa:To} header
  *
- * @since 2.0
+ * @since 1.7
  */
 public class AddressingToValueProvider implements ValueProvider {
 

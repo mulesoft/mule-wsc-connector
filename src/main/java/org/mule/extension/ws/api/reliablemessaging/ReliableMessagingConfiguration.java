@@ -27,7 +27,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 /**
  * This class serves as {@link ParameterGroup} for configuring Web Service Reliable Messaging.
  *
- * @since 2.0
+ * @since 1.7
  */
 public class ReliableMessagingConfiguration {
 

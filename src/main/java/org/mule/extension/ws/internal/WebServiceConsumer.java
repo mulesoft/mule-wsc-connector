@@ -47,7 +47,7 @@ public class WebServiceConsumer implements Initialisable {
   /**
    * Web Service Addressing configuration
    *
-   * @since 2.0
+   * @since 1.7
    */
   @ParameterGroup(name = "wsa", showInDsl = true)
   @DisplayName("Web Service Addressing")
@@ -56,7 +56,7 @@ public class WebServiceConsumer implements Initialisable {
   /**
    * Web Service Reliable Messaging configuration
    *
-   * @since 2.0
+   * @since 1.7
    */
   @ParameterGroup(name = "wsrm", showInDsl = true)
   @DisplayName("Web Service Reliable Messaging")

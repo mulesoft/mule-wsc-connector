@@ -11,7 +11,7 @@ import java.io.Serializable;
 /**
  * Web service addressing attributes
  *
- * @since 2.0
+ * @since 1.7
  */
 public class AddressingAttributes implements Serializable {
 
