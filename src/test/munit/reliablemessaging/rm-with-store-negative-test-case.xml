@@ -11,7 +11,7 @@
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
       http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
 
-    <munit:config name="addressing-test-cases">
+    <munit:config name="rm-with-store-negative-test-cases">
         <munit:parameterizations>
             <munit:parameterization name="WSRM_SOAP11_WITH_STORE">
                 <munit:parameters>
