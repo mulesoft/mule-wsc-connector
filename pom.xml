@@ -286,6 +286,8 @@
                         <WS_SOAP11_SSL_PORT>${soap.host.port.ssl}</WS_SOAP11_SSL_PORT>
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
                         <WS_SERVER_PORT>${soap.server.port}</WS_SERVER_PORT>
+                        <mule.enable.statistics>true</mule.enable.statistics>
+                        <mule.disable.payload.statistics>true</mule.disable.payload.statistics>
                     </environmentVariables>
                     <dynamicPorts>
                         <dynamicPort>http.port</dynamicPort>
