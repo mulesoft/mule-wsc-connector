@@ -22,7 +22,7 @@
     <properties>
         <commons.lang.version>3.11</commons.lang.version>
 
-        <mule.http.connector.version>1.5.22</mule.http.connector.version>
+        <mule.http.connector.version>1.5.23</mule.http.connector.version>
         <soap.engine.version>1.6.0-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
