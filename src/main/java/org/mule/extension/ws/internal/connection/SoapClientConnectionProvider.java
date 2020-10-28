@@ -6,15 +6,16 @@
  */
 package org.mule.extension.ws.internal.connection;
 
+import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
-import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConnectionSettings;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
+import org.mule.extension.ws.internal.reliablemessaging.ReliableMessagingStoreImpl;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
 import org.mule.extension.ws.internal.value.WsdlValueProvider;
 import org.mule.runtime.api.connection.CachedConnectionProvider;
@@ -31,6 +32,7 @@ import org.mule.runtime.extension.api.annotation.param.NullSafe;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.ParameterGroup;
+import org.mule.runtime.extension.api.annotation.param.RefName;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
@@ -47,11 +49,13 @@ import org.mule.soap.api.rm.ReliableMessagingConfiguration;
 import org.mule.soap.api.transport.locator.DefaultTransportResourceLocator;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import org.mule.wsdl.parser.exception.WsdlParsingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.Objects;
 
 import javax.inject.Inject;
-import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * {@link ConnectionProvider} that returns instances of {@link WscSoapClient}.
@@ -62,6 +66,9 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
   private final SoapClientFactory SOAP_CLIENT_FACTORY = SoapClientFactory.getDefault();
+
+  @RefName
+  private String configName;
 
   @Inject
   private HttpService httpService;
@@ -249,10 +256,11 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   }
 
   private ReliableMessagingConfiguration getReliableMessagingConfig() {
-    ObjectStore os = reliableMessaging.getObjectStore();
-    if (os == null) {
+    ObjectStore objectStore = reliableMessaging.getObjectStore();
+    if (objectStore == null) {
       return null;
     }
-    return ReliableMessagingConfiguration.builder().store(os).lockFactory(lockFactory).build();
+    ReliableMessagingStoreImpl reliableMessagingStore = new ReliableMessagingStoreImpl(objectStore, lockFactory, configName);
+    return ReliableMessagingConfiguration.builder().store(reliableMessagingStore).build();
   }
 }
