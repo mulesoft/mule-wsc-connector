@@ -74,9 +74,4 @@ public class ReliableMessagingStoreImpl implements ReliableMessagingStore {
         .collect(toMap(Entry::getKey, Entry::getValue));
   }
 
-  @Override
-  public void clear() throws Exception {
-    objectStore.clear();
-  }
-
 }
