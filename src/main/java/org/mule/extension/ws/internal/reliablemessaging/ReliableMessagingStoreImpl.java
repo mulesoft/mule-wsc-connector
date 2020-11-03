@@ -45,7 +45,7 @@ public class ReliableMessagingStoreImpl implements ReliableMessagingStore {
   @Override
   public void update(String key, Serializable value) throws Exception {
     String keyName = format(keyFormat, key, configName);
-    Lock lock = lockFactory.createLock(key + "-lock");
+    Lock lock = lockFactory.createLock(keyName + "-lock");
     lock.lock();
     try {
       objectStore.remove(keyName);
