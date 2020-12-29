@@ -35,11 +35,11 @@
         <http:listener-connection host="0.0.0.0" port="${http.port}" />
     </http:listener-config>
 
-    <wss:incoming-config name="WSS_Incoming">
+    <wss:inbound-config name="WSS_Inbound">
         <wss:verify-signature-config >
             <wss:truststore-config path="security/trustStore" password="mulepassword" />
         </wss:verify-signature-config>
-    </wss:incoming-config>
+    </wss:inbound-config>
 
     <!-- Tests -->
     <munit:test name="signRequestWithMTOMEnabled"
@@ -65,7 +65,7 @@
     <flow name="validateSignatureFlow">
         <http:listener config-ref="HTTP_Listener_config" path="/validateSignature"/>
         <set-variable value="#[payload]" variableName="savePayload"/>
-        <wss:process version="SOAP_11" config-ref="WSS_Incoming"/>
+        <wss:validate-wss version="SOAP_11" config-ref="WSS_Inbound"/>
         <set-payload value="#[vars.savePayload]"/>
     </flow>
 
