@@ -71,7 +71,10 @@ public class ReliableMessagingStoreImpl implements ReliableMessagingStore {
         .entrySet()
         .stream()
         .filter(entry -> entry.getKey().endsWith(configName))
-        .collect(toMap(Entry::getKey, Entry::getValue));
+        .collect(toMap(entry -> getOriginalKey(entry.getKey()), Entry::getValue));
   }
 
+  private String getOriginalKey(String key) {
+    return key.substring(0, key.length() - configName.length() - 1);
+  }
 }
