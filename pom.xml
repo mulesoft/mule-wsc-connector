@@ -20,7 +20,7 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.11</commons.lang.version>
+        <commons.lang.version>3.12.0</commons.lang.version>
 
         <mule.http.connector.version>1.5.23</mule.http.connector.version>
         <soap.engine.version>1.7.0-SNAPSHOT</soap.engine.version>
