@@ -20,12 +20,9 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.12.0</commons.lang.version>
-
         <mule.http.connector.version>1.5.23</mule.http.connector.version>
         <soap.engine.version>1.6.3</soap.engine.version>
         <wsdl.parser.version>1.4.3</wsdl.parser.version>
-        <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
@@ -34,7 +31,6 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
-        <mule.wss.module.version>1.0.1</mule.wss.module.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
@@ -44,8 +40,6 @@
         <mtf.tools.version>1.1.0</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.1.1</munit.extensions.maven.plugin.version>
 
-        <validations.module.version>1.1.0</validations.module.version>
-        <java.module.version>1.1.1</java.module.version>
         <docker.maven.plugin.version>0.34.1</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
@@ -86,13 +80,6 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <!-- Common Dependencies -->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons.lang.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -143,18 +130,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>javax.activation</groupId>
-            <artifactId>activation</artifactId>
-            <version>${activation.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>javax.xml.ws</groupId>
-            <artifactId>jaxws-api</artifactId>
-            <version>${javax.jaxws-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>javax.jws</groupId>
             <artifactId>javax.jws-api</artifactId>
             <version>${javax.jws-api.version}</version>
@@ -166,13 +141,7 @@
             <version>4.3.0</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.mulesoft.modules</groupId>
-            <artifactId>mule-wss-module</artifactId>
-            <version>${mule.wss.module.version}</version>
-            <classifier>mule-plugin</classifier>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
