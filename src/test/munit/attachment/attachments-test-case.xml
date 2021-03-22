@@ -83,6 +83,42 @@
                     <munit:parameter propertyName="attachmentName" value="attachment" />
                 </munit:parameters>
             </munit:parameterization>
+            <munit:parameterization name="MTOMEnabled_NotMtomResponse_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabled_MTOMResponse_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMEnabled_NotMtomResponse_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="true"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment" />
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="MTOMDisabled_MTOMResponse_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config" />
+                    <munit:parameter propertyName="attachmentName" value="attachment.txt" />
+                </munit:parameters>
+            </munit:parameterization>
         </munit:parameterizations>
     </munit:config>
 
