@@ -69,7 +69,7 @@
                 <wsc:message >
                     <wsc:body ><![CDATA[#['<con:sayHi xmlns:con="http://service.connectors.mule.org/"><arg0>Terry</arg0></con:sayHi>']]]></wsc:body>
                 </wsc:message>
-                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="MessageId" wsaRelatesTo="RelatesTo" wsaFrom="From" />
+                <wsc:addressing wsaAction="Action" wsaTo="To" wsaMessageID="#[MessageId]" wsaRelatesTo="RelatesTo" wsaFrom="From" />
             </wsc:consume>
         </munit:execution>
         <munit:validation>
