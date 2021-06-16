@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:http="http://www.mulesoft.org/schema/mule/http"
+      xmlns:os="http://www.mulesoft.org/schema/mule/os"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
+      http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+      http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+
+    <global-property name="soapVersion" value="SOAP11"/>
+    <global-property name="wsPort" value="${WS_SOAP11_PORT}"/>
+    <global-property name="requestConfig" value="basic-auth-requester" />
+
+    <!-- Configs -->
+    <http:request-config name="basic-auth-requester">
+        <http:request-connection host="localhost" port="${wsPort}" protocol="HTTP">
+            <http:authentication>
+                <http:basic-authentication username="juani" password="changeIt"/>
+            </http:authentication>
+        </http:request-connection>
+    </http:request-config>
+
+    <wsc:config name="authorized-local-wsdl">
+        <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="authorized-remote-wsdl">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
+                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:custom-transport-configuration>
+                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
+            </wsc:custom-transport-configuration>
+        </wsc:connection>
+    </wsc:config>
+
+    <flow name="buildOneWayRequest">
+        <set-payload value="#[
+                            %dw 2.0
+                            output application/xml
+                            ns con http://service.soap.service.mule.org/
+                            ---
+                            con#oneWay: {}]"/>
+    </flow>
+
+</mule>

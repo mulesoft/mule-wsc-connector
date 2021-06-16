@@ -11,26 +11,13 @@
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
       http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
-    <munit:config name="basic-auth-test-cases">
+    <munit:config name="basic-auth-test-cases2">
     </munit:config>
 
-    <!-- Tests -->
-
-    <munit:test name="requestWithHttpBasicAuthConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="requestWithHttpBasicAuthConfiguration2" description="Make a HTTP request using Basic Authentication with valid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <flow-ref name="buildOneWayRequest" />
             <wsc:consume config-ref="authorized-local-wsdl" operation="oneWay">
-                <wsc:message>
-                    <wsc:body>#[payload]</wsc:body>
-                </wsc:message>
-            </wsc:consume>
-        </munit:execution>
-    </munit:test>
-
-    <munit:test name="requestWithHttpBasicAuthRemoteConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
-        <munit:execution>
-            <flow-ref name="buildOneWayRequest" />
-            <wsc:consume config-ref="authorized-remote-wsdl" operation="oneWay">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
