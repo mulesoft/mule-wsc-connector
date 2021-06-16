@@ -31,15 +31,6 @@
         </wsc:connection>
     </wsc:config>
 
-    <wsc:config name="authorized-remote-wsdl">
-        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
-            <wsc:custom-transport-configuration>
-                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
-            </wsc:custom-transport-configuration>
-        </wsc:connection>
-    </wsc:config>
-
     <flow name="buildOneWayRequest">
         <set-payload value="#[
                             %dw 2.0

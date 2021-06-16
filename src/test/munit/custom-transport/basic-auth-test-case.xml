@@ -27,15 +27,4 @@
         </munit:execution>
     </munit:test>
 
-    <munit:test name="requestWithHttpBasicAuthRemoteConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
-        <munit:execution>
-            <flow-ref name="buildOneWayRequest" />
-            <wsc:consume config-ref="authorized-remote-wsdl" operation="oneWay">
-                <wsc:message>
-                    <wsc:body>#[payload]</wsc:body>
-                </wsc:message>
-            </wsc:consume>
-        </munit:execution>
-    </munit:test>
-
 </mule>
