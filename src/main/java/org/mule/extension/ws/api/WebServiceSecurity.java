@@ -27,6 +27,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.annotation.values.OfValues;
+import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 import org.mule.soap.api.security.SecurityStrategy;
 
 import java.util.List;
@@ -58,6 +59,7 @@ public class WebServiceSecurity {
   @Expression(NOT_SUPPORTED)
   @Placement(tab = SECURITY_TAB, order = 6)
   @Optional
+  @ExcludeFromConnectivitySchema
   private WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy;
 
   /**

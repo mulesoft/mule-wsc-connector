@@ -42,6 +42,7 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.http.api.HttpService;
 import org.mule.runtime.http.api.client.HttpClient;
 import org.mule.runtime.http.api.client.HttpClientConfiguration;
+import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 import org.mule.soap.api.SoapWebServiceConfiguration;
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.client.SoapClientFactory;
@@ -102,6 +103,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Parameter
   @Placement(order = 6)
   @Optional(defaultValue = "false")
+  @ExcludeFromConnectivitySchema
   private boolean mtomEnabled;
 
   /**
@@ -112,6 +114,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
   @Placement(order = 7)
   @Expression(NOT_SUPPORTED)
   @Optional
+  @ExcludeFromConnectivitySchema
   private String encoding;
 
   /**

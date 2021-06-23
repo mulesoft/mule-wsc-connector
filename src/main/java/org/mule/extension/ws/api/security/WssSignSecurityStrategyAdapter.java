@@ -16,6 +16,7 @@ import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
 import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
+import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 import org.mule.soap.api.security.SecurityStrategy;
 import org.mule.soap.api.security.WssSignSecurityStrategy;
 import org.mule.soap.api.security.configuration.WssPart;
@@ -50,6 +51,7 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
   @Placement(order = 1)
   @DisplayName("Signing algorithms configuration")
   @Expression(NOT_SUPPORTED)
+  @ExcludeFromConnectivitySchema
   private WssSignConfigurationAdapter signAlgorithmConfiguration;
 
   @Override
