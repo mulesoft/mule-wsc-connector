@@ -23,6 +23,7 @@
         <commons.lang.version>3.12.0</commons.lang.version>
 
         <mule.http.connector.version>1.5.23</mule.http.connector.version>
+        <muleSdkApiVersion>0.3.0</muleSdkApiVersion>
         <soap.engine.version>1.6.3</soap.engine.version>
         <wsdl.parser.version>1.4.3</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
@@ -64,6 +65,11 @@
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-soap-engine</artifactId>
             <version>${soap.engine.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mule.sdk</groupId>
+            <artifactId>mule-sdk-api</artifactId>
+            <version>${muleSdkApiVersion}</version>
         </dependency>
         <dependency>
             <groupId>org.mule.connectors</groupId>
