@@ -16,6 +16,7 @@ import org.mule.runtime.extension.api.annotation.param.display.Example;
 import org.mule.runtime.extension.api.annotation.param.display.Path;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.values.ValuePart;
+import org.mule.sdk.api.annotation.semantics.connectivity.Url;
 
 import java.net.URL;
 import java.util.Objects;
@@ -34,6 +35,7 @@ public class WsdlConnectionInfo {
   @Parameter
   @Example("http://www.somehost.com/location?wsdl")
   @Path(type = FILE, acceptedFileExtensions = "wsdl", acceptsUrls = true)
+  @Url
   private String wsdlLocation;
 
   /**
@@ -59,6 +61,7 @@ public class WsdlConnectionInfo {
   @Optional
   @Placement(order = 4)
   @ValuePart(order = 3)
+  @Url
   private String address;
 
   public String getService() {
