@@ -18,6 +18,7 @@ import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
 import org.mule.runtime.extension.api.annotation.param.display.Placement;
 import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.annotation.param.reference.ObjectStoreReference;
+import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 
 import java.util.Objects;
 
@@ -38,6 +39,7 @@ public class ReliableMessagingConnectionSettings {
   @ObjectStoreReference
   @DisplayName("Store")
   @Summary("The WS reliable messaging store used to persists sequence's data.")
+  @ExcludeFromConnectivitySchema
   private ObjectStore wsrmStore;
 
   @Override
