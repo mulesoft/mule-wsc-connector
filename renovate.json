@@ -11,6 +11,7 @@
   ],
   "timezone": "America/Argentina/Buenos_Aires",
   "ignoreDeps": [
-    "org.mule.extensions:mule-core-modules-parent"
+    "org.mule.extensions:mule-core-modules-parent",
+    "org.mule.sdk:mule-sdk-api"
   ]
 }
