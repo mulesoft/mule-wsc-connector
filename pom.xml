@@ -25,7 +25,7 @@
         <mule.http.connector.version>1.5.23</mule.http.connector.version>
         <muleSdkApiVersion>0.3.0</muleSdkApiVersion>
         <soap.engine.version>1.6.3</soap.engine.version>
-        <wsdl.parser.version>1.4.3</wsdl.parser.version>
+        <wsdl.parser.version>1.4.4</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
