@@ -48,7 +48,7 @@
             <wsc:consume config-ref="Web_Service_Consumer_Config_insecure" operation="echoAccount"/>
         </mtf:get-metadata-keys>
         <mtf:validation>
-            <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','downloadAttachment','large','oneWay']]"/>
+            <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','uploadAttachmentNoResult','downloadAttachment','large','oneWay']]"/>
             <set-variable variableName="keys" value="#[payload pluck $$]"/>
             <munit-tools:assert-equals actual="#[sizeOf(vars.keys)]" expected="#[sizeOf(vars.operations)]"/>
             <foreach collection="#[vars.keys]" counterVariableName="index">
