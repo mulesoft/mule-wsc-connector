@@ -30,6 +30,8 @@
       <xs:element name="oneWay" type="tns:oneWay"/>
       <xs:element name="uploadAttachment" type="tns:uploadAttachment"/>
       <xs:element name="uploadAttachmentResponse" type="tns:uploadAttachmentResponse"/>
+      <xs:element name="uploadAttachmentNoResult" type="tns:uploadAttachmentNoResult"/>
+      <xs:element name="uploadAttachmentNoResultResponse" type="tns:uploadAttachmentNoResultResponse"/>
       <xs:complexType name="echoType">
         <xs:sequence>
           <xs:element minOccurs="0" name="text" type="xs:string"/>
@@ -48,6 +50,16 @@
       <xs:complexType name="uploadAttachmentResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="result" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="uploadAttachmentNoResult">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="attachment" type="xs:base64Binary"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="uploadAttachmentNoResultResponse">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="result" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="oneWay">
@@ -160,6 +172,9 @@
   <wsdl:message name="uploadAttachmentResponse">
     <wsdl:part element="tns:uploadAttachmentResponse" name="parameters"></wsdl:part>
   </wsdl:message>
+    <wsdl:message name="uploadAttachmentNoResultResponse">
+    <wsdl:part element="tns:uploadAttachmentNoResultResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="failResponse">
     <wsdl:part element="tns:failResponse" name="parameters"></wsdl:part>
   </wsdl:message>
@@ -177,6 +192,9 @@
   </wsdl:message>
   <wsdl:message name="uploadAttachment">
     <wsdl:part element="tns:uploadAttachment" name="parameters"></wsdl:part>
+  </wsdl:message>
+    <wsdl:message name="uploadAttachmentNoResult">
+    <wsdl:part element="tns:uploadAttachmentNoResult" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="noParamsWithHeaderResponse">
     <wsdl:part element="tns:noParamsWithHeaderResponse" name="parameters"></wsdl:part>
@@ -221,6 +239,10 @@
     <wsdl:operation name="uploadAttachment">
       <wsdl:input message="tns:uploadAttachment" name="uploadAttachment"></wsdl:input>
       <wsdl:output message="tns:uploadAttachmentResponse" name="uploadAttachmentResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="uploadAttachmentNoResult">
+      <wsdl:input message="tns:uploadAttachmentNoResult" name="uploadAttachmentNoResult"></wsdl:input>
+      <wsdl:output message="tns:uploadAttachmentNoResultResponse" name="uploadAttachmentNoResultResponse"></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="oneWay">
       <wsdl:input message="tns:oneWay" name="oneWay"></wsdl:input>
@@ -274,6 +296,15 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="uploadAttachmentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="uploadAttachmentNoResult">
+      <soap:operation soapAction="uploadAttachmentNoResult" style="document"/>
+      <wsdl:input name="uploadAttachmentNoResult">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="uploadAttachmentNoResultResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -615,6 +646,23 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachment"/>
+            </con:call>
+        </con:operation>
+        <con:operation id="fa8435d2-3aa6-4dae-af76-e7bb53da37a7" isOneWay="false" action="uploadAttachmentNoResult" name="uploadAttachmentNoResult" bindingOperationName="uploadAttachmentNoResult" type="Request-Response" outputName="uploadAttachmentNoResultResponse" inputName="uploadAttachmentNoResult" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+            <con:settings/>
+            <con:call id="285705e6-96cd-4b52-8b6a-42059f200c7f" name="Request 1">
+                <con:settings/>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>http://localhost:1231/server</con:endpoint>
+                <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:uploadAttachmentNoResult>
+         <attachment>cid:914072916446</attachment>
+      </ser:uploadAttachmentNoResult>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachmentNoResult"/>
             </con:call>
         </con:operation>
     </con:interface>
@@ -1064,6 +1112,21 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></con:responseContent>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachment"/>
+            </con:response>
+            <con:dispatchConfig/>
+        </con:mockOperation>
+        <con:mockOperation name="uploadAttachmentNoResult" id="27613970-3d59-4ffe-b9f6-34304418f46d" interface="TestServiceSoapBinding" operation="uploadAttachmentNoResult">
+            <con:settings/>
+            <con:defaultResponse>Response 1</con:defaultResponse>
+            <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
+            <con:response name="Response 1" id="9164d61c-db88-40a7-8595-f4272248c809" httpResponseStatus="200" encoding="UTF-8">
+                <con:settings/>
+                <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachmentNoResult"/>
             </con:response>
             <con:dispatchConfig/>
         </con:mockOperation>
