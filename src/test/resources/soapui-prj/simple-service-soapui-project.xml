@@ -1222,7 +1222,7 @@ concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, 
           <con:responseContent><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
    <soap:Header>
       <Security>
-         <CDIToken Id="cdiToken" xmlns="http://schemas.cdi.ltsa.govt.nz/SecurityService">
+         <CDIToken Id="cdiToken">
             <TokenValue>5534cef7-3721-4735-881c-85bcbb14d400</TokenValue>
          </CDIToken>
          <SecurityTokenReference d4p1:Id="cdiToken" xmlns:d4p1="http://www.docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
@@ -1235,7 +1235,7 @@ concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, 
       </wsse:Security>
    </soap:Header>
    <soap:Body>
-      <differentNamespaceResponse xmlns="http://schemas.cdi.ltsa.govt.nz/Security/AccessControl/">
+      <differentNamespaceResponse>
 
       </differentNamespaceResponse>
    </soap:Body>
