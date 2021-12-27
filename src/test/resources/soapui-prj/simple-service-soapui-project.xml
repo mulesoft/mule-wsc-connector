@@ -32,6 +32,8 @@
       <xs:element name="uploadAttachmentResponse" type="tns:uploadAttachmentResponse"/>
       <xs:element name="uploadAttachmentNoResult" type="tns:uploadAttachmentNoResult"/>
       <xs:element name="uploadAttachmentNoResultResponse" type="tns:uploadAttachmentNoResultResponse"/>
+      <xs:element name="differentNamespace" type="tns:differentNamespace"/>
+      <xs:element name="differentNamespaceResponse" type="tns:differentNamespaceResponse"/>
       <xs:complexType name="echoType">
         <xs:sequence>
           <xs:element minOccurs="0" name="text" type="xs:string"/>
@@ -60,6 +62,16 @@
       <xs:complexType name="uploadAttachmentNoResultResponse">
         <xs:sequence>
           <xs:element minOccurs="1" name="result" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="differentNamespace">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RequestBody" type="xs:string"/>
+       </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="differentNamespaceResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="result" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="oneWay">
@@ -196,6 +208,12 @@
     <wsdl:message name="uploadAttachmentNoResult">
     <wsdl:part element="tns:uploadAttachmentNoResult" name="parameters"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="differentNamespace">
+    <wsdl:part element="tns:differentNamespace" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="differentNamespaceResponse">
+    <wsdl:part element="tns:differentNamespaceResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="noParamsWithHeaderResponse">
     <wsdl:part element="tns:noParamsWithHeaderResponse" name="parameters"></wsdl:part>
   </wsdl:message>
@@ -243,6 +261,10 @@
     <wsdl:operation name="uploadAttachmentNoResult">
       <wsdl:input message="tns:uploadAttachmentNoResult" name="uploadAttachmentNoResult"></wsdl:input>
       <wsdl:output message="tns:uploadAttachmentNoResultResponse" name="uploadAttachmentNoResultResponse"></wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="differentNamespace">
+      <wsdl:input message="tns:differentNamespace" name="differentNamespace"></wsdl:input>
+      <wsdl:output message="tns:differentNamespaceResponse" name="differentNamespaceResponse"></wsdl:output>
     </wsdl:operation>
     <wsdl:operation name="oneWay">
       <wsdl:input message="tns:oneWay" name="oneWay"></wsdl:input>
@@ -305,6 +327,15 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="uploadAttachmentNoResultResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="differentNamespace">
+      <soap:operation soapAction="differentNamespace" style="document"/>
+      <wsdl:input name="differentNamespace">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="differentNamespaceResponse">
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
@@ -670,6 +701,31 @@
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachmentNoResult"/>
             </con:call>
         </con:operation>
+      <con:operation id="fa8435d2-3aa6-4dae-af76-e7bb53da37a7" isOneWay="false" action="differentNamespace" name="differentNamespace" bindingOperationName="differentNamespace" type="Request-Response" outputName="differentNamespaceResponse" inputName="differentNamespace" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+        <con:settings/>
+        <con:call id="285705e6-96cd-4b52-8b6a-42059f200c7f" name="Request 1">
+          <con:settings>
+            <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+          </con:settings>
+          <con:encoding>UTF-8</con:encoding>
+          <con:endpoint>http://localhost:1231/server</con:endpoint>
+          <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:differentNamespace>
+         <attachment>cid:914072916446</attachment>
+      </ser:differentNamespace>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+          <con:credentials>
+            <con:authType>No Authorization</con:authType>
+          </con:credentials>
+          <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+          <con:jmsPropertyConfig/>
+          <con:wsaConfig mustUnderstand="NONE" version="200508" action="differentNamespace"/>
+          <con:wsrmConfig version="1.2"/>
+        </con:call>
+      </con:operation>
     </con:interface>
     <con:mockService id="d371dd91-d827-4a9d-aec2-672dbd285a58" port="8080" path="/SOAP11" host="localhost" name="MUnitServiceMock" bindToHostOnly="false" docroot="" incomingWss="Incoming" outgoingWss="" dispatchResponseMessages="false">
         <con:settings>
@@ -1157,6 +1213,37 @@ concat(//wsa:Action, ".", //wsa:To, ".", //wsa:MessageID, ".", //wsa:RelatesTo, 
             </con:response>
             <con:dispatchConfig/>
         </con:mockOperation>
+      <con:mockOperation name="differentNamespace" id="27613970-3d59-4ffe-b9f6-34304418f46d" interface="TestServiceSoapBinding" operation="differentNamespace">
+        <con:settings/>
+        <con:defaultResponse>Response 1</con:defaultResponse>
+        <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
+        <con:response name="Response 1" id="9164d61c-db88-40a7-8595-f4272248c809" httpResponseStatus="200" encoding="UTF-8">
+          <con:settings/>
+          <con:responseContent><![CDATA[<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/03/addressing" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+   <soap:Header>
+      <Security>
+         <CDIToken Id="cdiToken">
+            <TokenValue>5534cef7-3721-4735-881c-85bcbb14d400</TokenValue>
+         </CDIToken>
+         <SecurityTokenReference d4p1:Id="cdiToken" xmlns:d4p1="http://www.docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"/>
+      </Security>
+      <wsse:Security>
+         <wsu:Timestamp wsu:Id="Timestamp-0526c44a-a131-4c88-b38d-efdb6f6c6d72">
+            <wsu:Created>2021-10-26T01:18:52Z</wsu:Created>
+            <wsu:Expires>2021-10-26T01:23:52Z</wsu:Expires>
+         </wsu:Timestamp>
+      </wsse:Security>
+   </soap:Header>
+   <soap:Body>
+      <differentNamespaceResponse>
+
+      </differentNamespaceResponse>
+   </soap:Body>
+</soap:Envelope>]]></con:responseContent>
+          <con:wsaConfig mustUnderstand="NONE" version="200508" action="differentNamespace"/>
+        </con:response>
+        <con:dispatchConfig/>
+      </con:mockOperation>
     </con:mockService>
     <con:endpointStrategy xsi:type="con:DefaultEndpointStrategy" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
         <con:endpoint mode="COMPLEMENT" outgoingWss="SecureResponse">http://localhost:8081</con:endpoint>

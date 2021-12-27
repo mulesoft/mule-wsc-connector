@@ -17,6 +17,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_200408_SOAP11">
@@ -25,6 +26,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-200408-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_200508_SOAP11">
@@ -33,6 +35,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-200508-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_SOAP12">
@@ -41,6 +44,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_200408_SOAP12">
@@ -49,6 +53,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-200408-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="WSA_200508_SOAP12">
@@ -57,6 +62,7 @@
                     <munit:parameter propertyName="wsPort" value="${WS_SERVER_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
                     <munit:parameter propertyName="config" value="addressing-200508-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
