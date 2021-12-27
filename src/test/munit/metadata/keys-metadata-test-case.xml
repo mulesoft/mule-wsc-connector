@@ -17,12 +17,14 @@
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="SOAP12">
                 <munit:parameters>
                     <munit:parameter propertyName="soapVersion" value="SOAP12"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
@@ -37,7 +39,7 @@
             </wsc:consume>
         </mtf:get-metadata-keys>
         <mtf:validation>
-            <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','uploadAttachmentNoResult','downloadAttachment','large','oneWay']]" />
+            <set-variable variableName="operations" value="#[['echo','echoWithHeaders','echoAccount','noParams','noParamsWithHeader','fail','uploadAttachment','uploadAttachmentNoResult','downloadAttachment','large','oneWay','differentNamespace']]" />
             <set-variable variableName="keys" value="#[payload pluck $$]"/>
             <munit-tools:assert-equals actual="#[sizeOf(vars.keys)]" expected="#[sizeOf(vars.operations)]" />
             <foreach collection="#[vars.keys]" counterVariableName="index">

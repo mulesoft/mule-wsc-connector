@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="echo-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="DefaultTransport_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="true"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="CustomTransport_SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="true"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="DefaultTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="default-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="true"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="CustomTransport_SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="true"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Tests -->
+
+    <munit:test name="differentNamespace" description="Consumes an operation that expects a response with headers which have same name but different namespaces" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+            <wsc:consume config-ref="${config}" operation="differentNamespace">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#differentNamespace: {
+                        text: "test"
+                        }]
+                    </wsc:body>
+                </wsc:message>
+            </wsc:consume>
+            <munit-tools:assert-that expression="#[payload.headers.Security]" is="#[MunitTools::notNullValue()]" />
+            <munit-tools:assert-that expression="#[payload.headers.'wsse:Security']" is="#[MunitTools::notNullValue()]" />
+        </munit:execution>
+
+    </munit:test>
+</mule>
