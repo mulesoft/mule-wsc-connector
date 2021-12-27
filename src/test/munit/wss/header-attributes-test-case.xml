@@ -16,6 +16,7 @@
                     <munit:parameter propertyName="soapVersion" value="SOAP11"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
             <munit:parameterization name="SOAP12">
@@ -23,6 +24,7 @@
                     <munit:parameter propertyName="soapVersion" value="SOAP12"/>
                     <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
                     <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="mule.soap.enable.namespaces" value="false"/>
                 </munit:parameters>
             </munit:parameterization>
         </munit:parameterizations>
