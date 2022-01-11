@@ -19,6 +19,8 @@
       <xs:element name="echoResponse" type="tns:echoResponse"/>
       <xs:element name="echoWithHeaders" type="tns:echoWithHeaders"/>
       <xs:element name="echoWithHeadersResponse" type="tns:echoWithHeadersResponse"/>
+      <xs:element name="echoWithHeadersNoIndentation" type="tns:echoWithHeadersNoIndentation"/>
+      <xs:element name="echoWithHeadersNoIndentationResponse" type="tns:echoWithHeadersNoIndentationResponse"/>
       <xs:element name="fail" type="tns:fail"/>
       <xs:element name="failResponse" type="tns:failResponse"/>
       <xs:element name="large" type="tns:large"/>
@@ -85,6 +87,16 @@
         </xs:sequence>
       </xs:complexType>
       <xs:complexType name="echoWithHeadersResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="text" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="echoWithHeadersNoIndentation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="text" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="echoWithHeadersNoIndentationResponse">
         <xs:sequence>
           <xs:element minOccurs="0" name="text" type="xs:string"/>
         </xs:sequence>
@@ -222,6 +234,11 @@
     <wsdl:part element="tns:headerIn" name="headerIn"></wsdl:part>
     <wsdl:part element="tns:headerInOut" name="headerInOut"></wsdl:part>
   </wsdl:message>
+  <wsdl:message name="echoWithHeadersNoIndentation">
+    <wsdl:part element="tns:echoWithHeadersNoIndentation" name="parameters"></wsdl:part>
+    <wsdl:part element="tns:headerIn" name="headerIn"></wsdl:part>
+    <wsdl:part element="tns:headerInOut" name="headerInOut"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="echoAccountResponse">
     <wsdl:part element="tns:echoAccountResponse" name="parameters"></wsdl:part>
   </wsdl:message>
@@ -230,6 +247,11 @@
   </wsdl:message>
   <wsdl:message name="echoWithHeadersResponse">
     <wsdl:part element="tns:echoWithHeadersResponse" name="result"></wsdl:part>
+    <wsdl:part element="tns:headerOut" name="headerOut"></wsdl:part>
+    <wsdl:part element="tns:headerInOut" name="headerInOut"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="echoWithHeadersNoIndentationResponse">
+    <wsdl:part element="tns:echoWithHeadersNoIndentationResponse" name="result"></wsdl:part>
     <wsdl:part element="tns:headerOut" name="headerOut"></wsdl:part>
     <wsdl:part element="tns:headerInOut" name="headerInOut"></wsdl:part>
   </wsdl:message>
@@ -272,6 +294,11 @@
     <wsdl:operation name="echoWithHeaders">
       <wsdl:input message="tns:echoWithHeaders" name="echoWithHeaders"></wsdl:input>
       <wsdl:output message="tns:echoWithHeadersResponse" name="echoWithHeadersResponse"></wsdl:output>
+      <wsdl:fault message="tns:EchoException" name="EchoException"></wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="echoWithHeadersNoIndentation">
+      <wsdl:input message="tns:echoWithHeadersNoIndentation" name="echoWithHeadersNoIndentation"></wsdl:input>
+      <wsdl:output message="tns:echoWithHeadersNoIndentationResponse" name="echoWithHeadersNoIndentationResponse"></wsdl:output>
       <wsdl:fault message="tns:EchoException" name="EchoException"></wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="fail">
@@ -355,6 +382,22 @@
       <wsdl:output name="echoWithHeadersResponse">
         <soap:header message="tns:echoWithHeadersResponse" part="headerOut" use="literal"></soap:header>
         <soap:header message="tns:echoWithHeadersResponse" part="headerInOut" use="literal"></soap:header>
+        <soap:body parts="result" use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="EchoException">
+        <soap:fault name="EchoException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+        <wsdl:operation name="echoWithHeadersNoIndentation">
+      <soap:operation soapAction="echoWithHeadersNoIndentation" style="document"/>
+      <wsdl:input name="echoWithHeadersNoIndentation">
+        <soap:header message="tns:echoWithHeadersNoIndentation" part="headerIn" use="literal"></soap:header>
+        <soap:header message="tns:echoWithHeadersNoIndentation" part="headerInOut" use="literal"></soap:header>
+        <soap:body parts="parameters" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="echoWithHeadersNoIndentationResponse">
+        <soap:header message="tns:echoWithHeadersNoIndentationResponse" part="headerOut" use="literal"></soap:header>
+        <soap:header message="tns:echoWithHeadersNoIndentationResponse" part="headerInOut" use="literal"></soap:header>
         <soap:body parts="result" use="literal"/>
       </wsdl:output>
       <wsdl:fault name="EchoException">
@@ -555,6 +598,27 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></con:request>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeaders"/>
+            </con:call>
+        </con:operation>
+        <con:operation id="5d45be80-772b-48c5-aeba-5e01b4e2eaef" isOneWay="false" action="echoWithHeadersNoIndentation" name="echoWithHeadersNoIndentation" bindingOperationName="echoWithHeadersNoIndentation" type="Request-Response" outputName="echoWithHeadersNoIndentationResponse" inputName="echoWithHeadersNoIndentation" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+            <con:settings/>
+            <con:call id="d824b4af-2260-402a-90dd-873d02f9906f" name="Request 1">
+                <con:settings/>
+                <con:encoding>UTF-8</con:encoding>
+                <con:endpoint>http://localhost:1231/server</con:endpoint>
+                <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header>
+      <ser:headerInOut>?</ser:headerInOut>
+      <ser:headerIn>?</ser:headerIn>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:echoWithHeadersNoIndentation>
+         <!--Optional:-->
+         <text>?</text>
+      </ser:echoWithHeadersNoIndentation>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeadersNoIndentation"/>
             </con:call>
         </con:operation>
         <con:operation id="d14edfd6-aa98-49b5-888b-b866856e9a45" isOneWay="false" action="fail" name="fail" bindingOperationName="fail" type="Request-Response" outputName="failResponse" inputName="fail" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
@@ -1069,6 +1133,35 @@
    </soapenv:Body>
 </soapenv:Envelope>]]></con:responseContent>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeaders"/>
+            </con:response>
+            <con:dispatchConfig/>
+        </con:mockOperation>
+        <con:mockOperation name="echoWithHeadersNoIndentation" id="473faf75-a505-4f06-8c82-9c249ea2c140" interface="TestServiceSoapBinding" operation="echoWithHeadersNoIndentation">
+            <con:settings/>
+            <con:defaultResponse>Response 1</con:defaultResponse>
+            <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
+            <con:response name="Response 1" id="ca248d8f-253a-4427-9965-a7864bdc480b" httpResponseStatus="200" encoding="UTF-8">
+                <con:settings/>
+                <con:script>
+                    if (mockRequest.getRequestContent().contains('&lt;security>&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org">&lt;saml1:AuthenticationStatement/>&lt;/saml1:Assertion>&lt;/security>')) {
+                    context.security = "SUCCESS";
+                    } else {
+                    context.security = "ERROR";
+                    }
+                </con:script>
+                <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+                       <soapenv:Header>
+                          <ser:headerInOut>Header In Out Value INOUT</ser:headerInOut>
+                          <ser:headerOut>${security}</ser:headerOut>
+                       </soapenv:Header>
+                       <soapenv:Body>
+                          <ser:echoWithHeadersNoIndentationResponse>
+                             <text>test response</text>
+                          </ser:echoWithHeadersNoIndentationResponse>
+                       </soapenv:Body>
+                    </soapenv:Envelope>]]>
+                </con:responseContent>
+                <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeadersNoIndentation"/>
             </con:response>
             <con:dispatchConfig/>
         </con:mockOperation>
