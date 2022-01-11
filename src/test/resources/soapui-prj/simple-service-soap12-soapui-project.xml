@@ -1143,11 +1143,11 @@
             <con:response name="Response 1" id="ca248d8f-253a-4427-9965-a7864bdc480b" httpResponseStatus="200" encoding="UTF-8">
                 <con:settings/>
                 <con:script>
-                    if (mockRequest.getRequestContent().contains('&lt;security>&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org">&lt;saml1:AuthenticationStatement/>&lt;/saml1:Assertion>&lt;/security>')) {
+                    <![CDATA[if (mockRequest.getRequestContent().contains('<security><saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org"><saml1:AuthenticationStatement/></saml1:Assertion></security>')) {
                     context.security = "SUCCESS";
                     } else {
                     context.security = "ERROR";
-                    }
+                    }]]>
                 </con:script>
                 <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
                        <soapenv:Header>
