@@ -271,4 +271,35 @@
         </munit:validation>
     </munit:test>
 
+    <munit:test name="echoWithHeadersNoIndentation" description="Consumes an operation that expects an input and a set of headers and returns a simple type and a set of header without adding indentation" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+        <munit:execution>
+
+            <set-payload value='&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org" &gt;&#10;   &lt;saml1:AuthenticationStatement&gt;&#10;   &lt;/saml1:AuthenticationStatement&gt;&#10;&lt;/saml1:Assertion&gt;' mimeType="application/xml" />
+            <set-variable value="#[%dw 2.0&#10;output application/xml indent=false&#10;---&#10;headers: {&#10;	security: payload&#10;	}]" variableName="security" mimeType="application/xml"/>
+
+            <wsc:consume config-ref="${config}" operation="echoWithHeadersNoIndentation">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#echoWithHeadersNoIndentation: {
+                        text: "test"
+                        }]
+                    </wsc:body>
+                    <wsc:headers>
+                        <![CDATA[#[vars.security]]]>
+                    </wsc:headers>
+                </wsc:message>
+            </wsc:consume>
+
+            <set-variable value="#[%dw 2.0&#10;output application/xml&#10;---&#10; aux: payload.headers]" variableName="out" mimeType="application/xml"/>
+
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-that expression='#[output application/java --- write(vars.out, "application/xml") ]' is="#[MunitTools::containsString('SUCCESS')]"/>
+        </munit:validation>
+    </munit:test>
 </mule>

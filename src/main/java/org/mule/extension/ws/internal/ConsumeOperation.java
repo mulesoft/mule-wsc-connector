@@ -190,7 +190,7 @@ public class ConsumeOperation {
         + "output application/java \n"
         + "---\n"
         + "payload.headers mapObject (value, key) -> {\n"
-        + "    '$key' : write((key): value, \"application/xml\")\n"
+        + "    '$key' : write((key): value, \"application/xml\", {\"indent\":false})\n"
         + "}", context).getValue();
     if (expressionResult == null) {
       throw new ModuleException("Invalid input headers XML: It must be an xml with the root tag named \'headers\'.",
