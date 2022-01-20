@@ -143,13 +143,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.mule.services</groupId>
-            <artifactId>mule-service-soap</artifactId>
-            <version>${muleSoapServiceVersion}</version>
-            <scope>test</scope>
-            <classifier>mule-service</classifier>
-        </dependency>
-        <dependency>
             <groupId>org.mule.tests</groupId>
             <artifactId>mule-tests-functional</artifactId>
             <version>${mule.version}</version>
