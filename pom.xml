@@ -35,7 +35,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.0</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
-        <mule.wss.module.version>1.0.3</mule.wss.module.version>
+        <mule.wss.module.version>1.0.4</mule.wss.module.version>
         <mule.file.connector.version>1.3.3</mule.file.connector.version>
         <mule.objectstore.connector.version>1.2.1</mule.objectstore.connector.version>
 
