@@ -11,6 +11,7 @@ import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Stream.of;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.extension.ws.internal.error.WscError.BAD_RESPONSE;
+import static org.mule.extension.ws.internal.error.WscError.EMPTY_RESPONSE;
 import static org.mule.extension.ws.internal.error.WscError.CANNOT_DISPATCH;
 import static org.mule.extension.ws.internal.error.WscError.ENCODING;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
@@ -26,6 +27,7 @@ import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.exception.ExceptionHandler;
 import org.mule.soap.api.client.BadRequestException;
 import org.mule.soap.api.client.BadResponseException;
+import org.mule.soap.api.client.EmptyResponseException;
 import org.mule.soap.api.exception.EncodingException;
 import org.mule.soap.api.exception.InvalidWsdlException;
 import org.mule.soap.api.exception.ReliableMessagingStoreException;
@@ -44,6 +46,7 @@ public class WscExceptionEnricher extends ExceptionHandler {
   private Map<Class<?>, WscError> ERRORS_MAPPING =
       unmodifiableMap(of(
                          new SimpleEntry<>(BadResponseException.class, BAD_RESPONSE),
+                         new SimpleEntry<>(EmptyResponseException.class, EMPTY_RESPONSE),
                          new SimpleEntry<>(BadRequestException.class, BAD_REQUEST),
                          new SimpleEntry<>(DispatcherException.class, CANNOT_DISPATCH),
                          new SimpleEntry<>(DispatcherTimeoutException.class, TIMEOUT),
