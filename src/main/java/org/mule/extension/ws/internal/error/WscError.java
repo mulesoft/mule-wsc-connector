@@ -8,6 +8,8 @@ package org.mule.extension.ws.internal.error;
 
 import org.mule.runtime.extension.api.error.ErrorTypeDefinition;
 
+import java.util.Optional;
+
 /**
  * Errors thrown by the WSC.
  *
@@ -36,6 +38,11 @@ public enum WscError implements ErrorTypeDefinition<WscError> {
   BAD_RESPONSE,
 
   /**
+   * Error thrown when an error occurred parsing the response, and it is an Illegal empty response.
+   */
+  EMPTY_RESPONSE(BAD_RESPONSE),
+
+  /**
    * Error thrown when something went wrong while dispatching.
    */
   CANNOT_DISPATCH,
@@ -53,5 +60,18 @@ public enum WscError implements ErrorTypeDefinition<WscError> {
   /**
    * Error thrown when the dispatching process timed out.
    */
-  TIMEOUT
+  TIMEOUT;
+
+  private ErrorTypeDefinition<? extends Enum<?>> parent;
+
+  WscError(ErrorTypeDefinition<? extends Enum<?>> parent) {
+    this.parent = parent;
+  }
+
+  WscError() {}
+
+  @Override
+  public Optional<ErrorTypeDefinition<? extends Enum<?>>> getParent() {
+    return Optional.ofNullable(parent);
+  }
 }
