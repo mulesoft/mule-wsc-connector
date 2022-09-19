@@ -193,6 +193,28 @@
         </munit:execution>
     </munit:test>
 
+    <munit:test name="uploadAttachmentEmptyResponse" description="Uploads an attachment to the server but gets an empty response" ignore="#[Munit::muleVersionPriorTo('4.1.2')]" expectedErrorType="WSC:EMPTY_RESPONSE">
+        <munit:execution>
+            <set-variable variableName="attachmentContent" value="#[output text/plain --- 'Some Content']" />
+            <wsc:consume config-ref="${config}" operation="uploadAttachmentNoResult">
+                <wsc:message>
+                    <wsc:body>
+                        #[
+                        %dw 2.0
+                        output application/xml
+                        ns con http://service.soap.service.mule.org/
+                        ---
+                        con#uploadAttachmentNoResult: {}
+                        ]
+                    </wsc:body>
+                    <wsc:attachments>
+                        #[{ attachment: vars.attachmentContent } ]
+                    </wsc:attachments>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+    </munit:test>
+
     <munit:test name="optionalAttachment" description="Downloads optional attachment from the server" ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
         <munit:execution>
             <wsc:consume config-ref="${config}" operation="downloadAttachment">
