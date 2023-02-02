@@ -14,7 +14,7 @@
     <groupId>org.mule.connectors</groupId>
     <artifactId>mule-wsc-connector</artifactId>
     <packaging>mule-extension</packaging>
-    <version>1.8.0-SNAPSHOT</version>
+    <version>1.8.0</version>
 
     <name>Web Service Consumer Connector</name>
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
@@ -24,8 +24,8 @@
 
         <mule.http.connector.version>1.7.3</mule.http.connector.version>
         <muleSdkApiVersion>0.3.0</muleSdkApiVersion>
-        <soap.engine.version>2.0.0-SNAPSHOT</soap.engine.version>
-        <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
+        <soap.engine.version>1.8.0</soap.engine.version>
+        <wsdl.parser.version>1.4.6</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
