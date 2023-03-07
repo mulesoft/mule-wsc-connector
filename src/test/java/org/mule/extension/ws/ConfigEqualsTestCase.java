@@ -6,23 +6,19 @@
  */
 package org.mule.extension.ws;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsEqual.equalTo;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.notNullValue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.Test;
-
-import org.mule.extension.ws.api.addressing.AddressingConfiguration;
-import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConfiguration;
-import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingConnectionSettings;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
 import org.mule.extension.ws.internal.connection.SoapClientConnectionProvider;
+
 
 public class ConfigEqualsTestCase {
 
@@ -31,8 +27,7 @@ public class ConfigEqualsTestCase {
     EasyRandomParameters parameters = new EasyRandomParameters();
     parameters.collectionSizeRange(1, 3);
     parameters.excludeField(field -> field.getName().equals("httpService") || field.getName().toLowerCase().contains("client")
-        || field.getName().equals("customTransportConfiguration") || field.getName().equals("wsrmStore")
-        || field.getName().equals("lockFactory"));
+        || field.getName().equals("customTransportConfiguration"));
     EasyRandom factory = new EasyRandom(parameters);
     EasyRandom factory2 = new EasyRandom(parameters);
 
@@ -43,14 +38,14 @@ public class ConfigEqualsTestCase {
       SoapClientConnectionProvider clonedServiceSecurity = factory2.nextObject(SoapClientConnectionProvider.class);
       SoapClientConnectionProvider anotherClonedServiceSecurity = factory2.nextObject(SoapClientConnectionProvider.class);
 
-      assertThat(serviceSecurity, is(clonedServiceSecurity));
-      assertThat(serviceSecurity.hashCode(), is(clonedServiceSecurity.hashCode()));
-      assertThat(anotherServiceSecurity, is(anotherClonedServiceSecurity));
-      assertThat(anotherServiceSecurity.hashCode(), is(anotherClonedServiceSecurity.hashCode()));
-      assertThat(serviceSecurity, not(anotherServiceSecurity));
-      assertThat(serviceSecurity.hashCode(), not(anotherServiceSecurity.hashCode()));
-      assertThat(clonedServiceSecurity, not(anotherClonedServiceSecurity));
-      assertThat(clonedServiceSecurity.hashCode(), not(anotherClonedServiceSecurity.hashCode()));
+      assertEquals(serviceSecurity, clonedServiceSecurity);
+      assertTrue(serviceSecurity.hashCode() == clonedServiceSecurity.hashCode());
+      assertEquals(anotherServiceSecurity, anotherClonedServiceSecurity);
+      assertTrue(anotherServiceSecurity.hashCode() == anotherClonedServiceSecurity.hashCode());
+      assertNotEquals(serviceSecurity, anotherServiceSecurity);
+      assertFalse(serviceSecurity.hashCode() == anotherServiceSecurity.hashCode());
+      assertNotEquals(clonedServiceSecurity, anotherClonedServiceSecurity);
+      assertFalse(clonedServiceSecurity.hashCode() == anotherClonedServiceSecurity.hashCode());
 
     }
   }
@@ -69,110 +64,16 @@ public class ConfigEqualsTestCase {
       CustomTransportConfiguration clonedCustomTransport = factory2.nextObject(CustomHttpTransportConfiguration.class);
       CustomTransportConfiguration anotherClonedCustomTransport = factory2.nextObject(DefaultHttpTransportConfiguration.class);
 
-      assertThat(customTransport, is(clonedCustomTransport));
-      assertThat(customTransport.hashCode(), is(clonedCustomTransport.hashCode()));
-      assertThat(anotherCustomTransport, is(anotherClonedCustomTransport));
-      assertThat(anotherCustomTransport.hashCode(), is(anotherClonedCustomTransport.hashCode()));
-      assertThat(customTransport, not(anotherCustomTransport));
-      assertThat(customTransport.hashCode(), not(anotherCustomTransport.hashCode()));
-      assertThat(clonedCustomTransport, not(anotherClonedCustomTransport));
-      assertThat(clonedCustomTransport.hashCode(), not(anotherClonedCustomTransport.hashCode()));
+      assertEquals(customTransport, clonedCustomTransport);
+      assertTrue(customTransport.hashCode() == clonedCustomTransport.hashCode());
+      assertEquals(anotherCustomTransport, anotherClonedCustomTransport);
+      assertTrue(anotherCustomTransport.hashCode() == anotherClonedCustomTransport.hashCode());
+      assertNotEquals(customTransport, anotherCustomTransport);
+      assertFalse(customTransport.hashCode() == anotherCustomTransport.hashCode());
+      assertNotEquals(clonedCustomTransport, anotherClonedCustomTransport);
+      assertFalse(clonedCustomTransport.hashCode() == anotherClonedCustomTransport.hashCode());
 
     }
-  }
-
-  @Test
-  public void testAddressingEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    EasyRandom factory = new EasyRandom(parameters);
-    EasyRandom factory2 = new EasyRandom(parameters);
-
-    for (int i = 0; i < 1000; i++) {
-
-      AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
-      AddressingConfiguration clonedAddressingConfiguration = factory2.nextObject(AddressingConfiguration.class);
-
-      assertThat(addressingConfiguration, is(addressingConfiguration));
-      assertThat(clonedAddressingConfiguration, is(clonedAddressingConfiguration));
-      assertThat(addressingConfiguration, is(clonedAddressingConfiguration));
-      assertThat(addressingConfiguration.hashCode(), is(clonedAddressingConfiguration.hashCode()));
-    }
-  }
-
-  @Test
-  public void testAddressingNotEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    EasyRandom factory = new EasyRandom(parameters);
-
-    AddressingConfiguration addressingConfiguration = factory.nextObject(AddressingConfiguration.class);
-    assertThat(addressingConfiguration, is(notNullValue()));
-    assertThat(addressingConfiguration, not(equalTo(new Object())));
-  }
-
-  @Test
-  public void testReliableMessagingEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    EasyRandom factory = new EasyRandom(parameters);
-    EasyRandom factory2 = new EasyRandom(parameters);
-
-    for (int i = 0; i < 1000; i++) {
-
-      ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
-      ReliableMessagingConfiguration clonedReliableMessaging = factory2.nextObject(ReliableMessagingConfiguration.class);
-
-      assertThat(reliableMessaging, is(reliableMessaging));
-      assertThat(clonedReliableMessaging, is(clonedReliableMessaging));
-      assertThat(reliableMessaging, is(clonedReliableMessaging));
-      assertThat(reliableMessaging.hashCode(), is(clonedReliableMessaging.hashCode()));
-
-    }
-  }
-
-  @Test
-  public void testReliableMessagingNotEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    EasyRandom factory = new EasyRandom(parameters);
-
-    ReliableMessagingConfiguration reliableMessaging = factory.nextObject(ReliableMessagingConfiguration.class);
-    assertThat(reliableMessaging, is(notNullValue()));
-    assertThat(reliableMessaging, not(equalTo(new Object())));
-  }
-
-  @Test
-  public void testReliableMessagingConnectionSettingsEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
-    EasyRandom factory = new EasyRandom(parameters);
-    EasyRandom factory2 = new EasyRandom(parameters);
-
-    for (int i = 0; i < 1000; i++) {
-
-      ReliableMessagingConnectionSettings reliableMessaging = factory.nextObject(ReliableMessagingConnectionSettings.class);
-      ReliableMessagingConnectionSettings clonedReliableMessaging =
-          factory2.nextObject(ReliableMessagingConnectionSettings.class);
-
-      assertThat(reliableMessaging, is(reliableMessaging));
-      assertThat(clonedReliableMessaging, is(clonedReliableMessaging));
-      assertThat(reliableMessaging, is(clonedReliableMessaging));
-      assertThat(reliableMessaging.hashCode(), is(clonedReliableMessaging.hashCode()));
-    }
-  }
-
-  @Test
-  public void testReliableMessagingConnectionSettingsNotEquals() {
-    EasyRandomParameters parameters = new EasyRandomParameters();
-    parameters.collectionSizeRange(1, 3);
-    parameters.excludeField(field -> field.getName().equals("wsrmStore"));
-    EasyRandom factory = new EasyRandom(parameters);
-
-    ReliableMessagingConnectionSettings reliableMessaging = factory.nextObject(ReliableMessagingConnectionSettings.class);
-    assertThat(reliableMessaging, is(notNullValue()));
-    assertThat(reliableMessaging, not(equalTo(new Object())));
   }
 
 }
