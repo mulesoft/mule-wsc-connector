@@ -8,17 +8,25 @@ package org.mule.extension.ws.internal.metadata;
 
 import org.mule.extension.ws.internal.ConsumeOperation;
 import org.mule.extension.ws.internal.WebServiceConsumer;
+import org.mule.metadata.api.builder.ObjectTypeBuilder;
 import org.mule.metadata.api.model.MetadataType;
+import org.mule.metadata.api.model.NullType;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.metadata.MetadataContext;
 import org.mule.runtime.api.metadata.MetadataResolvingException;
+import org.mule.runtime.api.metadata.resolving.OutputTypeResolver;
+import org.mule.wsdl.parser.model.operation.Type;
 
 /**
  * Resolves the metadata for output payload of the {@link ConsumeOperation}.
  *
  * @since 1.0
  */
-public class ConsumeOutputResolver extends AbstractOutputResolver<String> {
+public class ConsumeOutputResolver implements OutputTypeResolver<String> {
+
+  public static final String BODY = "body";
+  public static final String HEADERS = "headers";
+  public static final String ATTACHMENTS = "attachments";
 
   @Override
   public String getCategoryName() {
@@ -36,6 +44,31 @@ public class ConsumeOutputResolver extends AbstractOutputResolver<String> {
   @Override
   public MetadataType getOutputType(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    return getOperationOutputType(context, operation);
+    Type outputType = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation).getOutputType();
+    MetadataType body = outputType.getBody();
+    MetadataType headers = outputType.getHeaders();
+    MetadataType attachments = outputType.getAttachments();
+
+    if (isNullType(body) && isNullType(headers) && isNullType(attachments)) {
+      return context.getTypeBuilder().nullType().build();
+    }
+
+    ObjectTypeBuilder output = context.getTypeBuilder().objectType();
+    addIfNotNullType(output, BODY, body);
+    addIfNotNullType(output, HEADERS, headers);
+    addIfNotNullType(output, ATTACHMENTS, attachments);
+
+    return output.build();
   }
+
+  private void addIfNotNullType(ObjectTypeBuilder typeBuilder, String fieldName, MetadataType fieldType) {
+    if (!isNullType(fieldType)) {
+      typeBuilder.addField().key(fieldName).value(fieldType);
+    }
+  }
+
+  private boolean isNullType(MetadataType metadataType) {
+    return metadataType instanceof NullType;
+  }
+
 }

@@ -34,8 +34,7 @@ public class SoapHeadersTypeResolver implements InputTypeResolver<String> {
   @Override
   public MetadataType getInputMetadata(MetadataContext context, String operation)
       throws ConnectionException, MetadataResolvingException {
-    OperationModel operationModel =
-        MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
+    OperationModel operationModel = MetadataResolverUtils.getInstance().getOperationFromCacheOrCreate(context, operation);
     return operationModel.getInputType().getHeaders();
   }
 }

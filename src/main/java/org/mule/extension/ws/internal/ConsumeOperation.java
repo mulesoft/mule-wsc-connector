@@ -9,21 +9,15 @@ package org.mule.extension.ws.internal;
 import static org.mule.extension.ws.internal.error.WscError.BAD_REQUEST;
 import static org.mule.runtime.api.metadata.DataType.INPUT_STREAM;
 import static org.mule.runtime.api.metadata.MediaType.XML;
-import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 
 import org.mule.extension.ws.api.SoapAttributes;
 import org.mule.extension.ws.api.SoapOutputEnvelope;
 import org.mule.extension.ws.api.TransportConfiguration;
-import org.mule.extension.ws.api.addressing.AddressingAttributes;
-import org.mule.extension.ws.api.addressing.AddressingSettings;
-import org.mule.extension.ws.api.reliablemessaging.ReliableMessagingSettings;
-import org.mule.extension.ws.internal.addressing.properties.AddressingPropertiesImpl;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.error.ConsumeErrorTypeProvider;
 import org.mule.extension.ws.internal.error.WscExceptionEnricher;
 import org.mule.extension.ws.internal.metadata.ConsumeOutputResolver;
 import org.mule.extension.ws.internal.metadata.OperationKeysResolver;
-import org.mule.extension.ws.internal.reliablemessaging.ReliableMessagingPropertiesImpl;
 import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.el.BindingContext;
 import org.mule.runtime.api.el.MuleExpressionLanguage;
@@ -41,7 +35,6 @@ import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.extension.api.exception.ModuleException;
 import org.mule.runtime.extension.api.runtime.operation.Result;
 import org.mule.runtime.extension.api.runtime.streaming.StreamingHelper;
-import org.mule.runtime.http.api.HttpService;
 import org.mule.soap.api.message.SoapAttachment;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapRequestBuilder;
@@ -68,9 +61,6 @@ public class ConsumeOperation {
   private static final DataType XML_STREAM = DataType.builder().type(InputStream.class).mediaType(XML).build();
 
   @Inject
-  private HttpService httpService;
-
-  @Inject
   private MuleExpressionLanguage expressionExecutor;
 
   @Inject
@@ -92,36 +82,22 @@ public class ConsumeOperation {
                                                                 showInDsl = true) SoapMessageBuilder message,
                                                             @ParameterGroup(
                                                                 name = "Transport Configuration") TransportConfiguration transportConfig,
-                                                            @ParameterGroup(name = "Addressing",
-                                                                showInDsl = true) AddressingSettings addressingSettings,
                                                             @ParameterGroup(name = "Message Customizations",
                                                                 showInDsl = true) SoapMessageCustomizations soapMessageCustomizations,
-                                                            @ParameterGroup(name = "Reliable Messaging",
-                                                                showInDsl = true) ReliableMessagingSettings reliableMessagingSettings,
                                                             StreamingHelper streamingHelper,
                                                             ExtensionsClient client)
       throws ConnectionException {
-    AddressingPropertiesImpl addressing = getAddressingProperties(addressingSettings);
     SoapRequest request =
-        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), addressing, soapMessageCustomizations,
-                       reliableMessagingSettings.getSequence())
-                           .build();
+        getSoapRequest(operation, message, transportConfig.getTransportHeaders(), soapMessageCustomizations).build();
     SoapResponse response = connection.consume(request, client);
-    AddressingAttributes addressingAttributes = getAddressingAttributes(addressing);
-    return createResult(response, streamingHelper, addressingAttributes);
-  }
-
-  private Result<SoapOutputEnvelope, SoapAttributes> createResult(SoapResponse response, StreamingHelper streamingHelper,
-                                                                  AddressingAttributes addressing) {
     return Result.<SoapOutputEnvelope, SoapAttributes>builder()
         .output(new SoapOutputEnvelope(response, streamingHelper))
-        .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData(), addressing))
+        .attributes(new SoapAttributes(response.getTransportHeaders(), response.getTransportAdditionalData()))
         .build();
   }
 
   private SoapRequestBuilder getSoapRequest(String operation, SoapMessageBuilder message, Map<String, String> transportHeaders,
-                                            AddressingPropertiesImpl addressingProperties,
-                                            SoapMessageCustomizations soapMessageCustomizations, String sequenceId) {
+                                            SoapMessageCustomizations soapMessageCustomizations) {
     SoapRequestBuilder requestBuilder = SoapRequest.builder();
 
     requestBuilder.attachments(toSoapAttachments(message.getAttachments()));
@@ -132,29 +108,16 @@ public class ConsumeOperation {
 
     requestBuilder.transportHeaders(transportHeaders);
 
-    requestBuilder.soapHeaders(getSoapHeaders(message.getHeaders()));
+    InputStream headers = message.getHeaders();
+    if (headers != null) {
+      requestBuilder.soapHeaders((Map<String, String>) evaluateHeaders(headers));
+    }
 
     requestBuilder.content(message.getBody().getValue());
 
     requestBuilder.useXMLInitialDeclaration(soapMessageCustomizations.isForceXMLProlog());
 
-    if (addressingProperties.isRequired()) {
-      requestBuilder.addressingProperties(addressingProperties);
-    }
-
-    if (!isBlank(sequenceId)) {
-      requestBuilder.reliableMessagingProperties(new ReliableMessagingPropertiesImpl(sequenceId));
-    }
-
     return requestBuilder;
-  }
-
-  private Map<String, String> getSoapHeaders(InputStream headers) {
-    HashMap<String, String> soapHeaders = new HashMap<>();
-    if (headers != null) {
-      soapHeaders.putAll((Map<String, String>) evaluateHeaders(headers));
-    }
-    return soapHeaders;
   }
 
   private Map<String, SoapAttachment> toSoapAttachments(Map<String, TypedValue<?>> attachments) {
@@ -197,20 +160,5 @@ public class ConsumeOperation {
                                 BAD_REQUEST);
     }
     return expressionResult;
-  }
-
-  private AddressingPropertiesImpl getAddressingProperties(AddressingSettings settings) {
-    return AddressingPropertiesImpl.builder()
-        .namespace(settings.getVersion().getNamespaceUri())
-        .action(settings.getAction())
-        .to(settings.getTo())
-        .from(settings.getFrom())
-        .messageId(settings.getMessageID())
-        .relatesTo(settings.getRelatesTo())
-        .build();
-  }
-
-  private AddressingAttributes getAddressingAttributes(AddressingPropertiesImpl properties) {
-    return properties.getMessageId().map(messageId -> new AddressingAttributes(messageId)).orElse(null);
   }
 }
