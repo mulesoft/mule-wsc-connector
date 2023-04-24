@@ -68,6 +68,12 @@
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-soap-engine</artifactId>
             <version>${soap.engine.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-expression</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.mule.sdk</groupId>
@@ -95,6 +101,11 @@
                     <artifactId>*</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-expression</artifactId>
+            <version>5.3.27</version>
         </dependency>
 
         <!-- Common Dependencies -->
