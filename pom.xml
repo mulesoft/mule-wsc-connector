@@ -71,7 +71,7 @@
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
-                    <artifactId>spring-context</artifactId>
+                    <artifactId>spring-expression</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -104,7 +104,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
+            <artifactId>spring-expression</artifactId>
             <version>5.3.27</version>
         </dependency>
 
