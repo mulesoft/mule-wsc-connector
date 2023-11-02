@@ -17,8 +17,8 @@ import org.mule.soap.api.security.WssGlobalOutgoingSecurityStrategy;
 public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
-   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path.
-   * The SOAP actor attribute is used to address the {@code wsse:Security} element to a specific endpoint.
+   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path. The SOAP actor
+   * attribute is used to address the {@code wsse:Security} element to a specific endpoint.
    * <p>
    * This parameter values must be a URI.
    */

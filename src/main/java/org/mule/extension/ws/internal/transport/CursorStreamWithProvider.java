@@ -18,11 +18,11 @@ import java.io.InputStream;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * {@link CursorStream} that delegates to a {@link CursorStream} delegate and maintains a reference of the delegate to
- * its {@link CursorStreamProvider}.
+ * {@link CursorStream} that delegates to a {@link CursorStream} delegate and maintains a reference of the delegate to its
+ * {@link CursorStreamProvider}.
  * <p>
- * The purpose of this class is to avoid the runtime to close the {@link CursorStream} before it is consumed. We achieve
- * this maintaining a hard reference of the {@link CursorStream} delegate to its {@link CursorStreamProvider}.
+ * The purpose of this class is to avoid the runtime to close the {@link CursorStream} before it is consumed. We achieve this
+ * maintaining a hard reference of the {@link CursorStream} delegate to its {@link CursorStreamProvider}.
  *
  * @since 1.4.2
  */

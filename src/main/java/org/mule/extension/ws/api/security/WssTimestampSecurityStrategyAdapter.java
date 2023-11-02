@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class WssTimestampSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
-   * The time difference between creation and expiry time in the time unit specified in {@code timeToLiveUnit}.
-   * After this time the message is invalid.
+   * The time difference between creation and expiry time in the time unit specified in {@code timeToLiveUnit}. After this time
+   * the message is invalid.
    * <p>
-   * This parameter values must be greater or equal to 1 second (or similar in other unit).
-   * Values lower than 1 second will end up in 1 second timestamp.
+   * This parameter values must be greater or equal to 1 second (or similar in other unit). Values lower than 1 second will end up
+   * in 1 second timestamp.
    */
   @Parameter
   @Summary("The expiration time in the time unit specified. This value converted to seconds must be greater or equal to 1 second")

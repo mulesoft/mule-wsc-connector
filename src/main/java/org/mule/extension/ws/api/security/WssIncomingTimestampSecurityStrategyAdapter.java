@@ -19,19 +19,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * Verifies the timestamp of an incoming SOAP message.
  * <p>
- * This should be used when an incoming soap message is encrypted, signed, etc, and also includes a timestamp that express
- * the creation and expiration of the security semantic of the message.
+ * This should be used when an incoming soap message is encrypted, signed, etc, and also includes a timestamp that express the
+ * creation and expiration of the security semantic of the message.
  *
- * @see <a href="http://docs.oasis-open.org/wss/v1.1/wss-v1.1-spec-errata-os-SOAPMessageSecurity.htm#_Toc118717167">Security Timestamps</a>
+ * @see <a href="http://docs.oasis-open.org/wss/v1.1/wss-v1.1-spec-errata-os-SOAPMessageSecurity.htm#_Toc118717167">Security
+ *      Timestamps</a>
  *
  * @since 1.4.0
  */
 public class WssIncomingTimestampSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
-   * Specifies the time in the future within which the Created time of an incoming Timestamp is valid. The default
-   * value is "60", to avoid problems where clocks are slightly askew. To reject all future-created Timestamps, set
-   * this value to "0".
+   * Specifies the time in the future within which the Created time of an incoming Timestamp is valid. The default value is "60",
+   * to avoid problems where clocks are slightly askew. To reject all future-created Timestamps, set this value to "0".
    */
   @Parameter
   @Placement(order = 0)

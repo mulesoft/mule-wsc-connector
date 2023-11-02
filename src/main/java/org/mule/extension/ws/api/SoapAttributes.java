@@ -15,8 +15,8 @@ import org.mule.runtime.extension.api.annotation.param.Parameter;
 import java.util.Map;
 
 /**
- * The attributes returned by the consume operation, it carries the protocol specific headers (i.e. HTTP headers) and
- * additional transport data (for example HTTP status line) bounded to the response.
+ * The attributes returned by the consume operation, it carries the protocol specific headers (i.e. HTTP headers) and additional
+ * transport data (for example HTTP status line) bounded to the response.
  *
  * @since 1.1.2
  */

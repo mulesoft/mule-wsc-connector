@@ -112,8 +112,8 @@ public class WebServiceSecurity {
   /**
    * Whether mustUnderstand attribute in {@code wsse:Security} header is true or false.
    * <p>
-   * Defaults to {@code true}
-   * TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP protocol standard.
+   * Defaults to {@code true} TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP
+   * protocol standard.
    */
   @Parameter
   @Placement(tab = SECURITY_TAB, order = 0)
@@ -122,8 +122,8 @@ public class WebServiceSecurity {
   private boolean mustUnderstand;
 
   /**
-   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path.
-   * The SOAP actor attribute is used to address the {@code wsse:Security} header to a specific endpoint.
+   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path. The SOAP actor
+   * attribute is used to address the {@code wsse:Security} header to a specific endpoint.
    * <p>
    * This parameter values must be a URI.
    */
