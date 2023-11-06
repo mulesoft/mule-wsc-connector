@@ -24,17 +24,13 @@
         <runtimeProduct>MULE_EE</runtimeProduct>
         <mule.http.connector.version>1.8.0</mule.http.connector.version>
         <muleSdkApiVersion>0.6.0</muleSdkApiVersion>
-        <soap.engine.version>1.8.1</soap.engine.version>
-        <wsdl.parser.version>1.4.7</wsdl.parser.version>
-<!--        <muleSchedulerServiceVersion>1.1.11</muleSchedulerServiceVersion>-->
-<!--        <muleHttpServiceVersion>1.1.1</muleHttpServiceVersion>-->
+        <soap.engine.version>2.0.0-SNAPSHOT</soap.engine.version>
+        <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <jacoco.version>0.8.10</jacoco.version>
-        <mtf.javaopts></mtf.javaopts>
-        <formatterGoal>format</formatterGoal>
 
         <!-- tests props -->
         <xmlUnitVersion>1.6</xmlUnitVersion>
@@ -204,20 +200,20 @@
             <artifactId>mule-wss-module</artifactId>
             <version>${mule.wss.module.version}</version>
             <classifier>mule-plugin</classifier>
-<!--            <exclusions>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.logging.log4j</groupId>-->
-<!--                    <artifactId>log4j-api</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.apache.logging.log4j</groupId>-->
-<!--                    <artifactId>log4j</artifactId>-->
-<!--                </exclusion>-->
-<!--                <exclusion>-->
-<!--                    <groupId>org.bouncycastle</groupId>-->
-<!--                    <artifactId>bcprov-jdk15on</artifactId>-->
-<!--                </exclusion>-->
-<!--            </exclusions>-->
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.logging.log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -326,9 +322,6 @@
                         <argLine>
                             -javaagent:${settings.localRepository}/org/jacoco/org.jacoco.agent/${jacoco.version}/org.jacoco.agent-${jacoco.version}-runtime.jar=destfile=${session.executionRootDirectory}/target/jacoco.exec
                         </argLine>
-<!--                        <argLine>-->
-<!--                            &#45;&#45;illegal-access=deny-->
-<!--                        </argLine>-->
                     </argLines>
                     <runtimeConfiguration>
                         <discoverRuntimes>
@@ -462,23 +455,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jdeps-plugin</artifactId>
-                <version>3.1.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>jdkinternals</goal> <!-- verify main classes -->
-                            <goal>test-jdkinternals</goal> <!-- verify test classes -->
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <failOnWarning>true</failOnWarning>
-                </configuration>
-            </plugin>
-
         </plugins>
     </build>
 
