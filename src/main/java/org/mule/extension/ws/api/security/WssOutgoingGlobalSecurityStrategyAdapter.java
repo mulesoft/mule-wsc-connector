@@ -31,6 +31,8 @@ public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrateg
    */
   private boolean mustUnderstand;
 
+  public WssOutgoingGlobalSecurityStrategyAdapter() {
+  }
 
   public WssOutgoingGlobalSecurityStrategyAdapter(String actor, boolean mustUnderstand) {
     this.actor = actor;
@@ -40,5 +42,21 @@ public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrateg
   @Override
   public SecurityStrategy getSecurityStrategy() {
     return new WssGlobalOutgoingSecurityStrategy(actor, mustUnderstand);
+  }
+
+  public String getActor() {
+    return actor;
+  }
+
+  public void setActor(String actor) {
+    this.actor = actor;
+  }
+
+  public boolean isMustUnderstand() {
+    return mustUnderstand;
+  }
+
+  public void setMustUnderstand(boolean mustUnderstand) {
+    this.mustUnderstand = mustUnderstand;
   }
 }

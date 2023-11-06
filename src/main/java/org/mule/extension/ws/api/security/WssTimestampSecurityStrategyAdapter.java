@@ -44,10 +44,29 @@ public class WssTimestampSecurityStrategyAdapter implements SecurityStrategyAdap
   @Summary("Time unit to be used in the timeToLive parameter")
   private TimeUnit timeToLiveUnit;
 
+  public WssTimestampSecurityStrategyAdapter() {
+  }
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
     long seconds = timeToLiveUnit.toSeconds(timeToLive);
     return new WssTimestampSecurityStrategy(seconds > 0 ? seconds : 1);
+  }
+
+  public long getTimeToLive() {
+    return timeToLive;
+  }
+
+  public void setTimeToLive(long timeToLive) {
+    this.timeToLive = timeToLive;
+  }
+
+  public TimeUnit getTimeToLiveUnit() {
+    return timeToLiveUnit;
+  }
+
+  public void setTimeToLiveUnit(TimeUnit timeToLiveUnit) {
+    this.timeToLiveUnit = timeToLiveUnit;
   }
 
   @Override

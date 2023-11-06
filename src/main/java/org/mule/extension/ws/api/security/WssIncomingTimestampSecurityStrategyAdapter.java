@@ -50,10 +50,29 @@ public class WssIncomingTimestampSecurityStrategyAdapter implements SecurityStra
   @Summary("Time unit to be used in the futureTimeToLive parameter")
   private TimeUnit futureTimeToLiveUnit;
 
+  public WssIncomingTimestampSecurityStrategyAdapter() {
+  }
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
     long futureTimeToLiveInSeconds = futureTimeToLiveUnit.toSeconds(futureTimeToLive);
     return new WssIncomingTimestampSecurityStrategy(futureTimeToLiveInSeconds);
+  }
+
+  public long getFutureTimeToLive() {
+    return futureTimeToLive;
+  }
+
+  public void setFutureTimeToLive(long futureTimeToLive) {
+    this.futureTimeToLive = futureTimeToLive;
+  }
+
+  public TimeUnit getFutureTimeToLiveUnit() {
+    return futureTimeToLiveUnit;
+  }
+
+  public void setFutureTimeToLiveUnit(TimeUnit futureTimeToLiveUnit) {
+    this.futureTimeToLiveUnit = futureTimeToLiveUnit;
   }
 
   @Override

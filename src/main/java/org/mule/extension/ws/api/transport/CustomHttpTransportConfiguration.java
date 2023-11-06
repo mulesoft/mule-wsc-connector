@@ -27,6 +27,9 @@ import java.util.Objects;
 @Alias("http-transport-configuration")
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {
 
+  public CustomHttpTransportConfiguration() {
+  }
+
   @ConfigReference(namespace = "HTTP", name = "REQUEST_CONFIG")
   @Parameter
   private String requesterConfig;
@@ -66,5 +69,13 @@ public class CustomHttpTransportConfiguration implements CustomTransportConfigur
   @Override
   public int hashCode() {
     return Objects.hash(requesterConfig);
+  }
+
+  public String getRequesterConfig() {
+    return requesterConfig;
+  }
+
+  public void setRequesterConfig(String requesterConfig) {
+    this.requesterConfig = requesterConfig;
   }
 }

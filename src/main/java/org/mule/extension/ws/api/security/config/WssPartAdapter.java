@@ -24,6 +24,9 @@ import java.util.Objects;
 @Alias("wss-part")
 public class WssPartAdapter {
 
+  public WssPartAdapter() {
+  }
+
   @Parameter
   @Optional(defaultValue = "CONTENT")
   @Expression(NOT_SUPPORTED)
@@ -56,6 +59,18 @@ public class WssPartAdapter {
    */
   public String getLocalname() {
     return localname;
+  }
+
+  public void setEncode(SignEncodeConstants encode) {
+    this.encode = encode;
+  }
+
+  public void setNamespace(String namespace) {
+    this.namespace = namespace;
+  }
+
+  public void setLocalname(String localname) {
+    this.localname = localname;
   }
 
   @Override

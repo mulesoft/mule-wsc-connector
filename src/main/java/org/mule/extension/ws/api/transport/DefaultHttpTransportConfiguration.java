@@ -42,6 +42,10 @@ public class DefaultHttpTransportConfiguration implements CustomTransportConfigu
     return timeout;
   }
 
+  public void setTimeout(int timeout) {
+    this.timeout = timeout;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

@@ -27,6 +27,9 @@ import java.util.Objects;
 @Alias("wss-key-store-configuration")
 public class WssKeyStoreConfigurationAdapter {
 
+  public WssKeyStoreConfigurationAdapter() {
+  }
+
   @Parameter
   @Placement(order = 0)
   @Summary("The location of the KeyStore file")
@@ -90,6 +93,30 @@ public class WssKeyStoreConfigurationAdapter {
    */
   public String getType() {
     return type;
+  }
+
+  public String getKeyStorePath() {
+    return keyStorePath;
+  }
+
+  public void setKeyStorePath(String keyStorePath) {
+    this.keyStorePath = keyStorePath;
+  }
+
+  public void setAlias(String alias) {
+    this.alias = alias;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setKeyPassword(String keyPassword) {
+    this.keyPassword = keyPassword;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override

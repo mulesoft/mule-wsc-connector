@@ -26,6 +26,9 @@ import java.util.Objects;
 @Alias("wss-trust-store-configuration")
 public class WssTrustStoreConfigurationAdapter {
 
+  public WssTrustStoreConfigurationAdapter() {
+  }
+
   @Parameter
   @Summary("The location of the TrustStore file")
   @Path(type = FILE, location = EMBEDDED)
@@ -60,6 +63,22 @@ public class WssTrustStoreConfigurationAdapter {
    */
   public String getType() {
     return type;
+  }
+
+  public String getTrustStorePath() {
+    return trustStorePath;
+  }
+
+  public void setTrustStorePath(String trustStorePath) {
+    this.trustStorePath = trustStorePath;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public void setType(String type) {
+    this.type = type;
   }
 
   @Override

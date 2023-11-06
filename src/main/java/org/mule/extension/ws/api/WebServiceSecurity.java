@@ -43,6 +43,9 @@ public class WebServiceSecurity {
 
   private static final String SECURITY_TAB = "Security";
 
+  public WebServiceSecurity() {
+  }
+
   /**
    * a sign WSS configuration
    */
@@ -178,5 +181,77 @@ public class WebServiceSecurity {
     return Objects.hash(signSecurityStrategy, verifySignatureSecurityStrategy, usernameTokenSecurityStrategy,
                         timestampSecurityStrategy, incomingTimestampSecurityStrategy, decryptSecurityStrategy,
                         encryptSecurityStrategy, actor, mustUnderstand);
+  }
+
+  public WssSignSecurityStrategyAdapter getSignSecurityStrategy() {
+    return signSecurityStrategy;
+  }
+
+  public void setSignSecurityStrategy(WssSignSecurityStrategyAdapter signSecurityStrategy) {
+    this.signSecurityStrategy = signSecurityStrategy;
+  }
+
+  public WssVerifySignatureSecurityStrategyAdapter getVerifySignatureSecurityStrategy() {
+    return verifySignatureSecurityStrategy;
+  }
+
+  public void setVerifySignatureSecurityStrategy(WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy) {
+    this.verifySignatureSecurityStrategy = verifySignatureSecurityStrategy;
+  }
+
+  public WssUsernameTokenSecurityStrategyAdapter getUsernameTokenSecurityStrategy() {
+    return usernameTokenSecurityStrategy;
+  }
+
+  public void setUsernameTokenSecurityStrategy(WssUsernameTokenSecurityStrategyAdapter usernameTokenSecurityStrategy) {
+    this.usernameTokenSecurityStrategy = usernameTokenSecurityStrategy;
+  }
+
+  public WssTimestampSecurityStrategyAdapter getTimestampSecurityStrategy() {
+    return timestampSecurityStrategy;
+  }
+
+  public void setTimestampSecurityStrategy(WssTimestampSecurityStrategyAdapter timestampSecurityStrategy) {
+    this.timestampSecurityStrategy = timestampSecurityStrategy;
+  }
+
+  public WssDecryptSecurityStrategyAdapter getDecryptSecurityStrategy() {
+    return decryptSecurityStrategy;
+  }
+
+  public void setDecryptSecurityStrategy(WssDecryptSecurityStrategyAdapter decryptSecurityStrategy) {
+    this.decryptSecurityStrategy = decryptSecurityStrategy;
+  }
+
+  public WssEncryptSecurityStrategyAdapter getEncryptSecurityStrategy() {
+    return encryptSecurityStrategy;
+  }
+
+  public void setEncryptSecurityStrategy(WssEncryptSecurityStrategyAdapter encryptSecurityStrategy) {
+    this.encryptSecurityStrategy = encryptSecurityStrategy;
+  }
+
+  public WssIncomingTimestampSecurityStrategyAdapter getIncomingTimestampSecurityStrategy() {
+    return incomingTimestampSecurityStrategy;
+  }
+
+  public void setIncomingTimestampSecurityStrategy(WssIncomingTimestampSecurityStrategyAdapter incomingTimestampSecurityStrategy) {
+    this.incomingTimestampSecurityStrategy = incomingTimestampSecurityStrategy;
+  }
+
+  public boolean isMustUnderstand() {
+    return mustUnderstand;
+  }
+
+  public void setMustUnderstand(boolean mustUnderstand) {
+    this.mustUnderstand = mustUnderstand;
+  }
+
+  public String getActor() {
+    return actor;
+  }
+
+  public void setActor(String actor) {
+    this.actor = actor;
   }
 }

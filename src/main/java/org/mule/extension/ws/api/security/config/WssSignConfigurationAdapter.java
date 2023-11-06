@@ -29,6 +29,9 @@ import java.util.Objects;
  */
 public class WssSignConfigurationAdapter {
 
+  public WssSignConfigurationAdapter() {
+  }
+
   @Parameter
   @Optional(defaultValue = "ISSUER_SERIAL")
   @Expression(NOT_SUPPORTED)
@@ -95,6 +98,26 @@ public class WssSignConfigurationAdapter {
    */
   public List<WssPartAdapter> getWssParts() {
     return wssParts;
+  }
+
+  public void setSignatureKeyIdentifier(SignatureKeyIdentifierConstants signatureKeyIdentifier) {
+    this.signatureKeyIdentifier = signatureKeyIdentifier;
+  }
+
+  public void setSignatureAlgorithm(SignatureAlgorithmConstants signatureAlgorithm) {
+    this.signatureAlgorithm = signatureAlgorithm;
+  }
+
+  public void setSignatureDigestAlgorithm(SignatureDigestAlgorithmConstants signatureDigestAlgorithm) {
+    this.signatureDigestAlgorithm = signatureDigestAlgorithm;
+  }
+
+  public void setSignatureC14nAlgorithm(SignatureC14nAlgorithmConstants signatureC14nAlgorithm) {
+    this.signatureC14nAlgorithm = signatureC14nAlgorithm;
+  }
+
+  public void setWssParts(List<WssPartAdapter> wssParts) {
+    this.wssParts = wssParts;
   }
 
   @Override

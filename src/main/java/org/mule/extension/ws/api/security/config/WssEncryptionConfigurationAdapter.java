@@ -30,6 +30,9 @@ import java.util.Objects;
 @Alias("wss-encryption-algorithms-configuration")
 public class WssEncryptionConfigurationAdapter {
 
+  public WssEncryptionConfigurationAdapter() {
+  }
+
   @Parameter
   @Optional(defaultValue = "ISSUER_SERIAL")
   @Expression(NOT_SUPPORTED)
@@ -94,6 +97,27 @@ public class WssEncryptionConfigurationAdapter {
    */
   public List<WssPartAdapter> getWssPartAdapters() {
     return wssPartAdapters;
+  }
+
+
+  public void setEncryptionKeyIdentifier(EncryptionKeyIdentifierConstants encryptionKeyIdentifier) {
+    this.encryptionKeyIdentifier = encryptionKeyIdentifier;
+  }
+
+  public void setEncryptionSymAlgorithm(EncryptionSymAlgorithmConstants encryptionSymAlgorithm) {
+    this.encryptionSymAlgorithm = encryptionSymAlgorithm;
+  }
+
+  public void setEncryptionKeyTransportAlgorithm(EncryptionKeyTransportAlgorithmConstants encryptionKeyTransportAlgorithm) {
+    this.encryptionKeyTransportAlgorithm = encryptionKeyTransportAlgorithm;
+  }
+
+  public void setEncryptionDigestAlgorithm(EncryptionDigestAlgorithmConstants encryptionDigestAlgorithm) {
+    this.encryptionDigestAlgorithm = encryptionDigestAlgorithm;
+  }
+
+  public void setWssPartAdapters(List<WssPartAdapter> wssPartAdapters) {
+    this.wssPartAdapters = wssPartAdapters;
   }
 
   @Override

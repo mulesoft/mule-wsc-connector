@@ -26,6 +26,9 @@ import java.util.Objects;
 @Alias("wss-decrypt-security-strategy")
 public class WssDecryptSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
+  public WssDecryptSecurityStrategyAdapter() {
+  }
+
   /**
    * The keystore to use when decrypting the message.
    */
@@ -40,6 +43,14 @@ public class WssDecryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                        keyStoreConfiguration.getStorePath(),
                                                                        keyStoreConfiguration.getKeyPassword(),
                                                                        keyStoreConfiguration.getType()));
+  }
+
+  public WssKeyStoreConfigurationAdapter getKeyStoreConfiguration() {
+    return keyStoreConfiguration;
+  }
+
+  public void setKeyStoreConfiguration(WssKeyStoreConfigurationAdapter keyStoreConfiguration) {
+    this.keyStoreConfiguration = keyStoreConfiguration;
   }
 
   @Override

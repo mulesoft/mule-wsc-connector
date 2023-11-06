@@ -20,6 +20,10 @@ import java.util.Map;
  */
 public class TransportConfiguration {
 
+  public TransportConfiguration(Map<String, String> transportHeaders) {
+    this.transportHeaders = transportHeaders;
+  }
+
   /**
    * A group of transport headers that will be bounded with the transport request.
    */
@@ -31,5 +35,9 @@ public class TransportConfiguration {
 
   public Map<String, String> getTransportHeaders() {
     return transportHeaders;
+  }
+
+  public void setTransportHeaders(Map<String, String> transportHeaders) {
+    this.transportHeaders = transportHeaders;
   }
 }
