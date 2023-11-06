@@ -20,9 +20,7 @@ import java.util.Map;
  */
 public class TransportConfiguration {
 
-  public TransportConfiguration(Map<String, String> transportHeaders) {
-    this.transportHeaders = transportHeaders;
-  }
+  public TransportConfiguration() {}
 
   /**
    * A group of transport headers that will be bounded with the transport request.

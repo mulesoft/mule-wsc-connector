@@ -33,8 +33,7 @@ public class WssVerifySignatureSecurityStrategyAdapter implements SecurityStrate
   @Expression(NOT_SUPPORTED)
   private WssTrustStoreConfigurationAdapter trustStoreConfiguration;
 
-  public WssVerifySignatureSecurityStrategyAdapter() {
-  }
+  public WssVerifySignatureSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {

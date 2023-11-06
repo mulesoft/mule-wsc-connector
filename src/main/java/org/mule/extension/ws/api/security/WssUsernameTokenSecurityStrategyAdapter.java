@@ -59,8 +59,7 @@ public class WssUsernameTokenSecurityStrategyAdapter implements SecurityStrategy
   @Optional
   private boolean addCreated;
 
-  public WssUsernameTokenSecurityStrategyAdapter() {
-  }
+  public WssUsernameTokenSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {

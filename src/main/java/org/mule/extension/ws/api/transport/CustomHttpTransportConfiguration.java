@@ -27,8 +27,7 @@ import java.util.Objects;
 @Alias("http-transport-configuration")
 public class CustomHttpTransportConfiguration implements CustomTransportConfiguration {
 
-  public CustomHttpTransportConfiguration() {
-  }
+  public CustomHttpTransportConfiguration() {}
 
   @ConfigReference(namespace = "HTTP", name = "REQUEST_CONFIG")
   @Parameter

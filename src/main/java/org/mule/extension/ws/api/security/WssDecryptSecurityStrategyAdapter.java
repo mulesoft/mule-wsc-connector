@@ -26,8 +26,7 @@ import java.util.Objects;
 @Alias("wss-decrypt-security-strategy")
 public class WssDecryptSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
-  public WssDecryptSecurityStrategyAdapter() {
-  }
+  public WssDecryptSecurityStrategyAdapter() {}
 
   /**
    * The keystore to use when decrypting the message.

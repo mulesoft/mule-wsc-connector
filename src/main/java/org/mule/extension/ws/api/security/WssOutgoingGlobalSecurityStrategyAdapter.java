@@ -31,8 +31,7 @@ public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrateg
    */
   private boolean mustUnderstand;
 
-  public WssOutgoingGlobalSecurityStrategyAdapter() {
-  }
+  public WssOutgoingGlobalSecurityStrategyAdapter() {}
 
   public WssOutgoingGlobalSecurityStrategyAdapter(String actor, boolean mustUnderstand) {
     this.actor = actor;

@@ -30,8 +30,7 @@ import java.util.Objects;
 @Alias("wss-encryption-algorithms-configuration")
 public class WssEncryptionConfigurationAdapter {
 
-  public WssEncryptionConfigurationAdapter() {
-  }
+  public WssEncryptionConfigurationAdapter() {}
 
   @Parameter
   @Optional(defaultValue = "ISSUER_SERIAL")

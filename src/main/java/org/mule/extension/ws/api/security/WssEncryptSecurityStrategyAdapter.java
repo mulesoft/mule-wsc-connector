@@ -47,8 +47,7 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
   @NullSafe
   private WssEncryptionConfigurationAdapter EncryptionAlgorithmsConfiguration;
 
-  public WssEncryptSecurityStrategyAdapter() {
-  }
+  public WssEncryptSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {

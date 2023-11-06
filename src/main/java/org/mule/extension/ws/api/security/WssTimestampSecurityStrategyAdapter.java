@@ -44,8 +44,7 @@ public class WssTimestampSecurityStrategyAdapter implements SecurityStrategyAdap
   @Summary("Time unit to be used in the timeToLive parameter")
   private TimeUnit timeToLiveUnit;
 
-  public WssTimestampSecurityStrategyAdapter() {
-  }
+  public WssTimestampSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {

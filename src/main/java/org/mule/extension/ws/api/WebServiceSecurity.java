@@ -43,8 +43,7 @@ public class WebServiceSecurity {
 
   private static final String SECURITY_TAB = "Security";
 
-  public WebServiceSecurity() {
-  }
+  public WebServiceSecurity() {}
 
   /**
    * a sign WSS configuration

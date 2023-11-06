@@ -29,8 +29,7 @@ import java.util.Objects;
  */
 public class WssSignConfigurationAdapter {
 
-  public WssSignConfigurationAdapter() {
-  }
+  public WssSignConfigurationAdapter() {}
 
   @Parameter
   @Optional(defaultValue = "ISSUER_SERIAL")

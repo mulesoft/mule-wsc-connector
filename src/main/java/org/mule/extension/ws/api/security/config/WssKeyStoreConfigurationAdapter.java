@@ -27,8 +27,7 @@ import java.util.Objects;
 @Alias("wss-key-store-configuration")
 public class WssKeyStoreConfigurationAdapter {
 
-  public WssKeyStoreConfigurationAdapter() {
-  }
+  public WssKeyStoreConfigurationAdapter() {}
 
   @Parameter
   @Placement(order = 0)

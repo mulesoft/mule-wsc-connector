@@ -26,8 +26,7 @@ import java.util.Objects;
 @Alias("wss-trust-store-configuration")
 public class WssTrustStoreConfigurationAdapter {
 
-  public WssTrustStoreConfigurationAdapter() {
-  }
+  public WssTrustStoreConfigurationAdapter() {}
 
   @Parameter
   @Summary("The location of the TrustStore file")

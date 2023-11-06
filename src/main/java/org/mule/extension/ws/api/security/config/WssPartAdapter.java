@@ -24,8 +24,7 @@ import java.util.Objects;
 @Alias("wss-part")
 public class WssPartAdapter {
 
-  public WssPartAdapter() {
-  }
+  public WssPartAdapter() {}
 
   @Parameter
   @Optional(defaultValue = "CONTENT")

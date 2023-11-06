@@ -54,8 +54,7 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
   @ExcludeFromConnectivitySchema
   private WssSignConfigurationAdapter signAlgorithmConfiguration;
 
-  public WssSignSecurityStrategyAdapter() {
-  }
+  public WssSignSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {

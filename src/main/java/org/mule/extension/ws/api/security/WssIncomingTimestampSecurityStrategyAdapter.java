@@ -50,8 +50,7 @@ public class WssIncomingTimestampSecurityStrategyAdapter implements SecurityStra
   @Summary("Time unit to be used in the futureTimeToLive parameter")
   private TimeUnit futureTimeToLiveUnit;
 
-  public WssIncomingTimestampSecurityStrategyAdapter() {
-  }
+  public WssIncomingTimestampSecurityStrategyAdapter() {}
 
   @Override
   public SecurityStrategy getSecurityStrategy() {
