@@ -45,13 +45,13 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
-        <munit.version>3.1.0-SNAPSHOT</munit.version>
-        <mtf.tools.version>1.2.0-SNAPSHOT</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.2.0-SNAPSHOT</munit.extensions.maven.plugin.version>
+        <munit.version>2.3.15</munit.version>
+        <mtf.tools.version>1.1.2</mtf.tools.version>
+        <munit.extensions.maven.plugin.version>1.1.2</munit.extensions.maven.plugin.version>
 
         <validations.module.version>1.1.0</validations.module.version>
         <java.module.version>1.1.1</java.module.version>
-        <docker.maven.plugin.version>0.41.0</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>5.3.27</version>
+            <version>5.3.29</version>
         </dependency>
 
         <!-- Common Dependencies -->
