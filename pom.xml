@@ -31,6 +31,7 @@
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
+        <apache.santuario.version>2.3.4</apache.santuario.version>
 
         <!-- tests props -->
         <xmlUnitVersion>1.6</xmlUnitVersion>
@@ -227,7 +228,7 @@
             <dependency>
                 <groupId>org.apache.santuario</groupId>
                 <artifactId>xmlsec</artifactId>
-                <version>2.3.4</version>
+                <version>${apache.santuario.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
