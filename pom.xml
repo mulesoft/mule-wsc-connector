@@ -38,14 +38,14 @@
         <easyrandom.version>4.0.0</easyrandom.version>
         <mule.wss.module.version>1.1.2</mule.wss.module.version>
         <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
-        <mule.file.connector.version>1.5.0</mule.file.connector.version>
+        <mule.file.connector.version>1.5.1</mule.file.connector.version>
         <mule.objectstore.connector.version>1.2.1</mule.objectstore.connector.version>
 
         <!-- Remove when a new parent version with MTF is available -->
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
-        <munit.version>2.3.15</munit.version>
+        <munit.version>2.3.18</munit.version>
         <mtf.tools.version>1.1.2</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.1.2</munit.extensions.maven.plugin.version>
 
