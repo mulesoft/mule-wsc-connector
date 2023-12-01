@@ -7,9 +7,9 @@
 package org.mule.extension.ws.internal;
 
 import static org.mule.extension.ws.internal.WebServiceConsumer.NAME;
-import static org.mule.sdk.api.meta.JavaVersion.JAVA_8;
-import static org.mule.sdk.api.meta.JavaVersion.JAVA_11;
-import static org.mule.sdk.api.meta.JavaVersion.JAVA_17;
+//import static org.mule.sdk.api.meta.JavaVersion.JAVA_8;
+//import static org.mule.sdk.api.meta.JavaVersion.JAVA_11;
+//import static org.mule.sdk.api.meta.JavaVersion.JAVA_17;
 
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
@@ -22,7 +22,7 @@ import org.mule.runtime.extension.api.annotation.SubTypeMapping;
 import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProviders;
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
-import org.mule.sdk.api.annotation.JavaVersionSupport;
+//import org.mule.sdk.api.annotation.JavaVersionSupport;
 
 /**
  * Web Service Consumer extension used to consume SOAP web services.
@@ -35,7 +35,7 @@ import org.mule.sdk.api.annotation.JavaVersionSupport;
 @SubTypeMapping(baseType = CustomTransportConfiguration.class,
     subTypes = {CustomHttpTransportConfiguration.class, DefaultHttpTransportConfiguration.class})
 @Extension(name = NAME)
-@JavaVersionSupport({JAVA_8, JAVA_11, JAVA_17})
+//@JavaVersionSupport({JAVA_8, JAVA_11, JAVA_17})
 @Xml(prefix = "wsc")
 public class WebServiceConsumer {
 
