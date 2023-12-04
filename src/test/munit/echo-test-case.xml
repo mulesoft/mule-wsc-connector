@@ -95,8 +95,8 @@
             <munit-tools:assert-equals actual="#[payload.body.echoWithHeadersResponse.text]" expected="#['test response']"/>
             <set-payload value="#[output application/java --- payload]"/>
             <logger level="INFO" message="#[payload]"/>
-            <munit-tools:assert-equals actual="#[payload.headers.headerInOut.headerInOut]" expected="#['Header In Out Value INOUT']"/>
-            <munit-tools:assert-equals actual="#[payload.headers.headerOut.headerOut]" expected="#['Header In Value OUT']"/>
+            <munit-tools:assert-equals actual="#[payload.headers.headerInOut]" expected="#['Header In Out Value INOUT']"/>
+            <munit-tools:assert-equals actual="#[payload.headers.headerOut]" expected="#['Header In Value OUT']"/>
             <munit-tools:assert-equals actual="#[sizeOf(payload.headers)]" expected="#[2]"/>
         </munit:validation>
     </munit:test>
