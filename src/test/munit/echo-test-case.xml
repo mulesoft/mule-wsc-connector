@@ -93,26 +93,26 @@
         </munit:execution>
         <munit:validation>
             <munit-tools:assert-equals actual="#[payload.body.echoWithHeadersResponse.text]" expected="#['test response']"/>
-            <logger level="INFO" message="#['HERE']"/>
-            <logger level="INFO" message="#[payload]"/>
-            <logger level="INFO" message="#['media type']"/>
-            <logger level="INFO" message="#[payload.^mediaType]"/>
-            <logger level="INFO" message="#[payload.^raw]"/>
-            <logger level="INFO" message="#[payload.body]"/>
-            <logger level="INFO" message="#[payload.body.^raw]"/>
-            <logger level="INFO" message="#[payload.headers]"/>
-            <logger level="INFO" message="#[payload.headers.^raw]"/>
-            <logger level="INFO" message="#[payload.headers.^mediaType]"/>
-            <set-variable variableName="headers" value="#[payload.headers]" />
+<!--            <logger level="INFO" message="#['HERE']"/>-->
+<!--            <logger level="INFO" message="#[payload]"/>-->
+<!--            <logger level="INFO" message="#['media type']"/>-->
+<!--            <logger level="INFO" message="#[payload.^mediaType]"/>-->
+<!--            <logger level="INFO" message="#[payload.^raw]"/>-->
+<!--            <logger level="INFO" message="#[payload.body]"/>-->
+<!--            <logger level="INFO" message="#[payload.body.^raw]"/>-->
+<!--            <logger level="INFO" message="#[payload.headers]"/>-->
+<!--            <logger level="INFO" message="#[payload.headers.^raw]"/>-->
+<!--            <logger level="INFO" message="#[payload.headers.^mediaType]"/>-->
+<!--            <set-variable variableName="headers" value="#[payload.headers]" />-->
 
-            <set-variable variableName="headerInOut" value="#[output text/plain --- read(headers.headerInOut,'application/xml')]" />
-            <set-variable variableName="headerOut" value="#[output text/plain --- read(headers.headerOut,'application/xml')]" />
-            <logger level="INFO" message="#['LOGS :)']"/>
-            <logger level="INFO" message="#[headerInOut]"/>
-            <logger level="INFO" message="#[headerOut]"/>
+<!--&lt;!&ndash;            <set-variable variableName="headerInOut" value="#[output text/plain -&#45;&#45; read(headers.headerInOut,'application/xml')]" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <set-variable variableName="headerOut" value="#[output text/plain -&#45;&#45; read(headers.headerOut,'application/xml')]" />&ndash;&gt;-->
+<!--&lt;!&ndash;            <logger level="INFO" message="#['LOGS :)']"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <logger level="INFO" message="#[headerInOut]"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <logger level="INFO" message="#[headerOut]"/>&ndash;&gt;-->
 
-            <munit-tools:assert-equals actual="#[headerInOut]" expected="#['Header In Out Value INOUT']"/>
-            <munit-tools:assert-equals actual="#[headerOut]" expected="#['Header In Value OUT']"/>
+            <munit-tools:assert-equals actual="#[payload.headers.headerInOut.headerInOut]" expected="#['Header In Out Value INOUT']"/>
+            <munit-tools:assert-equals actual="#[payload.headers.headerOut.headerOut]" expected="#['Header In Value OUT']"/>
             <munit-tools:assert-equals actual="#[sizeOf(payload.headers)]" expected="#[2]"/>
         </munit:validation>
     </munit:test>
