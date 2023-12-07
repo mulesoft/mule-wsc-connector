@@ -11,4 +11,3 @@
             <AppenderRef ref="Console"/>
         </AsyncRoot>
     </Loggers>
-</Configuration>
