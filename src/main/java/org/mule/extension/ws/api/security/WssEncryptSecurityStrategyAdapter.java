@@ -47,6 +47,8 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
   @NullSafe
   private WssEncryptionConfigurationAdapter EncryptionAlgorithmsConfiguration;
 
+  public WssEncryptSecurityStrategyAdapter() {}
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
 
@@ -81,6 +83,22 @@ public class WssEncryptSecurityStrategyAdapter implements SecurityStrategyAdapte
                                                                                            wssParts);
 
     return new WssEncryptSecurityStrategy(wssKeyStoreConfiguration, wssEncryptionConfiguration);
+  }
+
+  public WssKeyStoreConfigurationAdapter getKeyStoreConfiguration() {
+    return keyStoreConfiguration;
+  }
+
+  public void setKeyStoreConfiguration(WssKeyStoreConfigurationAdapter keyStoreConfiguration) {
+    this.keyStoreConfiguration = keyStoreConfiguration;
+  }
+
+  public WssEncryptionConfigurationAdapter getEncryptionAlgorithmsConfiguration() {
+    return EncryptionAlgorithmsConfiguration;
+  }
+
+  public void setEncryptionAlgorithmsConfiguration(WssEncryptionConfigurationAdapter encryptionAlgorithmsConfiguration) {
+    EncryptionAlgorithmsConfiguration = encryptionAlgorithmsConfiguration;
   }
 
   @Override

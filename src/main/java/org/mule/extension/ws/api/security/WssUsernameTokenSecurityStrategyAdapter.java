@@ -17,8 +17,8 @@ import org.mule.soap.api.security.WssUsernameTokenSecurityStrategy;
 import java.util.Objects;
 
 /**
- * Provides the capability to authenticate using Username and Password with a SOAP service by adding the UsernameToken
- * element in the SOAP request.
+ * Provides the capability to authenticate using Username and Password with a SOAP service by adding the UsernameToken element in
+ * the SOAP request.
  *
  * @since 1.0
  */
@@ -59,9 +59,51 @@ public class WssUsernameTokenSecurityStrategyAdapter implements SecurityStrategy
   @Optional
   private boolean addCreated;
 
+  public WssUsernameTokenSecurityStrategyAdapter() {}
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
     return new WssUsernameTokenSecurityStrategy(username, password, passwordType.getType(), addNonce, addCreated);
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
+  }
+
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
+  public PasswordTypeAdapter getPasswordType() {
+    return passwordType;
+  }
+
+  public void setPasswordType(PasswordTypeAdapter passwordType) {
+    this.passwordType = passwordType;
+  }
+
+  public boolean isAddNonce() {
+    return addNonce;
+  }
+
+  public void setAddNonce(boolean addNonce) {
+    this.addNonce = addNonce;
+  }
+
+  public boolean isAddCreated() {
+    return addCreated;
+  }
+
+  public void setAddCreated(boolean addCreated) {
+    this.addCreated = addCreated;
   }
 
   @Override

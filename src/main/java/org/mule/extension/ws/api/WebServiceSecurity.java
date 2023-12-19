@@ -43,6 +43,8 @@ public class WebServiceSecurity {
 
   private static final String SECURITY_TAB = "Security";
 
+  public WebServiceSecurity() {}
+
   /**
    * a sign WSS configuration
    */
@@ -112,8 +114,8 @@ public class WebServiceSecurity {
   /**
    * Whether mustUnderstand attribute in {@code wsse:Security} header is true or false.
    * <p>
-   * Defaults to {@code true}
-   * TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP protocol standard.
+   * Defaults to {@code true} TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP
+   * protocol standard.
    */
   @Parameter
   @Placement(tab = SECURITY_TAB, order = 0)
@@ -122,8 +124,8 @@ public class WebServiceSecurity {
   private boolean mustUnderstand;
 
   /**
-   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path.
-   * The SOAP actor attribute is used to address the {@code wsse:Security} header to a specific endpoint.
+   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path. The SOAP actor
+   * attribute is used to address the {@code wsse:Security} header to a specific endpoint.
    * <p>
    * This parameter values must be a URI.
    */
@@ -178,5 +180,77 @@ public class WebServiceSecurity {
     return Objects.hash(signSecurityStrategy, verifySignatureSecurityStrategy, usernameTokenSecurityStrategy,
                         timestampSecurityStrategy, incomingTimestampSecurityStrategy, decryptSecurityStrategy,
                         encryptSecurityStrategy, actor, mustUnderstand);
+  }
+
+  public WssSignSecurityStrategyAdapter getSignSecurityStrategy() {
+    return signSecurityStrategy;
+  }
+
+  public void setSignSecurityStrategy(WssSignSecurityStrategyAdapter signSecurityStrategy) {
+    this.signSecurityStrategy = signSecurityStrategy;
+  }
+
+  public WssVerifySignatureSecurityStrategyAdapter getVerifySignatureSecurityStrategy() {
+    return verifySignatureSecurityStrategy;
+  }
+
+  public void setVerifySignatureSecurityStrategy(WssVerifySignatureSecurityStrategyAdapter verifySignatureSecurityStrategy) {
+    this.verifySignatureSecurityStrategy = verifySignatureSecurityStrategy;
+  }
+
+  public WssUsernameTokenSecurityStrategyAdapter getUsernameTokenSecurityStrategy() {
+    return usernameTokenSecurityStrategy;
+  }
+
+  public void setUsernameTokenSecurityStrategy(WssUsernameTokenSecurityStrategyAdapter usernameTokenSecurityStrategy) {
+    this.usernameTokenSecurityStrategy = usernameTokenSecurityStrategy;
+  }
+
+  public WssTimestampSecurityStrategyAdapter getTimestampSecurityStrategy() {
+    return timestampSecurityStrategy;
+  }
+
+  public void setTimestampSecurityStrategy(WssTimestampSecurityStrategyAdapter timestampSecurityStrategy) {
+    this.timestampSecurityStrategy = timestampSecurityStrategy;
+  }
+
+  public WssDecryptSecurityStrategyAdapter getDecryptSecurityStrategy() {
+    return decryptSecurityStrategy;
+  }
+
+  public void setDecryptSecurityStrategy(WssDecryptSecurityStrategyAdapter decryptSecurityStrategy) {
+    this.decryptSecurityStrategy = decryptSecurityStrategy;
+  }
+
+  public WssEncryptSecurityStrategyAdapter getEncryptSecurityStrategy() {
+    return encryptSecurityStrategy;
+  }
+
+  public void setEncryptSecurityStrategy(WssEncryptSecurityStrategyAdapter encryptSecurityStrategy) {
+    this.encryptSecurityStrategy = encryptSecurityStrategy;
+  }
+
+  public WssIncomingTimestampSecurityStrategyAdapter getIncomingTimestampSecurityStrategy() {
+    return incomingTimestampSecurityStrategy;
+  }
+
+  public void setIncomingTimestampSecurityStrategy(WssIncomingTimestampSecurityStrategyAdapter incomingTimestampSecurityStrategy) {
+    this.incomingTimestampSecurityStrategy = incomingTimestampSecurityStrategy;
+  }
+
+  public boolean isMustUnderstand() {
+    return mustUnderstand;
+  }
+
+  public void setMustUnderstand(boolean mustUnderstand) {
+    this.mustUnderstand = mustUnderstand;
+  }
+
+  public String getActor() {
+    return actor;
+  }
+
+  public void setActor(String actor) {
+    this.actor = actor;
   }
 }

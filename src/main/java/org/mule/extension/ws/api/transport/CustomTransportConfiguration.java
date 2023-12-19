@@ -11,8 +11,8 @@ import org.mule.soap.api.transport.TransportDispatcher;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
 
 /**
- * Contract for objects that enables the use of a custom transport executing operations of other plugins by
- * using the {@link ExtensionsClient} to send soap the messages.
+ * Contract for objects that enables the use of a custom transport executing operations of other plugins by using the
+ * {@link ExtensionsClient} to send soap the messages.
  *
  * @since 1.0
  */

@@ -11,7 +11,7 @@
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd
       http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
 
-    <munit:config name="basic-auth-test-cases">
+    <munit:config name="basic-auth-test-cases-450plus" minMuleVersion="4.5.0">
         <munit:parameterizations>
             <munit:parameterization name="SOAP11">
                 <munit:parameters>
@@ -48,16 +48,7 @@
         </http:request-connection>
     </http:request-config>
 
-    <wsc:config name="authorized-local-wsdl">
-        <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
-            <wsc:custom-transport-configuration>
-                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
-            </wsc:custom-transport-configuration>
-        </wsc:connection>
-    </wsc:config>
-
-    <wsc:config name="unauthorized-local-wsdl">
+    <wsc:config name="unauthorized-local-wsdl-450plus">
         <wsc:connection wsdlLocation="wsdl/simple-service.wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
@@ -66,16 +57,7 @@
         </wsc:connection>
     </wsc:config>
 
-    <wsc:config name="authorized-remote-wsdl">
-        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
-                        soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
-            <wsc:custom-transport-configuration>
-                <wsc:http-transport-configuration requesterConfig="basic-auth-requester"/>
-            </wsc:custom-transport-configuration>
-        </wsc:connection>
-    </wsc:config>
-
-    <wsc:config name="unauthorized-remote-wsdl">
+    <wsc:config name="unauthorized-remote-wsdl-450plus">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort"
                         soapVersion="${soapVersion}" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:custom-transport-configuration>
@@ -86,10 +68,10 @@
 
     <!-- Tests -->
 
-    <munit:test name="requestWithHttpBasicAuthConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (local wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="requestWithUnauthorizedConfiguration" expectedErrorType="WSC:CANNOT_DISPATCH" description="Make a HTTP request using Basic Authentication with invalid credentials (local wsdl file).">
         <munit:execution>
             <flow-ref name="buildOneWayRequest" />
-            <wsc:consume config-ref="authorized-local-wsdl" operation="oneWay">
+            <wsc:consume config-ref="unauthorized-remote-wsdl-450plus" operation="oneWay">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -97,10 +79,10 @@
         </munit:execution>
     </munit:test>
 
-    <munit:test name="requestWithHttpBasicAuthRemoteConfiguration" description="Make a HTTP request using Basic Authentication with valid credentials (remote wsdl file)." ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+    <munit:test name="requestWithUnauthorizedRemoteConfiguration" expectedErrorType="WSC:CANNOT_DISPATCH" description="Make a HTTP request using Basic Authentication with invalid credentials (remote wsdl file).">
         <munit:execution>
             <flow-ref name="buildOneWayRequest" />
-            <wsc:consume config-ref="authorized-remote-wsdl" operation="oneWay">
+            <wsc:consume config-ref="unauthorized-local-wsdl-450plus" operation="oneWay">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
