@@ -54,6 +54,8 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
   @ExcludeFromConnectivitySchema
   private WssSignConfigurationAdapter signAlgorithmConfiguration;
 
+  public WssSignSecurityStrategyAdapter() {}
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
 
@@ -64,7 +66,8 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
                                                                                      keyStoreConfiguration.getType());
 
     String signatureAlgorithm = signAlgorithmConfiguration.getSignatureAlgorithm() != null
-        ? signAlgorithmConfiguration.getSignatureAlgorithm().toString() : null;
+        ? signAlgorithmConfiguration.getSignatureAlgorithm().toString()
+        : null;
 
     List<WssPart> wssSignParts = null;
     if (signAlgorithmConfiguration.getWssParts() != null) {
@@ -83,6 +86,22 @@ public class WssSignSecurityStrategyAdapter implements SecurityStrategyAdapter {
                                  wssSignParts);
 
     return new WssSignSecurityStrategy(wssKeyStoreConfiguration, wssSignConfiguration);
+  }
+
+  public WssKeyStoreConfigurationAdapter getKeyStoreConfiguration() {
+    return keyStoreConfiguration;
+  }
+
+  public void setKeyStoreConfiguration(WssKeyStoreConfigurationAdapter keyStoreConfiguration) {
+    this.keyStoreConfiguration = keyStoreConfiguration;
+  }
+
+  public WssSignConfigurationAdapter getSignAlgorithmConfiguration() {
+    return signAlgorithmConfiguration;
+  }
+
+  public void setSignAlgorithmConfiguration(WssSignConfigurationAdapter signAlgorithmConfiguration) {
+    this.signAlgorithmConfiguration = signAlgorithmConfiguration;
   }
 
   @Override
