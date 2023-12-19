@@ -33,11 +33,21 @@ public class WssVerifySignatureSecurityStrategyAdapter implements SecurityStrate
   @Expression(NOT_SUPPORTED)
   private WssTrustStoreConfigurationAdapter trustStoreConfiguration;
 
+  public WssVerifySignatureSecurityStrategyAdapter() {}
+
   @Override
   public SecurityStrategy getSecurityStrategy() {
     return new WssVerifySignatureSecurityStrategy(new WssTrustStoreConfiguration(trustStoreConfiguration.getStorePath(),
                                                                                  trustStoreConfiguration.getPassword(),
                                                                                  trustStoreConfiguration.getType()));
+  }
+
+  public WssTrustStoreConfigurationAdapter getTrustStoreConfiguration() {
+    return trustStoreConfiguration;
+  }
+
+  public void setTrustStoreConfiguration(WssTrustStoreConfigurationAdapter trustStoreConfiguration) {
+    this.trustStoreConfiguration = trustStoreConfiguration;
   }
 
   @Override

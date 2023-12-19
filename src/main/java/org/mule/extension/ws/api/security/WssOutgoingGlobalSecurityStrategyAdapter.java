@@ -17,8 +17,8 @@ import org.mule.soap.api.security.WssGlobalOutgoingSecurityStrategy;
 public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrategyAdapter {
 
   /**
-   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path.
-   * The SOAP actor attribute is used to address the {@code wsse:Security} element to a specific endpoint.
+   * A SOAP message may travel from a sender to a receiver by passing different endpoints along the message path. The SOAP actor
+   * attribute is used to address the {@code wsse:Security} element to a specific endpoint.
    * <p>
    * This parameter values must be a URI.
    */
@@ -31,6 +31,7 @@ public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrateg
    */
   private boolean mustUnderstand;
 
+  public WssOutgoingGlobalSecurityStrategyAdapter() {}
 
   public WssOutgoingGlobalSecurityStrategyAdapter(String actor, boolean mustUnderstand) {
     this.actor = actor;
@@ -40,5 +41,21 @@ public class WssOutgoingGlobalSecurityStrategyAdapter implements SecurityStrateg
   @Override
   public SecurityStrategy getSecurityStrategy() {
     return new WssGlobalOutgoingSecurityStrategy(actor, mustUnderstand);
+  }
+
+  public String getActor() {
+    return actor;
+  }
+
+  public void setActor(String actor) {
+    this.actor = actor;
+  }
+
+  public boolean isMustUnderstand() {
+    return mustUnderstand;
+  }
+
+  public void setMustUnderstand(boolean mustUnderstand) {
+    this.mustUnderstand = mustUnderstand;
   }
 }

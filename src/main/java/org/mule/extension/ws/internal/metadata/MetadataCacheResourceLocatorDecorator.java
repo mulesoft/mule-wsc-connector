@@ -75,9 +75,9 @@ public class MetadataCacheResourceLocatorDecorator implements ResourceLocator {
   }
 
   // TODO: Remove once MULE-17388 is done, this will create a cache key with the file name, but wont be necessary if the
-  //  relative path of the file is used instead, by trimming the file path we avoid caching the same WSDL multiple times because
-  //  Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
-  //  that ends up in a different the key for the same file content.
+  // relative path of the file is used instead, by trimming the file path we avoid caching the same WSDL multiple times because
+  // Tooling Client generates a new app for every metadata resolution creating a new copy of the file (changing it's path)
+  // that ends up in a different the key for the same file content.
   private Optional<String> getCacheKey(String url) {
     String cacheKey = getCacheKeyFromAbsolutePath(url)
         .orElse(getCacheKeyFromUrl(url)

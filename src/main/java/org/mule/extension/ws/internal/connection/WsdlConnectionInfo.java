@@ -22,7 +22,8 @@ import java.net.URL;
 import java.util.Objects;
 
 /**
- * Groups together the parameters retrieved from a WSDL that are going to be used for establishing a connection to a SOAP endpoint.
+ * Groups together the parameters retrieved from a WSDL that are going to be used for establishing a connection to a SOAP
+ * endpoint.
  *
  * @since 1.0
  */
