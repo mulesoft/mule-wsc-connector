@@ -23,7 +23,6 @@ import org.mule.runtime.extension.api.annotation.connectivity.ConnectionProvider
 import org.mule.runtime.extension.api.annotation.dsl.xml.Xml;
 import org.mule.runtime.extension.api.annotation.error.ErrorTypes;
 import org.mule.sdk.api.annotation.JavaVersionSupport;
-//import org.mule.sdk.api.annotation.JavaVersionSupport;
 
 /**
  * Web Service Consumer extension used to consume SOAP web services.
