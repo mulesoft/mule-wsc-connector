@@ -1,2 +1,5 @@
-mavenDeployGoal: deploy -DskipTests -DskipITs -Dinvoker.skip=true -Darchetype.test.skip -Dlicense.skip=true -Drevapi.skip -DmuleModule.analyze.skip -Dmaven.resources.skip
 projectType: extension
+additionalTestConfigs:
+  jdk11:
+    testJdkTool: OPEN-JDK11
+    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DminVersion=4.3.0
