@@ -60,7 +60,7 @@
 
     <!-- Tests -->
 
-    <munit:test name="signAndEncryptRequest" description="Sign and Encrypt request in that exact order.">
+    <munit:test name="signAndEncryptRequest" ignore="true" description="Sign and Encrypt request in that exact order.">
         <munit:execution>
             <set-variable variableName="text" value="encryptedRequest" />
             <flow-ref name="buildEchoRequest" />

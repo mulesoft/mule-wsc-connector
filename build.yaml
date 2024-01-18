@@ -5,4 +5,4 @@ additionalTestConfigs:
     mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DminVersion=4.3.0
   jdk17:
     testJdkTool: OPEN-JDK17
-    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DminVersion=4.6.0 -DruntimeVersion=4.6.0-rc3 -DruntimeProduct=MULE_EE
+    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DruntimeVersion=4.6.0-rc3 -DruntimeProduct=MULE_EE

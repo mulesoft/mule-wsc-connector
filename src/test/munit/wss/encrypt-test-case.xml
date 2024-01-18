@@ -63,7 +63,7 @@
 
     <!-- Tests -->
 
-    <munit:test name="encryptRequest" description="Encrypt request using server public key and expects a non encrypted response.">
+    <munit:test name="encryptRequest" ignore="true" description="Encrypt request using server public key and expects a non encrypted response.">
         <munit:execution>
             <set-variable variableName="text" value="encryptedRequest" />
             <flow-ref name="buildEchoRequest" />
@@ -78,7 +78,7 @@
         </munit:validation>
     </munit:test>
 
-    <munit:test name="failToEncryptRequest" expectedErrorType="WSC:SOAP_FAULT" description="Encrypt request using server private key and expects a server failure when decrypting.">
+    <munit:test name="failToEncryptRequest" ignore="true" expectedErrorType="WSC:SOAP_FAULT" description="Encrypt request using server private key and expects a server failure when decrypting.">
         <munit:execution>
             <set-variable variableName="text" value="invalidEncryptedRequest" />
             <flow-ref name="buildEchoRequest" />

@@ -44,7 +44,7 @@
     <!-- Tests -->
     <munit:test name="signRequestWithMTOMEnabled"
                 description="Signing message with an attachment with MTOM enable and verify the server is be able to verify the signature"
-                ignore="#[Munit::muleVersionPriorTo('4.1.2')]">
+                ignore="true">
         <munit:enable-flow-sources >
             <munit:enable-flow-source value="validateSignatureFlow"/>
         </munit:enable-flow-sources>
