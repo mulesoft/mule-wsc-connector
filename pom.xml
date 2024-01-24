@@ -14,7 +14,7 @@
     <groupId>org.mule.connectors</groupId>
     <artifactId>mule-wsc-connector</artifactId>
     <packaging>mule-extension</packaging>
-    <version>1.8.4</version>
+    <version>1.8.5-SNAPSHOT</version>
 
 
     <name>Web Service Consumer Connector</name>
