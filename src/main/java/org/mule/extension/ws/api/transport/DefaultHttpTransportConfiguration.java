@@ -9,6 +9,8 @@ package org.mule.extension.ws.api.transport;
 import org.mule.extension.ws.internal.transport.DefaultHttpTransportConfigurationImpl;
 import org.mule.runtime.extension.api.annotation.param.Optional;
 import org.mule.runtime.extension.api.annotation.param.Parameter;
+import org.mule.runtime.extension.api.annotation.param.display.DisplayName;
+import org.mule.runtime.extension.api.annotation.param.display.Summary;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.soap.api.transport.TransportDispatcher;
 import org.mule.soap.api.transport.locator.TransportResourceLocator;
@@ -24,6 +26,8 @@ public class DefaultHttpTransportConfiguration implements CustomTransportConfigu
 
   @Parameter
   @Optional(defaultValue = "5000")
+  @Summary("The time (in milliseconds) to wait for a response")
+  @DisplayName("Response timeout")
   private int timeout;
 
   @Override
