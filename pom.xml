@@ -46,9 +46,11 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
-        <munit.version>3.1.0-rc3</munit.version>
+        <munit.version>3.1.0-rc4</munit.version>
         <mtf.tools.version>1.2.0-rc1</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.2.0-rc2</munit.extensions.maven.plugin.version>
+        <munit.extensions.maven.plugin.version>1.2.0-rc3</munit.extensions.maven.plugin.version>
+<!--        <runtimeProduct>MULE_EE</runtimeProduct>-->
+        <mtf.javaopts></mtf.javaopts>
 
         <validations.module.version>2.0.6</validations.module.version>
         <java.module.version>1.2.12</java.module.version>
@@ -75,7 +77,16 @@
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-expression</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.bouncycastle</groupId>
+                    <artifactId>bcprov-jdk15on</artifactId>
+                </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bc-fips</artifactId>
+            <version>1.0.2.4</version>
         </dependency>
         <dependency>
             <groupId>org.mule.sdk</groupId>
@@ -344,6 +355,7 @@
                         <WS_SOAP11_PORT>${soap.host.port}</WS_SOAP11_PORT>
                         <WS_SOAP11_SSL_PORT>${soap.host.port.ssl}</WS_SOAP11_SSL_PORT>
                         <WS_SOAP12_PORT>${soap12.host.port}</WS_SOAP12_PORT>
+                        <_JAVA_OPTIONS>-XX:+PrintCommandLineFlags ${mtf.javaopts}</_JAVA_OPTIONS>
                     </environmentVariables>
                     <dynamicPorts>
                         <dynamicPort>http.port</dynamicPort>
