@@ -47,7 +47,7 @@
 
     <!-- Tests -->
 
-    <munit:test name="timestampRequest" ignore="true" description="Make request including an encrypted timestamp header without errors">
+    <munit:test name="timestampRequest" description="Make request including an encrypted timestamp header without errors">
         <munit:execution>
             <set-variable variableName="text" value="timestamp"/>
             <flow-ref name="buildEchoRequest" />
