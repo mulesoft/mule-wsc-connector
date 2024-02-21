@@ -47,9 +47,9 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
-        <munit.version>3.1.0-rc5</munit.version>
-        <mtf.tools.version>1.2.0-rc1</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.2.0-rc3</munit.extensions.maven.plugin.version>
+        <munit.version>3.1.0</munit.version>
+        <mtf.tools.version>1.2.0</mtf.tools.version>
+        <munit.extensions.maven.plugin.version>1.2.0</munit.extensions.maven.plugin.version>
 
         <validations.module.version>2.0.6</validations.module.version>
         <java.module.version>1.2.12</java.module.version>
