@@ -38,7 +38,7 @@
         <jsonassert.version>1.5.1</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
         <mule.wss.module.version>1.1.2</mule.wss.module.version>
-        <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
+        <bcprov-jdk18on.version>1.77</bcprov-jdk18on.version>
         <mule.file.connector.version>1.5.1</mule.file.connector.version>
         <mule.objectstore.connector.version>1.2.1</mule.objectstore.connector.version>
 
@@ -219,8 +219,8 @@
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>${bcprov-jdk15on.version}</version>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bcprov-jdk18on.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
