@@ -107,7 +107,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>5.3.29</version>
+            <version>6.1.0</version>
         </dependency>
 
         <!-- Common Dependencies -->
