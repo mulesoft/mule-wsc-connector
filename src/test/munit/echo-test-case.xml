@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
       xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:mtf="http://www.mulesoft.org/schema/mule/mtf"
       xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
       xmlns="http://www.mulesoft.org/schema/mule/core"
       xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+	  http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+	  http://www.mulesoft.org/schema/mule/mtf http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
@@ -91,11 +95,15 @@
                 </wsc:message>
             </wsc:consume>
         </munit:execution>
-        <munit:validation>
+       <munit:validation>
+            <set-variable variableName="headers" value="#[output application/json --- payload.headers orderBy ((value, key) -> key)]" />
+            <set-payload value="#[output application/json --- payload]" />
             <munit-tools:assert-equals actual="#[payload.body.echoWithHeadersResponse.text]" expected="#['test response']"/>
             <munit-tools:assert-equals actual="#[sizeOf(payload.headers)]" expected="#[2]"/>
-            <munit-tools:assert-equals actual="#[payload.headers.headerInOut.headerInOut]" expected="#['Header In Out Value INOUT']"/>
-            <munit-tools:assert-equals actual="#[payload.headers.headerOut.headerOut]" expected="#['Header In Value OUT']"/>
+            <logger level="INFO" message="#['HERE']"/>
+            <logger level="INFO" message="payload: #[payload]"/>
+            <munit-tools:assert-equals actual="#[vars.headers[0].headerInOut]" expected="#['Header In Out Value INOUT']"/>
+            <munit-tools:assert-equals actual="#[vars.headers[1].headerOut]" expected="#['Header In Value OUT']"/>
         </munit:validation>
     </munit:test>
 
@@ -129,9 +137,13 @@
             <set-payload value="#[output application/json --- payload]"/>
         </munit:execution>
         <munit:validation>
+            <set-variable variableName="headers" value="#[payload.headers orderBy ((value, key) -> key)]" />
+            <logger level="INFO" message="PAYLOAD: #[output application/json --- payload]" />
             <munit-tools:assert-equals actual="#[payload.body]" expected='#[{ "echoWithHeadersResponse": { "text": "test response" } }]'/>
             <munit-tools:assert-equals actual="#[payload.attachments]" expected='#[{}]'/>
-            <munit-tools:assert-equals actual="#[payload.headers]" expected='#[{ "headerInOut": { "headerInOut": "Header In Out Value INOUT" }, "headerOut": { "headerOut": "Header In Value OUT" } }]'/>
+            <logger level="INFO" message="HEADERS: #[payload.headers]" />
+            <munit-tools:assert-equals actual="#[vars.headers[0].headerInOut]" expected="#['Header In Out Value INOUT']"/>
+            <munit-tools:assert-equals actual="#[vars.headers[1].headerOut]" expected="#['Header In Value OUT']"/>
         </munit:validation>
     </munit:test>
 
@@ -277,6 +289,7 @@
             <set-payload value='&lt;?xml version="1.0" encoding="UTF-8"?&gt;&#10;&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org" &gt;&#10;   &lt;saml1:AuthenticationStatement&gt;&#10;   &lt;/saml1:AuthenticationStatement&gt;&#10;&lt;/saml1:Assertion&gt;' mimeType="application/xml" />
             <set-variable value="#[%dw 2.0&#10;output application/xml indent=false&#10;---&#10;headers: {&#10;	security: payload&#10;	}]" variableName="security" mimeType="application/xml"/>
 
+            <logger level="INFO" message="SECURITY: #[vars.security]"/>
             <wsc:consume config-ref="${config}" operation="echoWithHeadersNoIndentation">
                 <wsc:message>
                     <wsc:body>
@@ -295,11 +308,11 @@
                 </wsc:message>
             </wsc:consume>
 
-            <set-variable value="#[%dw 2.0&#10;output application/xml&#10;---&#10; aux: payload.headers]" variableName="out" mimeType="application/xml"/>
-
+            <logger level="INFO" message="Set variable: #[payload]"/>
+            <set-variable value="#[output application/json --- payload.headers orderBy ((value, key) -> key)]" variableName="out"/>
         </munit:execution>
         <munit:validation>
-            <munit-tools:assert-that expression='#[output application/java --- write(vars.out, "application/xml") ]' is="#[MunitTools::containsString('SUCCESS')]"/>
+            <munit-tools:assert-equals actual="#[vars.out[1].headerOut]" expected="SUCCESS"/>
         </munit:validation>
     </munit:test>
 </mule>
