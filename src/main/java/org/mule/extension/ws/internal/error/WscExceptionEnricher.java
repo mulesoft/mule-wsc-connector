@@ -33,8 +33,8 @@ import org.mule.soap.api.exception.SoapFaultException;
 import org.mule.soap.api.transport.DispatcherException;
 
 /**
- * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a
- * Soap Fault is returned by the server we wrap that exception in an {@link SoapFaultMessageAwareException}.
+ * {@link ExceptionHandler} implementation to wrap unexpected exceptions thrown by the {@link ConsumeOperation} and if a Soap
+ * Fault is returned by the server we wrap that exception in an {@link SoapFaultMessageAwareException}.
  *
  * @since 1.0
  */

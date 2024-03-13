@@ -7,9 +7,12 @@
     </Appenders>
 
     <Loggers>
-        <AsyncRoot level="ERROR">
+        <Logger name="org.mule.munit" level="INFO"/>
+<!--        <AsyncLogger name="org.mule.service.http.impl.service.HttpMessageLogger" level="DEBUG"/>-->
+        <AsyncLogger name="com.mulesoft.connectors.box.internal.operation.sidecar" level="DEBUG"/>
+
+        <AsyncRoot level="INFO">
             <AppenderRef ref="Console"/>
         </AsyncRoot>
     </Loggers>
-
 </Configuration>

@@ -14,8 +14,8 @@ import org.mule.soap.api.transport.locator.TransportResourceLocator;
 import java.io.InputStream;
 
 /**
- * {@link TransportResourceLocator} implementation that uses a custom HTTP connector requester configuration to
- * execute and fetch the resources.
+ * {@link TransportResourceLocator} implementation that uses a custom HTTP connector requester configuration to execute and fetch
+ * the resources.
  *
  * @since 1.2
  */

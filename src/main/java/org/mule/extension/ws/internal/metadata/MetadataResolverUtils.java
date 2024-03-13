@@ -33,8 +33,8 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 
 /**
- * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and
- * store them there.
+ * Utility class for resolvers to get already loaded models located in the {@link MetadataCache}, if not there will load and store
+ * them there.
  *
  * Also for subsequent requests, this resolver contains an in-memory cache, that stores {@link WsdlModel} instances for a short
  * period of time to prevent dealing with multiple serialized models in memory.
@@ -44,8 +44,8 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 public class MetadataResolverUtils {
 
   /**
-   * Caches {@link WsdlModel} instances so subsequent metadata resolution requests doesn't need to parse or deserialize
-   * wsdls models, that are stored in the MetadataCache that use a persistent object store.
+   * Caches {@link WsdlModel} instances so subsequent metadata resolution requests doesn't need to parse or deserialize wsdls
+   * models, that are stored in the MetadataCache that use a persistent object store.
    */
   private final Cache<String, WsdlModel> recentlyQueriedCache = Caffeine.newBuilder().expireAfterAccess(1, MINUTES).build();
 
