@@ -21,11 +21,11 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.12.0</commons.lang.version>
+        <commons.lang.version>3.14.0</commons.lang.version>
 
-        <mule.http.connector.version>1.9.0</mule.http.connector.version>
+        <mule.http.connector.version>1.9.2</mule.http.connector.version>
         <muleSdkApiVersion>0.7.0</muleSdkApiVersion>
-        <soap.engine.version>1.8.6</soap.engine.version>
+        <soap.engine.version>1.9.0</soap.engine.version>
         <wsdl.parser.version>1.4.8</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
@@ -52,11 +52,12 @@
         <munit.extensions.maven.plugin.version>1.2.0</munit.extensions.maven.plugin.version>
         <validations.module.version>2.0.6</validations.module.version>
         <java.module.version>1.2.12</java.module.version>
-        <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.44.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
         <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
+        <slf4j.version>2.0.12</slf4j.version>
     </properties>
 
     <dependencies>
@@ -433,12 +434,12 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
-                        <version>2.0.6</version>
+                        <version>${slf4j.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>jcl-over-slf4j</artifactId>
-                        <version>2.0.6</version>
+                        <version>${slf4j.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
