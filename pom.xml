@@ -25,20 +25,21 @@
 
         <mule.http.connector.version>1.9.0</mule.http.connector.version>
         <muleSdkApiVersion>0.7.0</muleSdkApiVersion>
-        <soap.engine.version>2.0.0-SNAPSHOT</soap.engine.version>
-        <wsdl.parser.version>1.4.8-SNAPSHOT</wsdl.parser.version>
+        <soap.engine.version>1.10.0-SNAPSHOT</soap.engine.version>
+        <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <jacoco.version>0.8.10</jacoco.version>
+        <runtimeVersion>4.3.0</runtimeVersion>
 
         <!-- tests props -->
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
-        <mule.wss.module.version>1.1.2</mule.wss.module.version>
-        <bcprov-jdk15on.version>1.70</bcprov-jdk15on.version>
+
+        <mule.wss.module.version>1.2.0</mule.wss.module.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
         <mule.objectstore.connector.version>1.2.2</mule.objectstore.connector.version>
 
@@ -46,9 +47,9 @@
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
-        <munit.version>3.1.0-rc3</munit.version>
-        <mtf.tools.version>1.2.0-rc1</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.2.0-rc2</munit.extensions.maven.plugin.version>
+        <munit.version>3.1.0</munit.version>
+        <mtf.tools.version>1.2.0</mtf.tools.version>
+        <munit.extensions.maven.plugin.version>1.2.0</munit.extensions.maven.plugin.version>
 
         <validations.module.version>2.0.6</validations.module.version>
         <java.module.version>1.2.12</java.module.version>
@@ -107,7 +108,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>5.3.29</version>
+            <version>5.3.34</version>
         </dependency>
 
         <!-- Common Dependencies -->
@@ -219,8 +220,8 @@
         </dependency>
         <dependency>
             <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
-            <version>${bcprov-jdk15on.version}</version>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bcprov-jdk18on.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
