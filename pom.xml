@@ -53,7 +53,7 @@
 
         <validations.module.version>2.0.6</validations.module.version>
         <java.module.version>1.2.12</java.module.version>
-        <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.44.0</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
