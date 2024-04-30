@@ -508,7 +508,9 @@
         <profile>
             <id>docker-unix</id>
             <activation>
-                <activeByDefault>true</activeByDefault>
+                <os>
+                    <family>!windows</family>
+                </os>
             </activation>
             <build>
                 <plugins>
