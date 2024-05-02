@@ -21,18 +21,17 @@
     <description>A Mule connector that provides functionality for dynamically consuming SOAP web services</description>
 
     <properties>
-        <commons.lang.version>3.12.0</commons.lang.version>
+        <commons.lang.version>3.14.0</commons.lang.version>
 
-        <mule.http.connector.version>1.9.0</mule.http.connector.version>
-        <muleSdkApiVersion>0.7.0</muleSdkApiVersion>
+        <mule.http.connector.version>1.9.2</mule.http.connector.version>
+        <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
         <soap.engine.version>1.9.1</soap.engine.version>
-        <wsdl.parser.version>1.5.0-SNAPSHOT</wsdl.parser.version>
+        <wsdl.parser.version>1.4.8</wsdl.parser.version>
         <activation.version>1.1.1</activation.version>
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <formatterConfigPath>formatter.xml</formatterConfigPath>
-        <jacoco.version>0.8.10</jacoco.version>
-        <runtimeVersion>4.3.0</runtimeVersion>
+        <jacoco.version>0.8.12</jacoco.version>
 
         <!-- tests props -->
         <xmlUnitVersion>1.6</xmlUnitVersion>
@@ -51,9 +50,16 @@
         <munit.version>3.1.0</munit.version>
         <mtf.tools.version>1.2.0</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.2.0</munit.extensions.maven.plugin.version>
+        <spring-expression.version>5.3.34</spring-expression.version>
+        <jakarta.xml.soap-api>2.0.1</jakarta.xml.soap-api>
+        <saaj-impl.version>1.5.3</saaj-impl.version>
+        <saaj-api>1.3.5</saaj-api>
+        <easy-random-core>4.3.0</easy-random-core>
+        <apache.santuario.xmlsec.version>2.3.4</apache.santuario.xmlsec.version>
+        <org.slf4j.version>2.0.13</org.slf4j.version>
 
         <validations.module.version>2.0.6</validations.module.version>
-        <java.module.version>1.2.12</java.module.version>
+        <java.module.version>1.2.13</java.module.version>
         <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
         <docker.skip>${skipTests}</docker.skip>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
@@ -109,7 +115,7 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-expression</artifactId>
-            <version>5.3.34</version>
+            <version>${spring-expression.version}</version>
         </dependency>
 
         <!-- Common Dependencies -->
@@ -121,17 +127,17 @@
 	<dependency>
     	    <groupId>jakarta.xml.soap</groupId>
     	    <artifactId>jakarta.xml.soap-api</artifactId>
-    	    <version>2.0.1</version>
+    	    <version>${jakarta.xml.soap-api}</version>
 	</dependency>
     <dependency>
         <groupId>com.sun.xml.messaging.saaj</groupId>
         <artifactId>saaj-impl</artifactId>
-        <version>1.5.3</version>
+        <version>${saaj-impl.version}</version>
     </dependency>
     <dependency>
         <groupId>javax.xml.soap</groupId>
         <artifactId>saaj-api</artifactId>
-        <version>1.3.5</version>
+        <version>${saaj-api}</version>
     </dependency>
 
         <!-- Test Dependencies -->
@@ -195,7 +201,7 @@
         <dependency>
             <groupId>org.jeasy</groupId>
             <artifactId>easy-random-core</artifactId>
-            <version>4.3.0</version>
+            <version>${easy-random-core}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -240,7 +246,7 @@
             <dependency>
                 <groupId>org.apache.santuario</groupId>
                 <artifactId>xmlsec</artifactId>
-                <version>2.3.4</version>
+                <version>${apache.santuario.xmlsec.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -435,12 +441,12 @@
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>slf4j-api</artifactId>
-                        <version>2.0.6</version>
+                        <version>${org.slf4j.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>org.slf4j</groupId>
                         <artifactId>jcl-over-slf4j</artifactId>
-                        <version>2.0.6</version>
+                        <version>${org.slf4j.version}</version>
                     </dependency>
                 </dependencies>
                 <executions>
@@ -544,5 +550,4 @@
             </build>
         </profile>
     </profiles>
-
 </project>
