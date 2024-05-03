@@ -34,6 +34,7 @@
         <jacoco.version>0.8.12</jacoco.version>
 
         <!-- tests props -->
+        <minVersion>4.3.0</minVersion>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
         <easyrandom.version>4.0.0</easyrandom.version>
@@ -345,7 +346,8 @@
                     <runtimeConfiguration>
                         <discoverRuntimes>
                             <product>EE</product>
-                            <includeSnapshots>true</includeSnapshots>
+                            <minMuleVersion>${minVersion}</minMuleVersion>
+                            <includeSnapshots>false</includeSnapshots>
                         </discoverRuntimes>
                     </runtimeConfiguration>
                     <environmentVariables>
