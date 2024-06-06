@@ -28,7 +28,7 @@
         <wsdl.parser.version>1.4.9</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.14.0</commons.lang.version>
-        <spring-expression.version>5.3.34</spring-expression.version>
+        <spring-expression.version>5.3.36</spring-expression.version>
         <jakarta.xml.soap-api>2.0.1</jakarta.xml.soap-api>
         <saaj-impl.version>1.5.3</saaj-impl.version>
         <saaj-api>1.3.5</saaj-api>
