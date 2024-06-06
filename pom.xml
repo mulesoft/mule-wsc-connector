@@ -50,7 +50,7 @@
         <munit.extensions.maven.plugin.version>1.2.0</munit.extensions.maven.plugin.version>
         <minVersion>4.3.0</minVersion>
         <!-- MTF properties -->
-        <munit.version>3.1.0</munit.version>
+        <munit.version>3.2.0</munit.version>
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
