@@ -32,8 +32,12 @@ import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 import org.mule.soap.api.security.SecurityStrategy;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import java.util.Objects;
 import java.util.stream.Stream;
 
 /**
