@@ -6,9 +6,11 @@
  */
 package org.mule.extension.ws.api;
 
+import static org.mule.extension.ws.api.security.Constants.SecurityHeadersOrderConstants.TimestampLastElement;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.api.util.collection.Collectors.toImmutableList;
 
+import org.mule.extension.ws.api.security.Constants.SecurityHeadersOrderConstants;
 import org.mule.extension.ws.api.security.SecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssDecryptSecurityStrategyAdapter;
 import org.mule.extension.ws.api.security.WssEncryptSecurityStrategyAdapter;
@@ -30,8 +32,8 @@ import org.mule.runtime.extension.api.annotation.values.OfValues;
 import org.mule.sdk.api.annotation.semantics.connectivity.ExcludeFromConnectivitySchema;
 import org.mule.soap.api.security.SecurityStrategy;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+
 import java.util.stream.Stream;
 
 /**
@@ -41,6 +43,7 @@ import java.util.stream.Stream;
  */
 public class WebServiceSecurity {
 
+  public static final String REGEX_TO_SPLIT = " ";
   private static final String SECURITY_TAB = "Security";
 
   public WebServiceSecurity() {}
@@ -136,22 +139,40 @@ public class WebServiceSecurity {
   @OfValues(SoapActorValueProvider.class)
   private String actor;
 
+  @Parameter
+  @Placement(tab = SECURITY_TAB, order = 9)
+  @Summary("Select the order of outgoing WS-Security tags")
+  @Optional
+  @Expression(NOT_SUPPORTED)
+  private SecurityHeadersOrderConstants securityHeadersOrder;
+
   public List<SecurityStrategy> strategiesList() {
-    // Default order: Timestamp UsernameToken Signature Encryption
-    // Timestamp and UsernameToken actions need to come first because they are needed in case
-    // signing/encryption use them.
-    return Stream.of(timestampSecurityStrategy,
-                     usernameTokenSecurityStrategy,
-                     signSecurityStrategy,
-                     encryptSecurityStrategy,
-                     decryptSecurityStrategy,
-                     verifySignatureSecurityStrategy,
-                     incomingTimestampSecurityStrategy,
-                     new WssOutgoingGlobalSecurityStrategyAdapter(actor, mustUnderstand))
-        .filter(Objects::nonNull)
-        .map(SecurityStrategyAdapter::getSecurityStrategy)
+    securityHeadersOrder = (securityHeadersOrder == null) ? TimestampLastElement : securityHeadersOrder;
+    Map<String, SecurityStrategyAdapter> strategyAdapterMap = new HashMap<>();
+    strategyAdapterMap.put("Timestamp", timestampSecurityStrategy);
+    strategyAdapterMap.put("UsernameToken", usernameTokenSecurityStrategy);
+    strategyAdapterMap.put("Encrypt", encryptSecurityStrategy);
+    strategyAdapterMap.put("Signature", signSecurityStrategy);
+
+    List<SecurityStrategyAdapter> fixedOrderList = Arrays.asList(decryptSecurityStrategy,
+                                                                 verifySignatureSecurityStrategy,
+                                                                 incomingTimestampSecurityStrategy,
+                                                                 new WssOutgoingGlobalSecurityStrategyAdapter(actor,
+                                                                                                              mustUnderstand));
+
+    List<SecurityStrategy> orderStrategiesList =
+        Arrays.stream(securityHeadersOrder.toString().split(REGEX_TO_SPLIT)).map(String::trim)
+            .map(strategyAdapterMap::get)
+            .filter(Objects::nonNull)
+            .map(SecurityStrategyAdapter::getSecurityStrategy)
+            .collect(toImmutableList());
+
+    return Stream.concat(
+                         orderStrategiesList.stream(),
+                         fixedOrderList.stream().filter(Objects::nonNull).map(SecurityStrategyAdapter::getSecurityStrategy))
         .collect(toImmutableList());
   }
+
 
   @Override
   public boolean equals(Object o) {
@@ -252,5 +273,13 @@ public class WebServiceSecurity {
 
   public void setActor(String actor) {
     this.actor = actor;
+  }
+
+  public SecurityHeadersOrderConstants getSecurityHeadersOrder() {
+    return this.securityHeadersOrder;
+  }
+
+  public void setSecurityHeadersOrder(SecurityHeadersOrderConstants securityHeadersOrder) {
+    this.securityHeadersOrder = securityHeadersOrder;
   }
 }
