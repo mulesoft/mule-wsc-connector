@@ -42,7 +42,7 @@
         <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
         <mule.wss.module.version>1.2.1</mule.wss.module.version>
-        <easy-random-core>4.3.0</easy-random-core>
+        <easy-random-core>5.0.0</easy-random-core>
 
         <!-- Remove when a new parent version with MTF is available -->
         <!-- MTF dependencies -->
