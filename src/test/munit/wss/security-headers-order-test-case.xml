@@ -43,7 +43,7 @@
 
     <wsc:config name="security-header-timestamp-first-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
-            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" securityHeadersOrder="TimestampFirstElement">
+            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" securityHeadersOrder="Timestamp_At_Start">
                 <wsc:sign-security-strategy >
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword"/>
                 </wsc:sign-security-strategy>
@@ -54,7 +54,7 @@
 
     <wsc:config name="security-header-timestamp-last-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
-            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" securityHeadersOrder="TimestampLastElement">
+            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" securityHeadersOrder="Timestamp_At_End">
                 <wsc:sign-security-strategy >
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword"/>
                 </wsc:sign-security-strategy>

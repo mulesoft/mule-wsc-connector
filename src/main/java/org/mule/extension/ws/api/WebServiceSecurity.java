@@ -6,7 +6,7 @@
  */
 package org.mule.extension.ws.api;
 
-import static org.mule.extension.ws.api.security.Constants.SecurityHeadersOrderConstants.TimestampLastElement;
+import static org.mule.extension.ws.api.security.Constants.SecurityHeadersOrderConstants.Timestamp_At_End;
 import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.api.util.collection.Collectors.toImmutableList;
 
@@ -151,7 +151,7 @@ public class WebServiceSecurity {
   private SecurityHeadersOrderConstants securityHeadersOrder;
 
   public List<SecurityStrategy> strategiesList() {
-    securityHeadersOrder = (securityHeadersOrder == null) ? TimestampLastElement : securityHeadersOrder;
+    securityHeadersOrder = (securityHeadersOrder == null) ? Timestamp_At_End : securityHeadersOrder;
     Map<String, SecurityStrategyAdapter> strategyAdapterMap = new HashMap<>();
     strategyAdapterMap.put("Timestamp", timestampSecurityStrategy);
     strategyAdapterMap.put("UsernameToken", usernameTokenSecurityStrategy);
