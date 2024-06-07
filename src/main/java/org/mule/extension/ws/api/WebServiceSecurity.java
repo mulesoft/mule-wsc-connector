@@ -165,7 +165,7 @@ public class WebServiceSecurity {
                                                                                                               mustUnderstand));
 
     List<SecurityStrategy> orderStrategiesList =
-        Arrays.stream(securityHeadersOrder.toString().split(REGEX_TO_SPLIT)).map(String::trim)
+        Arrays.stream(securityHeadersOrder.toString().split(REGEX_TO_SPLIT))
             .map(strategyAdapterMap::get)
             .filter(Objects::nonNull)
             .map(SecurityStrategyAdapter::getSecurityStrategy)
