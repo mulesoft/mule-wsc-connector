@@ -52,6 +52,17 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="security-header-timestamp-last-config">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security actor="http://schemas.xmlsoap.org/soap/actor/next" securityHeadersOrder="TimestampLastElement">
+                <wsc:sign-security-strategy >
+                    <wsc:key-store-configuration keyStorePath="security/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword"/>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="140" />
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <!-- Tests -->
 
     <munit:test name="orderDefault" description="In the default case the first element in the security tags will not be the timestamp.">
@@ -81,6 +92,21 @@
         </munit:execution>
         <munit:validation >
             <munit-tools:assert-equals actual="#[%dw 2.0&#10;ns ns0 http://service.soap.service.mule.org/&#10;---&#10;payload.body.ns0#echoResponse.text]" expected="#['true']"/>
+        </munit:validation>
+    </munit:test>
+
+    <munit:test name="timestampLastElement" description="It is validated that the last element of the security headers is the timestamp">
+        <munit:execution>
+            <set-variable variableName="text" value="timestampOrder"/>
+            <flow-ref name="buildEchoRequest"/>
+            <wsc:consume config-ref="security-header-timestamp-last-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </munit:execution>
+        <munit:validation >
+            <munit-tools:assert-equals actual="#[%dw 2.0&#10;ns ns0 http://service.soap.service.mule.org/&#10;---&#10;payload.body.ns0#echoResponse.text]" expected="#['false']"/>
         </munit:validation>
     </munit:test>
 
