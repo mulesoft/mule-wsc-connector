@@ -12,7 +12,7 @@ package org.mule.extension.ws.api.security.Constants;
  * This is because the underlying library executes the actions and places the corresponding tag above the previously existing ones.
  * **/
 public enum SecurityHeadersOrderConstants {
-  Timestamp_At_End("Timestamp UsernameToken Signature Encrypt "), Timestamp_At_Start(
+  TimestampAtEnd("Timestamp UsernameToken Signature Encrypt "), TimestampAtStart(
       "Encrypt Signature UsernameToken Timestamp"),;
 
   private String value;
