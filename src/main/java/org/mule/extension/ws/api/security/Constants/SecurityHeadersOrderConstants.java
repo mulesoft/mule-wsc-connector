@@ -7,9 +7,9 @@
 package org.mule.extension.ws.api.security.Constants;
 
 /**
- * Lists the order that can be applied to outgoing security strategies.
- * The XML security tags will appear in the reverse order to the list described here,
- * since the underlying library applies the actions and places the corresponding tag above those that already exist
+ * Lists the order to apply to outgoing security strategies.
+ * The XML security tags will appear in the reverse order of the list described here.
+ * This is because the underlying library executes the actions and places the corresponding tag above the previously existing ones.
  * **/
 public enum SecurityHeadersOrderConstants {
   Timestamp_At_End("Timestamp UsernameToken Signature Encrypt "), Timestamp_At_Start(
