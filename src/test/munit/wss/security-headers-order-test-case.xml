@@ -9,7 +9,7 @@
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
 
-    <munit:config name="incoming-timestamp-test-cases">
+    <munit:config name="security-headers-order-test-cases">
         <munit:parameterizations>
             <munit:parameterization name="SOAP11">
                 <munit:parameters>
