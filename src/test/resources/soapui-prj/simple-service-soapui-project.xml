@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="1313c24d-4adb-43b6-a085-3949d97a8d42" activeEnvironment="Default" name="simple-service" resourceRoot="" soapui-version="5.5.0" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project id="1313c24d-4adb-43b6-a085-3949d97a8d42" activeEnvironment="Default" name="simple-service" resourceRoot="" soapui-version="5.7.1" abortOnError="false" runType="SEQUENTIAL" xmlns:con="http://eviware.com/soapui/config">
     <con:settings>
         <con:setting id="ProjectSettings@hermesConfig">/Users/pangelani/.hermes</con:setting>
     </con:settings>
@@ -622,8 +622,8 @@
                              <text>?</text>
                           </ser:echoWithHeadersNoIndentation>
                        </soapenv:Body>
-                    </soapenv:Envelope>]]>
-                </con:request>
+                    </soapenv:Envelope>
+                ]]></con:request>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeadersNoIndentation"/>
             </con:call>
         </con:operation>
@@ -1016,6 +1016,27 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script><con:responseC
          <text>${hasDeclaration}</text>
       </ser:echoResponse>
    </soapenv:Body>
+</soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/></con:response><con:response name="TimestampValidateOrder" id="3e5a0b3e-cecc-4af6-bd48-b8b412f43827" httpResponseStatus="200" encoding="UTF-8"><con:settings/><con:script>import org.joda.time.DateTime
+import org.joda.time.format.ISODateTimeFormat
+// create XmlHolder for request content
+def holder = new com.eviware.soapui.support.XmlHolder( mockRequest.requestContent )
+def timestampRequest = holder["//*:Security/*[1]/*[1]"]
+log.info timestampRequest
+if (timestampRequest &amp;&amp; !timestampRequest.empty){
+try {
+ ISODateTimeFormat.dateTimeParser().parseDateTime(timestampRequest)
+	} catch (java.lang.IllegalArgumentException iae) {
+		context.setProperty("isTimestamp", false)
+	} 
+context.setProperty("isTimestamp", true)
+} else {context.setProperty("isTimestamp", false)}
+</con:script><con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <ser:echoResponse>
+         <text>${isTimestamp}</text>
+      </ser:echoResponse>
+   </soapenv:Body>
 </soapenv:Envelope>]]></con:responseContent><con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/></con:response><con:dispatchConfig xsi:type="con:MockOperationQueryMatchDispatch" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                 <con:query>
                     <con:name>Encrypted</con:name>
@@ -1054,7 +1075,8 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script><con:responseC
                         //con:echo/text
                     </con:query><con:match>latin2Encoded</con:match><con:response>latin2EncodedResponse</con:response></con:query><con:query><con:name>returnPayload</con:name><con:query>declare namespace con='http://service.soap.service.mule.org/'
                         //con:echo/text
-                    </con:query><con:match>returnPayload</con:match><con:response>ReturnPayloadResponse</con:response></con:query></con:dispatchConfig>
+                    </con:query><con:match>returnPayload</con:match><con:response>ReturnPayloadResponse</con:response></con:query><con:query><con:name>TimestampValidateOrder</con:name><con:query>declare namespace con='http://service.soap.service.mule.org/'
+                        //con:echo/text</con:query><con:match>timestampOrder</con:match><con:response>TimestampValidateOrder</con:response></con:query></con:dispatchConfig>
         </con:mockOperation>
         <con:mockOperation name="echoAccount" id="35e23e58-03f2-4757-a859-b1ab6bfe439f" interface="TestServiceSoapBinding" operation="echoAccount">
             <con:settings/>
@@ -1123,11 +1145,11 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script><con:responseC
             <con:response name="Response 1" id="39c53106-f233-4b6f-9c3e-8b10f77213b4" httpResponseStatus="200" encoding="UTF-8">
                 <con:settings/>
                 <con:script>
-                    <![CDATA[if (mockRequest.getRequestContent().contains('<security><saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org"><saml1:AuthenticationStatement/></saml1:Assertion></security>')) {
+                    if (mockRequest.getRequestContent().contains('&lt;security>&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org">&lt;saml1:AuthenticationStatement/>&lt;/saml1:Assertion>&lt;/security>')) {
                     context.security = "SUCCESS";
                     } else {
                     context.security = "ERROR";
-                    }]]>
+                    }
                 </con:script>
                 <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
                        <soapenv:Header>
@@ -1139,8 +1161,8 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script><con:responseC
                              <text>test response</text>
                           </ser:echoWithHeadersNoIndentationResponse>
                        </soapenv:Body>
-                    </soapenv:Envelope>]]>
-                </con:responseContent>
+                    </soapenv:Envelope>
+                ]]></con:responseContent>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeadersNoIndentation"/>
             </con:response>
             <con:dispatchConfig/>
@@ -1275,11 +1297,11 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script><con:responseC
             <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
             <con:response name="Response 1" id="9164d61c-db88-40a7-8595-f4272248c809" httpResponseStatus="200" encoding="UTF-8">
                 <con:settings/>
-                <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
-   <soapenv:Header/>
-   <soapenv:Body>
-   </soapenv:Body>
-</soapenv:Envelope>]]></con:responseContent>
+                <con:responseContent>&lt;soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+   &lt;soapenv:Header/>
+   &lt;soapenv:Body>
+   &lt;/soapenv:Body>
+&lt;/soapenv:Envelope></con:responseContent>
                 <con:wsaConfig mustUnderstand="NONE" version="200508" action="uploadAttachmentNoResult"/>
             </con:response>
             <con:dispatchConfig/>
