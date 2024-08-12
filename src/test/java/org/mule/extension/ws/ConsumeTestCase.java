@@ -6,11 +6,16 @@
  */
 package org.mule.extension.ws;
 
+import static org.mockito.Matchers.anyBoolean;
+import static org.mockito.Matchers.anyInt;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.junit.After;
@@ -18,19 +23,32 @@ import org.junit.Before;
 import org.junit.Test;
 
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
+import org.mule.extension.ws.internal.connection.DefaultHttpMessageDispatcher;
 import org.mule.extension.ws.internal.connection.WscSoapClient;
 import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
+import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.auth.HttpAuthentication;
+import org.mule.runtime.http.api.domain.message.request.HttpRequest;
+import org.mule.runtime.http.api.domain.message.response.HttpResponse;
+
 import org.mule.soap.api.client.SoapClient;
 import org.mule.soap.api.message.SoapRequest;
 import org.mule.soap.api.message.SoapResponse;
 import org.mule.soap.api.transport.TransportDispatcher;
+import org.mule.soap.api.transport.TransportRequest;
+import org.mule.soap.api.transport.TransportResponse;
 
 import static java.util.concurrent.Executors.newFixedThreadPool;
 import static java.util.concurrent.TimeUnit.SECONDS;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeoutException;
 
 public class ConsumeTestCase {
 
@@ -78,4 +96,16 @@ public class ConsumeTestCase {
 
     verify(supplier, times(1)).get();
   }
+
+  @Test
+  public void consumeDefaultContenType() throws IOException, TimeoutException {
+    HttpClient mockClient = mock(HttpClient.class);
+    HttpResponse response = HttpResponse.builder().statusCode(500).build();
+    when(mockClient.send(any(HttpRequest.class), anyInt(), anyBoolean(), any(HttpAuthentication.class))).thenReturn(response);
+    TransportDispatcher dispatcher = new DefaultHttpMessageDispatcher(mockClient, 1000);
+    TransportRequest transportRequest = new TransportRequest(mock(InputStream.class), "localhost", new HashMap<>());
+    TransportResponse transportResponse = dispatcher.dispatch(transportRequest);
+    assertThat(transportResponse.getContentType(), is("application/xml"));
+  }
+
 }
