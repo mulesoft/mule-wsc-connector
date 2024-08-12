@@ -58,7 +58,7 @@
         <!-- Plugin dependencies -->
         <apache.santuario.xmlsec.version>2.3.4</apache.santuario.xmlsec.version>
         <org.slf4j.version>2.0.13</org.slf4j.version>
-        <docker.maven.plugin.version>0.43.4</docker.maven.plugin.version>
+        <docker.maven.plugin.version>0.45.0</docker.maven.plugin.version>
         <jacoco.version>0.8.12</jacoco.version>
         <!-- Plugin properties -->
         <formatterConfigPath>formatter.xml</formatterConfigPath>
