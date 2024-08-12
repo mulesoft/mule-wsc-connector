@@ -38,7 +38,7 @@
         <javax.jaxws-api.version>2.3.1</javax.jaxws-api.version>
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <xmlUnitVersion>1.6</xmlUnitVersion>
-        <jsonassert.version>1.5.1</jsonassert.version>
+        <jsonassert.version>1.5.3</jsonassert.version>
         <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
         <mule.wss.module.version>1.2.2</mule.wss.module.version>
