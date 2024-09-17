@@ -61,6 +61,9 @@ public class WscExceptionEnricher extends ExceptionHandler {
     if (e instanceof ModuleException) {
       return e;
     }
+    if (e instanceof DispatcherException) {
+      return new DispatcherMessageAwareException((DispatcherException) e);
+    }
     if (e instanceof SoapFaultException) {
       return new SoapFaultMessageAwareException(((SoapFaultException) e));
     }
