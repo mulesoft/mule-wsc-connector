@@ -34,7 +34,7 @@
 
     <!-- Tests -->
     <munit:test name="errorMethodResponse"
-                description="Consumes an operation that expects a simple type and returns a simple type">
+                description="Error calling soap method" minMuleVersion="4.5.0">
         <munit:execution>
             <try>
                 <set-variable variableName="text" value="errorMethodResponse"/>
