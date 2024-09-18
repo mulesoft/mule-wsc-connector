@@ -34,7 +34,7 @@
 
     <!-- Tests -->
     <munit:test name="errorMethodResponse"
-                description="Error calling soap method" minMuleVersion="4.5.0">
+                description="Error calling soap method"  ignore="#[Munit::muleVersionEqualTo('4.3.0')]">
         <munit:execution>
             <try>
                 <set-variable variableName="text" value="errorMethodResponse"/>
