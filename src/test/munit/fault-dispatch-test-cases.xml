@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="fault-dispatch-test-cases">
+        <munit:parameterizations>
+            <munit:parameterization name="SOAP11">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP11"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP11_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+            <munit:parameterization name="SOAP12">
+                <munit:parameters>
+                    <munit:parameter propertyName="soapVersion" value="SOAP12"/>
+                    <munit:parameter propertyName="wsPort" value="${WS_SOAP12_PORT}"/>
+                    <munit:parameter propertyName="mtomEnabled" value="false"/>
+                    <munit:parameter propertyName="config" value="custom-transport-config"/>
+                </munit:parameters>
+            </munit:parameterization>
+        </munit:parameterizations>
+    </munit:config>
+
+    <!-- Configs -->
+
+    <!-- Tests -->
+    <munit:test name="errorMethodResponse"
+                description="Error calling soap method"  ignore="#[Munit::muleVersionEqualTo('4.3.0')]">
+        <munit:execution>
+            <try>
+                <set-variable variableName="text" value="errorMethodResponse"/>
+                <flow-ref name="buildEchoRequest"/>
+                <wsc:consume config-ref="${config}" operation="echo">
+                    <wsc:message>
+                        <wsc:body>#[payload]</wsc:body>
+                    </wsc:message>
+                </wsc:consume>
+                <error-handler>
+                    <mule:on-error-continue enableNotifications="true" type="WSC:CANNOT_DISPATCH">
+                        <set-payload value="#[error.errorMessage.payload[0]]"/>
+                    </mule:on-error-continue>
+                </error-handler>
+            </try>
+        </munit:execution>
+        <munit:validation>
+            <munit-tools:assert-equals actual="#[payload]"
+                                       expected="#['Error dispatching message with config [simple-requester]:Could not dispatch soap message using the [simple-requester] HTTP configuration']"/>
+        </munit:validation>
+    </munit:test>
+</mule>
