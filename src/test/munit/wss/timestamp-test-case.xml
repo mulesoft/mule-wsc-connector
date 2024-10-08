@@ -67,7 +67,7 @@
         <munit:execution>
             <set-variable variableName="text" value="timestamp"/>
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="${env.config.name.timestamp-config}" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.timestamp-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

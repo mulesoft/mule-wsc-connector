@@ -66,7 +66,7 @@
         <munit:execution>
             <set-variable variableName="text" value="signedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="${env.config.name.sign-mtom-config}" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.sign-mtom-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

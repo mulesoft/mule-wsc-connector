@@ -132,7 +132,7 @@
         <munit:execution>
             <set-variable variableName="text" value="timestampOrder"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="${env.ref.name.security-header-timestamp-last-config}" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.security-header-timestamp-last-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
