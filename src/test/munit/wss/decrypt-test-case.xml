@@ -40,13 +40,24 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="decrypt-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:decrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.jks" keyPassword="changeit"
+                                                 password="changeit" alias="s1as" type="bcfks"/>
+                </wsc:decrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <!-- Tests -->
 
     <munit:test name="decryptRequest" description="Consumes an operation and decrypt response.">
         <munit:execution>
             <set-variable variableName="text" value="encrypted" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="decrypt-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.decrypt-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

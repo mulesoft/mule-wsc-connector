@@ -45,13 +45,29 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="timestamp-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:timestamp-security-strategy timeToLive="30"/>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.jks" password="changeit" alias="s1as" type="bcfks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" localname="Timestamp" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <!-- Tests -->
 
     <munit:test name="timestampRequest" description="Make request including an encrypted timestamp header without errors">
         <munit:execution>
             <set-variable variableName="text" value="timestamp"/>
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="timestamp-config" operation="echo">
+            <wsc:consume config-ref="${env.config.name.timestamp-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

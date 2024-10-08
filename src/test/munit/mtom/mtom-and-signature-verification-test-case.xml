@@ -16,7 +16,7 @@
     <munit:config name="mtom-and-signature-verification-test-case.xml"/>
 
     <!-- Configs -->
-    <wsc:config name="sign-config">
+    <wsc:config name="sign-mtom-config">
         <wsc:connection wsdlLocation="http://localhost:${WS_SOAP11_PORT}/SOAP11/?wsdl"
                         service="TestService"
                         port="TestPort"
@@ -25,6 +25,21 @@
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
+                </wsc:sign-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="sign-mtom-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${WS_SOAP11_PORT}/SOAP11/?wsdl"
+                        service="TestService"
+                        port="TestPort"
+                        mtomEnabled="true"
+                        address="http://localhost:${http.port}/validateSignature/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
@@ -51,7 +66,7 @@
         <munit:execution>
             <set-variable variableName="text" value="signedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="sign-config" operation="echo">
+            <wsc:consume config-ref="${env.config.name.sign-mtom-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

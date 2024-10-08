@@ -40,11 +40,33 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="sign-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
+                </wsc:sign-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <wsc:config name="invalid-sign-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/serverKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
+                </wsc:sign-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="invalid-sign-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
@@ -57,7 +79,7 @@
         <munit:execution>
             <set-variable variableName="text" value="signedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="sign-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.sign-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -72,7 +94,7 @@
         <munit:execution>
             <set-variable variableName="text" value="fail" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="invalid-sign-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.invalid-sign-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

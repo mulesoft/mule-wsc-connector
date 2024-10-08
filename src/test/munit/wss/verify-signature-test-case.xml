@@ -39,6 +39,16 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="verify-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:verify-signature-security-strategy>
+                    <wsc:trust-store-configuration trustStorePath="security/bcfks/trustStore" password="mulepassword" type="bcfks"/>
+                </wsc:verify-signature-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
 
     <!-- Tests -->
 
@@ -46,7 +56,7 @@
         <munit:execution>
             <set-variable variableName="text" value="signed" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="verify-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.verify-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

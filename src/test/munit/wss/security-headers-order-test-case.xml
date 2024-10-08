@@ -41,11 +41,33 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="security-header-order-default-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy >
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="140" />
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <wsc:config name="security-header-timestamp-first-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security securityHeadersOrder="TimestampAtStart">
                 <wsc:sign-security-strategy >
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword"/>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="140" />
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="security-header-timestamp-first-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security securityHeadersOrder="TimestampAtStart">
+                <wsc:sign-security-strategy >
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
                 </wsc:sign-security-strategy>
                 <wsc:timestamp-security-strategy timeToLive="140" />
             </wsc:web-service-security>
@@ -63,13 +85,24 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="security-header-timestamp-last-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security securityHeadersOrder="TimestampAtEnd">
+                <wsc:sign-security-strategy >
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="140" />
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <!-- Tests -->
 
     <munit:test name="orderDefault" description="In the default case the first element in the security tags will not be the timestamp.">
         <munit:execution>
             <set-variable variableName="text" value="timestampOrder"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="security-header-order-default-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.security-header-order-default-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -84,7 +117,7 @@
         <munit:execution>
             <set-variable variableName="text" value="timestampOrder"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="security-header-timestamp-first-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.security-header-timestamp-first-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -99,7 +132,7 @@
         <munit:execution>
             <set-variable variableName="text" value="timestampOrder"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="security-header-timestamp-last-config" operation="echo">
+            <wsc:consume config-ref="${env.ref.name.security-header-timestamp-last-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
