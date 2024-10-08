@@ -58,13 +58,38 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="sign-encrypt-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256">
+                        <wsc:wss-parts>
+                            <wsc:wss-part namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" localname="Timestamp" encode="CONTENT"/>
+                            <wsc:wss-part namespace="http://schemas.xmlsoap.org/soap/envelope/" localname="Body" encode="CONTENT"/>
+                        </wsc:wss-parts>
+                    </wsc:sign-algorithm-configuration>
+                </wsc:sign-security-strategy>
+                <wsc:timestamp-security-strategy timeToLive="30"/>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as" type="bcfks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <!-- Tests -->
 
     <munit:test name="signAndEncryptRequest" description="Sign and Encrypt request in that exact order.">
         <munit:execution>
             <set-variable variableName="text" value="encryptedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="sign-encrypt-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.sign-encrypt-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
