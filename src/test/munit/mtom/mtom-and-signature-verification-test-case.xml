@@ -39,7 +39,7 @@
                         address="http://localhost:${http.port}/validateSignature/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>

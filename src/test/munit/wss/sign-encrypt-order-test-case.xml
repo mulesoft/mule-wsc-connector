@@ -62,7 +62,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256">
                         <wsc:wss-parts>
                             <wsc:wss-part namespace="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" localname="Timestamp" encode="CONTENT"/>

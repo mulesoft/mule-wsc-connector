@@ -44,7 +44,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
@@ -55,7 +55,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/serverKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="jks"/>
+                    <wsc:key-store-configuration keyStorePath="security/serverKeyStore" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="jks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
@@ -66,7 +66,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeystore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleserver" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
