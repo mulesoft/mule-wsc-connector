@@ -56,6 +56,12 @@
         </wss:verify-signature-config>
     </wss:inbound-config>
 
+    <wss:inbound-config name="WSS_Inbound-fips">
+        <wss:verify-signature-config >
+            <wss:truststore-config path="security/bcfks/trustStore.bcfks" password="mulepassword" type="bcfks"/>
+        </wss:verify-signature-config>
+    </wss:inbound-config>
+
     <!-- Tests -->
     <munit:test name="signRequestWithMTOMEnabled"
                 description="Signing message with an attachment with MTOM enable and verify the server is be able to verify the signature"
@@ -80,7 +86,7 @@
     <flow name="validateSignatureFlow">
         <http:listener config-ref="HTTP_Listener_config" path="/validateSignature"/>
         <set-variable value="#[payload]" variableName="savePayload"/>
-        <wss:validate-wss version="SOAP_11" config-ref="WSS_Inbound"/>
+        <wss:validate-wss version="SOAP_11" config-ref="${config.ref.name.WSS_Inbound}"/>
         <set-payload value="#[vars.savePayload]"/>
     </flow>
 

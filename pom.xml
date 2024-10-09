@@ -67,6 +67,9 @@
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
         <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
         <mtf.javaopts></mtf.javaopts>
+        <config.ref.name.WSS_Inbound>${env.config.name.WSS_Inbound}</config.ref.name.WSS_Inbound>
+        <config.ref.name.username-config>${env.config.name.username-config}</config.ref.name.username-config>
+        <config.ref.name.invalid-username-config>${env.config.name.invalid-username-config}</config.ref.name.invalid-username-config>
         <config.ref.name.verify-config>${env.config.name.verify-config}</config.ref.name.verify-config>
         <config.ref.name.sign-config>${env.config.name.sign-config}</config.ref.name.sign-config>
         <config.ref.name.invalid-sign-config>${env.config.name.invalid-sign-config}</config.ref.name.invalid-sign-config>
@@ -581,6 +584,9 @@
                 </property>
             </activation>
             <properties>
+                <env.config.name.WSS_Inbound>WSS_Inbound</env.config.name.WSS_Inbound>
+                <env.config.name.username-config>username-config</env.config.name.username-config>
+                <env.config.name.invalid-username-config>invalid-username-config</env.config.name.invalid-username-config>
                 <env.config.name.verify-config>verify-config</env.config.name.verify-config>
                 <env.config.name.sign-config>sign-config</env.config.name.sign-config>
                 <env.config.name.invalid-sign-config>invalid-sign-config</env.config.name.invalid-sign-config>
@@ -606,6 +612,9 @@
                 </property>
             </activation>
             <properties>
+                <env.config.name.WSS_Inbound>WSS_Inbound-fips</env.config.name.WSS_Inbound>
+                <env.config.name.username-config>username-config-fips</env.config.name.username-config>
+                <env.config.name.invalid-username-config>invalid-username-config-fips</env.config.name.invalid-username-config>
                 <env.config.name.verify-config>verify-config-fips</env.config.name.verify-config>
                 <env.config.name.sign-config>sign-config-fips</env.config.name.sign-config>
                 <env.config.name.invalid-sign-config>invalid-sign-config-fips</env.config.name.invalid-sign-config>
