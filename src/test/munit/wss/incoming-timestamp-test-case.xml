@@ -46,7 +46,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:decrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.jks" keyPassword="changeit"
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.bcfks" keyPassword="changeit"
                                                  password="changeit" alias="s1as" type="bcfks"/>
                 </wsc:decrypt-security-strategy>
                 <wsc:incoming-timestamp-security-strategy />
@@ -69,7 +69,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:decrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.jks" keyPassword="changeit"
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.bcfks" keyPassword="changeit"
                                                  password="changeit" alias="s1as" type="bcfks"/>
                 </wsc:decrypt-security-strategy>
             </wsc:web-service-security>

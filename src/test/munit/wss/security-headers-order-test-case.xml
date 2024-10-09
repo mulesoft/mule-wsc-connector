@@ -45,7 +45,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:sign-security-strategy >
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
                 </wsc:sign-security-strategy>
                 <wsc:timestamp-security-strategy timeToLive="140" />
             </wsc:web-service-security>
@@ -67,7 +67,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security securityHeadersOrder="TimestampAtStart">
                 <wsc:sign-security-strategy >
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
                 </wsc:sign-security-strategy>
                 <wsc:timestamp-security-strategy timeToLive="140" />
             </wsc:web-service-security>
@@ -89,7 +89,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security securityHeadersOrder="TimestampAtEnd">
                 <wsc:sign-security-strategy >
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeystore.bcfks" alias="muleclient" password="mulepassword" keyPassword="mulepassword" type="bcfks"/>
                 </wsc:sign-security-strategy>
                 <wsc:timestamp-security-strategy timeToLive="140" />
             </wsc:web-service-security>

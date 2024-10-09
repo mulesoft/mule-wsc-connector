@@ -43,7 +43,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:verify-signature-security-strategy>
-                    <wsc:trust-store-configuration trustStorePath="security/bcfks/trustStore" password="mulepassword" type="bcfks"/>
+                    <wsc:trust-store-configuration trustStorePath="security/bcfks/trustStore.bcfks" password="mulepassword" type="bcfks"/>
                 </wsc:verify-signature-security-strategy>
             </wsc:web-service-security>
         </wsc:connection>

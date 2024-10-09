@@ -49,7 +49,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:encrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.jks" password="changeit" alias="s1as" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as" type="bcfks"/>
                     <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
                         <wsc:wss-part-adapters>
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
@@ -79,7 +79,7 @@
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:encrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeystore" password="mulepassword" alias="muleserver" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeystore.bcfks" password="mulepassword" alias="muleserver" type="bcfks"/>
                     <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
                         <wsc:wss-part-adapters>
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
