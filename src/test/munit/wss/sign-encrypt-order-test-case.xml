@@ -72,7 +72,7 @@
                 </wsc:sign-security-strategy>
                 <wsc:timestamp-security-strategy timeToLive="30"/>
                 <wsc:encrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as" type="bcfks"/>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as1" type="bcfks"/>
                     <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
                         <wsc:wss-part-adapters>
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
