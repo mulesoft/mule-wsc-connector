@@ -57,6 +57,7 @@
                         </wsc:wss-part-adapters>
                     </wsc:encryption-algorithms-configuration>
                 </wsc:encrypt-security-strategy>
+                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
             </wsc:web-service-security>
         </wsc:connection>
     </wsc:config>
