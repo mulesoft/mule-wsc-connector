@@ -55,6 +55,7 @@
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
                         </wsc:wss-part-adapters>
                     </wsc:encryption-algorithms-configuration>
+                    <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
                 </wsc:encrypt-security-strategy>
             </wsc:web-service-security>
         </wsc:connection>
