@@ -48,6 +48,7 @@
     <wsc:config name="timestamp-config-fips">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
+                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
                 <wsc:timestamp-security-strategy timeToLive="30"/>
                 <wsc:encrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as1" type="bcfks"/>
@@ -57,7 +58,6 @@
                         </wsc:wss-part-adapters>
                     </wsc:encryption-algorithms-configuration>
                 </wsc:encrypt-security-strategy>
-                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
             </wsc:web-service-security>
         </wsc:connection>
     </wsc:config>

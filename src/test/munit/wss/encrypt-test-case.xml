@@ -48,6 +48,7 @@
     <wsc:config name="encrypt-config-fips">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
+                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
                 <wsc:encrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as1" type="bcfks"/>
                     <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
@@ -56,7 +57,6 @@
                         </wsc:wss-part-adapters>
                     </wsc:encryption-algorithms-configuration>
                 </wsc:encrypt-security-strategy>
-                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
             </wsc:web-service-security>
         </wsc:connection>
     </wsc:config>
