@@ -61,7 +61,6 @@
     <wsc:config name="sign-encrypt-config-fips">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}">
             <wsc:web-service-security>
-                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256">
@@ -71,6 +70,7 @@
                         </wsc:wss-parts>
                     </wsc:sign-algorithm-configuration>
                 </wsc:sign-security-strategy>
+                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
                 <wsc:timestamp-security-strategy timeToLive="30"/>
                 <wsc:encrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as1" type="bcfks"/>
