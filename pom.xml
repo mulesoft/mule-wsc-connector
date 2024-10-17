@@ -136,6 +136,18 @@
             <artifactId>spring-expression</artifactId>
             <version>${spring-expression.version}</version>
         </dependency>
+        
+        <dependency>
+            <groupId>org.apache.wss4j</groupId>
+            <artifactId>wss4j-ws-security-dom</artifactId>
+            <version>3.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <version>4.0.5</version>
+        </dependency>
 
         <!-- Common Dependencies -->
         <dependency>
@@ -612,6 +624,7 @@
                 </property>
             </activation>
             <properties>
+                <org.apache.xml.security.securerandom.algorithm>DRBG</org.apache.xml.security.securerandom.algorithm>
                 <env.config.name.WSS_Inbound>WSS_Inbound-fips</env.config.name.WSS_Inbound>
                 <env.config.name.username-config>username-config-fips</env.config.name.username-config>
                 <env.config.name.invalid-username-config>invalid-username-config-fips</env.config.name.invalid-username-config>
