@@ -56,7 +56,7 @@
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
 
         <!-- Plugin dependencies -->
-        <apache.santuario.xmlsec.version>2.3.4</apache.santuario.xmlsec.version>
+        <apache.santuario.xmlsec.version>3.0.4</apache.santuario.xmlsec.version>
         <org.slf4j.version>2.0.16</org.slf4j.version>
         <docker.maven.plugin.version>0.45.0</docker.maven.plugin.version>
         <jacoco.version>0.8.12</jacoco.version>
@@ -66,7 +66,6 @@
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
         <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
-        <mtf.javaopts></mtf.javaopts>
         <config.ref.name.WSS_Inbound>${env.config.name.WSS_Inbound}</config.ref.name.WSS_Inbound>
         <config.ref.name.username-config>${env.config.name.username-config}</config.ref.name.username-config>
         <config.ref.name.invalid-username-config>${env.config.name.invalid-username-config}</config.ref.name.invalid-username-config>
@@ -88,6 +87,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>${apache.santuario.xmlsec.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
             <version>${mule.version}</version>
@@ -101,6 +105,10 @@
                 <exclusion>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-expression</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
