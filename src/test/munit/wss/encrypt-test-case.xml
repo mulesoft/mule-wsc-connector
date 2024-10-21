@@ -48,10 +48,10 @@
     <wsc:config name="encrypt-config-fips">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
-                <wsc:username-token-security-strategy username="sa1s" password="changeit" addCreated="false" addNonce="false"/>
+                <wsc:username-token-security-strategy username="sa1s1" password="changeit" addCreated="false" addNonce="false"/>
                 <wsc:encrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as1" type="bcfks"/>
-                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_256_GCM" encryptionDigestAlgorithm="SHA256">
                         <wsc:wss-part-adapters>
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
                         </wsc:wss-part-adapters>
