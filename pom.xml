@@ -63,9 +63,10 @@
         <!-- Plugin properties -->
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <docker.skip>${skipTests}</docker.skip>
+        <docker.soapui.container.project.folder>soapui-prj</docker.soapui.container.project.folder>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
-        <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
+        <docker.soapui.container.project.home>${docker.soapui.container.user.home.path}/${docker.soapui.container.project.folder}/</docker.soapui.container.project.home>
         <config.ref.name.WSS_Inbound>${env.config.name.WSS_Inbound}</config.ref.name.WSS_Inbound>
         <config.ref.name.username-config>${env.config.name.username-config}</config.ref.name.username-config>
         <config.ref.name.invalid-username-config>${env.config.name.invalid-username-config}</config.ref.name.invalid-username-config>
@@ -316,14 +317,14 @@
                 <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/soapui-prj/**</exclude>
+                    <exclude>**/${docker.soapui.container.project.folder}/**</exclude>
                 </excludes>
             </testResource>
             <testResource>
                 <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/soapui-prj/**</include>
+                    <include>**/${docker.soapui.container.project.folder}/**</include>
                 </includes>
             </testResource>
         </testResources>
@@ -522,7 +523,7 @@
                 <docker.soapui.container.user.home.url>file:///C:/Users/Administrator
                 </docker.soapui.container.user.home.url>
                 <docker.soapui.container.user.home.path>C:/Users/Administrator</docker.soapui.container.user.home.path>
-                <docker.soapui.container.project.home>C:\Users\Administrator\soapui-prj\
+                <docker.soapui.container.project.home>C:\Users\Administrator\${docker.soapui.container.project.folder}\
                 </docker.soapui.container.project.home>
             </properties>
             <build>
