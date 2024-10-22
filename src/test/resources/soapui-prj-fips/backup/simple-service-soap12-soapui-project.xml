@@ -8,7 +8,7 @@
     <con:definitionCache type="TEXT" rootPart="${docker.soapui.container.user.home.url}/wsdl/simple-service.wsdl">
       <con:part>
         <con:url>${docker.soapui.container.user.home.url}/wsdl/simple-service.wsdl</con:url>
-        <con:content><![CDATA[<wsdl:definitions name="TestService" targetNamespace="http://service.soap.service.mule.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.soap.service.mule.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+        <con:content><![CDATA[<wsdl:definitions name="TestService" targetNamespace="http://service.soap.service.mule.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:tns="http://service.soap.service.mule.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/">
   <wsdl:types>
     <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://service.soap.service.mule.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="downloadAttachment" type="tns:downloadAttachment"/>
@@ -66,7 +66,7 @@
           <xs:element minOccurs="1" name="result" type="xs:string"/>
         </xs:sequence>
       </xs:complexType>
-      <xs:complexType name="differentNamespace">
+            <xs:complexType name="differentNamespace">
         <xs:sequence>
           <xs:element minOccurs="0" name="RequestBody" type="xs:string"/>
        </xs:sequence>
@@ -199,6 +199,12 @@
     <wsdl:message name="uploadAttachmentNoResultResponse">
     <wsdl:part element="tns:uploadAttachmentNoResultResponse" name="parameters"></wsdl:part>
   </wsdl:message>
+    <wsdl:message name="differentNamespace">
+    <wsdl:part element="tns:differentNamespace" name="parameters"></wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="differentNamespaceResponse">
+    <wsdl:part element="tns:differentNamespaceResponse" name="parameters"></wsdl:part>
+  </wsdl:message>
   <wsdl:message name="failResponse">
     <wsdl:part element="tns:failResponse" name="parameters"></wsdl:part>
   </wsdl:message>
@@ -219,12 +225,6 @@
   </wsdl:message>
     <wsdl:message name="uploadAttachmentNoResult">
     <wsdl:part element="tns:uploadAttachmentNoResult" name="parameters"></wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="differentNamespace">
-    <wsdl:part element="tns:differentNamespace" name="parameters"></wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="differentNamespaceResponse">
-    <wsdl:part element="tns:differentNamespaceResponse" name="parameters"></wsdl:part>
   </wsdl:message>
   <wsdl:message name="noParamsWithHeaderResponse">
     <wsdl:part element="tns:noParamsWithHeaderResponse" name="parameters"></wsdl:part>
@@ -388,7 +388,7 @@
         <soap:fault name="EchoException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="echoWithHeadersNoIndentation">
+        <wsdl:operation name="echoWithHeadersNoIndentation">
       <soap:operation soapAction="echoWithHeadersNoIndentation" style="document"/>
       <wsdl:input name="echoWithHeadersNoIndentation">
         <soap:header message="tns:echoWithHeadersNoIndentation" part="headerIn" use="literal"></soap:header>
@@ -477,7 +477,7 @@
     </con:definitionCache>
     <con:endpoints>
       <con:endpoint>http://localhost:1231/server</con:endpoint>
-      <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+      <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
     </con:endpoints>
     <con:operation id="91a11ce0-c247-459f-b697-84164e60bcbd" isOneWay="false" action="downloadAttachment" name="downloadAttachment" bindingOperationName="downloadAttachment" type="Request-Response" outputName="downloadAttachmentResponse" inputName="downloadAttachment" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
       <con:settings/>
@@ -488,7 +488,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@force_mtom">false</con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+        <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -506,12 +506,12 @@
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
         <con:wsrmConfig version="1.2"/>
       </con:call>
-      <con:call id="b2756c9b-7e86-453b-a528-10da04fdfef7" name="Request 2">
+      <con:call id="6685bfd6-973c-410d-8316-fbd57cb25aa5" name="Request 2">
         <con:settings>
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+        <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -536,7 +536,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+        <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:ser="http://service.soap.service.mule.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header><wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"><xenc:EncryptedKey Id="EK-950C8F80CC5AFE6906154887610767914" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#"><xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/><ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#"><wsse:SecurityTokenReference><ds:X509Data><ds:X509IssuerSerial><ds:X509IssuerName>CN=OLEKSIYS-W3T,OU=Sun Java System Application Server,O=Sun Microsystems,L=Santa Clara,ST=California,C=US</ds:X509IssuerName><ds:X509SerialNumber>1182300426</ds:X509SerialNumber></ds:X509IssuerSerial></ds:X509Data></wsse:SecurityTokenReference></ds:KeyInfo><xenc:CipherData><xenc:CipherValue>CLxhWibtIy0iLVZ+BJTkun0/iObDRGLu5DYmCvXyU4tEW1GY3dbOjkCIuCRTGeGS7isMLaFY/3k8FTxgymRuCPSCs57hlrrB2Ah4HKjLROymHP42tWuVRRRVG6alb3l7CsTHj+WVI3nbrJqODu3A85WXvXdXalNlLzsOze2qWZk=</xenc:CipherValue></xenc:CipherData><xenc:ReferenceList><xenc:DataReference URI="#ED-950C8F80CC5AFE6906154887610768015"/></xenc:ReferenceList></xenc:EncryptedKey></wsse:Security></soapenv:Header>
 	<soapenv:Body>
@@ -614,24 +614,24 @@
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoWithHeaders"/>
       </con:call>
     </con:operation>
-    <con:operation id="033543c6-50f7-4b0c-a4e5-3175d9964512" isOneWay="false" action="echoWithHeadersNoIndentation" name="echoWithHeadersNoIndentation" bindingOperationName="echoWithHeadersNoIndentation" type="Request-Response" outputName="echoWithHeadersNoIndentationResponse" inputName="echoWithHeadersNoIndentation" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+    <con:operation id="5d45be80-772b-48c5-aeba-5e01b4e2eaef" isOneWay="false" action="echoWithHeadersNoIndentation" name="echoWithHeadersNoIndentation" bindingOperationName="echoWithHeadersNoIndentation" type="Request-Response" outputName="echoWithHeadersNoIndentationResponse" inputName="echoWithHeadersNoIndentation" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
       <con:settings/>
-      <con:call id="d9d38f6b-d3ea-48b2-939d-853da77ac4d8" name="Request 1">
+      <con:call id="d824b4af-2260-402a-90dd-873d02f9906f" name="Request 1">
         <con:settings/>
         <con:encoding>UTF-8</con:encoding>
         <con:endpoint>http://localhost:1231/server</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
-                       <soapenv:Header>
-                          <ser:headerInOut>?</ser:headerInOut>
-                          <ser:headerIn>?</ser:headerIn>
-                       </soapenv:Header>
-                       <soapenv:Body>
-                          <ser:echoWithHeadersNoIndentation>
-                             <!--Optional:-->
-                             <text>?</text>
-                          </ser:echoWithHeadersNoIndentation>
-                       </soapenv:Body>
-                    </soapenv:Envelope>]]></con:request>
+   <soapenv:Header>
+      <ser:headerInOut>?</ser:headerInOut>
+      <ser:headerIn>?</ser:headerIn>
+   </soapenv:Header>
+   <soapenv:Body>
+      <ser:echoWithHeadersNoIndentation>
+         <!--Optional:-->
+         <text>?</text>
+      </ser:echoWithHeadersNoIndentation>
+   </soapenv:Body>
+</soapenv:Envelope>]]></con:request>
         <con:credentials>
           <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
           <con:authType>No Authorization</con:authType>
@@ -646,7 +646,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+        <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -673,7 +673,7 @@
           <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
         </con:settings>
         <con:encoding>UTF-8</con:encoding>
-        <con:endpoint>http://localhost:8080/SOAP11</con:endpoint>
+        <con:endpoint>http://localhost:8080/SOAP12</con:endpoint>
         <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -823,8 +823,34 @@
         <con:wsrmConfig version="1.2"/>
       </con:call>
     </con:operation>
+    <con:operation id="fa8435d2-3aa6-4dae-af76-e7bb53da37a7" isOneWay="false" action="differentNamespace" name="differentNamespace" bindingOperationName="differentNamespace" type="Request-Response" outputName="differentNamespaceResponse" inputName="differentNamespace" receivesAttachments="false" sendsAttachments="false" anonymous="optional">
+      <con:settings/>
+      <con:call id="285705e6-96cd-4b52-8b6a-42059f200c7f" name="Request 1">
+        <con:settings>
+          <con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting>
+        </con:settings>
+        <con:encoding>UTF-8</con:encoding>
+        <con:endpoint>http://localhost:1231/server</con:endpoint>
+        <con:request><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
+       <soapenv:Header/>
+       <soapenv:Body>
+          <ser:differentNamespace>
+             <attachment>cid:914072916446</attachment>
+          </ser:differentNamespace>
+       </soapenv:Body>
+    </soapenv:Envelope>]]></con:request>
+        <con:credentials>
+          <con:selectedAuthProfile>No Authorization</con:selectedAuthProfile>
+          <con:authType>No Authorization</con:authType>
+        </con:credentials>
+        <con:jmsConfig JMSDeliveryMode="PERSISTENT"/>
+        <con:jmsPropertyConfig/>
+        <con:wsaConfig mustUnderstand="NONE" version="200508" action="differentNamespace"/>
+        <con:wsrmConfig version="1.2"/>
+      </con:call>
+    </con:operation>
   </con:interface>
-  <con:mockService id="d371dd91-d827-4a9d-aec2-672dbd285a58" port="8080" path="/SOAP11" host="localhost" name="MUnitServiceMock" bindToHostOnly="false" docroot="" incomingWss="Incoming" outgoingWss="" dispatchResponseMessages="false">
+  <con:mockService id="d371dd91-d827-4a9d-aec2-672dbd285a58" port="8080" path="/SOAP12" host="localhost" name="MUnitServiceMock" bindToHostOnly="false" docroot="" incomingWss="Incoming" outgoingWss="" dispatchResponseMessages="false">
     <con:settings>
       <con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-action">false</con:setting>
       <con:setting id="com.eviware.soapui.impl.wsdl.mock.WsdlMockService@require-soap-version">false</con:setting>
@@ -905,7 +931,7 @@
         </con:attachment>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="downloadAttachment"/>
       </con:response>
-      <con:response name="Response NonAttachment" id="2796fd9e-5196-41bb-90b9-cd8a5a11f8e9" httpResponseStatus="200" encoding="UTF-8" dataSource="">
+      <con:response name="Response NonAttachment" id="2ffc67e2-bcf4-432d-b6af-8d301258c728" httpResponseStatus="200" encoding="UTF-8" dataSource="">
         <con:settings/>
         <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
@@ -920,14 +946,14 @@
         <con:query>
           <con:name>MTOM</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                    //con:downloadAttachment/fileName</con:query>
+                        //con:downloadAttachment/fileName</con:query>
           <con:match>attachment.txt</con:match>
           <con:response>Response MTOM</con:response>
         </con:query>
         <con:query>
           <con:name>NonAttachment</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                boolean(//con:downloadAttachment/fileName)</con:query>
+                    boolean(//con:downloadAttachment/fileName)</con:query>
           <con:match>false</con:match>
           <con:response>Response NonAttachment</con:response>
         </con:query>
@@ -990,7 +1016,7 @@
 </soapenv:Envelope>]]></con:responseContent>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/>
       </con:response>
-      <con:response name="encryptedAndTimestampResponse" id="61fc4e82-ae32-4ae9-860d-1c9c17718716" httpResponseStatus="200" encoding="UTF-8" outgoingWss="encryptedAndTimestamp" dataSource="">
+      <con:response name="encryptedAndTimestampResponse" id="1409a26b-f25d-432e-b719-653348cc02a3" httpResponseStatus="200" encoding="UTF-8" outgoingWss="encryptedAndTimestampResponse" dataSource="">
         <con:settings/>
         <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
@@ -1002,17 +1028,16 @@
 </soapenv:Envelope>]]></con:responseContent>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/>
       </con:response>
-      <con:response name="encryptedAndExpiredTimestampResponse" id="44ce3867-8004-4e3a-b9b8-67e3c21ba10e" httpResponseStatus="200" encoding="UTF-8" outgoingWss="" dataSource="">
+      <con:response name="encryptedAndExpiredTimestampResponse" id="8eb4fff5-06b8-4573-92e1-65fd4ee22d24" httpResponseStatus="200" encoding="UTF-8" outgoingWss="" dataSource="">
         <con:settings/>
-        <con:responseContent><![CDATA[<!-- This response is harcoded to be able to included and expired timestamp -->
-<soapenv:Envelope xmlns:ser="http://service.soap.service.mule.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+        <con:responseContent><![CDATA[<soapenv:Envelope xmlns:ser="http://service.soap.service.mule.org/" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
    <soapenv:Header>
       <wsse:Security xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
-         <wsu:Timestamp wsu:Id="TS-4586D22ED9169CDE65156280274990612">
-            <wsu:Created>2019-07-09T23:52:29.906Z</wsu:Created>
-            <wsu:Expires>2019-07-10T23:52:30.906Z</wsu:Expires>
+         <wsu:Timestamp wsu:Id="TS-EE50C8294DE714EA4F156280570131512">
+            <wsu:Created>2019-07-10T00:41:41.314Z</wsu:Created>
+            <wsu:Expires>2019-07-11T00:41:42.314Z</wsu:Expires>
          </wsu:Timestamp>
-         <xenc:EncryptedKey Id="EK-4586D22ED9169CDE65156280274990310" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+         <xenc:EncryptedKey Id="EK-EE50C8294DE714EA4F156280570131310" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
             <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p"/>
             <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
                <wsse:SecurityTokenReference>
@@ -1025,31 +1050,31 @@
                </wsse:SecurityTokenReference>
             </ds:KeyInfo>
             <xenc:CipherData>
-               <xenc:CipherValue>WgUb/WfzrXrhNv+8zs5TrDlOn807oiz26Kwe+6GU/N91JtMFprjXcku9mqQ2okBw/fCIyyI4aCRPgy52noh+/D/L10sLyjAqgz307tHtbT0En58qYRwSLKs8AEHDKnlYJGgJaR2FAXBqI/TUl51/SBZL9Poff1Sb2cUSV13Om0Q=</xenc:CipherValue>
+               <xenc:CipherValue>GYrQgYrTxXxURKSKdkxZLz/8yeHrGOtLhtM6Xjn6D+q74+wu3iEjsEGUZv8gxK3d5eByL8zxu+NhyQDYsvKnPmx4nHXE9hPSV096o6xCBdx4HJ/9mt+4XWs5n0mffJcHN5wZfCRKrhY5w1uqepRX8+NeP0EKDttXkwSAdDVoTU4=</xenc:CipherValue>
             </xenc:CipherData>
             <xenc:ReferenceList>
-               <xenc:DataReference URI="#ED-4586D22ED9169CDE65156280274990511"/>
+               <xenc:DataReference URI="#ED-EE50C8294DE714EA4F156280570131411"/>
             </xenc:ReferenceList>
          </xenc:EncryptedKey>
       </wsse:Security>
    </soapenv:Header>
    <soapenv:Body>
-      <xenc:EncryptedData Id="ED-4586D22ED9169CDE65156280274990511" Type="http://www.w3.org/2001/04/xmlenc#Content" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
+      <xenc:EncryptedData Id="ED-EE50C8294DE714EA4F156280570131411" Type="http://www.w3.org/2001/04/xmlenc#Content" xmlns:xenc="http://www.w3.org/2001/04/xmlenc#">
          <xenc:EncryptionMethod Algorithm="http://www.w3.org/2001/04/xmlenc#aes128-cbc"/>
          <ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
             <wsse:SecurityTokenReference wsse11:TokenType="http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey" xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd" xmlns:wsse11="http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd">
-               <wsse:Reference URI="#EK-4586D22ED9169CDE65156280274990310"/>
+               <wsse:Reference URI="#EK-EE50C8294DE714EA4F156280570131310"/>
             </wsse:SecurityTokenReference>
          </ds:KeyInfo>
          <xenc:CipherData>
-            <xenc:CipherValue>JbNWU/eydyCOcwM9AlQmWk3mK/MToKJMhPgYbmN/KwGa9Ek9oIcZ4Y+Ja+tvNTG26XNd+8/zPIZW1xtZrWaVUwOWMezj2IbSLvelbtOHETrJwJ8ELZiIx7OFIps+I83NdRsVlGWGkw9bV69tk06TqQ==</xenc:CipherValue>
+            <xenc:CipherValue>tXBIqNL9cteAi+nfquekIQiEbXr0/9mf1FNL623ldfD8e6ijyCa3GGb6fRnRD8+F4Hup6ezim1VCFN65cpAnDyqZF1nRO0LpfsiomC8NRJx6IbPtmiJnDKsgTzMNgtClFepv6+RTxAaeTLKqmyw2m/6FfLl/YKnRDl+daTmXHGg=</xenc:CipherValue>
          </xenc:CipherData>
       </xenc:EncryptedData>
    </soapenv:Body>
 </soapenv:Envelope>]]></con:responseContent>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/>
       </con:response>
-      <con:response name="latin2EncodedResponse" id="efe8b9ef-7584-4879-b720-7df16e2c5604" httpResponseStatus="200" encoding="ISO-8859-2" dataSource="">
+      <con:response name="latin2EncodedResponse" id="34751f4d-763d-4f0e-adf0-81c7ebd0df31" httpResponseStatus="200" encoding="ISO-8859-2" dataSource="">
         <con:settings/>
         <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
@@ -1068,7 +1093,7 @@
       <con:response name="ReturnPayloadResponse" id="0bb54567-fde9-4b95-b796-6b5e8568627f" httpResponseStatus="200" encoding="UTF-8" dataSource="">
         <con:settings/>
         <con:script>def hasDeclaration = mockRequest.getRequestContent().contains("&lt;?xml version")
-context.setProperty("hasDeclaration", hasDeclaration)</con:script>
+            context.setProperty("hasDeclaration", hasDeclaration)</con:script>
         <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ser="http://service.soap.service.mule.org/">
    <soapenv:Header/>
    <soapenv:Body>
@@ -1079,7 +1104,7 @@ context.setProperty("hasDeclaration", hasDeclaration)</con:script>
 </soapenv:Envelope>]]></con:responseContent>
         <con:wsaConfig mustUnderstand="NONE" version="200508" action="echoOperationCustomAction"/>
       </con:response>
-      <con:response name="TimestampValidateOrder" id="3e5a0b3e-cecc-4af6-bd48-b8b412f43827" httpResponseStatus="200" encoding="UTF-8" dataSource="">
+      <con:response name="TimestampValidateOrder" id="0ebdd17d-a0ec-4ca5-9c93-0d379e1a8b87" httpResponseStatus="200" encoding="UTF-8" dataSource="">
         <con:settings/>
         <con:script>import org.joda.time.DateTime
 import org.joda.time.format.ISODateTimeFormat
@@ -1130,28 +1155,28 @@ context.setProperty("isTimestamp", true)
         <con:query>
           <con:name>encryptedAndTimestamp</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                        //con:echo/text</con:query>
+                            //con:echo/text</con:query>
           <con:match>encryptedAndTimestamp</con:match>
           <con:response>encryptedAndTimestampResponse</con:response>
         </con:query>
         <con:query>
           <con:name>encryptedAndExpiredTimestamp</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                        //con:echo/text</con:query>
+                            //con:echo/text</con:query>
           <con:match>encryptedAndExpiredTimestamp</con:match>
           <con:response>encryptedAndExpiredTimestampResponse</con:response>
         </con:query>
         <con:query>
           <con:name>latin2Encoded</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                        //con:echo/text</con:query>
+                            //con:echo/text</con:query>
           <con:match>latin2Encoded</con:match>
           <con:response>latin2EncodedResponse</con:response>
         </con:query>
         <con:query>
           <con:name>returnPayload</con:name>
           <con:query>declare namespace con='http://service.soap.service.mule.org/'
-                        //con:echo/text</con:query>
+            //con:echo/text</con:query>
           <con:match>returnPayload</con:match>
           <con:response>ReturnPayloadResponse</con:response>
         </con:query>
@@ -1171,7 +1196,7 @@ context.setProperty("isTimestamp", true)
           <con:response>errorMethodResponse</con:response>
         </con:query>
       </con:dispatchConfig>
-      <con:response name="errorMethodResponse" id="38aa4760-aadb-4d64-a045-381060ca5593" httpResponseStatus="500" encoding="UTF-8" compressedBodyContent="aced00057372002f636f6d2e657669776172652e736f617075692e696d706c2e737570706f72742e436f6d7072657373656456616c7565000b8b02c748eeab0200035a000a636f6d707265737365644c000b636f6d7072657373696f6e74003d4c636f6d2f657669776172652f736f617075692f696d706c2f737570706f72742f436f6d7072657373656456616c756524436f6d7072657373696f6e3b5b0004646174617400025b427870007e72003b636f6d2e657669776172652e736f617075692e696d706c2e737570706f72742e436f6d7072657373656456616c756524436f6d7072657373696f6e00000000000000001200007872000e6a6176612e6c616e672e456e756d000000000000000012000078707400044e4f4e4570">
+      <con:response name="errorMethodResponse" id="690164ef-b9bd-40d1-b6db-0bb809d2a631" httpResponseStatus="500" encoding="UTF-8" compressedBodyContent="aced00057372002f636f6d2e657669776172652e736f617075692e696d706c2e737570706f72742e436f6d7072657373656456616c7565000b8b02c748eeab0200035a000a636f6d707265737365644c000b636f6d7072657373696f6e74003d4c636f6d2f657669776172652f736f617075692f696d706c2f737570706f72742f436f6d7072657373656456616c756524436f6d7072657373696f6e3b5b0004646174617400025b427870007e72003b636f6d2e657669776172652e736f617075692e696d706c2e737570706f72742e436f6d7072657373656456616c756524436f6d7072657373696f6e00000000000000001200007872000e6a6176612e6c616e672e456e756d000000000000000012000078707400044e4f4e4570">
         <con:settings/>
         <con:responseContent><![CDATA[<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" 
                   xmlns:ns="http://example.com/namespace">
@@ -1240,8 +1265,8 @@ context.setProperty("isTimestamp", true)
         <con:query>
           <con:name>MustUnderstand</con:name>
           <con:query>declare namespace wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
-            declare namespace soapenv="http://schemas.xmlsoap.org/soap/envelope/"
-            concat(//wsse:Security/@soapenv:mustUnderstand,//wsse:Security/@soapenv:actor)</con:query>
+            declare namespace soapenv="http://www.w3.org/2003/05/soap-envelope"
+            concat(//wsse:Security/@soapenv:mustUnderstand,//wsse:Security/@soapenv:role)</con:query>
           <con:match>customActor</con:match>
           <con:response>MustUnderstand</con:response>
         </con:query>
@@ -1270,13 +1295,13 @@ context.setProperty("isTimestamp", true)
       </con:response>
       <con:dispatchConfig/>
     </con:mockOperation>
-    <con:mockOperation name="echoWithHeadersNoIndentation" id="f5dfe876-88ff-4ccb-8491-fca5bb26b1e2" interface="TestServiceSoapBinding" operation="echoWithHeadersNoIndentation">
+    <con:mockOperation name="echoWithHeadersNoIndentation" id="473faf75-a505-4f06-8c82-9c249ea2c140" interface="TestServiceSoapBinding" operation="echoWithHeadersNoIndentation">
       <con:settings/>
       <con:defaultResponse>Response 1</con:defaultResponse>
       <con:dispatchStyle>SEQUENCE</con:dispatchStyle>
       <con:dispatchXPath/>
       <con:routeScript/>
-      <con:response name="Response 1" id="39c53106-f233-4b6f-9c3e-8b10f77213b4" httpResponseStatus="200" encoding="UTF-8" dataSource="">
+      <con:response name="Response 1" id="ca248d8f-253a-4427-9965-a7864bdc480b" httpResponseStatus="200" encoding="UTF-8" dataSource="">
         <con:settings/>
         <con:script>if (mockRequest.getRequestContent().contains('&lt;security>&lt;saml1:Assertion xmlns:saml1="urn:http://service.soap.service.mule.org">&lt;saml1:AuthenticationStatement/>&lt;/saml1:Assertion>&lt;/security>')) {
                     context.security = "SUCCESS";
@@ -1489,30 +1514,30 @@ context.setProperty("isTimestamp", true)
   <con:properties/>
   <con:wssContainer>
     <con:crypto>
-      <con:id>ssltest-keystore.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-keystore.jks</con:source>
+      <con:id>ssltest-keystore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-keystore.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
       <con:aliasPassword>changeit</con:aliasPassword>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/trustStore</con:source>
+      <con:id>trustStore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>ssltest-cacerts.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-cacerts.jks</con:source>
+      <con:id>ssltest-cacerts.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-cacerts.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
       <con:aliasPassword>changeit</con:aliasPassword>
     </con:crypto>
     <con:crypto>
-      <con:id>serverKeystore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/serverKeystore</con:source>
+      <con:id>serverKeystore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/serverKeystore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>KEYSTORE</con:type>
     </con:crypto>
@@ -1524,7 +1549,7 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
-      <con:decryptCrypto>ssltest-keystore.jks</con:decryptCrypto>
+      <con:decryptCrypto>ssltest-keystore.bcfks</con:decryptCrypto>
       <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
@@ -1532,7 +1557,7 @@ context.setProperty("isTimestamp", true)
       <con:name>EncryptedResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.jks</crypto>
+          <crypto>ssltest-keystore.bcfks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
@@ -1547,7 +1572,7 @@ context.setProperty("isTimestamp", true)
       <con:name>SignedResponse</con:name>
       <con:entry type="Signature" username="muleserver" password="mulepassword">
         <con:configuration>
-          <crypto>serverKeystore</crypto>
+          <crypto>serverKeystore.bcfks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <signatureAlgorithm/>
           <signatureCanonicalization/>
@@ -1568,10 +1593,10 @@ context.setProperty("isTimestamp", true)
       </con:entry>
     </con:outgoing>
     <con:outgoing>
-      <con:name>encryptedAndTimestamp</con:name>
+      <con:name>encryptedAndTimestampResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.jks</crypto>
+          <crypto>ssltest-keystore.bcfks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
