@@ -1489,50 +1489,50 @@ context.setProperty("isTimestamp", true)
   <con:properties/>
   <con:wssContainer>
     <con:crypto>
-      <con:id>ssltest-keystore.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-keystore.jks</con:source>
+      <con:id>ssltest-keystore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-keystore.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
       <con:aliasPassword>changeit</con:aliasPassword>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/trustStore</con:source>
+      <con:id>trustStore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>ssltest-cacerts.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-cacerts.jks</con:source>
+      <con:id>ssltest-cacerts.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-cacerts.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
       <con:aliasPassword>changeit</con:aliasPassword>
     </con:crypto>
     <con:crypto>
-      <con:id>serverKeystore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/serverKeystore</con:source>
+      <con:id>serverKeystore.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/serverKeystore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>KEYSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStoreWithoutMuleServerCertificate</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/trustStoreWithoutMuleServerCertificate</con:source>
+      <con:id>trustStoreWithoutMuleServerCertificate.bcfks</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
-      <con:decryptCrypto>ssltest-keystore.jks</con:decryptCrypto>
-      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
+      <con:decryptCrypto>ssltest-keystore.bcfks</con:decryptCrypto>
+      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate.bcfks</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
     <con:outgoing>
       <con:name>EncryptedResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.jks</crypto>
+          <crypto>ssltest-keystore.bcfks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
@@ -1571,7 +1571,7 @@ context.setProperty("isTimestamp", true)
       <con:name>encryptedAndTimestamp</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.jks</crypto>
+          <crypto>ssltest-keystore.bcfks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
