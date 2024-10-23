@@ -1,6 +1,7 @@
 FROM fbascheper/soapui-mockservice-runner
 
 COPY soapui-prj/* /home/soapui/soapui-prj/
+COPY soapui-prj-fips/* /home/soapui/soapui-prj-fips/
 COPY security/* /home/soapui/security/
 COPY wsdl/* /home/soapui/wsdl/
 
