@@ -622,7 +622,7 @@
                 </property>
             </activation>
             <properties>
-                <env.docker.soapui.container.project.folder>soapui-prj-fips</env.docker.soapui.container.project.folder>
+                <env.docker.soapui.container.project.folder>soapui-prj</env.docker.soapui.container.project.folder>
                 <org.apache.xml.security.securerandom.algorithm>DRBG</org.apache.xml.security.securerandom.algorithm>
                 <env.config.name.WSS_Inbound>WSS_Inbound-fips</env.config.name.WSS_Inbound>
                 <env.config.name.username-config>username-config-fips</env.config.name.username-config>
