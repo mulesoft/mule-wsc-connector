@@ -1515,7 +1515,7 @@ context.setProperty("isTimestamp", true)
   <con:wssContainer>
     <con:crypto>
       <con:id>ssltest-keystore.bcfks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-keystore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-keystore.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>BCFKS</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
@@ -1524,14 +1524,14 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>trustStore.bcfks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
       <con:id>ssltest-cacerts.bcfks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-cacerts.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-cacerts.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>BCFKS</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
@@ -1540,14 +1540,14 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>serverKeystore.bcfks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/serverKeystore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/serverKeystore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
       <con:id>trustStoreWithoutMuleServerCertificate.bcfks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStoreWithoutMuleServerCertificate.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
       <con:provider>BouncyCastle</con:provider>
