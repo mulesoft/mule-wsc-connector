@@ -1514,7 +1514,7 @@ context.setProperty("isTimestamp", true)
   <con:properties/>
   <con:wssContainer>
     <con:crypto>
-      <con:id>ssltest-keystore.bcfks</con:id>
+      <con:id>ssltest-keystore</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-keystore.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>BCFKS</con:type>
@@ -1523,14 +1523,14 @@ context.setProperty("isTimestamp", true)
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStore.bcfks</con:id>
+      <con:id>trustStore</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
-      <con:id>ssltest-cacerts.bcfks</con:id>
+      <con:id>ssltest-cacerts</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-cacerts.bcfks</con:source>
       <con:password>changeit</con:password>
       <con:type>BCFKS</con:type>
@@ -1539,14 +1539,14 @@ context.setProperty("isTimestamp", true)
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
-      <con:id>serverKeystore.bcfks</con:id>
+      <con:id>serverKeystore</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/bcfks/serverKeystore.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
       <con:provider>BouncyCastle</con:provider>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStoreWithoutMuleServerCertificate.bcfks</con:id>
+      <con:id>trustStoreWithoutMuleServerCertificate</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStoreWithoutMuleServerCertificate.bcfks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>BCFKS</con:type>
@@ -1554,15 +1554,15 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
-      <con:decryptCrypto>ssltest-keystore.bcfks</con:decryptCrypto>
-      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate.bcfks</con:signatureCrypto>
+      <con:decryptCrypto>ssltest-keystore</con:decryptCrypto>
+      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
     <con:outgoing>
       <con:name>EncryptedResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.bcfks</crypto>
+          <crypto>ssltest-keystore</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
@@ -1601,7 +1601,7 @@ context.setProperty("isTimestamp", true)
       <con:name>encryptedAndTimestampResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore.bcfks</crypto>
+          <crypto>ssltest-keystore</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
