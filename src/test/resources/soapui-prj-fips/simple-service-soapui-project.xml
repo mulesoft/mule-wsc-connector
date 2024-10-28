@@ -1490,7 +1490,7 @@ context.setProperty("isTimestamp", true)
   <con:wssContainer>
     <con:crypto>
       <con:id>ssltest-keystore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-keystore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-keystore.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
@@ -1498,13 +1498,13 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>trustStore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStore.jks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:crypto>
       <con:id>ssltest-cacerts</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/ssltest-cacerts.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-cacerts.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
@@ -1512,13 +1512,13 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>serverKeystore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/serverKeystore.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/serverKeystore</con:source>
       <con:password>mulepassword</con:password>
       <con:type>KEYSTORE</con:type>
     </con:crypto>
     <con:crypto>
       <con:id>trustStoreWithoutMuleServerCertificate</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/bcfks/trustStoreWithoutMuleServerCertificate.bcfks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.jks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
