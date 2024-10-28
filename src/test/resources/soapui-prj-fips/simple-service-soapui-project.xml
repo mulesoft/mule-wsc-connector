@@ -1489,7 +1489,7 @@ context.setProperty("isTimestamp", true)
   <con:properties/>
   <con:wssContainer>
     <con:crypto>
-      <con:id>ssltest-keystore</con:id>
+      <con:id>ssltest-keystore.jks</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-keystore.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
@@ -1497,13 +1497,13 @@ context.setProperty("isTimestamp", true)
       <con:aliasPassword>changeit</con:aliasPassword>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStore</con:id>
+      <con:id>trustStore.jks</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStore.jks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>ssltest-cacerts</con:id>
+      <con:id>ssltest-cacerts.jks</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-cacerts.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
@@ -1517,22 +1517,22 @@ context.setProperty("isTimestamp", true)
       <con:type>KEYSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStoreWithoutMuleServerCertificate</con:id>
+      <con:id>trustStoreWithoutMuleServerCertificate.jks</con:id>
       <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.jks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
-      <con:decryptCrypto>ssltest-keystore</con:decryptCrypto>
-      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
+      <con:decryptCrypto>ssltest-keystore.jks</con:decryptCrypto>
+      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate.jks</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
     <con:outgoing>
       <con:name>EncryptedResponse</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore</crypto>
+          <crypto>ssltest-keystore.jks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
@@ -1571,7 +1571,7 @@ context.setProperty("isTimestamp", true)
       <con:name>encryptedAndTimestamp</con:name>
       <con:entry type="Encryption" username="s1as" password="changeit">
         <con:configuration>
-          <crypto>ssltest-keystore</crypto>
+          <crypto>ssltest-keystore.jks</crypto>
           <keyIdentifierType>2</keyIdentifierType>
           <symmetricEncAlgorithm/>
           <encKeyTransport/>
