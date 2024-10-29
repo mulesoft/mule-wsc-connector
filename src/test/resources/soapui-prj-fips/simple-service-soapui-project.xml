@@ -1512,7 +1512,7 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>serverKeystore</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/serverKeystore</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/serverKeystore</con:source>
       <con:password>mulepassword</con:password>
       <con:type>KEYSTORE</con:type>
     </con:crypto>
