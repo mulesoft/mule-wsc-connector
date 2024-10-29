@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<con:soapui-project id="1313c24d-4adb-43b6-a085-3949d97a8d42" activeEnvironment="Default" name="simple-service" resourceRoot="" soapui-version="5.7.2" abortOnError="false" runType="SEQUENTIAL" encryptionMode="Not encrypted" projectVersion="" updated="3.54.0 2024-07-17T11:22:49Z" xmlns:con="http://eviware.com/soapui/config">
+<con:soapui-project id="1313c24d-4adb-43b6-a085-3949d97a8d42" activeEnvironment="Default environment" name="simple-service" resourceRoot="" soapui-version="5.7.1" abortOnError="false" runType="SEQUENTIAL" encryptionMode="Not encrypted" projectVersion="" updated="3.54.0 2024-07-17T11:22:49Z" xmlns:con="http://eviware.com/soapui/config">
   <con:settings>
     <con:setting id="ProjectSettings@hermesConfig">/Users/pangelani/.hermes</con:setting>
   </con:settings>
@@ -1542,15 +1542,15 @@ context.setProperty("isTimestamp", true)
       <con:type>KEYSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStoreWithoutMuleServerCertificate.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.jks</con:source>
+      <con:id>trustStoreWithoutMuleServerCertificate</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/trustStoreWithoutMuleServerCertificate</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
       <con:decryptCrypto>ssltest-keystore.jks</con:decryptCrypto>
-      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate.jks</con:signatureCrypto>
+      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
     <con:outgoing>

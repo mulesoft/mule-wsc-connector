@@ -1517,15 +1517,15 @@ context.setProperty("isTimestamp", true)
       <con:type>KEYSTORE</con:type>
     </con:crypto>
     <con:crypto>
-      <con:id>trustStoreWithoutMuleServerCertificate.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStoreWithoutMuleServerCertificate.jks</con:source>
+      <con:id>trustStoreWithoutMuleServerCertificate</con:id>
+      <con:source>${docker.soapui.container.user.home.path}/security/trustStoreWithoutMuleServerCertificate</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:incoming>
       <con:name>Incoming</con:name>
       <con:decryptCrypto>ssltest-keystore.jks</con:decryptCrypto>
-      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate.jks</con:signatureCrypto>
+      <con:signatureCrypto>trustStoreWithoutMuleServerCertificate</con:signatureCrypto>
       <con:decryptPassword>changeit</con:decryptPassword>
     </con:incoming>
     <con:outgoing>
