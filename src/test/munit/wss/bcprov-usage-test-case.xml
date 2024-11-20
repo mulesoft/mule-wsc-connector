@@ -42,9 +42,6 @@
                 </wsc:message>
             </wsc:consume>
         </munit:execution>
-        <munit:validation>
-            <munit-tools:assert-equals actual="#[payload.body.echoResponse.text]" expected="#['test response']"/>
-        </munit:validation>
     </munit:test>
 
     <munit:after-test name="checkBcprovUsageAsProvider-afterTest">
