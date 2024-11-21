@@ -28,12 +28,19 @@
     </wsc:config>
 
 <munit:before-test name="checkBcprovUsageAsProvider-beforeTest">
+    <set-variable variableName="sunProvider" value='#[java!java::security::Security::getProvider("SUN")]'/>
     <set-variable variableName="removeProvider" value='#[java!java::security::Security::removeProvider("SUN")]'/>
 </munit:before-test>
     <!-- Tests -->
 
-    <munit:test name="checkBcprovUsageAsProvider" description="Check if Bouncy Castle is automatically loaded as provider" expectedErrorDescription="Security processing failed">
+    <munit:test name="checkBcprovUsageAsProvider" description="Check if Bouncy Castle is automatically loaded as provider" expectedErrorDescription="java.lang.InternalError: internal error: SHA-1 not available">
         <munit:execution>
+            <flow-ref name="checkBcprovUsageAsProviderFlow"/>
+        </munit:execution>
+    </munit:test>
+
+    <flow name="checkBcprovUsageAsProviderFlow">
+        <try>
             <set-variable variableName="text" value="encryptedRequest" />
             <flow-ref name="buildEchoRequest" />
             <wsc:consume config-ref="bcprov-usage-encrypt-config" operation="echo">
@@ -41,11 +48,16 @@
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
             </wsc:consume>
-        </munit:execution>
-    </munit:test>
+        </try>
+        <error-handler>
+            <!-- Java 9+ error messages are different, transform the Java 8 message to be validated -->
+            <on-error-propagate logException="true" when="error.cause.message contains('Security processing failed')">
+                <raise-error type="MULE:SECURITY" description="java.lang.InternalError: internal error: SHA-1 not available"/>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
 
     <munit:after-test name="checkBcprovUsageAsProvider-afterTest">
-        <set-variable variableName="sunProvider" value="#[java!sun::security::provider::Sun::new()]"/>
         <set-variable variableName="addProvider" value='#[java!java::security::Security::addProvider(vars.sunProvider)]'/>
     </munit:after-test>
 </mule>
