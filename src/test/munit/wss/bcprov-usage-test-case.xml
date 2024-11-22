@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:wsc="http://www.mulesoft.org/schema/mule/wsc"
+      xmlns:munit="http://www.mulesoft.org/schema/mule/munit"
+      xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+      xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:mule="http://www.mulesoft.org/schema/mule/core"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+      http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd
+      http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+      http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
+
+    <munit:config name="bcprov-usage-test-case"/>
+    <!-- Configs -->
+
+    <wsc:config name="bcprov-usage-encrypt-config">
+        <wsc:connection wsdlLocation="http://localhost:${WS_SOAP12_PORT}/SOAP12/?wsdl" service="TestService" port="TestPort" address="http://localhost:${WS_SOAP12_PORT}/SOAP12/">
+            <wsc:web-service-security>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/ssltest-cacerts.p12" password="changeit" alias="s1as" type="pkcs12"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+<munit:before-test name="checkBcprovUsageAsProvider-beforeTest">
+    <set-variable variableName="sunProvider" value='#[java!java::security::Security::getProvider("SUN")]'/>
+    <set-variable variableName="removeProvider" value='#[java!java::security::Security::removeProvider("SUN")]'/>
+</munit:before-test>
+    <!-- Tests -->
+
+    <munit:test name="checkBcprovUsageAsProvider" description="Check if Bouncy Castle is automatically loaded as provider" expectedErrorDescription="java.lang.InternalError: internal error: SHA-1 not available">
+        <munit:execution>
+            <flow-ref name="checkBcprovUsageAsProviderFlow"/>
+        </munit:execution>
+    </munit:test>
+
+    <flow name="checkBcprovUsageAsProviderFlow">
+        <try>
+            <set-variable variableName="text" value="encryptedRequest" />
+            <flow-ref name="buildEchoRequest" />
+            <wsc:consume config-ref="bcprov-usage-encrypt-config" operation="echo">
+                <wsc:message>
+                    <wsc:body>#[payload]</wsc:body>
+                </wsc:message>
+            </wsc:consume>
+        </try>
+        <error-handler>
+            <!-- Java 9+ error messages are different, transform the Java 8 message to be validated -->
+            <on-error-propagate logException="true" when="error.cause.message contains('Security processing failed')">
+                <raise-error type="MULE:SECURITY" description="java.lang.InternalError: internal error: SHA-1 not available"/>
+            </on-error-propagate>
+        </error-handler>
+    </flow>
+
+    <munit:after-test name="checkBcprovUsageAsProvider-afterTest">
+        <set-variable variableName="addProvider" value='#[java!java::security::Security::addProvider(vars.sunProvider)]'/>
+    </munit:after-test>
+</mule>
