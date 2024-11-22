@@ -27,7 +27,7 @@
         <soap.engine.version>1.10.0-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.4.9</wsdl.parser.version>
         <!-- core dependencies externals-->
-        <commons.lang.version>3.16.0</commons.lang.version>
+        <commons.lang.version>3.17.0</commons.lang.version>
         <spring-expression.version>5.3.39</spring-expression.version>
         <jakarta.xml.soap-api>2.0.1</jakarta.xml.soap-api>
         <saaj-impl.version>1.5.3</saaj-impl.version>
