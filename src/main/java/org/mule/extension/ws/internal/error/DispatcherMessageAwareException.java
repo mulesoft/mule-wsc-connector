@@ -20,12 +20,25 @@ public class DispatcherMessageAwareException extends ModuleException implements 
   private final Message msg;
 
   public DispatcherMessageAwareException(DispatcherException exception) {
-    super(nonNull(exception.getCause()) ? exception.getCause().getMessage() : exception.getMessage(), CANNOT_DISPATCH, exception);
-    this.msg = Message.builder().value(exception).build();
+    super(exception.getMessage(), CANNOT_DISPATCH, exception);
+    Throwable rootCause = findRootCause(exception);
+    if (rootCause instanceof ErrorMessageAwareException) {
+      this.msg = ((ErrorMessageAwareException) rootCause).getErrorMessage();
+    } else {
+      this.msg = Message.builder().value(exception.getMessage()).build();
+    }
   }
 
   @Override
   public Message getErrorMessage() {
     return msg;
+  }
+
+  private Throwable findRootCause(Throwable throwable) {
+    Throwable cause = throwable;
+    while (cause != null && cause.getCause() != null) {
+      cause = cause.getCause();
+    }
+    return cause;
   }
 }
