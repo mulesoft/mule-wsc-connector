@@ -45,12 +45,42 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="encrypt-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-cacerts.bcfks" password="changeit" alias="s1as" type="bcfks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_256_GCM" encryptionDigestAlgorithm="SHA256">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <wsc:config name="invalid-encrypt-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:encrypt-security-strategy>
-                    <wsc:key-store-configuration keyStorePath="security/serverKeystore" password="mulepassword" alias="muleserver" type="jks"/>
+                    <wsc:key-store-configuration keyStorePath="security/serverKeyStore" password="mulepassword" alias="muleserver" type="jks"/>
                     <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_128" encryptionDigestAlgorithm="SHA1">
+                        <wsc:wss-part-adapters>
+                            <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
+                        </wsc:wss-part-adapters>
+                    </wsc:encryption-algorithms-configuration>
+                </wsc:encrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="invalid-encrypt-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:encrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/serverKeyStore.bcfks" password="mulepassword" alias="muleserver" type="bcfks"/>
+                    <wsc:encryption-algorithms-configuration encryptionSymAlgorithm="AES_256_GCM" encryptionDigestAlgorithm="SHA256">
                         <wsc:wss-part-adapters>
                             <wsc:wss-part namespace="http://service.soap.service.mule.org/" localname="echo" encode="CONTENT"/>
                         </wsc:wss-part-adapters>
@@ -67,7 +97,7 @@
         <munit:execution>
             <set-variable variableName="text" value="encryptedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="encrypt-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.encrypt-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -82,7 +112,7 @@
         <munit:execution>
             <set-variable variableName="text" value="invalidEncryptedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="invalid-encrypt-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.invalid-encrypt-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>

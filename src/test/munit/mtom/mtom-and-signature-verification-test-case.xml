@@ -16,7 +16,7 @@
     <munit:config name="mtom-and-signature-verification-test-case.xml"/>
 
     <!-- Configs -->
-    <wsc:config name="sign-config">
+    <wsc:config name="sign-mtom-config">
         <wsc:connection wsdlLocation="http://localhost:${WS_SOAP11_PORT}/SOAP11/?wsdl"
                         service="TestService"
                         port="TestPort"
@@ -25,6 +25,21 @@
             <wsc:web-service-security>
                 <wsc:sign-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/clientKeystore" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="jks"/>
+                    <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
+                </wsc:sign-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="sign-mtom-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${WS_SOAP11_PORT}/SOAP11/?wsdl"
+                        service="TestService"
+                        port="TestPort"
+                        mtomEnabled="true"
+                        address="http://localhost:${http.port}/validateSignature/">
+            <wsc:web-service-security>
+                <wsc:sign-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/clientKeyStore.bcfks" keyPassword="mulepassword" password="mulepassword" alias="muleclient" type="bcfks"/>
                     <wsc:sign-algorithm-configuration signatureDigestAlgorithm="SHA256"/>
                 </wsc:sign-security-strategy>
             </wsc:web-service-security>
@@ -41,6 +56,12 @@
         </wss:verify-signature-config>
     </wss:inbound-config>
 
+    <wss:inbound-config name="WSS_Inbound-fips">
+        <wss:verify-signature-config >
+            <wss:truststore-config path="security/bcfks/trustStore.bcfks" password="mulepassword" type="bcfks"/>
+        </wss:verify-signature-config>
+    </wss:inbound-config>
+
     <!-- Tests -->
     <munit:test name="signRequestWithMTOMEnabled"
                 description="Signing message with an attachment with MTOM enable and verify the server is be able to verify the signature"
@@ -51,7 +72,7 @@
         <munit:execution>
             <set-variable variableName="text" value="signedRequest" />
             <flow-ref name="buildEchoRequest" />
-            <wsc:consume config-ref="sign-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.sign-mtom-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -65,7 +86,7 @@
     <flow name="validateSignatureFlow">
         <http:listener config-ref="HTTP_Listener_config" path="/validateSignature"/>
         <set-variable value="#[payload]" variableName="savePayload"/>
-        <wss:validate-wss version="SOAP_11" config-ref="WSS_Inbound"/>
+        <wss:validate-wss version="SOAP_11" config-ref="${config.ref.name.WSS_Inbound}"/>
         <set-payload value="#[vars.savePayload]"/>
     </flow>
 
