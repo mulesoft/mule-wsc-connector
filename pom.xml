@@ -427,6 +427,7 @@
                         <image>
                             <alias>ws-simple</alias>
                             <run>
+                                <platform>linux/amd64</platform>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
                                     <PROJECT>${docker.soapui.container.project.home}simple-service-soapui-project.xml
@@ -449,6 +450,7 @@
                         <image>
                             <alias>ws-simple-soap12</alias>
                             <run>
+                                <platform>linux/amd64</platform>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
                                     <PROJECT>
