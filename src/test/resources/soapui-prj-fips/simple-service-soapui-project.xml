@@ -1490,7 +1490,7 @@ context.setProperty("isTimestamp", true)
   <con:wssContainer>
     <con:crypto>
       <con:id>ssltest-keystore.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-keystore.jks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-keystore.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>
@@ -1498,13 +1498,13 @@ context.setProperty("isTimestamp", true)
     </con:crypto>
     <con:crypto>
       <con:id>trustStore.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/trustStore.jks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/trustStore.jks</con:source>
       <con:password>mulepassword</con:password>
       <con:type>TRUSTSTORE</con:type>
     </con:crypto>
     <con:crypto>
       <con:id>ssltest-cacerts.jks</con:id>
-      <con:source>${docker.soapui.container.user.home.path}/security/fips/ssltest-cacerts.jks</con:source>
+      <con:source>${docker.soapui.container.user.home.path}/security/ssltest-cacerts.jks</con:source>
       <con:password>changeit</con:password>
       <con:type>KEYSTORE</con:type>
       <con:defaultAlias>s1as</con:defaultAlias>

@@ -70,10 +70,10 @@
     <con:setting id="SSLSettings@keyStorePassword"/>
     <con:setting id="SSLSettings@enableMockSSL">true</con:setting>
     <con:setting id="SSLSettings@mockPort">8443</con:setting>
-    <con:setting id="SSLSettings@mockKeyStore">${docker.soapui.container.user.home.path}/security/fips/serverKeystore</con:setting>
+    <con:setting id="SSLSettings@mockKeyStore">${docker.soapui.container.user.home.path}/security/serverKeystore</con:setting>
     <con:setting id="SSLSettings@mockPassword">mulepassword</con:setting>
     <con:setting id="SSLSettings@mockKeyStorePassword">mulepassword</con:setting>
-    <con:setting id="SSLSettings@mockTrustStore">${docker.soapui.container.user.home.path}/security/fips/serverKeystore</con:setting>
+    <con:setting id="SSLSettings@mockTrustStore">${docker.soapui.container.user.home.path}/security/serverKeystore</con:setting>
     <con:setting id="SSLSettings@mockTrustStorePassword">mulepassword</con:setting>
     <con:setting id="SSLSettings@needClientAuthentication">false</con:setting>
     <con:setting id="WsdlSettings@xml-generation-type-example-value">false</con:setting>
