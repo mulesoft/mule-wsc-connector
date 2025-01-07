@@ -27,12 +27,6 @@
         </wsc:connection>
     </wsc:config>
 
-<munit:before-test name="checkBcprovUsageAsProvider-beforeTest">
-    <set-variable variableName="sunProvider" value='#[java!java::security::Security::getProvider("SUN")]'/>
-    <set-variable variableName="removeProvider" value='#[java!java::security::Security::removeProvider("SUN")]'/>
-</munit:before-test>
-    <!-- Tests -->
-
     <munit:test name="checkBcprovUsageAsProvider" description="Check if Bouncy Castle is automatically loaded as provider" expectedErrorDescription="java.lang.InternalError: internal error: SHA-1 not available">
         <munit:execution>
             <flow-ref name="checkBcprovUsageAsProviderFlow"/>
@@ -56,8 +50,4 @@
             </on-error-propagate>
         </error-handler>
     </flow>
-
-    <munit:after-test name="checkBcprovUsageAsProvider-afterTest">
-        <set-variable variableName="addProvider" value='#[java!java::security::Security::addProvider(vars.sunProvider)]'/>
-    </munit:after-test>
 </mule>
