@@ -51,7 +51,7 @@
         </try>
         <error-handler>
             <!-- Java 9+ error messages are different, transform the Java 8 message to be validated -->
-            <on-error-propagate logException="true" when="error.description contains('Security processing failed')">
+            <on-error-propagate logException="true" when="error.cause.message contains('Security processing failed')">
                 <raise-error type="MULE:SECURITY" description="java.lang.InternalError: internal error: SHA-1 not available"/>
             </on-error-propagate>
         </error-handler>
