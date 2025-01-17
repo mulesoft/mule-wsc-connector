@@ -39,7 +39,6 @@
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
-        <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
         <mule.wss.module.version>1.2.2</mule.wss.module.version>
         <easy-random-core>4.3.0</easy-random-core>
@@ -251,12 +250,6 @@
                     <artifactId>bcprov-jdk15on</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk18on</artifactId>
-            <version>${bcprov-jdk18on.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -625,7 +618,6 @@
             </activation>
             <properties>
                 <env.docker.soapui.container.project.folder>soapui-prj-fips</env.docker.soapui.container.project.folder>
-                <org.apache.xml.security.securerandom.algorithm>DRBG</org.apache.xml.security.securerandom.algorithm>
                 <env.config.name.WSS_Inbound>WSS_Inbound-fips</env.config.name.WSS_Inbound>
                 <env.config.name.username-config>username-config-fips</env.config.name.username-config>
                 <env.config.name.invalid-username-config>invalid-username-config-fips</env.config.name.invalid-username-config>
