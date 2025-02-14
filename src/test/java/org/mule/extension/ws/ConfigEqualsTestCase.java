@@ -10,10 +10,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
 import org.junit.Test;
+import org.mule.extension.ws.api.WebServiceSecurity;
+import org.mule.extension.ws.api.security.*;
 import org.mule.extension.ws.api.transport.CustomHttpTransportConfiguration;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
 import org.mule.extension.ws.api.transport.DefaultHttpTransportConfiguration;
@@ -76,4 +79,44 @@ public class ConfigEqualsTestCase {
     }
   }
 
+  @Test
+  public void testWebServiceSecurityEquals() {
+    WebServiceSecurity webServiceSecurity = new WebServiceSecurity();
+    WebServiceSecurity anotherInstance = new WebServiceSecurity();
+    WssSignSecurityStrategyAdapter mockSignSecurityStrategy = mock(WssSignSecurityStrategyAdapter.class);
+    WssVerifySignatureSecurityStrategyAdapter mockVerifySignatureSecurityStrategy =
+        mock(WssVerifySignatureSecurityStrategyAdapter.class);
+    WssUsernameTokenSecurityStrategyAdapter mockUsernameTokenSecurityStrategy =
+        mock(WssUsernameTokenSecurityStrategyAdapter.class);
+    WssTimestampSecurityStrategyAdapter mockTimestampSecurityStrategy = mock(WssTimestampSecurityStrategyAdapter.class);
+    WssDecryptSecurityStrategyAdapter mockDecryptSecurityStrategy = mock(WssDecryptSecurityStrategyAdapter.class);
+    WssEncryptSecurityStrategyAdapter mockEncryptSecurityStrategy = mock(WssEncryptSecurityStrategyAdapter.class);
+    WssIncomingTimestampSecurityStrategyAdapter mockIncomingTimestampSecurityStrategy =
+        mock(WssIncomingTimestampSecurityStrategyAdapter.class);
+
+    webServiceSecurity.setSignSecurityStrategy(mockSignSecurityStrategy);
+    webServiceSecurity.setVerifySignatureSecurityStrategy(mockVerifySignatureSecurityStrategy);
+    webServiceSecurity.setUsernameTokenSecurityStrategy(mockUsernameTokenSecurityStrategy);
+    webServiceSecurity.setTimestampSecurityStrategy(mockTimestampSecurityStrategy);
+    webServiceSecurity.setDecryptSecurityStrategy(mockDecryptSecurityStrategy);
+    webServiceSecurity.setEncryptSecurityStrategy(mockEncryptSecurityStrategy);
+    webServiceSecurity.setIncomingTimestampSecurityStrategy(mockIncomingTimestampSecurityStrategy);
+    webServiceSecurity.setActor("http://example.com");
+    webServiceSecurity.setMustUnderstand(true);
+    anotherInstance.setSignSecurityStrategy(mockSignSecurityStrategy);
+    anotherInstance.setVerifySignatureSecurityStrategy(mockVerifySignatureSecurityStrategy);
+    anotherInstance.setUsernameTokenSecurityStrategy(mockUsernameTokenSecurityStrategy);
+    anotherInstance.setTimestampSecurityStrategy(mockTimestampSecurityStrategy);
+    anotherInstance.setDecryptSecurityStrategy(mockDecryptSecurityStrategy);
+    anotherInstance.setEncryptSecurityStrategy(mockEncryptSecurityStrategy);
+    anotherInstance.setIncomingTimestampSecurityStrategy(mockIncomingTimestampSecurityStrategy);
+    anotherInstance.setActor("http://example.com");
+    anotherInstance.setMustUnderstand(true);
+
+    assertTrue(webServiceSecurity.equals(anotherInstance));
+    assertEquals(webServiceSecurity.hashCode(), anotherInstance.hashCode());
+
+    anotherInstance.setActor("http://changed.com");
+    assertNotEquals(webServiceSecurity, anotherInstance);
+  }
 }
