@@ -32,6 +32,17 @@ public class CursorStreamWithProviderTest {
   }
 
   @Test
+  public void testCloseWithException() {
+    try {
+      doThrow(new IOException("Stream close error")).when(mockCursorStreamDelegate).close();
+      cursorStreamWithProvider.close();
+      fail("Expected IOException was not thrown");
+    } catch (IOException e) {
+      assertEquals("Stream close error", e.getMessage());
+    }
+  }
+
+  @Test
   public void testReadByteArray() throws IOException {
     byte[] buffer = new byte[10];
     when(mockCursorStreamDelegate.read(buffer)).thenReturn(5);
@@ -150,5 +161,31 @@ public class CursorStreamWithProviderTest {
 
     assertSame(mockCursorProvider, cursorStreamWithProvider.getProvider());
     verify(mockCursorStreamDelegate).getProvider();
+  }
+
+  @Test
+  public void testMark_NullCursorStream_ThrowsException() {
+    try {
+      CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
+      cursorStreamWithProvider.mark(10); // Attempt to mark with null delegate
+      fail("Expected NullPointerException, but no exception was thrown.");
+    } catch (NullPointerException e) {
+      //Expected exception thrown
+    } catch (Exception e) {
+      fail("Unexpected IOException thrown.");
+    }
+  }
+
+  @Test
+  public void testSkip_NullCursorStream_ThrowsException() {
+    try {
+      CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
+      cursorStreamWithProvider.skip(5); // Attempt to skip with null delegate
+      fail("Expected NullPointerException, but no exception was thrown.");
+    } catch (NullPointerException e) {
+      //Expected exception thrown
+    } catch (IOException e) {
+      fail("Unexpected IOException thrown.");
+    }
   }
 }

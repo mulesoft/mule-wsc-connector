@@ -117,6 +117,6 @@ public class ConfigEqualsTestCase {
     assertEquals(webServiceSecurity.hashCode(), anotherInstance.hashCode());
 
     anotherInstance.setActor("http://changed.com");
-    assertNotEquals(webServiceSecurity, anotherInstance);
+    assertNotEquals(webServiceSecurity.hashCode(), anotherInstance.hashCode());
   }
 }
