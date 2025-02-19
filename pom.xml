@@ -39,7 +39,6 @@
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
-        <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
         <mule.wss.module.version>1.2.2</mule.wss.module.version>
         <easy-random-core>4.3.0</easy-random-core>
@@ -56,19 +55,42 @@
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
 
         <!-- Plugin dependencies -->
-        <apache.santuario.xmlsec.version>2.3.4</apache.santuario.xmlsec.version>
+        <apache.santuario.xmlsec.version>3.0.4</apache.santuario.xmlsec.version>
         <org.slf4j.version>2.0.16</org.slf4j.version>
         <docker.maven.plugin.version>0.45.0</docker.maven.plugin.version>
         <jacoco.version>0.8.12</jacoco.version>
         <!-- Plugin properties -->
         <formatterConfigPath>formatter.xml</formatterConfigPath>
         <docker.skip>${skipTests}</docker.skip>
+        <docker.soapui.container.project.folder>${env.docker.soapui.container.project.folder}</docker.soapui.container.project.folder>
         <docker.soapui.container.user.home.url>file:/home/soapui</docker.soapui.container.user.home.url>
         <docker.soapui.container.user.home.path>/home/soapui</docker.soapui.container.user.home.path>
-        <docker.soapui.container.project.home>/home/soapui/soapui-prj/</docker.soapui.container.project.home>
+        <docker.soapui.container.project.home>${docker.soapui.container.user.home.path}/${docker.soapui.container.project.folder}/</docker.soapui.container.project.home>
+        <config.ref.name.WSS_Inbound>${env.config.name.WSS_Inbound}</config.ref.name.WSS_Inbound>
+        <config.ref.name.username-config>${env.config.name.username-config}</config.ref.name.username-config>
+        <config.ref.name.invalid-username-config>${env.config.name.invalid-username-config}</config.ref.name.invalid-username-config>
+        <config.ref.name.verify-config>${env.config.name.verify-config}</config.ref.name.verify-config>
+        <config.ref.name.sign-config>${env.config.name.sign-config}</config.ref.name.sign-config>
+        <config.ref.name.invalid-sign-config>${env.config.name.invalid-sign-config}</config.ref.name.invalid-sign-config>
+        <config.ref.name.sign-mtom-config>${env.config.name.sign-mtom-config}</config.ref.name.sign-mtom-config>
+        <config.ref.name.sign-encrypt-config>${env.config.name.sign-encrypt-config}</config.ref.name.sign-encrypt-config>
+        <config.ref.name.encrypt-config>${env.config.name.encrypt-config}</config.ref.name.encrypt-config>
+        <config.ref.name.invalid-encrypt-config>${env.config.name.invalid-encrypt-config}</config.ref.name.invalid-encrypt-config>
+        <config.ref.name.decrypt-config>${env.config.name.decrypt-config}</config.ref.name.decrypt-config>
+        <config.ref.name.timestamp-config>${env.config.name.timestamp-config}</config.ref.name.timestamp-config>
+        <config.ref.name.security-header-order-default-config>${env.config.name.security-header-order-default-config}</config.ref.name.security-header-order-default-config>
+        <config.ref.name.security-header-timestamp-first-config>${env.config.name.security-header-timestamp-first-config}</config.ref.name.security-header-timestamp-first-config>
+        <config.ref.name.security-header-timestamp-last-config>${env.config.name.security-header-timestamp-last-config}</config.ref.name.security-header-timestamp-last-config>
+        <config.ref.name.decryptAndTimestampOnResponse-config>${env.config.name.decryptAndTimestampOnResponse-config}</config.ref.name.decryptAndTimestampOnResponse-config>
+        <config.ref.name.decryptOnResponse-config>${env.config.name.decryptOnResponse-config}</config.ref.name.decryptOnResponse-config>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>org.apache.santuario</groupId>
+            <artifactId>xmlsec</artifactId>
+            <version>${apache.santuario.xmlsec.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.mule.runtime</groupId>
             <artifactId>mule-service-http-api</artifactId>
@@ -83,6 +105,10 @@
                 <exclusion>
                     <groupId>org.springframework</groupId>
                     <artifactId>spring-expression</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.santuario</groupId>
+                    <artifactId>xmlsec</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -125,21 +151,21 @@
             <artifactId>commons-lang3</artifactId>
             <version>${commons.lang.version}</version>
         </dependency>
-	<dependency>
-    	    <groupId>jakarta.xml.soap</groupId>
-    	    <artifactId>jakarta.xml.soap-api</artifactId>
-    	    <version>${jakarta.xml.soap-api}</version>
-	</dependency>
-    <dependency>
-        <groupId>com.sun.xml.messaging.saaj</groupId>
-        <artifactId>saaj-impl</artifactId>
-        <version>${saaj-impl.version}</version>
-    </dependency>
-    <dependency>
-        <groupId>javax.xml.soap</groupId>
-        <artifactId>saaj-api</artifactId>
-        <version>${saaj-api}</version>
-    </dependency>
+        <dependency>
+            <groupId>jakarta.xml.soap</groupId>
+            <artifactId>jakarta.xml.soap-api</artifactId>
+            <version>${jakarta.xml.soap-api}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.messaging.saaj</groupId>
+            <artifactId>saaj-impl</artifactId>
+            <version>${saaj-impl.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.soap</groupId>
+            <artifactId>saaj-api</artifactId>
+            <version>${saaj-api}</version>
+        </dependency>
 
         <!-- Test Dependencies -->
 
@@ -227,12 +253,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk18on</artifactId>
-            <version>${bcprov-jdk18on.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
             <version>${mule.file.connector.version}</version>
@@ -290,14 +310,14 @@
                 <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>false</filtering>
                 <excludes>
-                    <exclude>**/soapui-prj/**</exclude>
+                    <exclude>**/${docker.soapui.container.project.folder}/**</exclude>
                 </excludes>
             </testResource>
             <testResource>
                 <directory>${project.basedir}/src/test/resources</directory>
                 <filtering>true</filtering>
                 <includes>
-                    <include>**/soapui-prj/**</include>
+                    <include>**/${docker.soapui.container.project.folder}/**</include>
                 </includes>
             </testResource>
         </testResources>
@@ -400,10 +420,13 @@
                         <image>
                             <alias>ws-simple</alias>
                             <run>
+                                <platform>linux/amd64</platform>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
-                                    <PROJECT>${docker.soapui.container.project.home}simple-service-soapui-project.xml</PROJECT>
-                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml</PROJECT_SETTINGS>
+                                    <PROJECT>${docker.soapui.container.project.home}simple-service-soapui-project.xml
+                                    </PROJECT>
+                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml
+                                    </PROJECT_SETTINGS>
                                 </env>
                                 <ports>
                                     <port>soap.host.port:8080</port>
@@ -420,10 +443,14 @@
                         <image>
                             <alias>ws-simple-soap12</alias>
                             <run>
+                                <platform>linux/amd64</platform>
                                 <env>
                                     <MOCK_SERVICE_NAME>MUnitServiceMock</MOCK_SERVICE_NAME>
-                                    <PROJECT>${docker.soapui.container.project.home}simple-service-soap12-soapui-project.xml</PROJECT>
-                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml</PROJECT_SETTINGS>
+                                    <PROJECT>
+                                        ${docker.soapui.container.project.home}simple-service-soap12-soapui-project.xml
+                                    </PROJECT>
+                                    <PROJECT_SETTINGS>${docker.soapui.container.project.home}soapui-settings.xml
+                                    </PROJECT_SETTINGS>
                                 </env>
                                 <ports>
                                     <port>soap12.host.port:8080</port>
@@ -488,9 +515,11 @@
                 </os>
             </activation>
             <properties>
-                <docker.soapui.container.user.home.url>file:///C:/Users/Administrator</docker.soapui.container.user.home.url>
+                <docker.soapui.container.user.home.url>file:///C:/Users/Administrator
+                </docker.soapui.container.user.home.url>
                 <docker.soapui.container.user.home.path>C:/Users/Administrator</docker.soapui.container.user.home.path>
-                <docker.soapui.container.project.home>C:\Users\Administrator\soapui-prj\</docker.soapui.container.project.home>
+                <docker.soapui.container.project.home>C:\Users\Administrator\${docker.soapui.container.project.folder}\
+                </docker.soapui.container.project.home>
             </properties>
             <build>
                 <plugins>
@@ -550,6 +579,63 @@
                     </plugin>
                 </plugins>
             </build>
+        </profile>
+        <profile>
+            <id>default-config</id>
+            <activation>
+                <property>
+                    <name>!mule.security.model</name> <!-- if mule.security.model does not exist -->
+                </property>
+            </activation>
+            <properties>
+                <env.docker.soapui.container.project.folder>soapui-prj</env.docker.soapui.container.project.folder>
+                <env.config.name.WSS_Inbound>WSS_Inbound</env.config.name.WSS_Inbound>
+                <env.config.name.username-config>username-config</env.config.name.username-config>
+                <env.config.name.invalid-username-config>invalid-username-config</env.config.name.invalid-username-config>
+                <env.config.name.verify-config>verify-config</env.config.name.verify-config>
+                <env.config.name.sign-config>sign-config</env.config.name.sign-config>
+                <env.config.name.invalid-sign-config>invalid-sign-config</env.config.name.invalid-sign-config>
+                <env.config.name.sign-mtom-config>sign-mtom-config</env.config.name.sign-mtom-config>
+                <env.config.name.sign-encrypt-config>sign-encrypt-config</env.config.name.sign-encrypt-config>
+                <env.config.name.encrypt-config>encrypt-config</env.config.name.encrypt-config>
+                <env.config.name.invalid-encrypt-config>invalid-encrypt-config</env.config.name.invalid-encrypt-config>
+                <env.config.name.decrypt-config>decrypt-config</env.config.name.decrypt-config>
+                <env.config.name.timestamp-config>timestamp-config</env.config.name.timestamp-config>
+                <env.config.name.security-header-order-default-config>security-header-order-default-config</env.config.name.security-header-order-default-config>
+                <env.config.name.security-header-timestamp-first-config>security-header-timestamp-first-config</env.config.name.security-header-timestamp-first-config>
+                <env.config.name.security-header-timestamp-last-config>security-header-timestamp-last-config</env.config.name.security-header-timestamp-last-config>
+                <env.config.name.decryptAndTimestampOnResponse-config>decryptAndTimestampOnResponse-config</env.config.name.decryptAndTimestampOnResponse-config>
+                <env.config.name.decryptOnResponse-config>decryptOnResponse-config</env.config.name.decryptOnResponse-config>
+            </properties>
+        </profile>
+        <profile>
+            <id>fips-config</id>
+            <activation>
+                <property>
+                    <name>mule.security.model</name>
+                    <value>fips140-2</value> <!-- if mule.security.model == fips140-2 -->
+                </property>
+            </activation>
+            <properties>
+                <env.docker.soapui.container.project.folder>soapui-prj-fips</env.docker.soapui.container.project.folder>
+                <env.config.name.WSS_Inbound>WSS_Inbound-fips</env.config.name.WSS_Inbound>
+                <env.config.name.username-config>username-config-fips</env.config.name.username-config>
+                <env.config.name.invalid-username-config>invalid-username-config-fips</env.config.name.invalid-username-config>
+                <env.config.name.verify-config>verify-config-fips</env.config.name.verify-config>
+                <env.config.name.sign-config>sign-config-fips</env.config.name.sign-config>
+                <env.config.name.invalid-sign-config>invalid-sign-config-fips</env.config.name.invalid-sign-config>
+                <env.config.name.sign-mtom-config>sign-mtom-config-fips</env.config.name.sign-mtom-config>
+                <env.config.name.sign-encrypt-config>sign-encrypt-config-fips</env.config.name.sign-encrypt-config>
+                <env.config.name.encrypt-config>encrypt-config-fips</env.config.name.encrypt-config>
+                <env.config.name.invalid-encrypt-config>invalid-encrypt-config-fips</env.config.name.invalid-encrypt-config>
+                <env.config.name.decrypt-config>decrypt-config-fips</env.config.name.decrypt-config>
+                <env.config.name.timestamp-config>timestamp-config-fips</env.config.name.timestamp-config>
+                <env.config.name.security-header-order-default-config>security-header-order-default-config-fips</env.config.name.security-header-order-default-config>
+                <env.config.name.security-header-timestamp-first-config>security-header-timestamp-first-config-fips</env.config.name.security-header-timestamp-first-config>
+                <env.config.name.security-header-timestamp-last-config>security-header-timestamp-last-config-fips</env.config.name.security-header-timestamp-last-config>
+                <env.config.name.decryptAndTimestampOnResponse-config>decryptAndTimestampOnResponse-config-fips</env.config.name.decryptAndTimestampOnResponse-config>
+                <env.config.name.decryptOnResponse-config>decryptOnResponse-config-fips</env.config.name.decryptOnResponse-config>
+            </properties>
         </profile>
     </profiles>
 </project>

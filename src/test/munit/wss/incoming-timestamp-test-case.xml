@@ -42,12 +42,35 @@
         </wsc:connection>
     </wsc:config>
 
+    <wsc:config name="decryptAndTimestampOnResponse-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:decrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.bcfks" keyPassword="changeit"
+                                                 password="changeit" alias="s1as" type="bcfks"/>
+                </wsc:decrypt-security-strategy>
+                <wsc:incoming-timestamp-security-strategy />
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
     <wsc:config name="decryptOnResponse-config">
         <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
             <wsc:web-service-security>
                 <wsc:decrypt-security-strategy>
                     <wsc:key-store-configuration keyStorePath="security/ssltest-keystore.jks" keyPassword="changeit"
                                                  password="changeit" alias="s1as"/>
+                </wsc:decrypt-security-strategy>
+            </wsc:web-service-security>
+        </wsc:connection>
+    </wsc:config>
+
+    <wsc:config name="decryptOnResponse-config-fips">
+        <wsc:connection wsdlLocation="http://localhost:${wsPort}/${soapVersion}/?wsdl" service="TestService" port="TestPort" address="http://localhost:${wsPort}/${soapVersion}/">
+            <wsc:web-service-security>
+                <wsc:decrypt-security-strategy>
+                    <wsc:key-store-configuration keyStorePath="security/bcfks/ssltest-keystore.bcfks" keyPassword="changeit"
+                                                 password="changeit" alias="s1as" type="bcfks"/>
                 </wsc:decrypt-security-strategy>
             </wsc:web-service-security>
         </wsc:connection>
@@ -67,7 +90,7 @@
         <munit:execution>
             <set-variable variableName="text" value="encryptedAndTimestamp"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="decryptAndTimestampOnResponse-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.decryptAndTimestampOnResponse-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -79,7 +102,7 @@
         <munit:execution>
             <set-variable variableName="text" value="encryptedAndTimestamp"/>
             <flow-ref name="buildEchoRequest"/>
-            <wsc:consume config-ref="decryptOnResponse-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.decryptOnResponse-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
@@ -92,7 +115,7 @@
             <set-variable variableName="text" value="encryptedAndExpiredTimestamp"/>
             <flow-ref name="buildEchoRequest"/>
             <try>
-            <wsc:consume config-ref="decryptAndTimestampOnResponse-config" operation="echo">
+            <wsc:consume config-ref="${config.ref.name.decryptAndTimestampOnResponse-config}" operation="echo">
                 <wsc:message>
                     <wsc:body>#[payload]</wsc:body>
                 </wsc:message>
