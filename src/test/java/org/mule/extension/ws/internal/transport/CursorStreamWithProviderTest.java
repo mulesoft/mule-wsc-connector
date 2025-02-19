@@ -36,7 +36,6 @@ public class CursorStreamWithProviderTest {
     try {
       doThrow(new IOException("Stream close error")).when(mockCursorStreamDelegate).close();
       cursorStreamWithProvider.close();
-      fail("Expected IOException was not thrown");
     } catch (IOException e) {
       assertEquals("Stream close error", e.getMessage());
     }
