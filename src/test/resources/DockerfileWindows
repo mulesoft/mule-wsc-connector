@@ -13,6 +13,7 @@ RUN choco install -y soapui --version 5.4.0
 EXPOSE 8080
 
 COPY .\\soapui-prj\\* C:\\Users\\Administrator\\soapui-prj/
+COPY .\\soapui-prj-fips\\* C:\\Users\\Administrator\\soapui-prj-fips/
 COPY .\\security\\* C:\\Users\\Administrator\\security/
 COPY .\\wsdl\\* C:\\Users\\Administrator\\wsdl/
 COPY [".\\\\docker-libs\\\\xmlsec-1.5.8.jar", "C:\\\\Program Files\\\\SmartBear\\\\SoapUI-5.4.0\\\\lib\\\\xmlsec-1.4.5.jar"]
