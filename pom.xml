@@ -232,27 +232,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.mulesoft.modules</groupId>
-            <artifactId>mule-wss-module</artifactId>
-            <version>${mule.wss.module.version}</version>
-            <classifier>mule-plugin</classifier>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.logging.log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bcprov-jdk15on</artifactId>
-                </exclusion>
-            </exclusions>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>org.mule.connectors</groupId>
             <artifactId>mule-file-connector</artifactId>
             <version>${mule.file.connector.version}</version>
