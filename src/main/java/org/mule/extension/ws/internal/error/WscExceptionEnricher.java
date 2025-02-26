@@ -41,7 +41,7 @@ import org.mule.soap.api.transport.DispatcherException;
 public class WscExceptionEnricher extends ExceptionHandler {
 
 
-  private Map<Class<?>, WscError> ERRORS_MAPPING =
+  private static final Map<Class<?>, WscError> ERRORS_MAPPING =
       unmodifiableMap(of(
                          new SimpleEntry<>(BadResponseException.class, BAD_RESPONSE),
                          new SimpleEntry<>(EmptyResponseException.class, EMPTY_RESPONSE),
@@ -61,7 +61,7 @@ public class WscExceptionEnricher extends ExceptionHandler {
     if (e instanceof ModuleException) {
       return e;
     }
-    if (e instanceof DispatcherException & !(e instanceof DispatcherTimeoutException)) {
+    if (e instanceof DispatcherException && !(e instanceof DispatcherTimeoutException)) {
       return new DispatcherMessageAwareException((DispatcherException) e);
     }
     if (e instanceof SoapFaultException) {
