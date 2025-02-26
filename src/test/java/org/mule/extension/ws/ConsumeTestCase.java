@@ -48,7 +48,9 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.ExecutionException;
 
 public class ConsumeTestCase {
 
@@ -68,7 +70,7 @@ public class ConsumeTestCase {
   }
 
   @Test
-  public void consumeConcurrently() {
+  public void consumeConcurrently() throws ExecutionException, InterruptedException {
     WsdlConnectionInfo info = mock(WsdlConnectionInfo.class);
     CountDownLatch latch = new CountDownLatch(1);
     CustomTransportConfiguration configuration = mock(CustomTransportConfiguration.class);
@@ -89,10 +91,12 @@ public class ConsumeTestCase {
 
     WscSoapClient client = new WscSoapClient(info, supplier, configuration, null);
 
-    executorService.submit(() -> client.consume(soapRequest, extensionsClient));
-    executorService.submit(() -> client.consume(soapRequest, extensionsClient));
+    Future<?> future1 = executorService.submit(() -> client.consume(soapRequest, extensionsClient));
+    Future<?> future2 = executorService.submit(() -> client.consume(soapRequest, extensionsClient));
 
     latch.countDown();
+    future1.get();
+    future2.get();
 
     verify(supplier, times(1)).get();
   }
