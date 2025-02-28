@@ -46,7 +46,7 @@
         <!-- Remove when a new parent version with MTF is available -->
         <!-- MTF dependencies -->
         <mtf.tools.version>1.2.0</mtf.tools.version>
-        <munit.extensions.maven.plugin.version>1.4.0</munit.extensions.maven.plugin.version>
+        <munit.extensions.maven.plugin.version>1.5.0</munit.extensions.maven.plugin.version>
         <minVersion>4.3.0</minVersion>
         <!-- MTF properties -->
         <munit.version>3.4.0</munit.version>
