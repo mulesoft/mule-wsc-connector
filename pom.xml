@@ -24,11 +24,11 @@
         <!-- core dependencies internals-->
         <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
         <mule.http.connector.version>1.10.3</mule.http.connector.version>
-        <soap.engine.version>1.10.0</soap.engine.version>
-        <wsdl.parser.version>1.4.9</wsdl.parser.version>
+        <soap.engine.version>1.10.1-EA</soap.engine.version>
+        <wsdl.parser.version>1.4.10</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.16.0</commons.lang.version>
-        <spring-expression.version>5.3.39</spring-expression.version>
+        <spring-expression.version>5.3.39-spring-framework-5.3.45</spring-expression.version>
         <jakarta.xml.soap-api>2.0.1</jakarta.xml.soap-api>
         <saaj-impl.version>1.5.3</saaj-impl.version>
         <saaj-api>1.3.5</saaj-api>
@@ -323,6 +323,38 @@
         </testResources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <artifactSet>
+                                <includes>
+                                    <include>org.springframework:spring-expression</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <artifactId>maven-resources-plugin</artifactId>
                 <version>${mavenResourcesVersion}</version>
