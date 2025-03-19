@@ -144,6 +144,17 @@
             <artifactId>spring-expression</artifactId>
             <version>${spring-expression.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring-expression.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jcl</artifactId>
+            <version>5.3.39-spring-framework-5.3.45</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Common Dependencies -->
         <dependency>
@@ -329,6 +340,7 @@
                 <version>3.2.2</version>
                 <executions>
                     <execution>
+                        <phase>package</phase>
                         <goals>
                             <goal>jar</goal>
                         </goals>
@@ -349,6 +361,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>org.springframework:spring-expression</include>
+                                    <include>org.springframework:spring-core</include>
+                                    <include>org.springframework:spring-jcl</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
