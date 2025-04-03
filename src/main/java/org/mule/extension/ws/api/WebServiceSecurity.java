@@ -121,9 +121,9 @@ public class WebServiceSecurity {
   /**
    * Whether mustUnderstand attribute in {@code wsse:Security} header is true or false.
    * <p>
-   * Defaults to {@code true} TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP
-   * protocol standard.
+   * Defaults to {@code true}
    */
+  // TODO (W-11800462): For the next major (v2.0.0) the default value should be false to match the SOAP protocol standard.
   @Parameter
   @Placement(tab = SECURITY_TAB, order = 0)
   @Optional(defaultValue = "true")

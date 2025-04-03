@@ -14,7 +14,7 @@
     <groupId>org.mule.connectors</groupId>
     <artifactId>mule-wsc-connector</artifactId>
     <packaging>mule-extension</packaging>
-    <version>1.11.0-SNAPSHOT</version>
+    <version>1.12.0-SNAPSHOT</version>
 
 
     <name>Web Service Consumer Connector</name>
@@ -23,8 +23,8 @@
     <properties>
         <!-- core dependencies internals-->
         <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
-        <mule.http.connector.version>1.10.0</mule.http.connector.version>
-        <soap.engine.version>1.10.0-SNAPSHOT</soap.engine.version>
+        <mule.http.connector.version>1.10.3</mule.http.connector.version>
+        <soap.engine.version>1.10.0</soap.engine.version>
         <wsdl.parser.version>1.4.9</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.16.0</commons.lang.version>
@@ -49,7 +49,7 @@
         <munit.extensions.maven.plugin.version>1.4.0</munit.extensions.maven.plugin.version>
         <minVersion>4.3.0</minVersion>
         <!-- MTF properties -->
-        <munit.version>3.3.2</munit.version>
+        <munit.version>3.4.0</munit.version>
         <munit.input.directory>src/test/munit</munit.input.directory>
         <munit.output.directory>${basedir}/target/test-mule/munit</munit.output.directory>
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
