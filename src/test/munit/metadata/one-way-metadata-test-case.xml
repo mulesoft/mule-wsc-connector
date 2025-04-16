@@ -10,7 +10,6 @@
       http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
       http://www.mulesoft.org/schema/mule/mtf  http://www.mulesoft.org/schema/mule/mtf/current/mule-mtf.xsd
       http://www.mulesoft.org/schema/mule/wsc http://www.mulesoft.org/schema/mule/wsc/current/mule-wsc.xsd">
-
     <munit:config name="one-way-metadata-test-case.xml">
         <munit:parameterizations>
             <munit:parameterization name="SOAP11">
@@ -28,7 +27,8 @@
         </munit:parameterizations>
     </munit:config>
 
-    <mtf:tooling-test name="getEchoAccountInputBody (oneWay)">
+    <!--  Remove ignore once W-17842670 gets fixed  -->
+    <mtf:tooling-test name="getEchoAccountInputBody (oneWay)" ignore="#[Munit::muleVersionNewerThan('4.4.0')]">
         <mtf:get-output-metadata>
             <wsc:consume config-ref="default-config" operation="oneWay">
                 <wsc:message>
