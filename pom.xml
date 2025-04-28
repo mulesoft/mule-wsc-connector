@@ -24,7 +24,7 @@
         <!-- core dependencies internals-->
         <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
         <mule.http.connector.version>1.10.3</mule.http.connector.version>
-        <soap.engine.version>1.10.0</soap.engine.version>
+        <soap.engine.version>1.11.1-SNAPSHOT</soap.engine.version>
         <wsdl.parser.version>1.4.9</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.16.0</commons.lang.version>
