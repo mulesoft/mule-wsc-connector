@@ -39,7 +39,7 @@
         <javax.jws-api.version>1.1</javax.jws-api.version>
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
-        <mule.file.connector.version>1.5.2</mule.file.connector.version>
+        <mule.file.connector.version>1.5.3</mule.file.connector.version>
         <mule.wss.module.version>1.2.2</mule.wss.module.version>
         <easy-random-core>4.3.0</easy-random-core>
 
