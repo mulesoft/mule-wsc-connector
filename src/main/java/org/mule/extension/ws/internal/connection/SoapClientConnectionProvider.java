@@ -10,6 +10,7 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
+import kotlin.Lazy;
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
@@ -21,6 +22,7 @@ import org.mule.runtime.api.connection.ConnectionException;
 import org.mule.runtime.api.connection.ConnectionProvider;
 import org.mule.runtime.api.connection.ConnectionValidationResult;
 import org.mule.runtime.api.lifecycle.Lifecycle;
+import org.mule.runtime.api.util.LazyValue;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.annotation.Expression;
 import org.mule.runtime.extension.api.annotation.param.DefaultEncoding;
@@ -58,7 +60,7 @@ import java.util.Objects;
 public class SoapClientConnectionProvider implements CachedConnectionProvider<WscSoapClient>, NoConnectivityTest, Lifecycle {
 
   private final Logger LOGGER = LoggerFactory.getLogger(SoapClientConnectionProvider.class);
-  private final SoapClientFactory SOAP_CLIENT_FACTORY = SoapClientFactory.getDefault();
+  private final LazyValue<SoapClientFactory> SOAP_CLIENT_FACTORY = new LazyValue<>(SoapClientFactory::getDefault);
 
   @Inject
   private HttpService httpService;
@@ -133,7 +135,7 @@ public class SoapClientConnectionProvider implements CachedConnectionProvider<Ws
         @Override
         public SoapClient getChecked() throws Throwable {
           try {
-            return SOAP_CLIENT_FACTORY.create(getConfiguration());
+            return SOAP_CLIENT_FACTORY.get().create(getConfiguration());
           } catch (Exception e) {
             // wsdl parser is in kotlin and does not export the exception type.
             // So the exception type is unknown in compile time.
