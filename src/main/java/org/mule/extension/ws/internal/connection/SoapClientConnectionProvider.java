@@ -10,7 +10,6 @@ import static org.mule.runtime.api.meta.ExpressionSupport.NOT_SUPPORTED;
 import static org.mule.runtime.core.api.util.StringUtils.isBlank;
 import static org.mule.extension.ws.internal.error.WscError.INVALID_WSDL;
 
-import kotlin.Lazy;
 import org.mule.extension.ws.api.SoapVersionAdapter;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.transport.CustomTransportConfiguration;
