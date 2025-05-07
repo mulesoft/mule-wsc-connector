@@ -5,7 +5,7 @@ buildTimeoutUnit: HOURS
 additionalTestConfigs:
   jdk11:
     testJdkTool: OPEN-JDK11
-    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false
+    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DruntimeVersion=4.8.4 -DruntimeProduct=MULE_EE
   jdk17:
     testJdkTool: OPEN-JDK17
     mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DminVersion=4.6.0
