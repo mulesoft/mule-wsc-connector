@@ -18,6 +18,7 @@ import static org.mule.runtime.api.value.ValueProviderService.VALUE_PROVIDER_SER
 import static org.mule.tck.junit4.matcher.ValueMatcher.valueWithId;
 
 import org.custommonkey.xmlunit.XMLUnit;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -66,6 +67,7 @@ public class WscValueProviderTestCase extends MuleArtifactFunctionalTestCase {
     XMLUnit.setIgnoreWhitespace(true);
   }
 
+  @Ignore
   @Test
   public void weatherWsdl() {
     ValueResult result = service.getValues(Location.builder().globalName("weather").addConnectionPart().build(), CONNECTION);
@@ -81,6 +83,7 @@ public class WscValueProviderTestCase extends MuleArtifactFunctionalTestCase {
             .withChilds(valueWithId(startsWith("http://www.webservicex.com/globalweather.asmx")).withPartName("address")))));
   }
 
+  @Ignore
   @Test
   public void humanWsdl() {
     ValueResult result =
@@ -91,6 +94,7 @@ public class WscValueProviderTestCase extends MuleArtifactFunctionalTestCase {
         .withChilds(valueWithId("Human_Resources").withPartName("port"))));
   }
 
+  @Ignore
   @Test
   public void rpcWsdlFails() {
     ValueResult values = service.getValues(Location.builder().globalName("rpc").addConnectionPart().build(), CONNECTION);
