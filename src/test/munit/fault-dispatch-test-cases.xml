@@ -46,14 +46,20 @@
                 </wsc:consume>
                 <error-handler>
                     <mule:on-error-continue enableNotifications="true" type="WSC:CANNOT_DISPATCH">
-                        <set-payload value="#[error.errorMessage.payload[0]]"/>
+                        <set-variable variableName="response" value="#[output application/json --- error.exception.errorMessage.payload]" />
+                        <set-variable variableName="headers" value="#[output application/json --- error.exception.errorMessage.attributes]" />
                     </mule:on-error-continue>
                 </error-handler>
             </try>
         </munit:execution>
         <munit:validation>
-            <munit-tools:assert-equals actual="#[payload]"
-                                       expected="#['Error dispatching message with config [simple-requester]:Could not dispatch soap message using the [simple-requester] HTTP configuration']"/>
+            <munit-tools:assert-equals actual="#[vars.response.Envelope.Body.Fault.detail.ArithmeticError.errorCode]"
+                                       expected="#['1001']"/>
+            <munit-tools:assert-equals actual="#[vars.response.Envelope.Body.Fault.detail.ArithmeticError.errorMessage]"
+                                       expected="#['An attempt was made to divide by zero.']"/>
+            <munit-tools:assert-equals actual="#[vars.headers.statusCode]"
+                                       expected="#[500]"/>
+
         </munit:validation>
     </munit:test>
 </mule>
