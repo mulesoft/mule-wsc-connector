@@ -58,7 +58,7 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
           .entity(new InputStreamHttpEntity(content))
           .headers(new MultiMap<>(request.getHeaders()))
           .build();
-      HttpResponse response = client.send(httpPostRequest, timeout, false, null);
+      HttpResponse response = client.send(httpPostRequest, timeout, true, null);
       return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response),
                                    toStatusLineMap(response));
     } catch (IOException ioe) {
