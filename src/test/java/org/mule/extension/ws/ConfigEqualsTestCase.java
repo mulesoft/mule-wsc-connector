@@ -1,5 +1,5 @@
 /*
- * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * Copyright 2023 Salesforce, Inc. All rights reserved.
  * The software in this package is published under the terms of the CPAL v1.0
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
@@ -14,6 +14,7 @@ import static org.mockito.Mockito.mock;
 
 import org.jeasy.random.EasyRandom;
 import org.jeasy.random.EasyRandomParameters;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mule.extension.ws.api.WebServiceSecurity;
 import org.mule.extension.ws.api.security.*;
@@ -30,7 +31,7 @@ public class ConfigEqualsTestCase {
     EasyRandomParameters parameters = new EasyRandomParameters();
     parameters.collectionSizeRange(1, 3);
     parameters.excludeField(field -> field.getName().equals("httpService") || field.getName().toLowerCase().contains("client")
-        || field.getName().equals("customTransportConfiguration"));
+        || field.getName().equals("customTransportConfiguration") || field.getName().equals("LOGGER"));
     EasyRandom factory = new EasyRandom(parameters);
     EasyRandom factory2 = new EasyRandom(parameters);
 
