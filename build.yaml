@@ -2,6 +2,7 @@ projectType: extension
 mavenAdditionalArgs: -DincludeSnapshots=false -DmunitMinMuleVersion=4.9.0 -DruntimeVersion=4.9.1
 buildTimeoutTime: 8
 buildTimeoutUnit: HOURS
+jdkTool: OPEN-JDK17
 additionalTestConfigs:
   jdk17-4.9.x:
     testJdkTool: OPEN-JDK17
