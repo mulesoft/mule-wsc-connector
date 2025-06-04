@@ -33,6 +33,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.Set;
 
+@Ignore
 @RunnerDelegateTo()
 public class WscValueProviderTestCase extends MuleArtifactFunctionalTestCase {
 

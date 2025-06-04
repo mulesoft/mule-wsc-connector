@@ -6,9 +6,8 @@
  */
 package org.mule.extension.ws;
 
-import static org.mockito.ArgumentMatchers.anyBoolean;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -16,6 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.Ignore;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.junit.After;
@@ -105,7 +105,8 @@ public class ConsumeTestCase {
   public void consumeDefaultContenType() throws IOException, TimeoutException {
     HttpClient mockClient = mock(HttpClient.class);
     HttpResponse response = HttpResponse.builder().statusCode(500).build();
-    when(mockClient.send(any(HttpRequest.class), anyInt(), anyBoolean(), any(HttpAuthentication.class))).thenReturn(response);
+    when(mockClient.send(any(HttpRequest.class), eq(1000), anyBoolean(), nullable(HttpAuthentication.class)))
+        .thenReturn(response);
     TransportDispatcher dispatcher = new DefaultHttpMessageDispatcher(mockClient, 1000);
     TransportRequest transportRequest = new TransportRequest(mock(InputStream.class), "localhost", new HashMap<>());
     TransportResponse transportResponse = dispatcher.dispatch(transportRequest);

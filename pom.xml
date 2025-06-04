@@ -24,7 +24,7 @@
         <!-- core dependencies internals-->
         <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
         <mule.http.connector.version>1.10.3</mule.http.connector.version>
-        <soap.engine.version>2.0.0-SNAPSHOT</soap.engine.version>
+        <soap.engine.version>1.10.1</soap.engine.version>
         <wsdl.parser.version>1.4.10</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.16.0</commons.lang.version>
@@ -40,7 +40,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
-        <mule.wss.module.version>2.0.0-SNAPSHOT</mule.wss.module.version>
+        <mule.wss.module.version>1.2.2</mule.wss.module.version>
         <easy-random-core>4.3.0</easy-random-core>
 
         <muleSchedulerServiceVersion>1.9.4</muleSchedulerServiceVersion>
