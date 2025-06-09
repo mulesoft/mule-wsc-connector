@@ -1,5 +1,5 @@
 /*
- * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * Copyright 2023 Salesforce, Inc. All rights reserved.
  * The software in this package is published under the terms of the CPAL v1.0
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
@@ -15,6 +15,7 @@ import org.mule.extension.ws.internal.error.DispatcherTimeoutException;
 import org.mule.runtime.api.util.MultiMap;
 import org.mule.runtime.core.api.util.IOUtils;
 import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpRequestOptions;
 import org.mule.runtime.http.api.domain.entity.InputStreamHttpEntity;
 import org.mule.runtime.http.api.domain.message.request.HttpRequest;
 import org.mule.runtime.http.api.domain.message.response.HttpResponse;
@@ -58,7 +59,8 @@ public class DefaultHttpMessageDispatcher implements TransportDispatcher {
           .entity(new InputStreamHttpEntity(content))
           .headers(new MultiMap<>(request.getHeaders()))
           .build();
-      HttpResponse response = client.send(httpPostRequest, timeout, false, null);
+      HttpRequestOptions options = HttpRequestOptions.builder().responseTimeout(timeout).build();
+      HttpResponse response = client.send(httpPostRequest, options);
       return new TransportResponse(logIfNeeded("Soap Response", response.getEntity().getContent()), toHeadersMap(response),
                                    toStatusLineMap(response));
     } catch (IOException ioe) {

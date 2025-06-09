@@ -1,11 +1,9 @@
 projectType: extension
-mavenAdditionalArgs: -DincludeSnapshots=false -DminVersion=4.3.0
+mavenAdditionalArgs: -DincludeSnapshots=false -DmunitMinMuleVersion=4.9.0 -DruntimeVersion=4.9.1
 buildTimeoutTime: 8
 buildTimeoutUnit: HOURS
+jdkTool: OPEN-JDK17
 additionalTestConfigs:
-  jdk11:
-    testJdkTool: OPEN-JDK11
-    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DruntimeVersion=4.8.4
-  jdk17:
+  jdk17-4.9.x:
     testJdkTool: OPEN-JDK17
-    mavenAdditionalArgs: -Dtest=none -DfailIfNoTests=false -DminVersion=4.6.0
+    mavenAdditionalArgs: -DruntimeVersion=4.9.1 -DfailIfNoTests=false -DruntimeProduct=MULE_EE

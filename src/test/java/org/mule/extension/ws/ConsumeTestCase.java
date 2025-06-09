@@ -1,14 +1,13 @@
 /*
- * Copyright (c) MuleSoft, Inc.  All rights reserved.  http://www.mulesoft.com
+ * Copyright 2023 Salesforce, Inc. All rights reserved.
  * The software in this package is published under the terms of the CPAL v1.0
  * license, a copy of which has been included with this distribution in the
  * LICENSE.txt file.
  */
 package org.mule.extension.ws;
 
-import static org.mockito.Matchers.anyBoolean;
-import static org.mockito.Matchers.anyInt;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.any;
@@ -16,6 +15,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.mock;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import org.junit.Ignore;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.junit.After;
@@ -29,6 +29,7 @@ import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpRequestOptions;
 import org.mule.runtime.http.api.client.auth.HttpAuthentication;
 import org.mule.runtime.http.api.domain.message.request.HttpRequest;
 import org.mule.runtime.http.api.domain.message.response.HttpResponse;
@@ -105,7 +106,8 @@ public class ConsumeTestCase {
   public void consumeDefaultContenType() throws IOException, TimeoutException {
     HttpClient mockClient = mock(HttpClient.class);
     HttpResponse response = HttpResponse.builder().statusCode(500).build();
-    when(mockClient.send(any(HttpRequest.class), anyInt(), anyBoolean(), any(HttpAuthentication.class))).thenReturn(response);
+    when(mockClient.send(any(HttpRequest.class), any(HttpRequestOptions.class)))
+        .thenReturn(response);
     TransportDispatcher dispatcher = new DefaultHttpMessageDispatcher(mockClient, 1000);
     TransportRequest transportRequest = new TransportRequest(mock(InputStream.class), "localhost", new HashMap<>());
     TransportResponse transportResponse = dispatcher.dispatch(transportRequest);
