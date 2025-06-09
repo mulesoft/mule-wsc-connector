@@ -29,6 +29,7 @@ import org.mule.extension.ws.internal.connection.WsdlConnectionInfo;
 import org.mule.runtime.core.api.util.func.CheckedSupplier;
 import org.mule.runtime.extension.api.client.ExtensionsClient;
 import org.mule.runtime.http.api.client.HttpClient;
+import org.mule.runtime.http.api.client.HttpRequestOptions;
 import org.mule.runtime.http.api.client.auth.HttpAuthentication;
 import org.mule.runtime.http.api.domain.message.request.HttpRequest;
 import org.mule.runtime.http.api.domain.message.response.HttpResponse;
@@ -105,7 +106,7 @@ public class ConsumeTestCase {
   public void consumeDefaultContenType() throws IOException, TimeoutException {
     HttpClient mockClient = mock(HttpClient.class);
     HttpResponse response = HttpResponse.builder().statusCode(500).build();
-    when(mockClient.send(any(HttpRequest.class), eq(1000), anyBoolean(), nullable(HttpAuthentication.class)))
+    when(mockClient.send(any(HttpRequest.class), any(HttpRequestOptions.class)))
         .thenReturn(response);
     TransportDispatcher dispatcher = new DefaultHttpMessageDispatcher(mockClient, 1000);
     TransportRequest transportRequest = new TransportRequest(mock(InputStream.class), "localhost", new HashMap<>());
