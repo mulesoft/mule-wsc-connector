@@ -24,14 +24,13 @@
         <!-- core dependencies internals-->
         <muleSdkApiVersion>0.8.2</muleSdkApiVersion>
         <mule.http.connector.version>1.10.3</mule.http.connector.version>
-        <soap.engine.version>2.0.0-SNAPSHOT</soap.engine.version>
+        <soap.engine.version>2.0.0</soap.engine.version>
         <wsdl.parser.version>1.4.10</wsdl.parser.version>
         <!-- core dependencies externals-->
         <commons.lang.version>3.16.0</commons.lang.version>
         <springframework.version>6.2.5</springframework.version>
         <jakarta.xml.soap-api>2.0.1</jakarta.xml.soap-api>
         <jakarta.xml.ws-api>3.0.0</jakarta.xml.ws-api>
-        <wss4j.version>2.4.1</wss4j.version>
         <saaj-impl.version>2.0.1</saaj-impl.version>
         <saaj-api>1.3.5</saaj-api>
 
@@ -42,7 +41,7 @@
         <xmlUnitVersion>1.6</xmlUnitVersion>
         <jsonassert.version>1.5.1</jsonassert.version>
         <mule.file.connector.version>1.5.2</mule.file.connector.version>
-        <mule.wss.module.version>2.0.0-SNAPSHOT</mule.wss.module.version>
+        <mule.wss.module.version>2.0.0</mule.wss.module.version>
         <easy-random-core>4.3.0</easy-random-core>
 
         <muleSchedulerServiceVersion>1.9.4</muleSchedulerServiceVersion>
@@ -60,7 +59,7 @@
         <mavenResourcesVersion>3.3.1</mavenResourcesVersion>
 
         <!-- Plugin dependencies -->
-        <apache.santuario.xmlsec.version>3.0.4</apache.santuario.xmlsec.version>
+        <apache.santuario.xmlsec.version>4.0.4</apache.santuario.xmlsec.version>
         <org.slf4j.version>2.0.16</org.slf4j.version>
         <docker.maven.plugin.version>0.45.0</docker.maven.plugin.version>
         <jacoco.version>0.8.12</jacoco.version>
@@ -97,26 +96,6 @@
             <version>${jakarta.xml.ws-api}</version>
         </dependency>
         <dependency>
-            <groupId>org.apache.wss4j</groupId>
-            <artifactId>wss4j-ws-security-dom</artifactId>
-            <version>${wss4j.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.ehcache</groupId>
-                    <artifactId>ehcache</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.bouncycastle</groupId>
-                    <artifactId>bcprov-jdk15on</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.wss4j</groupId>
-            <artifactId>wss4j-ws-security-common</artifactId>
-            <version>${wss4j.version}</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.santuario</groupId>
             <artifactId>xmlsec</artifactId>
             <version>${apache.santuario.xmlsec.version}</version>
@@ -139,14 +118,6 @@
                 <exclusion>
                     <groupId>org.apache.santuario</groupId>
                     <artifactId>xmlsec</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.wss4j</groupId>
-                    <artifactId>wss4j-ws-security-dom</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.wss4j</groupId>
-                    <artifactId>wss4j-ws-security-security</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -279,14 +250,6 @@
                 <exclusion>
                     <groupId>org.bouncycastle</groupId>
                     <artifactId>bcprov-jdk15on</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.wss4j</groupId>
-                    <artifactId>wss4j-ws-security-dom</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.apache.wss4j</groupId>
-                    <artifactId>wss4j-ws-security-security</artifactId>
                 </exclusion>
             </exclusions>
             <scope>test</scope>
