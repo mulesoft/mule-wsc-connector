@@ -3,7 +3,3 @@ mavenAdditionalArgs: -DincludeSnapshots=false -DmunitMinMuleVersion=4.9.0 -Drunt
 buildTimeoutTime: 8
 buildTimeoutUnit: HOURS
 jdkTool: OPEN-JDK17
-additionalTestConfigs:
-  jdk17-4.9.x:
-    testJdkTool: OPEN-JDK17
-    mavenAdditionalArgs: -DruntimeVersion=4.9.1 -DfailIfNoTests=false -DruntimeProduct=MULE_EE
