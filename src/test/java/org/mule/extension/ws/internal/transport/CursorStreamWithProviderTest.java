@@ -161,29 +161,16 @@ public class CursorStreamWithProviderTest {
     verify(mockCursorStreamDelegate).getProvider();
   }
 
-  @Test
+  @Test(expected = NullPointerException.class)
   public void testMark_NullCursorStream_ThrowsException() {
-    try {
-      CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
-      cursorStreamWithProvider.mark(10); // Attempt to mark with null delegate
-      fail("Expected NullPointerException, but no exception was thrown.");
-    } catch (NullPointerException e) {
-      // Expected exception thrown
-    } catch (Exception e) {
-      fail("Unexpected IOException thrown.");
-    }
+    CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
+    cursorStreamWithProvider.mark(10); // Attempt to mark with null delegate
   }
 
-  @Test
-  public void testSkip_NullCursorStream_ThrowsException() {
-    try {
-      CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
-      cursorStreamWithProvider.skip(5); // Attempt to skip with null delegate
-      fail("Expected NullPointerException, but no exception was thrown.");
-    } catch (NullPointerException e) {
-      // Expected exception thrown
-    } catch (IOException e) {
-      fail("Unexpected IOException thrown.");
-    }
+  @Test(expected = NullPointerException.class)
+  public void testSkip_NullCursorStream_ThrowsException() throws IOException {
+    CursorStreamWithProvider cursorStreamWithProvider = new CursorStreamWithProvider(null, mock(CursorStreamProvider.class));
+    cursorStreamWithProvider.skip(5); // Attempt to skip with null delegate
+    fail("Expected NullPointerException, but no exception was thrown.");
   }
 }

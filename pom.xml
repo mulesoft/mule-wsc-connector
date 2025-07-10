@@ -50,7 +50,7 @@
         <!-- MTF dependencies -->
         <mtf.tools.version>1.2.0</mtf.tools.version>
         <munit.extensions.maven.plugin.version>1.5.0</munit.extensions.maven.plugin.version>
-        <minVersion>4.9.0</minVersion>
+        <minTestingVersion>4.9.0</minTestingVersion>
         <!-- MTF properties -->
         <munit.version>3.4.0</munit.version>
         <munit.input.directory>src/test/munit</munit.input.directory>
@@ -380,7 +380,7 @@
                     <runtimeConfiguration>
                         <discoverRuntimes>
                             <product>EE</product>
-                            <minMuleVersion>${minVersion}</minMuleVersion>
+                            <minMuleVersion>${minTestingVersion}</minMuleVersion>
                             <includeSnapshots>false</includeSnapshots>
                         </discoverRuntimes>
                     </runtimeConfiguration>
